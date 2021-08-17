@@ -1,0 +1,21 @@
+animator:
+
+-invoke on
+-add/remove frames
+-assigning actions for each frame
+-reseting actions for each frame
+-place for frame in percentage
+-export
+--------------------
+slide attributes:
+
+data-percentage = frame percentage.
+
+data-action-one = css changed property. eg: rotate , width , height.
+data-action-one-value = value of the changed property.
+
+data-action-two = css changed property. eg: rotate , width , height.
+data-action-two-value = value of the changed property.
+
+data-action-three = css changed property. eg: rotate , width , height.
+data-action-three-value = value of the changed property.

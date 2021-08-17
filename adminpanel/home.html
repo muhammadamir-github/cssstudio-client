@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin Panel</title>
+	<link rel="icon" href="../assets/images/icon2.png" type="image/png" sizes="32x32">
+	<link rel="stylesheet" type="text/css" href="../assets/css/ap.css">
+	<link rel="stylesheet" type="text/css" href="../assets/css/topnavbar.css">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta content="width=device-width, initial-scale=1" name="viewport" />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<style>
+		.pageheading{
+			color: black;
+			font-family: ProximaNovaBold;
+		}
+	</style>
+</head>
+<body style="-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none -ms-user-select: none;user-select: none; background-repeat: no-repeat; background-size: cover; height: 0; position: unset;">
+
+    <ul id="navbar">
+      <li onclick="switchTab(this);">Users</li>
+      <li onclick="switchTab(this);">Statistics</li>
+      <li onclick="switchTab(this);" style="opacity: 1;">Live</li>
+      <li onclick="switchTab(this);">Servers</li>
+      <label id="clock"></label>
+    </ul>
+
+    <div id="controltab">
+    	<div id="userstab"></div>
+    	<div id="statstab"></div>
+      <div id="statustab"></div>
+      <div id="livetab"></div>
+    </div>
+
+    <crud>
+    	<crudbar>
+    		<ul>
+    		</ul>
+    	</crudbar>
+    </crud> 
+
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="../assets/js/ap.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+<script src="../other/thirdpartylibraries/moment.min.js"></script>
+<script src="path/to/chartjs/dist/Chart.js"></script>
+
+</html>

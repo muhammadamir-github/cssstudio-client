@@ -1,0 +1,93 @@
+@font-face {
+  font-family: 'ProximaNovaBold';
+  src: url('../fonts/ProximaNovaBold.otf') format('opentype');
+}
+
+loader{
+    width: 25%;
+    height: 25%;
+    max-height: 25%;
+    max-width: 25%;
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%,-25%);
+}
+
+loader view{
+    background-image: url("../images/icon2.png");
+    width: 60%;
+    height: 60%;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-origin: unset;
+    background-clip: unset;
+    background-position: center;
+    box-shadow: 0 0 5px solid white;
+    display: block;
+    left: 50%;
+    transform: translate(-50%);
+
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
+    animation-fill-mode: none;
+    -webkit-animation-fill-mode: none;
+    animation-timing-function: linear;
+    -webkit-animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+
+    animation-name: a;
+    -webkit-animation-name: a;
+}
+
+loader p{
+    display: block;
+    font-size: 15px;
+    font-family: ProximaNovaBold;
+    text-align: center;
+}
+
+@media only screen and (min-device-width : 300px) and (max-device-width : 480px) {
+
+loader{
+    width: 15%;
+    height: 15%;
+    max-height: 15%;
+    max-width: 15%;
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%,-25%);
+}
+
+loader view{
+    width: 100%;
+}
+
+}
+
+@keyframes a {
+  0% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes a {
+  0% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}

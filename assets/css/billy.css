@@ -1,0 +1,328 @@
+@font-face {
+  font-family: 'ProximaNovaBold';
+  src: url('../fonts/ProximaNovaBold.otf') format('opentype');
+}
+
+suggestion{
+	display: block;
+    position: absolute;
+    width: 500px;
+    height: 150px;
+    background-color: white;
+    z-index: 4;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+    left: 50%;
+    top: 25px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    animation: suggestion 3s ease-in-out 1;
+    border: 2px solid #eaeaea;
+    transform: translate(-50%);
+}
+
+suggestion color{
+	position: relative;
+    display: none;
+    width: 75px;
+    height: 75px;
+    margin-left: 15px;
+    margin-top: 13px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+suggestion p{
+	display: none;
+	position: relative;
+	width: 100%;
+	font-family: ProximaNovaBold;
+	color: black;
+	margin-left: 15px;
+	margin-top: 15px;
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out;
+}
+
+suggestion verticalline{
+	display: none;
+	width: 100%;
+	background-color: #eaeaea;
+	height: 2px;
+	position: relative;
+	opacity: 0;
+	transition: opacity 0.5s ease-in-out;
+}
+
+suggestion .close{
+	color: darkred;
+    background: transparent;
+    text-align: center;
+    position: absolute;
+    border-radius: 50%;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+suggestion .close:hover{
+	color: red;
+}
+
+suggestion .hex{
+	position: absolute;
+    display: none;
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-family: sans-serif;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-top: 25px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+suggestion .rgb{
+	position: absolute;
+    display: none;
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-family: sans-serif;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-top: 52px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+suggestion button{
+	display: none;
+    position: absolute;
+    width: 125px;
+    height: 33px;
+    border: none;
+    background: white;
+    outline: none;
+    font-family: sans-serif;
+    font-weight: bold;
+    right: 15px;
+    top: 0px;
+    margin-bottom: 10px;
+    opacity: 0;
+    transition: opacity 0.5s, border-radius 0.3s ease-in-out;
+    cursor: pointer;
+    font-style: italic;
+    letter-spacing: 2px;
+}
+
+suggestion .previewbtn{
+	top: 62px;
+}
+
+suggestion .applybtn{
+	top: 102px;
+}
+
+suggestion button:hover{
+	border-radius: 5px;
+}
+
+callbilly{
+	display: block;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	border-radius: 50%;
+	/*background-color: #eaeaea;*/
+	background: url(../images/application/billy/1.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+	width: 75px;
+	height: 75px;
+	z-index: 5;
+	cursor: pointer;
+	border: 1px solid #e67300;
+	transition: box-shadow 0.3s, border 0.3s ease-in-out;
+	opacity: 0.8;
+	pointer-events: none;
+}
+
+callbilly:hover{
+    /*border: 1px solid #e67300;*/
+    border: 1px solid white;
+	background: url(../images/application/billy/2.png);
+	background-repeat: no-repeat;
+    background-size: contain;
+    box-shadow: #e67300 0px 0px 7px;
+}
+
+billy{
+	display: none;
+	position: absolute;
+	border-radius: 5px;
+	right: 25px;
+	top: 25px;
+	background-color: white;
+	width: 500px;
+	height: 500px;
+	padding-left: 25px;
+	padding-right: 25px;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	z-index: 4;
+	transition: opacity 0.5s ease-in-out;
+	opacity: 0;
+	border: 2px solid #eaeaea;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 10px inset;
+}
+
+.spawnbilly{
+	animation: spawnbilly 1s ease-in-out 1;
+}
+
+.leavebilly{
+	animation: leavebilly 1s ease-in-out 1;
+}
+
+billy tongue{
+	font-family: ProximaNovaBold;
+	font-size: 25px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	position: relative;
+	display: none;
+	transition: opacity 0.5s ease-in-out;
+	opacity: 0;
+}
+
+billy orders{
+	display: none;
+	position: relative;
+	width: 100%;
+	height: 445px;
+	background-color: #1a1a1a;
+	z-index: 1;
+	transition: opacity 0.5s ease-in-out;
+	opacity: 0;
+}
+
+billy orders type{
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 50px;
+	background-color: #383838;
+	cursor: pointer;
+	transition: background-color 0.2s ease-in-out;
+	margin-bottom: 5px;
+}
+
+billy orders type:hover{
+	background-color: #4f4f4f;
+}
+
+billy orders type p{
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	font-family: sans-serif;
+	margin-left: 15px;
+	margin-top: 17px;
+	color: white;
+}
+
+billy orders order{
+	display: none;
+	position: relative;
+	width: 98%;
+	height: 50px;
+	/*background: -moz-linear-gradient(-45deg, #ea8c00 0%, #efaf00 100%);
+    background: -webkit-linear-gradient(-45deg, #ea8c00 0%,#efaf00 100%);
+    background: linear-gradient(135deg, #ea8c00 0%,#efaf00 100%);*/
+    background-color: #1a1a1a;
+	cursor: pointer;
+	transition: background-color 0.5s, opacity 0.5s, border 0.5s ease-in-out;
+	margin-bottom: 5px;
+	opacity: 0;
+	border-left: 5px solid white;
+}
+
+billy orders order:hover{
+	/*background: -moz-linear-gradient(-45deg, #e8bc7f 0%, #edc561 100%);
+    background: -webkit-linear-gradient(-45deg, #e8bc7f 0%,#edc561 100%);
+    background: linear-gradient(135deg, #e8bc7f 0%,#edc561 100%);*/
+    background-color: #1a1a1a;
+    border-left: 5px solid #e67300;
+}
+
+billy orders order p{
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	font-family: sans-serif;
+	margin-left: 15px;
+	margin-top: 17px;
+	color: white;
+	font-weight: bold;
+	letter-spacing: 1.25px;
+}
+
+.billyspinner{
+  
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    z-index: 2;
+    color: white;
+    -webkit-animation: spin 1s linear infinite;
+    border-left: 2px solid transparent;
+    border-right: 2px solid white;
+    border-bottom: 2px solid transparent;
+    border-top: 2px solid white;
+    animation: spin 1.3s linear infinite;
+    opacity: 0;
+    top: 13px;
+    right: 17px;
+    margin: auto;
+    display: block;
+
+}
+
+/*----------------Animations------------------*/
+
+@keyframes spin {
+
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+
+}
+
+@keyframes suggestion {
+
+    0% { width: 0px; height: 0px; }
+    25% { width: 500px; }
+    100% { height: 150px; }
+
+}
+
+@keyframes spawnbilly {
+
+    0% { width: 0px; height: 0px; }
+    100% { width: 500px; height: 500px; }
+
+}
+
+@keyframes leavebilly {
+
+    0% { width: 500px; height: 500px; }
+    100% { width: 0px; height: 0px; }
+
+}

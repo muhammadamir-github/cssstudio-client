@@ -1,0 +1,76 @@
+@keyframes notification{
+
+1%{
+    opacity: 1;
+}
+
+25%{
+    opacity: 0.5;
+}
+
+50%{
+    opacity: 1;
+}
+
+75%{
+    opacity: 0.5;
+}
+
+100%{
+    opacity: 1;
+}
+
+}
+
+
+notification{
+	position: absolute;
+    width: 350px;
+    height: 100px;
+    z-index: 5;
+    background: white;
+    right: 25px;
+    top: 35px;
+    padding: 15px;
+    display: block;
+    cursor: pointer;
+    animation: notification 1s ease-in-out 1;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    transition: opacity 0.2s, transform 0.3s ease-in-out;
+    overflow: hidden;
+    height: fit-content;
+}
+
+notification:hover{
+    opacity: 0.8;
+    transform: scale(0.8);
+}
+
+notification .heading{
+    font-size: 25px;
+    font-family: sans-serif;
+    display: block;
+    position: relative;
+    font-style: italic;
+    height: fit-content;
+    margin: 0;
+    left: 0;
+}
+
+notification .message{
+    font-size: 15px;
+    font-family: sans-serif;
+    display: block;
+    position: relative;
+    font-style: italic;
+    text-overflow: ellipsis;
+    padding-right: 10px;
+    min-height: fit-content;
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+    left: 0;
+    width: 90%;
+    word-break: break-word;
+}

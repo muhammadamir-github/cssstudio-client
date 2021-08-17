@@ -1,0 +1,623 @@
+@font-face {
+  font-family: 'ProximaNovaBold';
+  src: url('../fonts/ProximaNovaBold.otf') format('opentype');
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    height: 1500px;
+    position: relative;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+html{
+    height:100%;
+}
+
+body::-webkit-scrollbar-thumb,
+.crud_panel::-webkit-scrollbar-thumb,
+.crud_infoBox::-webkit-scrollbar-thumb{
+   background-color: #000000;
+}
+
+body::-webkit-scrollbar-track,
+.crud_panel::-webkit-scrollbar-track,
+.crud_infoBox::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+body::-webkit-scrollbar,
+.crud_panel::-webkit-scrollbar,
+.crud_infoBox::-webkit-scrollbar{
+    width: 4px;
+    background-color: #F5F5F5;
+}
+
+notification{
+  top: 75px;
+}
+
+body::-webkit-scrollbar,
+#controltab::-webkit-scrollbar,
+#userstab::-webkit-scrollbar,
+#statstab::-webkit-scrollbar,
+#statustab::-webkit-scrollbar,
+#livetab::-webkit-scrollbar
+{
+    width: 0px;
+    background-color: #F5F5F5;
+}
+
+body::-webkit-scrollbar-track,
+#controltab::-webkit-scrollbar-track,
+#userstab::-webkit-scrollbar-track,
+#statstab::-webkit-scrollbar-track,
+#statustab::-webkit-scrollbar-track,
+#livetab::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+body::-webkit-scrollbar-thumb,
+#controltab::-webkit-scrollbar-thumb,
+#userstab::-webkit-scrollbar-thumb,
+#statstab::-webkit-scrollbar-thumb,
+#statustab::-webkit-scrollbar-thumb,
+#livetab::-webkit-scrollbar-thumb
+{
+   background-color: #000000;
+}
+
+/*----------------------------*/
+
+#controltab{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: #1a1a1a;
+    display: block;
+    opacity: 1;
+    transform: translate(-50%);
+    left: 50%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#userstab, #statstab, #statustab, #livetab{
+    width: 90%;
+    height: 90%;
+    position: absolute;
+    background: #1a1a1a;
+    display: none;
+    opacity: 1;
+    transform: translate(-50%,-75%);
+    left: 50%;
+    top: 75%;
+    padding-bottom: 50px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#livetab{
+    display: block;
+}
+
+#navbar{
+  position: relative;
+}
+
+#userstab .user{
+    position: relative;
+    display: inline-block;
+    width: 17.5%;
+    margin-left: 5%;
+    margin-top: 50px;
+    height: 200px;
+    background: #f1f1f1;
+    border-radius: 5px;
+    transition: background 0.1s ease-in-out;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    border: none;
+}
+
+#userstab .user:hover{
+  /*transform: scale(1.05);*/
+  background: white;
+}
+
+name{
+    width: 100%;
+    height: 13%;
+    min-height: fit-content;
+    display: inline-block;
+    text-align: left;
+    padding-left: 10px;
+    position: absolute;
+    margin-top: 10px;
+    font-family: ProximaNovaBold;
+    font-size: 20px;
+    border-bottom: 1px solid black;
+}
+
+#userstab .user .plan{
+    display: block;
+    position: absolute;
+    font-family: sans-serif;
+    font-size: 15px;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background: darkolivegreen;
+    color: white;
+    border: none;
+    outline: none;
+    font-family: ProximaNovaBold;
+}
+
+#userstab .user .lastvisit{
+    position: absolute;
+    margin-top: 65px;
+    margin-left: 10px;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+#userstab .user .membersince{
+    position: absolute;
+    margin-top: 45px;
+    margin-left: 10px;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+#userstab .user .storage{
+    position: absolute;
+    margin-top: 85px;
+    margin-left: 10px;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+#userstab .user .country{
+    position: absolute;
+    margin-top: 105px;
+    margin-left: 10px;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+#userstab .user .totalspending{
+    position: absolute;
+    margin-top: 125px;
+    margin-left: 10px;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+#userstab .user .expiringin{
+    position: absolute;
+    margin-top: 145px;
+    margin-left: 10px;
+    font-family: sans-serif;
+    font-size: 12px;
+}
+
+box{
+    position: relative;
+    background: white;
+    display: inline-block;
+    border: none;
+    outline: none;
+    margin-right: 5%;
+    margin-bottom: 20px;
+    overflow: hidden;
+    min-height: fit-content;
+    min-width: fit-content;
+    vertical-align: top;
+    border-radius: 10px;
+    padding: 10px;
+    padding-left: 15px;
+    height: 300px;
+    width: 30%;
+    transition: transform 0.3s ease-in-out;
+}
+
+box:hover{
+    transform: scale(0.97);
+}
+
+.t_u, .t_s,.t_i,.t_pu,.t_st{
+    font-family: ProximaNovaBold;
+    font-size: 30px;
+    position: relative;
+    width: 100%;
+    padding-left: 10px;
+    height: 8%;
+    color: white;
+}
+
+.t_u_t_m, .t_p_u, .t_d_u, .t_d_u_t_m, .t_u_l_t_m, .t_s_t_m, .t_m_e, .t_m_e_t_m,
+.t_i_t_m, .t_e_s, .t_a_s, .t_d_s, .t_img_s, .t_vid_s, .t_ti_s, .t_ta_s, .t_p_s, .t_h_s, .t_b_s,
+.t_pu_t_m, .t_pu_g, .t_pu_b, .t_pu_s, .t_pu_d, .t_st_t_m, .t_st_c, .t_st_o{
+    font-family: ProximaNovaBold;
+    font-size: 20px;
+    position: relative;
+    width: 100%;
+    padding-left: 10px;
+    color: white;
+    margin: 4px;
+    white-space: pre-wrap;
+}
+
+#searchu{
+    display: none;
+    pointer-events: none;
+    position: absolute;
+    width: 50%;
+    height: 25%;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%,-25%);
+    z-index: 3;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 1px 1px 15px black;
+    max-width: 500px;
+    min-height: fit-content;
+    padding-bottom: 20px;
+}
+
+#searchu input[type="text"]{
+    position: relative;
+    width: 80%;
+    left: 50%;
+    transform: translate(-50%);
+    margin-top: 25px;
+    height: 30px;
+    outline: none;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    font-size: 14px;
+    font-family: sans-serif;
+    border: 2px solid black;
+    border-radius: 4px;
+}
+
+#searchu p{
+    position: relative;
+    width: 100%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%);
+    font-size: 20px;
+    font-family: ProximaNovaBold;
+}
+
+#searchu label{
+    border: 1px solid #f1f1f1;
+    padding: 10px;
+    margin: 0 0 10px;
+    display: block;
+    font-size: 20px;
+    font-family: ProximaNovaBold;
+    text-align: center;
+}
+
+#searchu label:hover, #searchu button:hover {
+ background: #eee;
+ cursor: pointer;
+}
+
+#searchu button{
+    opacity: 0.5;
+    pointer-events: none;
+    position: relative;
+    width: 50%;
+    left: 50%;
+    transform: translate(-50%);
+    height: 15%;
+    border: 2px solid black;
+    background: white;
+    color: black;
+    font-size: 15px;
+    font-family: ProximaNovaBold;
+    border-radius: 5px;
+    outline: none;
+}
+
+crud{
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    transform: translate(-50%,-25%);
+    width: 90%;
+    height: 75%;
+    display: none;
+    pointer-events: none;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 0 25px black;
+    overflow: hidden;
+}
+
+crud crudbar{
+    height: 100%;
+    float: left;
+    position: fixed;
+    background: #1a1a1a;
+    padding-left: 1%;
+    padding-right: 5%;
+    width: 10%;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+crud crudbar ul{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+}
+
+crud crudbar ul li{
+    width: 100%;
+    height: 20px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    font-size: 17px;
+    font-family: ProximaNovaBold;
+    padding-left: 2px;
+    cursor: pointer;
+    transition: padding 0.25s ease-in-out;
+}
+
+crud crudbar ul li:hover{
+    opacity: 0.9;
+}
+
+crud crudbar ul .selected{
+    padding-left: 20px;
+}
+
+.crud_panel{
+    display: none;
+    pointer-events: none;
+    position: relative;
+    float: right;
+    width: 84%;
+    height: 100%;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.crud_panel_notice{
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    padding: 1%;
+    background: #f1f1f1;
+    color: black;
+    font-size: 25px;
+    font-family: ProximaNovaBold;
+    text-align: center;
+    text-overflow: ellipsis;
+    word-wrap: normal;
+    word-break: unset;
+    width: 100%;
+    background: -moz-linear-gradient(-45deg, #f1e767 0%, #feb645 80%);
+    background: -webkit-linear-gradient(-45deg, #f1e767 0%,#feb645 80%);
+    background: linear-gradient(135deg, #f1e767 0%,#feb645 80%);
+    cursor: pointer;
+}
+
+.crud_panel_notice:hover{
+    opacity: 0.5;
+}
+
+.crud_infoBox{
+    position: relative;
+    width: 35%;
+    box-shadow: 0 0 1px black;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 5%;
+    margin-bottom: 0%;
+    padding: 2%;
+    display: inline-block;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    min-height: fit-content;
+    max-height: 70%;
+    vertical-align: top;
+}
+
+.crud_infoBox entry{
+    width: 100%;
+    display: block;
+    font-size: 100%;
+    font-family: sans-serif;
+    text-align: left;
+    min-height: fit-content;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    transition: color 0.1s ease-in-out;
+}
+
+.crud_infoBox entry:hover{
+    cursor: pointer;
+    color: gray;
+}
+
+.crud_infoBox entry i{
+    margin-right: 5px;
+}
+
+.crud_panel .crud_infoBox:last-child, .crud_panel .crud_infoBox:nth-last-child(2){
+    margin-bottom: 5%;
+}
+
+.server_status_box{
+    width: 35%;
+    height: 200px;
+    background: white;
+    display: inline-block;
+    position: relative;
+    z-index: 1;
+    padding: 2%;
+    border-radius: 10px;
+    margin-top: 50px;
+    margin-right: 5%;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+.server_status_box:hover{
+    transform: scale(0.975);
+}
+
+.server_status_box img{
+    position: relative;
+    height: 100%;
+    position: relative;
+    width: 25%;
+    display: inline-block;
+    object-fit: scale-down;
+    margin-right: 3%;
+    border-right: 3px solid #eee;
+    padding-right: 4%;
+}
+
+.server_status_box .server_name{
+    position: relative;
+    width: 60%;
+    display: inline-block;
+    font-size: 20px;
+    font-family: ProximaNovaBold;
+    letter-spacing: 1px;
+    font-size: 25px;
+    vertical-align: top;
+    margin-top: 0;
+    text-align: left;
+}
+
+.server_status_box .server_status{
+    position: absolute;
+    font-family: ProximaNovaBold;
+    font-size: 15px;
+    right: 20px;
+    bottom: 0px;
+    text-align: right;
+    padding: 7px;
+    color: white;
+}
+
+#clock{
+    position: absolute;
+    color: white;
+    font-family: ProximaNovaBold;
+    font-size: 20px;
+    top: 50%;
+    left: 1%;
+    transform: translate(-1%,-50%);
+}
+
+.live_table{
+    width: 80%;
+    height: auto;
+    min-height: 75px;
+    font-size: 20px;
+    font-family: ProximaNovaBold;
+    font-weight: normal;
+    border-top: 1px solid #f1f1f1;
+    border-radius: 5px;
+    position: relative;
+    background: white;
+    margin-bottom: 50px;
+    margin-top: 100px;
+    left: 50%;
+    transform: translate(-50%);
+
+}
+
+.live_table tbody tr td img{
+    width: 17px;
+    position: relative;
+    display: inline-block;
+    height: 13px;
+    top: 2px;
+    left: 10px;
+    margin-right: 15px;
+}
+
+.live_table thead tr th{
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
+    font-family: ProximaNovaBold;
+    font-family: sans-serif;
+    width: auto;
+}
+
+.live_table th{
+    width: 50%;
+}
+
+.live_table tbody tr td{
+    font-weight: normal;
+    font-size: 13px;
+    padding: 0;
+    margin: 0;
+    font-family:"helvetica", "arial", sans-serif;
+    border-top: 1px solid #f1f1f1;
+    border-left: 1px solid #f1f1f1;
+    height: auto;
+    text-align: center;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    line-height: 20px;
+    width: auto;
+}
+
+.live_table tbody tr{
+    height: 20px;
+}
+
+.live_table tbody tr:hover{
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.live_table .table_heading{
+    position: absolute;
+    top: -7.5vh;
+    color: white;
+    font-size: 30px;
+    font-family: ProximaNovaBold;
+}
+
+@media only screen and (min-device-width : 300px) and (max-device-width : 480px) {
+
+#userstab .user{
+    width: 90%;
+}
+
+box{
+    transform: translate(-50%);
+    left: 50%;
+    width: 100%;
+}
+
+}
