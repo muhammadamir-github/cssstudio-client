@@ -1,3 +1,5 @@
+const global_host = "http://localhost:8000";
+
 $(document).ready(function (){
 
     if(localStorage.getItem("auth") === null) {
@@ -5,7 +7,7 @@ $(document).ready(function (){
     }else{
       token = localStorage.getItem("auth");
       $.ajax({
-        url:'https://api.cssstudio.co/api/me/storage',
+        url:global_host+'/api/me/storage',
         type:'GET',
         beforeSend: function(request) {
             request.setRequestHeader('Authorization', 'Bearer '+token);
@@ -51,9 +53,16 @@ function planExpired(response){
   //document.getElementById('upgp').style.opacity = '1';
 }
 
+function loadSideBar(){
+    var sidebar = document.createElement('sidebar');
+    sidebar.innerHTML = '<ul><p>Account</p><li data-link='+'../profile/'+'><i class="fas fa-user-circle"></i> Profile</li><li data-link='+'../billing/'+'><i class="fas fa-credit-card"></i> Billing</li><li data-link='+'../notifications/'+'><i class="fas fa-bell"></i> Notifications</li><div class="ulLine"></div><p>Manage</p><li data-link='+'../studio/'+' style="color: white;"><i class="fas fa-tools"></i> Workspace</li><li data-link='+'../storage/'+'><i class="fas fa-archive"></i> Storage</li><li data-link='+'../support/'+'><i class="fas fa-life-ring"></i> Support</li><div class="ulLine"></div><li onclick="logout();"><i class="fas fa-sign-out-alt"></i> Logout</li><i class="fas fa-angle-left" id="openclose"></i></ul>';
+
+    document.getElementsByTagName('body')[0].appendChild(sidebar);
+}
+
 function loggedin(response){
 
-  loadBaseStructure(response,'storage');
+    loadSideBar();
 
     var openclose = document.getElementById('openclose');
     openclose.addEventListener("click",function(){
@@ -197,7 +206,7 @@ for(var i=0; i < elements.length; i++){
 
   var deleteicon = document.createElement('i');
   deleteicon.setAttribute('class','fas fa-trash');
-  
+
   (function(eid){
     deleteicon.addEventListener('click',function(){
       deleteElement('element',eid,this);
@@ -207,7 +216,7 @@ for(var i=0; i < elements.length; i++){
   var toggleanimationicon = document.createElement('i');
   toggleanimationicon.setAttribute('class','fas fa-toggle-off');
   toggleanimationicon.style.marginLeft = '25px';
-  
+
   (function(eid,etype){
     toggleanimationicon.addEventListener('click',function(){
       stopAnimation('element',eid,etype,this);
@@ -290,7 +299,7 @@ $('body').append(animations_div);
 }
 
 function deleteElement(type,id,element){
-  
+
   var data;
 
   if(type == 'animation'){
@@ -302,14 +311,14 @@ function deleteElement(type,id,element){
   }
 
   $.ajax({
-    url:'https://api.cssstudio.co/api/me/'+type+'/delete',
+    url:global_host+'/api/me/'+type+'/delete',
     type:'POST',
     dataType:'json',
     data:data,
     beforeSend: function(request){
       request.setRequestHeader('Authorization','Bearer '+token);
       request.setRequestHeader('Accept','application/json');
-    }, 
+    },
     success: function(response){
       notification(type+' deleted successfully.');
       element.parentNode.remove();
@@ -399,71 +408,6 @@ if(moment(response.success.expires_at).isBefore(moment.utc().format('YYYY-MM-DD 
   return false;
 }else{
   return true;
-}
-
-}
-function loadBaseStructure(response,page){
-
-if(isMember(response)){
-
-var sidebar = document.createElement('sidebar');
-sidebar.innerHTML = '<ul><p>Account</p><li data-link='+'../profile/'+'><i class="fas fa-user-circle"></i> Profile</li><li data-link='+'../billing/'+'><i class="fas fa-credit-card"></i> Billing</li><li data-link='+'../notifications/'+'><i class="fas fa-bell"></i> Notifications</li><div class="ulLine"></div><p>Manage</p><li data-link='+'../studio/'+'><i class="fas fa-tools"></i> Workspace</li><li data-link='+'../storage/'+' style="color: white;"><i class="fas fa-archive"></i> Storage</li><li data-link='+'../support/'+'><i class="fas fa-life-ring"></i> Support</li><div class="ulLine"></div><li onclick="logout();"><i class="fas fa-sign-out-alt"></i> Logout</li><i class="fas fa-angle-left" id="openclose"></i></ul>';
-
-if(page == 'profile'){
-  var head = document.getElementsByTagName('head')[0];
-  head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-
-  var profiletabs = document.createElement('div');
-  profiletabs.setAttribute('id','profileTabs');
-  profiletabs.innerHTML = '<ul><li style="color: #e67300;">General</li><li>History</li></ul>';
-
-  document.getElementsByTagName('body')[0].appendChild(profiletabs);
-}else{
-  if(page == 'studio'){
-    var head = document.getElementsByTagName('head')[0];
-    head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/billy.css"><link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-    
-    //document.getElementsByTagName('body')[0].innerHTML += '<script src="../assets/js/giphy.js"></script><script src="../assets/js/billy.js"></script>';
-
-    var callbilly = document.createElement('callbilly');
-    var billyDiv = document.createElement('billy');
-    
-    var notesdiv = document.createElement('div');
-    notesdiv.setAttribute('id','notes');
-    
-    billyDiv.innerHTML = '<tongue>Hey , how can i help you today?</tongue><orders><type data-panel-trigger="suggestion"><p>I would like to have a suggestion.</p><div class="billyspinner"></div></type><order class="suggestion"><p>Background Color</p></order><order class="suggestion"><p>Font Color</p></order></orders>';
-    notesdiv.innerHTML = '<h6>We are sorry if you are facing any ux/ui problems.The software does not supports all small screen sizes.</h6><button id="ntsbtn">Okay</button>';
-    
-    document.getElementsByTagName('body')[0].appendChild(notesdiv);
-    document.getElementsByTagName('body')[0].appendChild(callbilly);
-    document.getElementsByTagName('body')[0].appendChild(billyDiv);
-  }else{
-    if(page == 'support'){
-      var head = document.getElementsByTagName('head')[0];
-      head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-    }else{
-      if(page == 'storage'){
-        var head = document.getElementsByTagName('head')[0];
-        head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/fonts.css"><link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-      }else{
-        if(page == 'billing'){
-          var head = document.getElementsByTagName('head')[0];
-          head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-        }else{
-          if(page == 'notifications'){
-            var head = document.getElementsByTagName('head')[0];
-            head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-          }
-        }
-      }
-    }
-  }
-}
-
-document.getElementsByTagName('body')[0].appendChild(sidebar);
-
-}else{
- window.location.href = '../login/';
 }
 
 }

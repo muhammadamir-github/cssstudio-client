@@ -1,3 +1,5 @@
+const global_host = "http://localhost:8000";
+
 var draggingelementofid;
 var WebFonts = '';
 var plan = '';
@@ -30,7 +32,7 @@ var ImgGallery3_ImgRowEndNumbers = [2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,
 var ImgSlider1_ImgSlideDivisions = [4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100,104,108,112,116,120];
 
 window.onresize = function(event) {
-    
+
 };
 
 //------------------------------------------------------------------
@@ -49,7 +51,7 @@ class sidebar{
     setTimeout(function(){;$('.ulLine').css({'display':'none'})},500);
     document.getElementById('openclose').setAttribute('class','fas fa-angle-right');
   }
-// 
+//
 }
 
 //------------------------------------------------------------------
@@ -271,7 +273,7 @@ class elementStyleChanger{
         	// --------------------------------------------
 
         	if(createPreviewElement == 1){
-        		
+
         	}else{
         		if(isColor == 1){
         			if(elementType.includes("checkbox")){
@@ -285,7 +287,7 @@ class elementStyleChanger{
         			    		var color2 = styles[i].attr[0].attributes.split("data-option-bg-clr")[0].split("data-option-bg-hv")[1].split(":")[1].replace(" ","").replace(";","");
 
         			    		stylePreview.style.backgroundColor = "unset";
-        			    		
+
         			    		var backgroundGradientString = "-webkit-gradient(linear, left bottom, right top, color-stop(0%,"+color1+"), color-stop(49%, "+color1+"), color-stop(50%, "+color2+"), color-stop(100%, "+color2+"))";
         			    	    stylePreview.style.background = backgroundGradientString;
         			    	}
@@ -762,7 +764,7 @@ class userMediaEditor{
 				    uploadInput.style.pointerEvents = "none";
 				    uploadInput.style.opacity = "0";
 				    uploadInput.accept = 'image/png, image/jpeg, image/jpg';
-				
+
 				    uploadInput.addEventListener('change',function(){
                         mediaManager.changeThumbnailPreview(uploadInput.files[0],txtbox);
                     });
@@ -933,7 +935,7 @@ class userMediaManager{
   			    console.log(strToSearch);
   			}
   		}
-  		
+
   		if(strToSearch.includes(query)){
   			items[i].style.display = "inline-block";
   		}else{
@@ -1372,10 +1374,10 @@ class userMediaManager{
     var formData = new FormData();
     formData.append('file_name', file_name);
     formData.append('file_type', type);
-    formData.append('file', file); 
+    formData.append('file', file);
 
     if(upload == 1){
-      
+
       if(type == 'Image'){
         document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0].innerText = 'Uploading...';
         document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0].style.opacity = '0.5';
@@ -1601,7 +1603,7 @@ class userMediaManager{
         var div = document.createElement('div');
 
         var span = document.createElement('span');
-        
+
         if(title == null || title == ""){
         	if(user_videos[i].name.length > 15){
       		    span.innerText = user_videos[i].name.substring(0,15)+"...";
@@ -1779,7 +1781,7 @@ class elementsEditor{
 
     if(elementType == "checkbox-multi-one" || elementType == "checkbox-multi-two"){
     	elementEditor.addTextBox('Text','Enter your text here...',element.getElementsByTagName("p")[0].innerText,'Enter the text you want to display in the box.');
-        
+
         var t1_id = randomize.elementId(10);
         elementEditor.addTable('Manage Checkboxes',t1_id,'checkbox-multi');
 
@@ -1898,7 +1900,7 @@ class elementsEditor{
 
     		var t1_id = randomize.elementId(10);
             elementEditor.addTable('Manage Videos',t1_id,'video-playlist');
-    
+
             var listitems = element.getElementsByClassName('playlist-list')[0].getElementsByClassName("playlist-list-item");
 
             for(var i=0; i < listitems.length; i++){
@@ -2474,7 +2476,7 @@ class elementsEditor{
         							}else{
         								elementToAffect.setAttribute("data-no",Number(allImages[allImages.length-1].getAttribute("data-no"))+1);
         							}
-      			                	
+
       			                	elementToAffect.style.left = (Number(elementToAffect.style.left.replace("px","")) + 30) + "px";
 
         							newImgSlide.appendChild(elementToAffect);
@@ -2497,7 +2499,7 @@ class elementsEditor{
                             if($(element).attr('data-e-type') == "image-gallery-one" || $(element).attr('data-e-type') == "image-gallery-two"){
                                 var totalImages = element.getElementsByTagName("img").length;
                                 var newImageNumber = totalImages+1;
-                                                        
+
                                 if(ImgGallery1And2_ImgRowEndNumbers.includes(newImageNumber)){
                                     // Row End
                                     // Don't add Margin Right
@@ -2514,7 +2516,7 @@ class elementsEditor{
                                 if($(element).attr('data-e-type') == "image-gallery-three"){
                                     var totalImages = element.getElementsByTagName("img").length;
                                     var newImageNumber = totalImages+1;
-                                                        
+
                                     if(ImgGallery3_ImgRowEndNumbers.includes(newImageNumber)){
                                         // Row End
                                         // Don't add Margin Right
@@ -2561,7 +2563,7 @@ class elementsEditor{
   	var addNote = 0;
   	var addRowButton = 0;
   	var note;
-  	
+
   	var p = document.createElement('p');
     p.innerText = heading;
     p.className = 'optionHeading';
@@ -2864,7 +2866,7 @@ class elementsEditor{
       		}
 
       		checkbox.className = 'checkbox';
-      		checkbox.setAttribute("data-restrictions","selection");  
+      		checkbox.setAttribute("data-restrictions","selection");
 
       		if(elementType.includes("checkbox-multi-one")){
       			(function(span,checkbox,checkmark){
@@ -2885,7 +2887,7 @@ class elementsEditor{
       			      });
                     })(checkmark,checkbox);
 
-                })(span,checkbox,checkmark);  
+                })(span,checkbox,checkmark);
       		}else{
       			if(elementType.includes("checkbox-multi-two")){
       			    (function(span,checkbox,checkmark){
@@ -3162,7 +3164,7 @@ class elementsEditor{
     }
 
     if(onlyNumericals == 1){
-    	input.addEventListener('keypress',function(e){ 
+    	input.addEventListener('keypress',function(e){
     	    if(e.keyCode == 13){
     		    elementEditor.updateAttribute(attrToUpdate,e);
     	    }else{
@@ -3177,7 +3179,7 @@ class elementsEditor{
     	    }
         });
     }else{
-    	input.addEventListener('input',function(e){ 
+    	input.addEventListener('input',function(e){
     		elementEditor.updateAttribute(attrToUpdate,e);
         });
     }
@@ -3275,7 +3277,7 @@ class elementsEditor{
     		}else{
     			lengthText.innerText = input.value.length + "/" + valueToSet;
     		}
-    		
+
     	}
     }else{
     	if(attrToUpdate == "data-title"){
@@ -3477,7 +3479,7 @@ class elementsEditor{
 
   				if(currentSlide !== slidesWithSpaceEmpty.length){
   					elementEditor.shiftImgSlider1Images(slidesWithSpaceEmpty[currentSlide],slidesWithSpaceEmpty[currentSlide+1]);
-  					
+
   					console.log(currentSlide+"completed shifting images.");
   					currentSlide += 1;
   				}
@@ -3689,7 +3691,7 @@ class elementOptions{
     }
 
   	if(event.target.classList.contains('fa-toggle-on')){
-  		
+
   		if(text){
   			text.remove();
 
@@ -4643,7 +4645,7 @@ class fontsManager{
         if(e.target == combobox_selected_a_span){
 
           if(combobox_options.style.display == 'block'){
-    
+
             combobox_options.style.display = 'none';
             combobox_options_ul.style.display = 'none';
             //combobox_customedit.style.display = 'none';
@@ -4651,7 +4653,7 @@ class fontsManager{
             combobox.classList.remove('selectedCombobox');
 
           }else{
-    
+
             combobox_options.style.display = 'block';
             combobox_options_ul.style.display = 'block';
             //combobox_customedit.style.display = 'block';
@@ -4684,7 +4686,7 @@ function storageSpace_showDetails(storageSpace,e){
 	var vs = Number(spaceUsedByVideos.replace("MB","").replace("KB","").replace("GB","").replace("TB","").replace("Bytes","").replace("PB",""));
 
 	var totalSpace = fs+is+vs;
-	
+
 	var imgPercentage = Number(((is/totalSpace) * 100));
 	var vidPercentage = Number(((vs/totalSpace) * 100));
 
@@ -4758,7 +4760,7 @@ class videosmanager{
   }
 
   empty(){
-    
+
   }
 
   open(e,forElement){
@@ -5019,7 +5021,7 @@ class backgroundIManager{
   }
 
   empty(){
-    
+
   }
 
   open(e,forElement){
@@ -5285,7 +5287,7 @@ class miniStyler{
     stylerDiv.appendChild(stylerSettings);
     body.appendChild(stylerDiv);
 
-    this.loadComboboxes('default');  
+    this.loadComboboxes('default');
 
   }
 
@@ -5421,7 +5423,7 @@ class miniStyler{
              combobox.classList.add('selectedCombobox');
 
          }
-    
+
      });
 
      colordisplay.style.display = 'none';
@@ -5860,7 +5862,7 @@ class miniStyler{
         if(e.target == combobox_selected_a_span){
 
           if(combobox_options.style.display == 'block'){
-    
+
             combobox_options.style.display = 'none';
             combobox_options_ul.style.display = 'none';
             if(addCustomEdit == 1){
@@ -5874,7 +5876,7 @@ class miniStyler{
             combobox.classList.remove('selectedCombobox');
 
           }else{
-    
+
             combobox_options.style.display = 'block';
             combobox_options_ul.style.display = 'block';
             if(addCustomEdit == 1){
@@ -6104,7 +6106,7 @@ class sitepreview{
   }
 
   stopResizeDrag(){
-    document.documentElement.removeEventListener('mousemove', this.resizeDrag, false);    
+    document.documentElement.removeEventListener('mousemove', this.resizeDrag, false);
     document.documentElement.removeEventListener('mouseup', this.stopResizeDrag, false);
   }
 
@@ -6500,9 +6502,9 @@ class sitepreview{
       		            element_readymade.appendChild(leftbutton);
 
       		            var lastImage;
-      		            var imgsrcs = 
+      		            var imgsrcs =
       						[
-      						
+
       						'https://cdn.pixabay.com/photo/2017/10/10/07/48/beach-2836300_960_720.jpg',
       						'https://cdn.pixabay.com/photo/2017/10/10/07/48/beach-2836300_960_720.jpg',
       						'https://cdn.pixabay.com/photo/2017/10/10/07/48/beach-2836300_960_720.jpg',
@@ -6551,7 +6553,7 @@ class sitepreview{
       			                img.id = "image-"+randomize.elementId(25);
       			                img.setAttribute("data-no",totalImgAdded);
       			                slide.appendChild(img);
-      			                 		 	            
+
       			                if(totalImgAdded == 0 || totalImgAdded == 4 || totalImgAdded == 8 || totalImgAdded == 12){
       			                    img.style.left = (Number(lastImage.style.left.replace("px","")) + 30) + "px";
       			                    console.log(((Number(lastImage.style.left.replace("px","")) + 30)) + "px");
@@ -6598,7 +6600,7 @@ class sitepreview{
       			            }else{
       			                lastImage = img;
       			                img.style.display = "none";
-      			            }     
+      			            }
       		            }*/
 
       		            element_readymade.setAttribute("data-total","2"/*2"*/);
@@ -6668,7 +6670,7 @@ class sitepreview{
 
       						    var hide_unhide_span = document.createElement('span');
       						    var hide_unhide_i = document.createElement('i');
-      						    
+
       						    hide_unhide_i.className = "fas fa-images";
       						    hide_unhide_span.className = "image-viewer-visibility-toggle";
 
@@ -6697,9 +6699,9 @@ class sitepreview{
       						    viewer.className = 'image-view';
       						    thumbnails.className = 'image-viewer-thumbnails';
 
-      						    var imgsrcs = 
+      						    var imgsrcs =
       						    [
-      						
+
       						    'https://cdn.pixabay.com/photo/2017/10/10/07/48/beach-2836300_960_720.jpg',
       						    'https://cdn.pixabay.com/photo/2015/03/26/09/47/sky-690293__340.jpg',
       						    'https://cdn.pixabay.com/photo/2013/10/02/23/03/dawn-190055__340.jpg',
@@ -6833,7 +6835,7 @@ class sitepreview{
 
       								    label.appendChild(input);
       								    label.appendChild(span);
-      								    
+
       								    element_readymade.appendChild(label);
       								    element_readymade.appendChild(p);
 
@@ -7011,7 +7013,7 @@ class sitepreview{
       												var length = document.createElement("span");
       												var icon_wrapper = document.createElement("div");
       												var icon = document.createElement("i");
-      											    
+
       											    //input.style.paddingLeft = "25px";
       												icon.className = "fas fa-plus";
 
@@ -7127,7 +7129,7 @@ class sitepreview{
       						                                    checkmark.className = "checkmark tick-checkmark-disabled";
 
       									                        checkbox.className = 'checkbox';
-      						                                    checkbox.setAttribute("data-restrictions","selection");  
+      						                                    checkbox.setAttribute("data-restrictions","selection");
 
       						                                    if(elementType_readymade == "Checkbox 4"){
       						                                    	element_readymade.setAttribute('data-e-type','checkbox-multi-one');
@@ -7482,11 +7484,11 @@ class sitepreview{
       																	    });
 
       																	    progressInput.addEventListener("change",function(e){
-      																	        publicEvents.videoChangeDuration(video,e);   																	    	
+      																	        publicEvents.videoChangeDuration(video,e);
       																	    });
 
       																	    volume_range.addEventListener("change",function(e){
-      																	        publicEvents.videoChangeVolume(video,e);   																	    	
+      																	        publicEvents.videoChangeVolume(video,e);
       																	    });
 
       																		startpause.setAttribute("data-restrictions","selection");
@@ -7927,11 +7929,11 @@ class sitepreview{
       																	            });
 
       																	            progressInput.addEventListener("change",function(e){
-      																	                publicEvents.videoChangeDuration(video,e);   																	    	
+      																	                publicEvents.videoChangeDuration(video,e);
       																	            });
 
       																	            volume_range.addEventListener("change",function(e){
-      																	                publicEvents.videoChangeVolume(video,e);   																	    	
+      																	                publicEvents.videoChangeVolume(video,e);
       																	            });
 
       																		        startpause.setAttribute("data-restrictions","selection");
@@ -8021,7 +8023,7 @@ class sitepreview{
 
     for(var i=0; i<newelements.length; i++){
       var elementType = newelements[i].getElementsByTagName('span')[0].innerText;
-      
+
       if(elementType == 'Text Input'){
         element = document.createElement('input');
         element.type = 'text';
@@ -8151,7 +8153,7 @@ class sitepreview{
           //FUNCTION TO ADD DIV AS OVERLAY AND ENABLE EVENTS;
           //document.getElementById('gaga').addEventListener('click',function(){ site.selectElement(document.querySelector('[data-e-type="video"]')); });
         });
-        
+
       }else{
         element.addEventListener('click',site.elementClicked);
         element.addEventListener('contextmenu',site.elementClicked);
@@ -8197,7 +8199,7 @@ function onPlayerStateChange(event){
     }
   }
 }
-      
+
 function stopVideo() {
   $('[data-e-type="video"]')[0].stopVideo();
 }
@@ -8428,7 +8430,7 @@ class webpagebuildertools{
         em_sidebar_ul.appendChild(em_sidebar_ul_li_createnew);
         em_sidebar_ul.appendChild(em_sidebar_ul_li_pickfromstorage);
         em_sidebar_ul.appendChild(em_sidebar_ul_li_readymadeelements);
-        
+
         em_sidebar.appendChild(em_sidebar_ul);
 
         var sidebar_button_add_elements = document.createElement('button');
@@ -8749,7 +8751,7 @@ class webpagebuildertools{
             if(toolName == 'add-element'){
               var em = document.getElementById('element-manager');
               em.remove();
-              
+
             }else{
               if(toolName == 'style-element'){
                 styler.close();
@@ -8788,7 +8790,7 @@ class webpagebuildertools{
       }else{
         if(webpagetools[i].classList.contains('wpb_tool_se') || webpagetools[i].classList.contains('wpb_tool_re') || webpagetools[i].classList.contains('wpb_tool_cf') || webpagetools[i].classList.contains('wpb_tool_bgi') || webpagetools[i].classList.contains('wpb_tool_vmi') || webpagetools[i].classList.contains('wpb_tool_de')){
           if(document.getElementsByClassName('selected')[0] == null){
-            
+
           }else{
             if(webpagetools[i].classList.contains('wpb_tool_vmi')){
               if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video-overlay' || $(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video' || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-player') || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-playlist')){
@@ -9188,7 +9190,7 @@ class userinterface{
         element.value = elementinnertext;
       }else{
         if(type == 'video' || type == 'image' || type == 'icon'){
-          
+
         }else{
           element.innerText = elementinnertext;
         }
@@ -9352,7 +9354,7 @@ class userinterface{
     		this.createDisplayElementSpecialOptionsOption('fas fa-exchange-alt','switchImgViewer2Location','Switch Viewer Location');
     		this.createDisplayElementSpecialOptionsOption('fas fa-sort','switchImgViewer2BtnLocation','Switch Button Location');
     	}
-    	
+
     }
 
     if(elementType.includes("video-playlist")){
@@ -9634,13 +9636,13 @@ class jadgetPanel{
       var spinner = document.getElementsByClassName('spinner')[0];
       var select = document.getElementById('selecttype');
       spinner.style.display = 'block';
-      
+
       setTimeout(function(){
-        
+
         spinner.style.display = 'none';
         select.style.width = '150px';
         setTimeout(function(){populateselection();},1000);
-        
+
         setTimeout(function(){
           select.style.width = '0px';
           populateselection('true');
@@ -9731,7 +9733,7 @@ var pagebuilder = new WebPageBuilder;
 //------------------------------------------------------------------
 
 $(document).ready(function () {
-    
+
     if(localStorage.getItem("auth") === null) {
        window.location.href = '../login/';
     }else{
@@ -9759,7 +9761,7 @@ $(document).ready(function () {
         }
       })
     }
-    
+
 });
 
 function planExpired(response){
@@ -9783,9 +9785,29 @@ function planExpired(response){
   //document.getElementById('upgp').style.opacity = '1';
 }
 
+function loadSideBar(){
+    var sidebar = document.createElement('sidebar');
+    sidebar.innerHTML = '<ul><p>Account</p><li data-link='+'../profile/'+'><i class="fas fa-user-circle"></i> Profile</li><li data-link='+'../billing/'+'><i class="fas fa-credit-card"></i> Billing</li><li data-link='+'../notifications/'+'><i class="fas fa-bell"></i> Notifications</li><div class="ulLine"></div><p>Manage</p><li data-link='+'../studio/'+' style="color: white;"><i class="fas fa-tools"></i> Workspace</li><li data-link='+'../storage/'+'><i class="fas fa-archive"></i> Storage</li><li data-link='+'../support/'+'><i class="fas fa-life-ring"></i> Support</li><div class="ulLine"></div><li onclick="logout();"><i class="fas fa-sign-out-alt"></i> Logout</li><i class="fas fa-angle-left" id="openclose"></i></ul>';
+
+    document.getElementsByTagName('body')[0].appendChild(sidebar);
+}
+
 function loggedin(response){
 
-  loadBaseStructure(response,'studio');
+  loadSideBar();
+
+  var callbilly = document.createElement('callbilly');
+  var billyDiv = document.createElement('billy');
+
+  var notesdiv = document.createElement('div');
+  notesdiv.setAttribute('id','notes');
+
+  billyDiv.innerHTML = '<tongue>Hey , how can i help you today?</tongue><orders><type data-panel-trigger="suggestion"><p>I would like to have a suggestion.</p><div class="billyspinner"></div></type><order class="suggestion"><p>Background Color</p></order><order class="suggestion"><p>Font Color</p></order></orders>';
+  notesdiv.innerHTML = '<h6>We are sorry if you are facing any ux/ui problems.The software does not supports all small screen sizes.</h6><button id="ntsbtn">Okay</button>';
+
+  document.getElementsByTagName('body')[0].appendChild(notesdiv);
+  document.getElementsByTagName('body')[0].appendChild(callbilly);
+  document.getElementsByTagName('body')[0].appendChild(billyDiv);
 
   document.getElementsByTagName('loader')[0].remove();
     //console.log(response);
@@ -9857,7 +9879,7 @@ function drag(event){
 function drop(event){
   var element = document.getElementById(draggingelementofid);
   event.target.append(element);
-  
+
   element.style.overflow = 'auto';
   element.setAttribute('draggable','false');
   element.setAttribute('ondragstart','');
@@ -9883,7 +9905,7 @@ function populateMenu(){
 
 function openMenubar(){
   $('#menuBar').css({'width':'50%'});
-    $('#searchjadgets').css({'display':'block'});   
+    $('#searchjadgets').css({'display':'block'});
   $('#menuIcon-right').css({'width':'0px','height':'0px','opacity':'0','pointer-events':'none'});
   $('#menuIcon-left').css({'width':'5px','height':'5px','opacity':'1','pointer-events':'unset'});
 }
@@ -9930,28 +9952,28 @@ var new_heading = document.createElement('button');
 new_heading.style.marginTop = '10px';
 new_heading.innerText = 'Heading';
 new_heading.addEventListener('click',function(){
-    newelement('heading');  
+    newelement('heading');
 });
 
 var new_input = document.createElement('button');
 new_input.style.marginTop = '10px';
 new_input.innerText = 'Text Input';
 new_input.addEventListener('click',function(){
-    newelement('input');  
+    newelement('input');
 });
 
 var new_textarea = document.createElement('button');
 new_textarea.style.marginTop = '10px';
 new_textarea.innerText = 'Textarea';
 new_textarea.addEventListener('click',function(){
-    newelement('textarea'); 
+    newelement('textarea');
 });
 
 var new_image = document.createElement('button');
 new_image.style.marginTop = '10px';
 new_image.innerText = 'Image';
 new_image.addEventListener('click',function(){
-    newelement('image');  
+    newelement('image');
 });
 
 var new_video = document.createElement('button');
@@ -10000,9 +10022,9 @@ function advance(element,createnew){
         panel.style.pointerEvents = 'none';
 
         var advancediv = document.getElementById('advance');
-        
+
         setTimeout(function(){
-            
+
             spinner.style.display = 'none';
             panel.style.opacity = '1';
             panel.style.pointerEvents = 'unset';
@@ -10052,9 +10074,9 @@ function advance(element,createnew){
       panel.style.pointerEvents = 'none';
 
       var advancediv = document.getElementById('advance');
-      
+
       setTimeout(function(){
-        
+
         spinner.style.display = 'none';
         panel.style.opacity = '1';
         panel.style.pointerEvents = 'unset';
@@ -10101,7 +10123,7 @@ function advance(element,createnew){
     var giphyheading = document.createElement('p');
     giphyheading.innerText = "Search gifs from giphy.com";
     giphyheading.setAttribute('class','heading');
-    
+
     var giphysearchinput = document.createElement('input');
     giphysearchinput.setAttribute('placeholder','Enter keyword here. Ex: Smile');
     giphysearchinput.setAttribute('class','searchbar');
@@ -10150,7 +10172,7 @@ function advance(element,createnew){
         document.getElementById('panel').style.pointerEvents = "unset";
         resetGiphy();
       }
-      
+
     });
 
     backgroundimage_div.appendChild(backgroundimage_file_input_button);
@@ -10182,7 +10204,7 @@ function advance(element,createnew){
     textshadow_colordisplay.style.top = '17.5px';
     textshadow_colordisplay.style.display = 'none';
     textshadow_colordisplay.addEventListener('click',function(){
-  
+
   var colorpicker = document.getElementById('textscp');
 
   if(colorpicker.style.display == 'block'){
@@ -10194,7 +10216,7 @@ function advance(element,createnew){
     colorpicker.style.display = 'block';
 
   }
-  
+
     });
 
     var textshadow_colorpicker = document.createElement('div');
@@ -10260,13 +10282,13 @@ function advance(element,createnew){
   if(e.target == this){
 
   if(textshadow_customedit.style.display == 'block'){
-    
+
       textshadow_customedit.style.display = 'none';
       textshadow_selected_a_span.style.opacity = '1';
       textshadow_colordisplay.style.display = 'none';
 
   }else{
-    
+
       textshadow_customedit.style.display = 'block';
       textshadow_selected_a_span.style.opacity = '0';
       textshadow_colordisplay.style.display = 'block';
@@ -10307,7 +10329,7 @@ function advance(element,createnew){
      marginleft_selected_a.appendChild(marginleft_selected_a_span);
      marginleft_selected.appendChild(marginleft_selected_a);
      marginleft_selected.appendChild(marginleft_customedit);
-     
+
      marginleft.appendChild(marginleft_selected);
 
      //-----------------Event Handlers--------------------
@@ -10317,12 +10339,12 @@ function advance(element,createnew){
   if(e.target == this){
 
   if(marginleft_customedit.style.display == 'block'){
-    
+
       marginleft_customedit.style.display = 'none';
       marginleft_selected_a_span.style.textAlign = '';
 
   }else{
-    
+
       marginleft_customedit.style.display = 'block';
       marginleft_selected_a_span.style.textAlign = 'left';
 
@@ -10337,7 +10359,7 @@ function advance(element,createnew){
     marginleft_customedit.addEventListener('keyup',function(){
   marginleft_selected_a_span.innerText = 'Left: ' + this.value+'px';
   updateelement(element,'marginleft',this.value+'px');
-     
+
     });
 
     //-------End MarginLeft--------
@@ -10363,7 +10385,7 @@ function advance(element,createnew){
      marginright_selected_a.appendChild(marginright_selected_a_span);
      marginright_selected.appendChild(marginright_selected_a);
      marginright_selected.appendChild(marginright_customedit);
-     
+
      marginright.appendChild(marginright_selected);
 
      //-----------------Event Handlers--------------------
@@ -10373,12 +10395,12 @@ function advance(element,createnew){
   if(e.target == this){
 
   if(marginright_customedit.style.display == 'block'){
-    
+
       marginright_customedit.style.display = 'none';
       marginright_selected_a_span.style.textAlign = '';
 
   }else{
-    
+
       marginright_customedit.style.display = 'block';
       marginright_selected_a_span.style.textAlign = 'left';
 
@@ -10393,7 +10415,7 @@ function advance(element,createnew){
     marginright_customedit.addEventListener('keyup',function(){
   marginright_selected_a_span.innerText = 'Right: ' + this.value+'px';
   updateelement(element,'marginright',this.value+'px');
-     
+
     });
 
     //-------End MarginRight--------
@@ -10418,7 +10440,7 @@ function advance(element,createnew){
      margintop_selected_a.appendChild(margintop_selected_a_span);
      margintop_selected.appendChild(margintop_selected_a);
      margintop_selected.appendChild(margintop_customedit);
-     
+
      margintop.appendChild(margintop_selected);
 
      //-----------------Event Handlers--------------------
@@ -10428,12 +10450,12 @@ function advance(element,createnew){
   if(e.target == this){
 
   if(margintop_customedit.style.display == 'block'){
-    
+
       margintop_customedit.style.display = 'none';
       margintop_selected_a_span.style.textAlign = '';
 
   }else{
-    
+
       margintop_customedit.style.display = 'block';
       margintop_selected_a_span.style.textAlign = 'left';
 
@@ -10448,7 +10470,7 @@ function advance(element,createnew){
     margintop_customedit.addEventListener('keyup',function(){
   margintop_selected_a_span.innerText = 'Top: ' + this.value+'px';
   updateelement(element,'margintop',this.value+'px');
-     
+
     });
 
     //-------End MarginTop--------
@@ -10473,7 +10495,7 @@ function advance(element,createnew){
      marginbottom_selected_a.appendChild(marginbottom_selected_a_span);
      marginbottom_selected.appendChild(marginbottom_selected_a);
      marginbottom_selected.appendChild(marginbottom_customedit);
-     
+
      marginbottom.appendChild(marginbottom_selected);
 
      //-----------------Event Handlers--------------------
@@ -10483,12 +10505,12 @@ function advance(element,createnew){
   if(e.target == this){
 
   if(marginbottom_customedit.style.display == 'block'){
-    
+
       marginbottom_customedit.style.display = 'none';
       marginbottom_selected_a_span.style.textAlign = '';
 
   }else{
-    
+
       marginbottom_customedit.style.display = 'block';
       marginbottom_selected_a_span.style.textAlign = 'left';
 
@@ -10503,7 +10525,7 @@ function advance(element,createnew){
     marginbottom_customedit.addEventListener('keyup',function(){
   marginbottom_selected_a_span.innerText = 'Bottom: ' + this.value+'px';
   updateelement(element,'marginbottom',this.value+'px');
-     
+
     });
 
     //-------End MarginBottom--------
@@ -10527,7 +10549,7 @@ function advance(element,createnew){
      paddingleft_selected_a.appendChild(paddingleft_selected_a_span);
      paddingleft_selected.appendChild(paddingleft_selected_a);
      paddingleft_selected.appendChild(paddingleft_customedit);
-     
+
      paddingleft.appendChild(paddingleft_selected);
 
      //-----------------Event Handlers--------------------
@@ -10537,12 +10559,12 @@ function advance(element,createnew){
     if(e.target == this){
 
     if(paddingleft_customedit.style.display == 'block'){
-        
+
         paddingleft_customedit.style.display = 'none';
         paddingleft_selected_a_span.style.textAlign = '';
 
     }else{
-        
+
         paddingleft_customedit.style.display = 'block';
         paddingleft_selected_a_span.style.textAlign = 'left';
 
@@ -10557,7 +10579,7 @@ function advance(element,createnew){
     paddingleft_customedit.addEventListener('keyup',function(){
     paddingleft_selected_a_span.innerText = 'Left: ' + this.value+'px';
     updateelement(element,'paddingleft',this.value+'px');
-     
+
     });
 
     //-------End PaddingLeft--------
@@ -10581,7 +10603,7 @@ function advance(element,createnew){
      paddingright_selected_a.appendChild(paddingright_selected_a_span);
      paddingright_selected.appendChild(paddingright_selected_a);
      paddingright_selected.appendChild(paddingright_customedit);
-     
+
      paddingright.appendChild(paddingright_selected);
 
      //-----------------Event Handlers--------------------
@@ -10591,12 +10613,12 @@ function advance(element,createnew){
     if(e.target == this){
 
     if(paddingright_customedit.style.display == 'block'){
-        
+
         paddingright_customedit.style.display = 'none';
         paddingright_selected_a_span.style.textAlign = '';
 
     }else{
-        
+
         paddingright_customedit.style.display = 'block';
         paddingright_selected_a_span.style.textAlign = 'left';
 
@@ -10611,7 +10633,7 @@ function advance(element,createnew){
     paddingright_customedit.addEventListener('keyup',function(){
     paddingright_selected_a_span.innerText = 'Right: ' + this.value+'px';
     updateelement(element,'paddingright',this.value+'px');
-     
+
     });
 
     //-------End PaddingRight--------
@@ -10635,7 +10657,7 @@ function advance(element,createnew){
      paddingtop_selected_a.appendChild(paddingtop_selected_a_span);
      paddingtop_selected.appendChild(paddingtop_selected_a);
      paddingtop_selected.appendChild(paddingtop_customedit);
-     
+
      paddingtop.appendChild(paddingtop_selected);
 
      //-----------------Event Handlers--------------------
@@ -10645,12 +10667,12 @@ function advance(element,createnew){
     if(e.target == this){
 
     if(paddingtop_customedit.style.display == 'block'){
-        
+
         paddingtop_customedit.style.display = 'none';
         paddingtop_selected_a_span.style.textAlign = '';
 
     }else{
-        
+
         paddingtop_customedit.style.display = 'block';
         paddingtop_selected_a_span.style.textAlign = 'left';
 
@@ -10665,7 +10687,7 @@ function advance(element,createnew){
     paddingtop_customedit.addEventListener('keyup',function(){
     paddingtop_selected_a_span.innerText = 'Top: ' + this.value+'px';
     updateelement(element,'paddingtop',this.value+'px');
-     
+
     });
 
     //-------End PaddingTop--------
@@ -10689,7 +10711,7 @@ function advance(element,createnew){
      paddingbottom_selected_a.appendChild(paddingbottom_selected_a_span);
      paddingbottom_selected.appendChild(paddingbottom_selected_a);
      paddingbottom_selected.appendChild(paddingbottom_customedit);
-     
+
      paddingbottom.appendChild(paddingbottom_selected);
 
      //-----------------Event Handlers--------------------
@@ -10699,12 +10721,12 @@ function advance(element,createnew){
     if(e.target == this){
 
     if(paddingbottom_customedit.style.display == 'block'){
-        
+
         paddingbottom_customedit.style.display = 'none';
         paddingbottom_selected_a_span.style.textAlign = '';
 
     }else{
-        
+
         paddingbottom_customedit.style.display = 'block';
         paddingbottom_selected_a_span.style.textAlign = 'left';
 
@@ -10719,7 +10741,7 @@ function advance(element,createnew){
     paddingbottom_customedit.addEventListener('keyup',function(){
     paddingbottom_selected_a_span.innerText = 'Bottom: ' + this.value+'px';
     updateelement(element,'paddingbottom',this.value+'px');
-     
+
     });
 
     //-------End PaddingBottom--------
@@ -10745,7 +10767,7 @@ function advance(element,createnew){
      letterspace_selected_a.appendChild(letterspace_selected_a_span);
      letterspace_selected.appendChild(letterspace_selected_a);
      letterspace_selected.appendChild(letterspace_customedit);
-     
+
      letterspace.appendChild(letterspace_selected);
 
      //-----------------Event Handlers--------------------
@@ -10755,12 +10777,12 @@ function advance(element,createnew){
     if(e.target == this){
 
     if(letterspace_customedit.style.display == 'block'){
-        
+
         letterspace_customedit.style.display = 'none';
         letterspace_selected_a_span.style.textAlign = '';
 
     }else{
-        
+
         letterspace_customedit.style.display = 'block';
         letterspace_selected_a_span.style.textAlign = 'left';
 
@@ -10775,7 +10797,7 @@ function advance(element,createnew){
     letterspace_customedit.addEventListener('keyup',function(){
     letterspace_selected_a_span.innerText = 'Letter Space: ' + this.value+'px';
     updateelement(element,'letterspace',this.value+'px');
-     
+
     });
 
     //-------End LetterSpace--------
@@ -10799,7 +10821,7 @@ function advance(element,createnew){
      outlinewidth_selected_a.appendChild(outlinewidth_selected_a_span);
      outlinewidth_selected.appendChild(outlinewidth_selected_a);
      outlinewidth_selected.appendChild(outlinewidth_customedit);
-     
+
      outlinewidth.appendChild(outlinewidth_selected);
 
      //-----------------Event Handlers--------------------
@@ -10809,12 +10831,12 @@ function advance(element,createnew){
     if(e.target == this){
 
     if(outlinewidth_customedit.style.display == 'block'){
-        
+
         outlinewidth_customedit.style.display = 'none';
         outlinewidth_selected_a_span.style.textAlign = '';
 
     }else{
-        
+
         outlinewidth_customedit.style.display = 'block';
         outlinewidth_selected_a_span.style.textAlign = 'left';
 
@@ -10829,7 +10851,7 @@ function advance(element,createnew){
     outlinewidth_customedit.addEventListener('keyup',function(){
     outlinewidth_selected_a_span.innerText = 'Outline Width: ' + this.value+'px';
     updateelement(element,'outlinewidth',this.value+'px');
-     
+
     });
 
     //-------End OutlineWidth--------
@@ -11059,12 +11081,12 @@ outlinestyle_selected_a_span.addEventListener('click',function(e){
     if(e.target == this){
 
     if(outlinestyle_options.style.display == 'block'){
-        
+
         outlinestyle_options.style.display = 'none';
         outlinestyle_options_ul.style.display = 'none';
 
     }else{
-        
+
         outlinestyle_options.style.display = 'block';
         outlinestyle_options_ul.style.display = 'block';
 
@@ -11096,7 +11118,7 @@ var outlinecolor_colordisplay = document.createElement('colordisplay');
 outlinecolor_colordisplay.setAttribute('id','ocd');
 outlinecolor_colordisplay.style.display = 'none';
 outlinecolor_colordisplay.addEventListener('click',function(){
-    
+
     var colorpicker = document.getElementById('ocp');
 
     if(colorpicker.style.display == 'block'){
@@ -11108,7 +11130,7 @@ outlinecolor_colordisplay.addEventListener('click',function(){
         colorpicker.style.display = 'block';
 
     }
-    
+
 });
 
 var outlinecolor_colorpicker = document.createElement('div');
@@ -11157,12 +11179,12 @@ outlinecolor_selected_a_span.addEventListener('click',function(e){
     if(e.target == this){
 
     if(outlinecolor_colordisplay.style.display == 'block'){
-        
+
         outlinecolor_colordisplay.style.display = 'none';
         outlinecolor.style.textAlign = '';
 
     }else{
-        
+
         outlinecolor_colordisplay.style.display = 'block';
         outlinecolor.style.textAlign = 'left';
 
@@ -11438,12 +11460,12 @@ fontcombinations_selected_a_span.addEventListener('click',function(e){
     if(e.target == this){
 
     if(fontcombinations_options.style.display == 'block'){
-        
+
         fontcombinations_options.style.display = 'none';
         fontcombinations_options_ul.style.display = 'none';
 
     }else{
-        
+
         fontcombinations_options.style.display = 'block';
         fontcombinations_options_ul.style.display = 'block';
 
@@ -11543,12 +11565,12 @@ fontcombinations_selected_a_span.addEventListener('click',function(e){
     if(e.target == this){
 
     if(endx_options.style.display == 'block'){
-        
+
         endx_options.style.display = 'none';
         endx_options_ul.style.display = 'none';
 
     }else{
-        
+
         endx_options.style.display = 'block';
         endx_options_ul.style.display = 'block';
 
@@ -11646,12 +11668,12 @@ fontcombinations_selected_a_span.addEventListener('click',function(e){
     if(e.target == this){
 
     if(endy_options.style.display == 'block'){
-        
+
         endy_options.style.display = 'none';
         endy_options_ul.style.display = 'none';
 
     }else{
-        
+
         endy_options.style.display = 'block';
         endy_options_ul.style.display = 'block';
 
@@ -11682,7 +11704,7 @@ fontcombinations_selected_a_span.addEventListener('click',function(e){
      var color1_colordisplay = document.createElement('colordisplay');
      color1_colordisplay.setAttribute('id','bggc1cd');
      color1_colordisplay.addEventListener('click',function(){
-    
+
      var colorpicker = document.getElementById('bggc1cp');
 
          if(colorpicker.style.display == 'block'){
@@ -11694,7 +11716,7 @@ fontcombinations_selected_a_span.addEventListener('click',function(e){
              colorpicker.style.display = 'block';
 
          }
-    
+
      });
 
      var color1_colorpicker = document.createElement('div');
@@ -11757,7 +11779,7 @@ fontcombinations_selected_a_span.addEventListener('click',function(e){
      var color2_colordisplay = document.createElement('colordisplay');
      color2_colordisplay.setAttribute('id','bggc2cd');
      color2_colordisplay.addEventListener('click',function(){
-    
+
      var colorpicker = document.getElementById('bggc2cp');
 
          if(colorpicker.style.display == 'block'){
@@ -11769,7 +11791,7 @@ fontcombinations_selected_a_span.addEventListener('click',function(e){
              colorpicker.style.display = 'block';
 
          }
-    
+
      });
 
      var color2_colorpicker = document.createElement('div');
@@ -12309,7 +12331,7 @@ if(css.includes('animation-name')){
 }else{
   if(css.includes('animation:')){
     var animationAttribute = e.style.animation;
-     
+
     if(animationAttribute.includes('preview')){
       var animation = document.getElementsByTagName('style')[0].innerText;
       animationcss =  animation;
@@ -12331,7 +12353,7 @@ var ff = e.style.fontFamily;
 var ffinfo = [''];
 
 if(ff !== 'sans' && ff !== 'sans-serif' && ff !== 'helvectia' && ff !== 'monospace' && ff !== 'cursive' && ff !== 'fantasy'){
-      
+
   //console.log('started finding font.');
   for(var i=0; i < WebFonts.length; i++){
 
@@ -12460,7 +12482,7 @@ function countMatchingCharacters(string1,string2){
 
   matchedcharacters.join('').split('');
   var matchingPercentage = percentage(matchedcharacters.length,totallength);
-  //console.log(matchedcharacters + ' & ' + totallength + ' = ' + matchingPercentage);  
+  //console.log(matchedcharacters + ' & ' + totallength + ' = ' + matchingPercentage);
 
   if(matchingPercentage > 40){
     //console.log(matchedcharacters + ' > ' + unmatchedcharacters + ' = ' + matchingPercentage + '% Acurate Match.');
@@ -12713,7 +12735,7 @@ var changesourcediv_input = document.createElement('input');
 changesourcediv_input.classList.add('input');
 changesourcediv_input.setAttribute('placeholder',"Enter "+element+" source here");
 changesourcediv_input.addEventListener('keyup',function(){
-  
+
   var ele = document.getElementById('preview'+element);
   ele.setAttribute('src',this.value);
 
@@ -12750,7 +12772,7 @@ changetext_input.addEventListener('keyup',function(){
   var ele = document.getElementById('preview'+element);
 
   if(this.value == ''){
-    
+
     if(element == 'input'){
       ele.value = 'Preview '+element;
     }else{
@@ -12758,7 +12780,7 @@ changetext_input.addEventListener('keyup',function(){
     }
 
   }else{
-    
+
     if(element == 'input'){
       ele.value = this.value;
     }else{
@@ -12766,7 +12788,7 @@ changetext_input.addEventListener('keyup',function(){
     }
 
   }
-  
+
 });
 
 var changetext_ul = document.createElement('ul');
@@ -12978,14 +13000,14 @@ fontsize_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(fontsize_options.style.display == 'block'){
-    
+
     fontsize_options.style.display = 'none';
       fontsize_options_ul.style.display = 'none';
       fontsize_customedit.style.display = 'none';
       fontsize_selected_a_span.style.textAlign = '';
 
   }else{
-    
+
     fontsize_options.style.display = 'block';
       fontsize_options_ul.style.display = 'block';
       fontsize_customedit.style.display = 'block';
@@ -13155,12 +13177,12 @@ fontfamily_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(fontfamily_options.style.display == 'block'){
-    
+
     fontfamily_options.style.display = 'none';
       fontfamily_options_ul.style.display = 'none';
 
   }else{
-    
+
     fontfamily_options.style.display = 'block';
       fontfamily_options_ul.style.display = 'block';
 
@@ -13247,12 +13269,12 @@ fontweight_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(fontweight_options.style.display == 'block'){
-    
+
     fontweight_options.style.display = 'none';
       fontweight_options_ul.style.display = 'none';
 
   }else{
-    
+
     fontweight_options.style.display = 'block';
       fontweight_options_ul.style.display = 'block';
 
@@ -13339,12 +13361,12 @@ fontstyle_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(fontstyle_options.style.display == 'block'){
-    
+
     fontstyle_options.style.display = 'none';
       fontstyle_options_ul.style.display = 'none';
 
   }else{
-    
+
     fontstyle_options.style.display = 'block';
       fontstyle_options_ul.style.display = 'block';
 
@@ -13431,12 +13453,12 @@ fontvariant_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(fontvariant_options.style.display == 'block'){
-    
+
     fontvariant_options.style.display = 'none';
       fontvariant_options_ul.style.display = 'none';
 
   }else{
-    
+
     fontvariant_options.style.display = 'block';
       fontvariant_options_ul.style.display = 'block';
 
@@ -13543,12 +13565,12 @@ fontstretch_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(fontstretch_options.style.display == 'block'){
-    
+
     fontstretch_options.style.display = 'none';
       fontstretch_options_ul.style.display = 'none';
 
   }else{
-    
+
     fontstretch_options.style.display = 'block';
       fontstretch_options_ul.style.display = 'block';
 
@@ -13579,7 +13601,7 @@ var fontcolor_colordisplay = document.createElement('colordisplay');
 fontcolor_colordisplay.setAttribute('id','fcd');
 fontcolor_colordisplay.style.display = 'none';
 fontcolor_colordisplay.addEventListener('click',function(){
-  
+
   var colorpicker = document.getElementById('fcp');
 
   if(colorpicker.style.display == 'block'){
@@ -13591,7 +13613,7 @@ fontcolor_colordisplay.addEventListener('click',function(){
     colorpicker.style.display = 'block';
 
   }
-  
+
 });
 
 var fontcolor_colorpicker = document.createElement('div');
@@ -13639,12 +13661,12 @@ fontcolor_selected_a_span.addEventListener('click',function(e){
     if(e.target == this){
 
     if(fontcolor_colordisplay.style.display == 'block'){
-        
+
         fontcolor_colordisplay.style.display = 'none';
         fontcolor.style.textAlign = '';
 
     }else{
-        
+
         fontcolor_colordisplay.style.display = 'block';
         fontcolor.style.textAlign = 'left';
 
@@ -13676,7 +13698,7 @@ var backgroundcolor_colordisplay = document.createElement('colordisplay');
 backgroundcolor_colordisplay.setAttribute('id','bgcd');
 backgroundcolor_colordisplay.style.display = 'none';
 backgroundcolor_colordisplay.addEventListener('click',function(){
-  
+
   var colorpicker = document.getElementById('bgcp');
 
   if(colorpicker.style.display == 'block'){
@@ -13688,7 +13710,7 @@ backgroundcolor_colordisplay.addEventListener('click',function(){
     colorpicker.style.display = 'block';
 
   }
-  
+
 });
 
 var backgroundcolor_colorpicker = document.createElement('div');
@@ -13737,12 +13759,12 @@ backgroundcolor_selected_a_span.addEventListener('click',function(e){
     if(e.target == this){
 
     if(backgroundcolor_colordisplay.style.display == 'block'){
-        
+
         backgroundcolor_colordisplay.style.display = 'none';
         backgroundcolor.style.textAlign = '';
 
     }else{
-        
+
         backgroundcolor_colordisplay.style.display = 'block';
         backgroundcolor.style.textAlign = 'left';
 
@@ -13774,7 +13796,7 @@ var bordercolor_colordisplay = document.createElement('colordisplay');
 bordercolor_colordisplay.setAttribute('id','bcd');
 bordercolor_colordisplay.style.display = 'none';
 bordercolor_colordisplay.addEventListener('click',function(){
-  
+
   var colorpicker = document.getElementById('bcp');
 
   if(colorpicker.style.display == 'block'){
@@ -13786,7 +13808,7 @@ bordercolor_colordisplay.addEventListener('click',function(){
     colorpicker.style.display = 'block';
 
   }
-  
+
 });
 
 var bordercolor_colorpicker = document.createElement('div');
@@ -13834,12 +13856,12 @@ bordercolor_selected_a_span.addEventListener('click',function(e){
     if(e.target == this){
 
     if(bordercolor_colordisplay.style.display == 'block'){
-        
+
         bordercolor_colordisplay.style.display = 'none';
         bordercolor.style.textAlign = '';
 
     }else{
-        
+
         bordercolor_colordisplay.style.display = 'block';
         bordercolor.style.textAlign = 'left';
 
@@ -13947,12 +13969,12 @@ textalign_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(textalign_options.style.display == 'block'){
-    
+
     textalign_options.style.display = 'none';
       textalign_options_ul.style.display = 'none';
 
   }else{
-    
+
     textalign_options.style.display = 'block';
       textalign_options_ul.style.display = 'block';
 
@@ -13987,7 +14009,7 @@ textdecoration_colordisplay.setAttribute('id','tdcd');
 textdecoration_colordisplay.style.top = '15px';
 textdecoration_colordisplay.style.display = 'none';
 textdecoration_colordisplay.addEventListener('click',function(){
-  
+
   var colorpicker = document.getElementById('tdcp');
 
   if(colorpicker.style.display == 'block'){
@@ -13999,7 +14021,7 @@ textdecoration_colordisplay.addEventListener('click',function(){
     colorpicker.style.display = 'block';
 
   }
-  
+
 });
 
 var textdecoration_colorpicker = document.createElement('div');
@@ -14150,7 +14172,7 @@ textdecoration_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(textdecoration_options.style.display == 'block'){
-    
+
     textdecoration_options.style.display = 'none';
       textdecoration_options_ul.style.display = 'none';
         textdecoration_colordisplay.style.display = 'none';
@@ -14160,7 +14182,7 @@ textdecoration_selected_a_span.addEventListener('click',function(e){
         textdecoration_selected_a_span.style.width = '';
 
   }else{
-    
+
     textdecoration_options.style.display = 'block';
       textdecoration_options_ul.style.display = 'block';
         textdecoration_colordisplay.style.display = 'block';
@@ -14315,12 +14337,12 @@ textdecorationstyle_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(textdecorationstyle_options.style.display == 'block'){
-    
+
     textdecorationstyle_options.style.display = 'none';
       textdecorationstyle_options_ul.style.display = 'none';
 
   }else{
-    
+
     textdecorationstyle_options.style.display = 'block';
       textdecorationstyle_options_ul.style.display = 'block';
 
@@ -14428,14 +14450,14 @@ borderradius_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(borderradius_options.style.display == 'block'){
-    
+
     borderradius_options.style.display = 'none';
       borderradius_options_ul.style.display = 'none';
       borderradius_customedit.style.display = 'none';
       borderradius_selected_a_span.style.textAlign = '';
 
   }else{
-    
+
     borderradius_options.style.display = 'block';
       borderradius_options_ul.style.display = 'block';
       borderradius_customedit.style.display = 'block';
@@ -14553,14 +14575,14 @@ bordersize_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(bordersize_options.style.display == 'block'){
-    
+
     bordersize_options.style.display = 'none';
       bordersize_options_ul.style.display = 'none';
       bordersize_customedit.style.display = 'none';
       bordersize_selected_a_span.style.textAlign = '';
 
   }else{
-    
+
     bordersize_options.style.display = 'block';
       bordersize_options_ul.style.display = 'block';
       bordersize_customedit.style.display = 'block';
@@ -14807,12 +14829,12 @@ borderstyle_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(borderstyle_options.style.display == 'block'){
-    
+
     borderstyle_options.style.display = 'none';
       borderstyle_options_ul.style.display = 'none';
 
   }else{
-    
+
     borderstyle_options.style.display = 'block';
       borderstyle_options_ul.style.display = 'block';
 
@@ -14849,7 +14871,7 @@ boxshadow_colordisplay.setAttribute('id','boxscd');
 boxshadow_colordisplay.style.top = '17.5px';
 boxshadow_colordisplay.style.display = 'none';
 boxshadow_colordisplay.addEventListener('click',function(){
-  
+
   var colorpicker = document.getElementById('boxscp');
 
   if(colorpicker.style.display == 'block'){
@@ -14861,7 +14883,7 @@ boxshadow_colordisplay.addEventListener('click',function(){
     colorpicker.style.display = 'block';
 
   }
-  
+
 });
 
 var boxshadow_colorpicker = document.createElement('div');
@@ -14912,13 +14934,13 @@ boxshadow_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(boxshadow_customedit.style.display == 'block'){
-    
+
       boxshadow_customedit.style.display = 'none';
       boxshadow_selected_a_span.style.opacity = '1';
       boxshadow_colordisplay.style.display = 'none';
 
   }else{
-    
+
       boxshadow_customedit.style.display = 'block';
       boxshadow_selected_a_span.style.opacity = '0';
       boxshadow_colordisplay.style.display = 'block';
@@ -15378,12 +15400,12 @@ display_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(display_options.style.display == 'block'){
-    
+
     display_options.style.display = 'none';
       display_options_ul.style.display = 'none';
 
   }else{
-    
+
     display_options.style.display = 'block';
       display_options_ul.style.display = 'block';
 
@@ -15432,12 +15454,12 @@ opacity_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(opacity_customedit.style.display == 'block'){
-    
+
       opacity_customedit.style.display = 'none';
       opacity_selected_a_span.style.textAlign = '';
 
   }else{
-    
+
       opacity_customedit.style.display = 'block';
       opacity_selected_a_span.style.textAlign = 'left';
 
@@ -15599,12 +15621,12 @@ whitespace_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(whitespace_options.style.display == 'block'){
-    
+
     whitespace_options.style.display = 'none';
       whitespace_options_ul.style.display = 'none';
 
   }else{
-    
+
     whitespace_options.style.display = 'block';
       whitespace_options_ul.style.display = 'block';
 
@@ -15703,7 +15725,7 @@ if(attr == 'slideAction4Value'){
 if(attr == 'animatedr'){
     element.style.animationDuration = value;
     $('.apelement').css('animation-duration',value)
-    
+
     if(document.getElementById('rmadiv').style.opacity == '0.3'){}
     else{
       $('#rmadiv').css({'pointer-events':'none','opacity':'0.5'});
@@ -15729,7 +15751,7 @@ if(attr == 'animated'){
 if(attr == 'animatei'){
     element.style.animationIterationCount = value;
     $('.apelement').css('animation-iteration-count',value)
-    
+
     if(document.getElementById('rmadiv').style.opacity == '0.3'){}
     else{
       $('#rmadiv').css({'pointer-events':'none','opacity':'0.5'});
@@ -15741,10 +15763,10 @@ if(attr == 'animatei'){
 
 if(attr == 'atiming'){
     var atimingcombobox_options = document.getElementById('timing').getElementsByTagName( 'options' )[0];
-    
+
     element.style.animationTimingFunction = value;
     $('.apelement').css('animation-timing-function',value)
-    
+
     if(document.getElementById('rmadiv').style.opacity == '0.3'){}
     else{
       $('#rmadiv').css({'pointer-events':'none','opacity':'0.5'});
@@ -15758,7 +15780,7 @@ if(attr == 'atiming'){
 
 if(attr == 'fontsize'){
   var fontsizecombobox_options = document.getElementById('fontsize').getElementsByTagName( 'options' )[0];
-  
+
   element.style.fontSize = value;
   fontsizecombobox_options.style.display = 'none';
   fontsizecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15766,7 +15788,7 @@ if(attr == 'fontsize'){
 
 /*if(attr == 'fontcombination'){
     var fontcombination_options = document.getElementById('fontcombination').getElementsByTagName( 'options' )[0];
-    
+
     element.style.fontFamily = value;
     fontcombination_options.style.display = 'none';
     fontcombination_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15774,8 +15796,8 @@ if(attr == 'fontsize'){
 
 if(attr == 'googlefonts'){
   var googlefontscombobox_options = document.getElementById('googlefonts').getElementsByTagName( 'options' )[0];
-  
-  var newvalue = value.replace(/ /g,"_"); 
+
+  var newvalue = value.replace(/ /g,"_");
   element.style.fontFamily = newvalue;
   googlefontscombobox_options.style.display = 'none';
   googlefontscombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15783,7 +15805,7 @@ if(attr == 'googlefonts'){
 
 if(attr == 'fontfamily'){
   var fontfamilycombobox_options = document.getElementById('fontfamily').getElementsByTagName( 'options' )[0];
-  
+
   element.style.fontFamily = value;
   fontfamilycombobox_options.style.display = 'none';
   fontfamilycombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15791,7 +15813,7 @@ if(attr == 'fontfamily'){
 
 if(attr == 'fontweight'){
   var fontweightcombobox_options = document.getElementById('fontweight').getElementsByTagName( 'options' )[0];
-  
+
   element.style.fontWeight = value;
   fontweightcombobox_options.style.display = 'none';
   fontweightcombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15799,7 +15821,7 @@ if(attr == 'fontweight'){
 
 if(attr == 'fontstyle'){
   var fontstylecombobox_options = document.getElementById('fontstyle').getElementsByTagName( 'options' )[0];
-  
+
   element.style.fontStyle = value;
   fontstylecombobox_options.style.display = 'none';
   fontstylecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15807,7 +15829,7 @@ if(attr == 'fontstyle'){
 
 if(attr == 'fontvariant'){
   var fontvariantcombobox_options = document.getElementById('fontvariant').getElementsByTagName( 'options' )[0];
-  
+
   element.style.fontVariant = value;
   fontvariantcombobox_options.style.display = 'none';
   fontvariantcombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15815,7 +15837,7 @@ if(attr == 'fontvariant'){
 
 if(attr == 'fontstretch'){
   var fontstretchcombobox_options = document.getElementById('fontstretch').getElementsByTagName( 'options' )[0];
-  
+
   element.style.fontStretch = value;
   fontstretchcombobox_options.style.display = 'none';
   fontstretchcombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15823,7 +15845,7 @@ if(attr == 'fontstretch'){
 
 if(attr == 'textalign'){
   var textaligncombobox_options = document.getElementById('textalign').getElementsByTagName( 'options' )[0];
-  
+
   element.style.textAlign = value;
   textaligncombobox_options.style.display = 'none';
   textaligncombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15846,7 +15868,7 @@ if(attr == 'textdecoration'){
 
 if(attr == 'textdecorationstyle'){
   var textdecorationstylecombobox_options = document.getElementById('textdecorationstyle').getElementsByTagName( 'options' )[0];
-  
+
   element.style.textDecorationStyle = value;
   textdecorationstylecombobox_options.style.display = 'none';
   textdecorationstylecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15854,7 +15876,7 @@ if(attr == 'textdecorationstyle'){
 
 if(attr == 'borderradius'){
   var borderradiuscombobox_options = document.getElementById('borderradius').getElementsByTagName( 'options' )[0];
-  
+
   element.style.borderRadius = value;
   borderradiuscombobox_options.style.display = 'none';
   borderradiuscombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15862,7 +15884,7 @@ if(attr == 'borderradius'){
 
 if(attr == 'bordersize'){
   var bordersizecombobox_options = document.getElementById('bordersize').getElementsByTagName( 'options' )[0];
-  
+
   element.style.border = value + ' solid';
   bordersizecombobox_options.style.display = 'none';
   bordersizecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15870,7 +15892,7 @@ if(attr == 'bordersize'){
 
 if(attr == 'borderstyle'){
   var borderstylecombobox_options = document.getElementById('borderstyle').getElementsByTagName( 'options' )[0];
-  
+
   element.style.borderStyle = value;
   borderstylecombobox_options.style.display = 'none';
   borderstylecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15884,7 +15906,7 @@ if(attr == 'boxshadow'){
 
 if(attr == 'display'){
   var displaycombobox_options = document.getElementById('display').getElementsByTagName( 'options' )[0];
-  
+
   element.style.display = value;
   displaycombobox_options.style.display = 'none';
   displaycombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15899,7 +15921,7 @@ if(attr == 'opacity'){
 
 if(attr == 'whitespace'){
   var whitespacecombobox_options = document.getElementById('whitespace').getElementsByTagName( 'options' )[0];
-  
+
   element.style.whiteSpace = value;
   whitespacecombobox_options.style.display = 'none';
   whitespacecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15917,7 +15939,7 @@ if(attr == 'outlinewidth'){
 
 if(attr == 'outlinestyle'){
     var outlinestylecombobox_options = document.getElementById('outlinestyle').getElementsByTagName( 'options' )[0];
-    
+
     element.style.outlineStyle = value;
     outlinestylecombobox_options.style.display = 'none';
     outlinestylecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -15969,7 +15991,7 @@ if(attr == 'rotateX'){
   var parts = element.style.transform.split(' ');
 
   if(element.style.transform.includes('rotateX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateX')){
       rotateX = parts[i];
@@ -15979,7 +16001,7 @@ if(attr == 'rotateX'){
   }
 
   if(element.style.transform.includes('rotateY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateY')){
       rotateY = parts[i];
@@ -15989,7 +16011,7 @@ if(attr == 'rotateX'){
   }
 
   if(element.style.transform.includes('skewX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewX')){
       skewX = parts[i];
@@ -15999,7 +16021,7 @@ if(attr == 'rotateX'){
   }
 
   if(element.style.transform.includes('skewY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewY')){
       skewY = parts[i];
@@ -16009,7 +16031,7 @@ if(attr == 'rotateX'){
   }
 
   if(element.style.transform.includes('scaleX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleX')){
       scaleX = parts[i];
@@ -16019,7 +16041,7 @@ if(attr == 'rotateX'){
   }
 
   if(element.style.transform.includes('scaleY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleY')){
       scaleY = parts[i];
@@ -16042,7 +16064,7 @@ if(attr == 'rotateY'){
   var parts = element.style.transform.split(' ');
 
   if(element.style.transform.includes('rotateX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateX')){
       rotateX = parts[i];
@@ -16052,7 +16074,7 @@ if(attr == 'rotateY'){
   }
 
   if(element.style.transform.includes('rotateY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateY')){
       rotateY = parts[i];
@@ -16062,7 +16084,7 @@ if(attr == 'rotateY'){
   }
 
   if(element.style.transform.includes('skewX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewX')){
       skewX = parts[i];
@@ -16072,7 +16094,7 @@ if(attr == 'rotateY'){
   }
 
   if(element.style.transform.includes('skewY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewY')){
       skewY = parts[i];
@@ -16082,7 +16104,7 @@ if(attr == 'rotateY'){
   }
 
   if(element.style.transform.includes('scaleX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleX')){
       scaleX = parts[i];
@@ -16092,7 +16114,7 @@ if(attr == 'rotateY'){
   }
 
   if(element.style.transform.includes('scaleY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleY')){
       scaleY = parts[i];
@@ -16115,7 +16137,7 @@ if(attr == 'skewX'){
   var parts = element.style.transform.split(' ');
 
   if(element.style.transform.includes('skewX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewX')){
       skewX = parts[i];
@@ -16125,7 +16147,7 @@ if(attr == 'skewX'){
   }
 
   if(element.style.transform.includes('skewY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewY')){
       skewY = parts[i];
@@ -16135,7 +16157,7 @@ if(attr == 'skewX'){
   }
 
   if(element.style.transform.includes('rotateX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateX')){
       rotateX = parts[i];
@@ -16145,7 +16167,7 @@ if(attr == 'skewX'){
   }
 
   if(element.style.transform.includes('rotateY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateY')){
       rotateY = parts[i];
@@ -16155,7 +16177,7 @@ if(attr == 'skewX'){
   }
 
   if(element.style.transform.includes('scaleX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleX')){
       scaleX = parts[i];
@@ -16165,7 +16187,7 @@ if(attr == 'skewX'){
   }
 
   if(element.style.transform.includes('scaleY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleY')){
       scaleY = parts[i];
@@ -16188,7 +16210,7 @@ if(attr == 'skewY'){
   var parts = element.style.transform.split(' ');
 
   if(element.style.transform.includes('skewX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewX')){
       skewX = parts[i];
@@ -16198,7 +16220,7 @@ if(attr == 'skewY'){
   }
 
   if(element.style.transform.includes('skewY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewY')){
       skewY = parts[i];
@@ -16208,7 +16230,7 @@ if(attr == 'skewY'){
   }
 
   if(element.style.transform.includes('rotateX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateX')){
       rotateX = parts[i];
@@ -16218,7 +16240,7 @@ if(attr == 'skewY'){
   }
 
   if(element.style.transform.includes('rotateY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateY')){
       rotateY = parts[i];
@@ -16228,7 +16250,7 @@ if(attr == 'skewY'){
   }
 
   if(element.style.transform.includes('scaleX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleX')){
       scaleX = parts[i];
@@ -16238,7 +16260,7 @@ if(attr == 'skewY'){
   }
 
   if(element.style.transform.includes('scaleY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleY')){
       scaleY = parts[i];
@@ -16261,7 +16283,7 @@ if(attr == 'scaleX'){
   var parts = element.style.transform.split(' ');
 
   if(element.style.transform.includes('scaleX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleX')){
       scaleX = parts[i];
@@ -16271,7 +16293,7 @@ if(attr == 'scaleX'){
   }
 
   if(element.style.transform.includes('scaleY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleY')){
       scaleY = parts[i];
@@ -16281,7 +16303,7 @@ if(attr == 'scaleX'){
   }
 
   if(element.style.transform.includes('rotateX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateX')){
       rotateX = parts[i];
@@ -16291,7 +16313,7 @@ if(attr == 'scaleX'){
   }
 
   if(element.style.transform.includes('rotateY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateY')){
       rotateY = parts[i];
@@ -16301,7 +16323,7 @@ if(attr == 'scaleX'){
   }
 
   if(element.style.transform.includes('skewX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewX')){
       skewX = parts[i];
@@ -16311,7 +16333,7 @@ if(attr == 'scaleX'){
   }
 
   if(element.style.transform.includes('skewY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewY')){
       skewY = parts[i];
@@ -16334,7 +16356,7 @@ if(attr == 'scaleY'){
   var parts = element.style.transform.split(' ');
 
   if(element.style.transform.includes('scaleX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleX')){
       scaleX = parts[i];
@@ -16344,7 +16366,7 @@ if(attr == 'scaleY'){
   }
 
   if(element.style.transform.includes('scaleY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('scaleY')){
       scaleY = parts[i];
@@ -16354,7 +16376,7 @@ if(attr == 'scaleY'){
   }
 
   if(element.style.transform.includes('rotateX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateX')){
       rotateX = parts[i];
@@ -16364,7 +16386,7 @@ if(attr == 'scaleY'){
   }
 
   if(element.style.transform.includes('rotateY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('rotateY')){
       rotateY = parts[i];
@@ -16374,7 +16396,7 @@ if(attr == 'scaleY'){
   }
 
   if(element.style.transform.includes('skewX')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewX')){
       skewX = parts[i];
@@ -16384,7 +16406,7 @@ if(attr == 'scaleY'){
   }
 
   if(element.style.transform.includes('skewY')){
-    
+
     for(var i = 0; i < parts.length; ++i) {
     if(parts[i].includes('skewY')){
       skewY = parts[i];
@@ -16570,7 +16592,7 @@ function tb(element,property,value){
 
     var endx = document.getElementById('endx');
     endx.getElementsByTagName('selected')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = 'End X: ' + value;
-    
+
     var endxcombobox_options = document.getElementById('endx').getElementsByTagName( 'options' )[0];
     endxcombobox_options.style.display = 'none';
     endxcombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
@@ -16583,13 +16605,13 @@ function tb(element,property,value){
 
     var endy = document.getElementById('endy');
     endy.getElementsByTagName('selected')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = 'End Y: ' + value;
-    
+
     var endycombobox_options = document.getElementById('endy').getElementsByTagName( 'options' )[0];
     endycombobox_options.style.display = 'none';
     endycombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 
     document.getElementById('bggeyvalue').innerText = value;
-        
+
     }
 
     if(property == 'animatet'){
@@ -16683,7 +16705,7 @@ if(sh == 'triangle'){
 
   $('#bordercolor').find('hintlabel').remove();
   hints('show','triangle');
-  
+
 }
 
 document.getElementsByClassName('shapechangediv')[0].style.opacity = '0';
@@ -16906,7 +16928,7 @@ if(mode == 'webpageBuilder'){
           fontfamily = fontfamily.replace(/ /g,"_");
 
           /*var css = style.innerText + '\n' + '@font-face { \n' + 'font-family:' + fontfamily + ';\n'  + 'src: url("' + items[i].files[items[i].variants[o]] +'") ' + 'format("truetype"); \n' + '}';
-          
+
           if(items[i].variants[o] == '100' || items[i].variants[o] == '200' || items[i].variants[o] == '300' || items[i].variants[o] == '400' || items[i].variants[o] == '500' || items[i].variants[o] == '600' || items[i].variants[o] == '700' || items[i].variants[o] == '800' || items[i].variants[o] == '900' || items[i].variants[o] == '1000' || items[i].variants[o] == 'bold' || items[i].variants[o] == 'bolder'){
             css = style.innerText + '\n' + '@font-face { \n' + 'font-family:' + fontfamily + ';\n'  + 'src: url("' + items[i].files[items[i].variants[o]] +'") ' + 'format("truetype"); \n' + 'font-weight: ' + items[i].variants[o] + ';\n' + '}';
           }
@@ -16985,14 +17007,14 @@ fonts_selected_a_span.addEventListener('click',function(e){
   if(e.target == this){
 
   if(fonts_options.style.display == 'block'){
-    
+
     fonts_options.style.display = 'none';
       fonts_options_ul.style.display = 'none';
       //fonts_customedit.style.display = 'none';
       fonts_selected_a_span.style.textAlign = '';
 
   }else{
-    
+
     fonts_options.style.display = 'block';
       fonts_options_ul.style.display = 'block';
       //fonts_customedit.style.display = 'block';
@@ -17392,73 +17414,6 @@ if(moment(response.success.expires_at).isBefore(moment.utc().format('YYYY-MM-DD 
 }
 
 }
-
-function loadBaseStructure(response,page){
-
-if(isMember(response)){
-
-var sidebar = document.createElement('sidebar');
-sidebar.innerHTML = '<ul><p>Account</p><li data-link='+'../profile/'+'><i class="fas fa-user-circle"></i> Profile</li><li data-link='+'../billing/'+'><i class="fas fa-credit-card"></i> Billing</li><li data-link='+'../notifications/'+'><i class="fas fa-bell"></i> Notifications</li><div class="ulLine"></div><p>Manage</p><li data-link='+'../studio/'+' style="color: white;"><i class="fas fa-tools"></i> Workspace</li><li data-link='+'../storage/'+'><i class="fas fa-archive"></i> Storage</li><li data-link='+'../support/'+'><i class="fas fa-life-ring"></i> Support</li><div class="ulLine"></div><li onclick="logout();"><i class="fas fa-sign-out-alt"></i> Logout</li><i class="fas fa-angle-left" id="openclose"></i></ul>';
-
-if(page == 'profile'){
-  var head = document.getElementsByTagName('head')[0];
-  head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-
-  var profiletabs = document.createElement('div');
-  profiletabs.setAttribute('id','profileTabs');
-  profiletabs.innerHTML = '<ul><li style="color: #e67300;">General</li><li>History</li></ul>';
-
-  document.getElementsByTagName('body')[0].appendChild(profiletabs);
-}else{
-  if(page == 'studio'){
-    var head = document.getElementsByTagName('head')[0];
-    head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/previewsite.css"><link rel="stylesheet" type="text/css" href="../assets/css/billy.css"><link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-    
-    //document.getElementsByTagName('body')[0].innerHTML += '<script src="../assets/js/giphy.js"></script><script src="../assets/js/billy.js"></script>';
-
-    var callbilly = document.createElement('callbilly');
-    var billyDiv = document.createElement('billy');
-    
-    var notesdiv = document.createElement('div');
-    notesdiv.setAttribute('id','notes');
-    
-    billyDiv.innerHTML = '<tongue>Hey , how can i help you today?</tongue><orders><type data-panel-trigger="suggestion"><p>I would like to have a suggestion.</p><div class="billyspinner"></div></type><order class="suggestion"><p>Background Color</p></order><order class="suggestion"><p>Font Color</p></order></orders>';
-    notesdiv.innerHTML = '<h6>We are sorry if you are facing any ux/ui problems.The software does not supports all small screen sizes.</h6><button id="ntsbtn">Okay</button>';
-    
-    document.getElementsByTagName('body')[0].appendChild(notesdiv);
-    document.getElementsByTagName('body')[0].appendChild(callbilly);
-    document.getElementsByTagName('body')[0].appendChild(billyDiv);
-  }else{
-    if(page == 'support'){
-      var head = document.getElementsByTagName('head')[0];
-      head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-    }else{
-      if(page == 'storage'){
-        var head = document.getElementsByTagName('head')[0];
-        head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/fonts.css"><link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-      }else{
-        if(page == 'billing'){
-          var head = document.getElementsByTagName('head')[0];
-          head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-        }else{
-          if(page == 'notifications'){
-            var head = document.getElementsByTagName('head')[0];
-            head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-          }
-        }
-      }
-    }
-  }
-}
-
-document.getElementsByTagName('body')[0].appendChild(sidebar);
-
-}else{
- window.location.href = '../login/';
-}
-
-}
-
 
 function notice(type,date){
 

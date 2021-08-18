@@ -65,7 +65,7 @@ function planExpired(response){
   var upgradeplan = document.createElement('div');
   upgradeplan.setAttribute('id','upgp');
 
-  document.getElementsByTagName('head')[0].innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><style>payment{position:absolute;z-index:7;width:100%;height:100%;background:rgba(0,0,0,.7);overflow:hidden;left:0;top:0}payment .fa-paypal{position:relative;left:50%;transform:translate(-50%);font-size:75px;color:#fff;margin-top:20%}payment p{position:absolute;font-size:25px;color:#fff;left:50%;transform:translate(-50%);display:block;margin-top:20px;font-family:ProximaNovaBold;text-align:center} #upgp::-webkit-scrollbar{width: 4px;background-color: #F5F5F5;}#upgp::-webkit-scrollbar-track{-webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);background-color: #F5F5F5;}#upgp::-webkit-scrollbar-thumb{background-color: #000000;}#upgp{display: block;position: absolute; z-index: 4; width: 50%;/* height: 50%; */background: white;border-radius: 5px;left: 50%;transform: translate(-50%,-50%);top: 50%;transition: opacity 0.4s ease-in-out;opacity: 0;display: none;overflow: hidden;overflow-y: scroll;box-shadow: 0 0 5px black;padding-bottom: 20px;padding-top: 10px;}#upgp form{width: 80%;padding-left: 20px;padding-right: 20px;padding-top: 20px;padding-bottom: 20px;min-height: fit-content;max-height: 1000px;position: relative;display: block;opacity: 1;}#upgp form input[type='+'text'+']{width: 90%;height: 10px;margin-top: 10px;margin-bottom: 10px;padding: 10px;position: relative;display: block;opacity: 1;padding: 15px;font-size: 14px;font-family: sans-serif;border: 1px solid #f1f1f1;transition: border 0.5s ease-in-out;background: white;}#upgp form input[type='+'text'+']:hover{border: 1px solid black;}#upgp form input[type='+'submit'+']{width: 250px;height: 45px;margin-top: 10px;margin-bottom: 10px;padding: 20px;text-align: left;position: relative;display: inline-block;opacity: 1;padding: 15px;font-size: 15px;font-family: ProximaNovaBold;border: 1px solid #f1f1f1;background: #1a1a1a;color: white;border: none;outline: none;}#upgp button{position: relative;transform: translate(-50%);width: 200px;height: 35px;margin-top: 20px;left: 50%;background: #1a1a1a;border: none;outline: none;color: white;transition: 0.5s opacity ease-out;cursor: pointer;border-radius: 5px;}#upgbtn{position: absolute;right: 10px;top: 0px;background: #1a1a1a;color: white;width: 150px;height: 30px;border: none;outline: none;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;cursor: pointer;transition: 0.5s opacity ease-out;font-family: ProximaNovaBold;font-size: 13px;}#upgp button:hover, #upgbtn:hover{opacity: 0.5;}#upgp .adfree{position: absolute;font-size: 10px;left: 50%;transform: translate(-50%);width: 80%;margin-top: 10px;font-family: sans-serif;text-align: center;margin-top: 5px;}membershipplan{position:relative;display:block;width:90%;left:50%;border:1px solid rgba(0,0,0,1);border-radius:3px;transform:translate(-50%);margin-top:25px;max-height:300px;height:90px;transition:height .4s,border .4s ease-in-out;cursor:pointer;overflow:hidden}membership[data-plan]{background:#f0b7a1;background:-moz-linear-gradient(45deg,#f0b7a1 0,#8c3310 29%,#752201 30%,#752201 30%,#bf6e4e 100%);background:-webkit-linear-gradient(45deg,#f0b7a1 0,#8c3310 29%,#752201 30%,#752201 30%,#bf6e4e 100%);background:linear-gradient(45deg,#f0b7a1 0,#8c3310 29%,#752201 30%,#752201 30%,#bf6e4e 100%)}membershipplan:hover{border:1px solid rgba(0,0,0,.3)}.selectedplan{height:300px;border:1px solid green}.selectedplan:hover{border:1px solid green}membershipplan span{position:absolute;right:10px;top:10px;color:#fff;background:#1a1a1a;padding:5px;text-align:center;font-size:14px;font-family:ProximaNovaBold}membershipplan ul{position:relative;list-style:none;display:block;padding:0;height:200px;max-height:300px;min-height:fit-content}membershipplan ul li{width:100%;position:relative;display:block;height:30px;font-family:sans-serif;text-align:center}membershipplan ul li .fa-check{color:green}membershipplan ul li .fa-times{color:#8b0000}membershipplan ul li .fa-angle-double-up{color:green;margin-left:5px}membershipplan p{width:100%;font-size:30px;text-align:center;font-family:ProximaNovaBold;letter-spacing:1.5px;color:#000;position:relative} @media only screen and (min-device-width : 300px) and (max-device-width : 480px) { #upgp{ width: 75%;} }</style>';
+  //document.getElementsByTagName('head')[0].innerHTML += '<style>payment{position:absolute;z-index:7;width:100%;height:100%;background:rgba(0,0,0,.7);overflow:hidden;left:0;top:0}payment .fa-paypal{position:relative;left:50%;transform:translate(-50%);font-size:75px;color:#fff;margin-top:20%}payment p{position:absolute;font-size:25px;color:#fff;left:50%;transform:translate(-50%);display:block;margin-top:20px;font-family:ProximaNovaBold;text-align:center} #upgp::-webkit-scrollbar{width: 4px;background-color: #F5F5F5;}#upgp::-webkit-scrollbar-track{-webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);background-color: #F5F5F5;}#upgp::-webkit-scrollbar-thumb{background-color: #000000;}#upgp{display: block;position: absolute; z-index: 4; width: 50%;/* height: 50%; */background: white;border-radius: 5px;left: 50%;transform: translate(-50%,-50%);top: 50%;transition: opacity 0.4s ease-in-out;opacity: 0;display: none;overflow: hidden;overflow-y: scroll;box-shadow: 0 0 5px black;padding-bottom: 20px;padding-top: 10px;}#upgp form{width: 80%;padding-left: 20px;padding-right: 20px;padding-top: 20px;padding-bottom: 20px;min-height: fit-content;max-height: 1000px;position: relative;display: block;opacity: 1;}#upgp form input[type='+'text'+']{width: 90%;height: 10px;margin-top: 10px;margin-bottom: 10px;padding: 10px;position: relative;display: block;opacity: 1;padding: 15px;font-size: 14px;font-family: sans-serif;border: 1px solid #f1f1f1;transition: border 0.5s ease-in-out;background: white;}#upgp form input[type='+'text'+']:hover{border: 1px solid black;}#upgp form input[type='+'submit'+']{width: 250px;height: 45px;margin-top: 10px;margin-bottom: 10px;padding: 20px;text-align: left;position: relative;display: inline-block;opacity: 1;padding: 15px;font-size: 15px;font-family: ProximaNovaBold;border: 1px solid #f1f1f1;background: #1a1a1a;color: white;border: none;outline: none;}#upgp button{position: relative;transform: translate(-50%);width: 200px;height: 35px;margin-top: 20px;left: 50%;background: #1a1a1a;border: none;outline: none;color: white;transition: 0.5s opacity ease-out;cursor: pointer;border-radius: 5px;}#upgbtn{position: absolute;right: 10px;top: 0px;background: #1a1a1a;color: white;width: 150px;height: 30px;border: none;outline: none;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;cursor: pointer;transition: 0.5s opacity ease-out;font-family: ProximaNovaBold;font-size: 13px;}#upgp button:hover, #upgbtn:hover{opacity: 0.5;}#upgp .adfree{position: absolute;font-size: 10px;left: 50%;transform: translate(-50%);width: 80%;margin-top: 10px;font-family: sans-serif;text-align: center;margin-top: 5px;}membershipplan{position:relative;display:block;width:90%;left:50%;border:1px solid rgba(0,0,0,1);border-radius:3px;transform:translate(-50%);margin-top:25px;max-height:300px;height:90px;transition:height .4s,border .4s ease-in-out;cursor:pointer;overflow:hidden}membership[data-plan]{background:#f0b7a1;background:-moz-linear-gradient(45deg,#f0b7a1 0,#8c3310 29%,#752201 30%,#752201 30%,#bf6e4e 100%);background:-webkit-linear-gradient(45deg,#f0b7a1 0,#8c3310 29%,#752201 30%,#752201 30%,#bf6e4e 100%);background:linear-gradient(45deg,#f0b7a1 0,#8c3310 29%,#752201 30%,#752201 30%,#bf6e4e 100%)}membershipplan:hover{border:1px solid rgba(0,0,0,.3)}.selectedplan{height:300px;border:1px solid green}.selectedplan:hover{border:1px solid green}membershipplan span{position:absolute;right:10px;top:10px;color:#fff;background:#1a1a1a;padding:5px;text-align:center;font-size:14px;font-family:ProximaNovaBold}membershipplan ul{position:relative;list-style:none;display:block;padding:0;height:200px;max-height:300px;min-height:fit-content}membershipplan ul li{width:100%;position:relative;display:block;height:30px;font-family:sans-serif;text-align:center}membershipplan ul li .fa-check{color:green}membershipplan ul li .fa-times{color:#8b0000}membershipplan ul li .fa-angle-double-up{color:green;margin-left:5px}membershipplan p{width:100%;font-size:30px;text-align:center;font-family:ProximaNovaBold;letter-spacing:1.5px;color:#000;position:relative} @media only screen and (min-device-width : 300px) and (max-device-width : 480px) { #upgp{ width: 75%;} }</style>';
 
   document.getElementsByTagName('body')[0].appendChild(upgradeplan);
 
@@ -105,9 +105,25 @@ function planExpired(response){
 
 }
 
+function loadSideBar(){
+    var sidebar = document.createElement('sidebar');
+    sidebar.innerHTML = '<ul><p>Account</p><li data-link='+'../profile/'+'><i class="fas fa-user-circle"></i> Profile</li><li data-link='+'../billing/'+'><i class="fas fa-credit-card"></i> Billing</li><li data-link='+'../notifications/'+'><i class="fas fa-bell"></i> Notifications</li><div class="ulLine"></div><p>Manage</p><li data-link='+'../studio/'+' style="color: white;"><i class="fas fa-tools"></i> Workspace</li><li data-link='+'../storage/'+'><i class="fas fa-archive"></i> Storage</li><li data-link='+'../support/'+'><i class="fas fa-life-ring"></i> Support</li><div class="ulLine"></div><li onclick="logout();"><i class="fas fa-sign-out-alt"></i> Logout</li><i class="fas fa-angle-left" id="openclose"></i></ul>';
+
+    document.getElementsByTagName('body')[0].appendChild(sidebar);
+}
+
 function loggedin(response){
 
-loadBaseStructure(response,'profile');
+    loadSideBar();
+
+var head = document.getElementsByTagName('head')[0];
+head.innerHTML += '';
+
+var profiletabs = document.createElement('div');
+profiletabs.setAttribute('id','profileTabs');
+profiletabs.innerHTML = '<ul><li style="color: #e67300;">General</li><li>History</li></ul>';
+
+document.getElementsByTagName('body')[0].appendChild(profiletabs);
 
 var openclose = document.getElementById('openclose');
     openclose.addEventListener("click",function(){
@@ -140,8 +156,8 @@ setTimeout(function(){
       tabs[i].addEventListener('click',function(){
         switchProfileTab(this);
     });
-    }   
-},2000); 
+    }
+},2000);
 
 document.getElementsByTagName('loader')[0].remove();
 
@@ -423,12 +439,12 @@ for(var i=0; i < response.success.loginhistory.length; i++){
   var th1 = document.createElement('td');
   var th2 = document.createElement('td');
   var th3 = document.createElement('td');
-  
+
   var th2ip = document.createElement('span');
   th2ip.innerText = response.success.loginhistory[i].country;
 
   var flag = document.createElement('img');
-  
+
   //getIpFlag(response.success.loginhistory[i].ip_address,flag);
 
   th1.innerText = response.success.loginhistory[i].ip_address;
@@ -1242,73 +1258,6 @@ if(moment(response.success.expires_at).isBefore(moment.utc().format('YYYY-MM-DD 
 
 }
 
-function loadBaseStructure(response,page){
-
-if(isMember(response)){
-
-var sidebar = document.createElement('sidebar');
-sidebar.innerHTML = '<ul><p>Account</p><li data-link='+'../profile/'+' style="color: white;"><i class="fas fa-user-circle"></i> Profile</li><li data-link='+'../billing/'+'><i class="fas fa-credit-card"></i> Billing</li><li data-link='+'../notifications/'+'><i class="fas fa-bell"></i> Notifications</li><div class="ulLine"></div><p>Manage</p><li data-link='+'../studio/'+'><i class="fas fa-tools"></i> Workspace</li><li data-link='+'../storage/'+'><i class="fas fa-archive"></i> Storage</li><li data-link='+'../support/'+'><i class="fas fa-life-ring"></i> Support</li><div class="ulLine"></div><li onclick="logout();"><i class="fas fa-sign-out-alt"></i> Logout</li><i class="fas fa-angle-left" id="openclose"></i></ul>';
-
-if(page == 'profile'){
-  var head = document.getElementsByTagName('head')[0];
-  head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-
-  var profiletabs = document.createElement('div');
-  profiletabs.setAttribute('id','profileTabs');
-  profiletabs.innerHTML = '<ul><li style="color: #e67300;">General</li><li>History</li></ul>';
-
-  document.getElementsByTagName('body')[0].appendChild(profiletabs);
-}else{
-  if(page == 'studio'){
-    var head = document.getElementsByTagName('head')[0];
-    head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/billy.css"><link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-    
-    //document.getElementsByTagName('body')[0].innerHTML += '<script src="../assets/js/giphy.js"></script><script src="../assets/js/billy.js"></script>';
-
-    var callbilly = document.createElement('callbilly');
-    var billyDiv = document.createElement('billy');
-    
-    var notesdiv = document.createElement('div');
-    notesdiv.setAttribute('id','notes');
-    
-    billyDiv.innerHTML = '<tongue>Hey , how can i help you today?</tongue><orders><type data-panel-trigger="suggestion"><p>I would like to have a suggestion.</p><div class="billyspinner"></div></type><order class="suggestion"><p>Background Color</p></order><order class="suggestion"><p>Font Color</p></order></orders>';
-    notesdiv.innerHTML = '<h6>We are sorry if you are facing any ux/ui problems.The software does not supports all small screen sizes.</h6><button id="ntsbtn">Okay</button>';
-    
-    document.getElementsByTagName('body')[0].appendChild(notesdiv);
-    document.getElementsByTagName('body')[0].appendChild(callbilly);
-    document.getElementsByTagName('body')[0].appendChild(billyDiv);
-  }else{
-    if(page == 'support'){
-      var head = document.getElementsByTagName('head')[0];
-      head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-    }else{
-      if(page == 'storage'){
-        var head = document.getElementsByTagName('head')[0];
-        head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/fonts.css"><link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-      }else{
-        if(page == 'billing'){
-          var head = document.getElementsByTagName('head')[0];
-          head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-        }else{
-          if(page == 'notifications'){
-            var head = document.getElementsByTagName('head')[0];
-            head.innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/style.css"><link rel="stylesheet" type="text/css" href="../assets/css/notification.css"><link rel="stylesheet" type="text/css" href="../assets/css/r.css"><link rel="stylesheet" type="text/css" href="../assets/css/notice.css"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">';
-          }
-        }
-      }
-    }
-  }
-}
-
-document.getElementsByTagName('body')[0].appendChild(sidebar);
-
-}else{
- window.location.href = '../login/';
-}
-
-}
-
-
 function checkReferralCode(code){
 
 var referralcode = document.getElementsByClassName('refcode')[0];
@@ -1361,7 +1310,7 @@ for(var i = 0; i < membershipplans.length; i++){
   var price = membershipplans[i].getElementsByTagName('span')[0];
 
   var discounted_price = document.createElement('span');
-  
+
   if(price.innerText == '4.99 $'){
     discounted_price.innerText = '3.75 $';
   }
