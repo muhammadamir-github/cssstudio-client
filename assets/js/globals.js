@@ -28,6 +28,10 @@ export default {
         body: null,
         head: null
     },
+    bootLoader: null,
+    pageHandler: null,
+    paypalHandler: null,
+    notificationHandler: null,
     api: {
         hostname: "http://localhost",
         port: "8000"
@@ -40,7 +44,8 @@ export default {
                 ...global_requiredFiles.css,
                 { type: "css", src: ".dactbtn{ width: 200px; height: 50px; position: relative; left: 25px; top: 25px; border: none; outline: none; background: #1a1a1a; color: white; transition: opacity 0.4s ease-in-out; cursor: pointer; } .dactbtn:hover{ opacity: 0.5; }.dwar{ display: block; position: relative; margin-left: 25px; left: 0px; text-align: left; width: 90%; font-size: 15px; } .pay{ margin-top: 100px; width: 100%; left: 50%; transform: translate(-50%); position: relative; display: inline-block; height: 100px; text-align: center;", isURL: false, isRaw: true, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "profile.js", isURL: false, isRaw: false, }
+                { type: "js", src: "profile.js", isURL: false, isRaw: false, },
+                { type: "js", src: "paypal.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -90,12 +95,22 @@ export default {
                 { type: "css", src: "billy.css", isURL: false, isRaw: false, },
                 { type: "js", src: "https://www.youtube.com/iframe_api", isURL: true, isRaw: false, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "javascript.js", isURL: false, isRaw: false, },
                 { type: "js", src: "giphy.js", isURL: false, isRaw: false, },
                 { type: "js", src: "billy.js", isURL: false, isRaw: false, },
                 { type: "js", src: "draggable.js", isURL: false, isRaw: false, },
                 { type: "js", src: "publicEventHandler.js", isURL: false, isRaw: false, },
-                { type: "js", src: "resumable.js", isURL: false, isRaw: false, }
+                { type: "js", src: "thirdparty/resumable.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio/functions/basicSetup.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio/functions/setupColorPicker.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio/functions/textToColorPickerColor.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio/functions/setupRotate.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio/functions/setupScale.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio/functions/setupSkew.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio/functions/setupSteps.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio/UserInterface.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio/ProgressLoader.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio/JadgetPanel.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio.js", isURL: false, isRaw: false, },
             ],
         },
         {
