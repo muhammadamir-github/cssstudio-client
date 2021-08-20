@@ -82,8 +82,8 @@ export default class SideBar{
                 openclose.className = "fas fa-angle-left";
                 openclose.id = "openclose";
 
-                openclose.addEventListener("click", function(event){
-                    self.toggle(event);
+                openclose.addEventListener("click", function(){
+                    self.toggle();
                 });
 
                 self.element.appendChild(openclose);
@@ -93,18 +93,28 @@ export default class SideBar{
         Globals.window.body.appendChild(self.element);
     }
 
-    toggle(event){
+    toggle(){
         const self = this;
         if(self.element.style.left == '0px'){
-            self.element.style.left = '-170px';
-
-            setTimeout(function(){ $('.ulLine').css({'display':'none'}); },500);
-            event.target.setAttribute('class','fas fa-angle-right');
+            self.close();
         }else{
-            self.element.style.left = '0px';
-
-            $('.ulLine').css({'display':'block'});
-            event.target.setAttribute('class','fas fa-angle-left');
+            self.open();
         }
+    }
+
+    open(){
+        const self = this;
+        self.element.style.left = '0px';
+
+        $('.ulLine').css({'display':'block'});
+        document.getElementById("openclose").setAttribute('class','fas fa-angle-left');
+    }
+
+    close(){
+        const self = this;
+        self.element.style.left = '-170px';
+
+        setTimeout(function(){ $('.ulLine').css({'display':'none'}); },500);
+        document.getElementById("openclose").setAttribute('class','fas fa-angle-right');
     }
 }

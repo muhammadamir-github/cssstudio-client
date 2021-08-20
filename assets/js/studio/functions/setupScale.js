@@ -1,4 +1,4 @@
-function function_setupScale(element){
+function setupScale(element){
     var scalebox = document.createElement('div');
     scalebox.setAttribute('id','scalebox');
     scalebox.style.display = 'block';
@@ -40,13 +40,13 @@ function function_setupScale(element){
 
     scalebox_slider_x.addEventListener('input',function(){
 
-      updateelement(element,'scaleX',this.value);
+        updateElement(element,'scaleX',this.value);
 
     });
 
     scalebox_slider_y.addEventListener('input',function(){
 
-      updateelement(element,'scaleY',this.value);
+        updateElement(element,'scaleY',this.value);
 
     });
 

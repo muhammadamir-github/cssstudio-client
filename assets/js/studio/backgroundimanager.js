@@ -1,33 +1,33 @@
 class BackgroundIManager{
-      constructor(){}
+    constructor(){}
 
-      load(){
-      }
+    load(){
+    }
 
-      empty(){
+    empty(){
 
-      }
+    }
 
-      open(e,forElement){
-
+    open(e,forElement){
+        const self = this;
         $('.storageSpace').remove();
 
         var storageSpace = document.createElement('span');
         storageSpace.className = 'storageSpace';
-        storageSpace.innerText = 'Media Storage Usage: '+storageUsed+' / '+storageLimit;
+        storageSpace.innerText = 'Media Storage Usage: '+Globals.pageHandler.storageUsed+' / '+Globals.pageHandler.storageLimit;
 
         storageSpace.addEventListener("mouseover",function(e){
-        	storageSpace_showDetails(storageSpace,e);
+            storageSpace_showDetails(storageSpace,e);
         });
 
         storageSpace.addEventListener("mouseout",function(e){
-        	storageSpace_hideDetails(storageSpace,e);
+            storageSpace_hideDetails(storageSpace,e);
         });
 
         var bgiManager = document.createElement('div');
         bgiManager.id = 'bg-image-manager';
         bgiManager.addEventListener('mousedown',function(e){
-          backgroundImageManager.mousedown(e);
+            self.mousedown(e);
         });
 
         var imagesbox = document.createElement('div');
@@ -42,13 +42,13 @@ class BackgroundIManager{
         fileinput.style.width = '0px';
         fileinput.style.height = '0px';
         fileinput.addEventListener('change',function(){
-          mediaManager.uploadMedia('Image',this.files[0]);
+            Globals.pageHandler.mediaManager.uploadMedia('Image',this.files[0]);
         });
 
         var uploadBtn = document.createElement('button');
         uploadBtn.innerText = 'Upload Image';
         uploadBtn.addEventListener('click',function(){
-          fileinput.click();
+            fileinput.click();
         });
 
         var panelbar = document.createElement('div');
@@ -84,15 +84,15 @@ class BackgroundIManager{
         checkboxOption.setAttribute("data-checked","1");
 
         checkmark.addEventListener("mouseover",function(){
-          	publicEvents.checkbox_hover(span);
+            publicEvents.checkbox_hover(span);
         });
 
         checkmark.addEventListener("mouseout",function(){
-             publicEvents.checkbox_hoverOut(span);
+            publicEvents.checkbox_hoverOut(span);
         });
 
         checkmark.addEventListener("click",function(){
-             publicEvents.checkbox_click(checkboxOption);
+            publicEvents.checkbox_click(checkboxOption);
         });
 
         span.setAttribute("data-restrictions","selection");
@@ -114,16 +114,16 @@ class BackgroundIManager{
         // end checkbox -----
 
         searchInput.addEventListener('keydown',function(e){
-          if(e.keyCode == 13){
-          	if(stateOf.checkbox(checkboxOption) == 1){
-          		mediaManager.searchUserMedia("images",this.value);
-          	}else{
-          		resetImages('webpageBuilder');
-                searchGIFS(this.value,'','webpageBuilder');
-                searchUnsplashPictures(this.value,'','webpageBuilder');
-                searchPixelBayPictures(this.value,'','webpageBuilder');
-          	}
-          }
+            if(e.keyCode == 13){
+                if(stateOf.checkbox(checkboxOption) == 1){
+                    Globals.pageHandler.mediaManager.searchUserMedia("images",this.value);
+                }else{
+                    resetImages('webpageBuilder');
+                    searchGIFS(this.value,'','webpageBuilder');
+                    searchUnsplashPictures(this.value,'','webpageBuilder');
+                    searchPixelBayPictures(this.value,'','webpageBuilder');
+                }
+            }
         });
 
         var banner = document.createElement('div');
@@ -139,59 +139,59 @@ class BackgroundIManager{
         bgiManager.appendChild(banner);
         bgiManager.appendChild(imagesbox);
         bgiManager.appendChild(panelbar);
-        body.appendChild(bgiManager);
+        Globals.window.body.appendChild(bgiManager);
 
-        mediaManager.showUserImages(forElement);
+        Globals.pageHandler.mediaManager.showUserImages(forElement);
 
-        body.appendChild(storageSpace);
-      }
+        Globals.window.body.appendChild(storageSpace);
+    }
 
-      close(){
+    close(){
         document.getElementById('bg-image-manager').remove();
         $('.storageSpace').remove();
-      }
+    }
 
-      drag(e){
+    drag(e){
         var elmnt = document.getElementById('bg-image-manager');
         e = e || window.event;
         e.preventDefault();
 
         // calculate the new cursor position:
-        bgimageManager_pos1 = bgimageManager_pos3 - e.clientX;
-        bgimageManager_pos2 = bgimageManager_pos4 - e.clientY;
-        bgimageManager_pos3 = e.clientX;
-        bgimageManager_pos4 = e.clientY;
+        Globals.pageHandler.bgimageManager_pos1 = Globals.pageHandler.bgimageManager_pos3bgimageManager_pos3 - e.clientX;
+        Globals.pageHandler.bgimageManager_pos2 = Globals.pageHandler.bgimageManager_pos4 - e.clientY;
+        Globals.pageHandler.bgimageManager_pos3bgimageManager_pos3 = e.clientX;
+        Globals.pageHandler.bgimageManager_pos4 = e.clientY;
 
         // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - bgimageManager_pos2) + "px";
-        elmnt.style.left = (elmnt.offsetLeft - bgimageManager_pos1) + "px";
+        elmnt.style.top = (elmnt.offsetTop - Globals.pageHandler.bgimageManager_pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - Globals.pageHandler.bgimageManager_pos1) + "px";
         elmnt.style.cursor = 'grabbing';
-      }
+    }
 
-      mousedown(e){
+    mousedown(e){
+        const self = Globals.pageHandler.backgroundImageManager;
         var elmnt = document.getElementById('bg-image-manager');
         if(e.target == elmnt){
-          e = e || window.event;
-          e.preventDefault();
+            e = e || window.event;
+            e.preventDefault();
 
-          elmnt.style.cursor = 'grab';
+            elmnt.style.cursor = 'grab';
 
-          // get the mouse cursor position at startup:
-          bgimageManager_pos3 = e.clientX;
-          bgimageManager_pos4 = e.clientY;
-          document.onmouseup = backgroundImageManager.closeDrag;
+            // get the mouse cursor position at startup:
+            Globals.pageHandler.bgimageManager_pos3bgimageManager_pos3 = e.clientX;
+            Globals.pageHandler.bgimageManager_pos4 = e.clientY;
+            document.onmouseup = self.closeDrag;
 
-          // call a function whenever the cursor moves:
-          document.onmousemove = backgroundImageManager.drag;
+            // call a function whenever the cursor moves:
+            document.onmousemove = self.drag;
         }
-      }
+    }
 
-      closeDrag(){
+    closeDrag(){
         var elmnt = document.getElementById('bg-image-manager');
         document.onmouseup = null;
         document.onmousemove = null;
         elmnt.style.cursor = 'default';
-      }
-
     }
+
 }

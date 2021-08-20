@@ -32,179 +32,179 @@ class StorageHandler{
         animations_div.appendChild(anlabel);
 
         for(var i=0; i < elements.length; i++){
-          var storagepreview = document.createElement('storagePreview');
+            var storagepreview = document.createElement('storagePreview');
 
-          var css = document.createElement("input");
-          css.setAttribute("type",'text');
-          var style = elements[i].css;
-          css.value = style;
-          css.style.visible = 'false';
-          css.style.pointerEvents = 'none';
-          css.style.width = '1px';
-          css.style.height = '1px';
-          css.style.opacity = '0';
-          css.style.left = '-500px';
-          css.style.position = 'relative';
-          storagepreview.appendChild(css);
+            var css = document.createElement("input");
+            css.setAttribute("type",'text');
+            var style = elements[i].css;
+            css.value = style;
+            css.style.visible = 'false';
+            css.style.pointerEvents = 'none';
+            css.style.width = '1px';
+            css.style.height = '1px';
+            css.style.opacity = '0';
+            css.style.left = '-500px';
+            css.style.position = 'relative';
+            storagepreview.appendChild(css);
 
-          if(elements[i].type == 'paragraph'){
-            var element = document.createElement('p');
-          }else{
-            var element = document.createElement(elements[i].type);
-          }
-          element.setAttribute('class',elements[i].name);
-          element.style.transform = 'translate(-50%,-50%)';
-          element.style.left = '50%';
-          element.style.top = '50%';
+            if(elements[i].type == 'paragraph'){
+                var element = document.createElement('p');
+            }else{
+                var element = document.createElement(elements[i].type);
+            }
+            element.setAttribute('class',elements[i].name);
+            element.style.transform = 'translate(-50%,-50%)';
+            element.style.left = '50%';
+            element.style.top = '50%';
 
-          if(elements[i].type == 'button' || elements[i].type == 'input' || elements[i].type == 'heading'){
-            element.style.width = '70%';
-            element.style.height = '20%';
-            element.innerText = 'Preview '+elements[i].type;
-          }
+            if(elements[i].type == 'button' || elements[i].type == 'input' || elements[i].type == 'heading'){
+                element.style.width = '70%';
+                element.style.height = '20%';
+                element.innerText = 'Preview '+elements[i].type;
+            }
 
-          if(elements[i].type == 'image' || elements[i].type == 'video'){
-            element.style.width = '45%';
-            element.style.height = '45%';
-            element.style.minWidth = '0%';
-            element.style.minHeight = '0%';
-          }
+            if(elements[i].type == 'image' || elements[i].type == 'video'){
+                element.style.width = '45%';
+                element.style.height = '45%';
+                element.style.minWidth = '0%';
+                element.style.minHeight = '0%';
+            }
 
-          if(elements[i].type == 'div'){
-            element.style.width = '45%';
-            element.style.height = '45%';
-            element.innerText = 'Preview '+elements[i].type;
-          }
+            if(elements[i].type == 'div'){
+                element.style.width = '45%';
+                element.style.height = '45%';
+                element.innerText = 'Preview '+elements[i].type;
+            }
 
-          if(elements[i].type == 'paragraph' || elements[i].type == 'textarea'){
-            element.style.width = '75%';
-            element.style.height = '45%';
-            element.innerText = 'Preview '+elements[i].type;
-          }
+            if(elements[i].type == 'paragraph' || elements[i].type == 'textarea'){
+                element.style.width = '75%';
+                element.style.height = '45%';
+                element.innerText = 'Preview '+elements[i].type;
+            }
 
-          if(elements[i].type == 'textarea' || elements[i].type == 'input'){
-            element.value = 'Preview ';+elements[i].name;
-            element.innerText = 'Preview '+elements[i].type;
-          }
+            if(elements[i].type == 'textarea' || elements[i].type == 'input'){
+                element.value = 'Preview ';+elements[i].name;
+                element.innerText = 'Preview '+elements[i].type;
+            }
 
-          element.style.marginTop = '0px';
-          element.style.animationDuration = '0s';
+            element.style.marginTop = '0px';
+            element.style.animationDuration = '0s';
 
-          storagepreview.appendChild(element);
+            storagepreview.appendChild(element);
 
-          var label = document.createElement('span');
-          label.setAttribute('class','alabel_new');
-          label.innerText = elements[i].name;
-          label.style.backgroundColor = '#1a1a1a';
-          label.style.color = 'white';
-          label.style.fontSize = '12px';
-          label.style.borderRadius = '0px';
-          label.style.height = '17px';
-          label.style.bottom = '0px';
-          label.style.width = '100%';
-          storagepreview.appendChild(label);
+            var label = document.createElement('span');
+            label.setAttribute('class','alabel_new');
+            label.innerText = elements[i].name;
+            label.style.backgroundColor = '#1a1a1a';
+            label.style.color = 'white';
+            label.style.fontSize = '12px';
+            label.style.borderRadius = '0px';
+            label.style.height = '17px';
+            label.style.bottom = '0px';
+            label.style.width = '100%';
+            storagepreview.appendChild(label);
 
-          var p = document.createElement('p');
-          p.setAttribute('class','ctc');
-          p.innerText = 'Copy Css';
-          p.addEventListener('click',function(){
-            this.classList.add('ctca');
-            this.parentElement.getElementsByTagName('input')[0].select();
-            document.execCommand("copy");
-            window.getSelection().removeAllRanges();
-            setTimeout(function(){$('.ctca').removeClass('ctca');},1000);
-          });
-          storagepreview.appendChild(p);
-
-          var eid = elements[i].id;
-          var etype = elements[i].type;
-
-          var deleteicon = document.createElement('i');
-          deleteicon.setAttribute('class','fas fa-trash');
-
-          (function(eid){
-            deleteicon.addEventListener('click',function(){
-              self.deleteElement('element',eid,this);
+            var p = document.createElement('p');
+            p.setAttribute('class','ctc');
+            p.innerText = 'Copy Css';
+            p.addEventListener('click',function(){
+                this.classList.add('ctca');
+                this.parentElement.getElementsByTagName('input')[0].select();
+                document.execCommand("copy");
+                window.getSelection().removeAllRanges();
+                setTimeout(function(){$('.ctca').removeClass('ctca');},1000);
             });
-          })(eid);
+            storagepreview.appendChild(p);
 
-          var toggleanimationicon = document.createElement('i');
-          toggleanimationicon.setAttribute('class','fas fa-toggle-off');
-          toggleanimationicon.style.marginLeft = '25px';
+            var eid = elements[i].id;
+            var etype = elements[i].type;
 
-          (function(eid,etype){
-            toggleanimationicon.addEventListener('click',function(){
-              self.stopAnimation('element',eid,etype,this);
-            });
-          })(eid,etype);
+            var deleteicon = document.createElement('i');
+            deleteicon.setAttribute('class','fas fa-trash');
 
-          storagepreview.appendChild(deleteicon);
-          storagepreview.appendChild(toggleanimationicon);
+            (function(eid){
+                deleteicon.addEventListener('click',function(){
+                    self.deleteElement('element',eid,this);
+                });
+            })(eid);
 
-          elements_div.appendChild(storagepreview);
+            var toggleanimationicon = document.createElement('i');
+            toggleanimationicon.setAttribute('class','fas fa-toggle-off');
+            toggleanimationicon.style.marginLeft = '25px';
 
-          var stylesheet = document.createElement('style');
-          stylesheet.innerText = elements[i].css;
+            (function(eid,etype){
+                toggleanimationicon.addEventListener('click',function(){
+                    self.stopAnimation('element',eid,etype,this);
+                });
+            })(eid,etype);
 
-          document.getElementsByTagName('head')[0].appendChild(stylesheet);
+            storagepreview.appendChild(deleteicon);
+            storagepreview.appendChild(toggleanimationicon);
+
+            elements_div.appendChild(storagepreview);
+
+            var stylesheet = document.createElement('style');
+            stylesheet.innerText = elements[i].css;
+
+            document.getElementsByTagName('head')[0].appendChild(stylesheet);
         }
 
         for(var i=0; i < animations.length; i++){
-          var storagepreview = document.createElement('storagePreview');
+            var storagepreview = document.createElement('storagePreview');
 
-          var animation = document.createElement('textarea');
-          animation.setAttribute('readonly','');
-          animation.innerText = animations[i].css;
-          animation.style.resize = 'none';
-          animation.style.height = '85%';
-          animation.style.width = '100%';
-          animation.style.marginTop = '10%';
+            var animation = document.createElement('textarea');
+            animation.setAttribute('readonly','');
+            animation.innerText = animations[i].css;
+            animation.style.resize = 'none';
+            animation.style.height = '85%';
+            animation.style.width = '100%';
+            animation.style.marginTop = '10%';
 
-          storagepreview.appendChild(animation);
+            storagepreview.appendChild(animation);
 
-          var label = document.createElement('span');
-          label.setAttribute('class','alabel_new');
-          label.innerText = animations[i].name;
-          label.style.backgroundColor = '#1a1a1a';
-          label.style.color = 'white';
-          label.style.fontSize = '12px';
-          label.style.borderRadius = '0px';
-          label.style.height = '17px';
-          label.style.bottom = '0px';
-          label.style.width = '100%';
-          storagepreview.appendChild(label);
+            var label = document.createElement('span');
+            label.setAttribute('class','alabel_new');
+            label.innerText = animations[i].name;
+            label.style.backgroundColor = '#1a1a1a';
+            label.style.color = 'white';
+            label.style.fontSize = '12px';
+            label.style.borderRadius = '0px';
+            label.style.height = '17px';
+            label.style.bottom = '0px';
+            label.style.width = '100%';
+            storagepreview.appendChild(label);
 
-          var aid = animations[i].id;
+            var aid = animations[i].id;
 
-          var deleteicon = document.createElement('i');
-          deleteicon.setAttribute('class','fas fa-trash');
+            var deleteicon = document.createElement('i');
+            deleteicon.setAttribute('class','fas fa-trash');
 
-          (function(aid){
-            deleteicon.addEventListener('click',function(){
-              self.deleteElement('animation',aid,this);
+            (function(aid){
+                deleteicon.addEventListener('click',function(){
+                    self.deleteElement('animation',aid,this);
+                });
+            })(aid);
+
+            storagepreview.appendChild(deleteicon);
+
+            var p = document.createElement('p');
+            p.setAttribute('class','ctc');
+            p.innerText = 'Copy css';
+            p.addEventListener('click',function(){
+                this.classList.add('ctca');
+                this.parentElement.getElementsByTagName('textarea')[0].select();
+                document.execCommand("copy");
+                window.getSelection().removeAllRanges();
+                setTimeout(function(){$('.ctca').removeClass('ctca');},1000);
             });
-          })(aid);
+            storagepreview.appendChild(p);
 
-          storagepreview.appendChild(deleteicon);
+            animations_div.appendChild(storagepreview);
 
-          var p = document.createElement('p');
-          p.setAttribute('class','ctc');
-          p.innerText = 'Copy css';
-          p.addEventListener('click',function(){
-            this.classList.add('ctca');
-            this.parentElement.getElementsByTagName('textarea')[0].select();
-            document.execCommand("copy");
-            window.getSelection().removeAllRanges();
-            setTimeout(function(){$('.ctca').removeClass('ctca');},1000);
-          });
-          storagepreview.appendChild(p);
+            var stylesheet = document.createElement('style');
+            stylesheet.innerText = animations[i].css;
 
-          animations_div.appendChild(storagepreview);
-
-          var stylesheet = document.createElement('style');
-          stylesheet.innerText = animations[i].css;
-
-          document.getElementsByTagName('head')[0].appendChild(stylesheet);
+            document.getElementsByTagName('head')[0].appendChild(stylesheet);
         }
 
         $('body').append(heading);
@@ -251,12 +251,12 @@ class StorageHandler{
             dataType:'json',
             data:data,
             beforeSend: function(request){
-              request.setRequestHeader('Authorization','Bearer '+token);
-              request.setRequestHeader('Accept','application/json');
+                request.setRequestHeader('Authorization','Bearer '+token);
+                request.setRequestHeader('Accept','application/json');
             },
             success: function(response){
-              notification(type+' deleted successfully.');
-              element.parentNode.remove();
+                notification(type+' deleted successfully.');
+                element.parentNode.remove();
             },
         });
     }

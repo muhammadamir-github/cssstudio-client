@@ -1,5 +1,4 @@
-function function_BasicSetup(element){
-    //function_BasicSetup(element){
+function basicSetup(element){
 
     var previewbox = document.getElementById('previewbox');
     previewbox.style.display = 'block';
@@ -11,100 +10,100 @@ function function_BasicSetup(element){
 
     if(element == 'video' || element == 'image'){
 
-    var editbutton_src = document.createElement('label');
-    editbutton_src.addEventListener('click',function(){
-      document.getElementsByClassName('sourcechangediv')[0].style.display = 'block';
-    });
-    editbutton_src.innerText = 'Src';
+        var editbutton_src = document.createElement('label');
+        editbutton_src.addEventListener('click',function(){
+            document.getElementsByClassName('sourcechangediv')[0].style.display = 'block';
+        });
+        editbutton_src.innerText = 'Src';
+        
+        var changesourcediv = document.createElement('div');
+        changesourcediv.classList.add('sourcechangediv');
 
-    var changesourcediv = document.createElement('div');
-    changesourcediv.classList.add('sourcechangediv');
+        var changesourcediv_input = document.createElement('input');
+        changesourcediv_input.classList.add('input');
+        changesourcediv_input.setAttribute('placeholder',"Enter "+element+" source here");
+        changesourcediv_input.addEventListener('keyup',function(){
 
-    var changesourcediv_input = document.createElement('input');
-    changesourcediv_input.classList.add('input');
-    changesourcediv_input.setAttribute('placeholder',"Enter "+element+" source here");
-    changesourcediv_input.addEventListener('keyup',function(){
+            var ele = document.getElementById('preview'+element);
+            ele.setAttribute('src',this.value);
 
-      var ele = document.getElementById('preview'+element);
-      ele.setAttribute('src',this.value);
+        });
 
-    });
+        var changesource_ul = document.createElement('ul');
+        var changesource_li = document.createElement('li');
+        changesource_li.addEventListener('click',function(){
+            changesourcediv.style.display = 'none';
+        });
+        changesource_ul.appendChild(changesource_li);
 
-    var changesource_ul = document.createElement('ul');
-    var changesource_li = document.createElement('li');
-    changesource_li.addEventListener('click',function(){
-      changesourcediv.style.display = 'none';
-    });
-    changesource_ul.appendChild(changesource_li);
+        changesourcediv.appendChild(changesourcediv_input);
+        changesourcediv.appendChild(changesource_ul);
 
-    changesourcediv.appendChild(changesourcediv_input);
-    changesourcediv.appendChild(changesource_ul);
-
-    previewbox.appendChild(changesourcediv);
-    editbuttons.appendChild(editbutton_src);
+        previewbox.appendChild(changesourcediv);
+        editbuttons.appendChild(editbutton_src);
 
     }else{
 
-    var editbutton_text = document.createElement('label');
-    editbutton_text.addEventListener('click',function(){
-      document.getElementsByClassName('textchangediv')[0].style.display = 'block';
-    });
-    editbutton_text.innerText = 'Text';
+        var editbutton_text = document.createElement('label');
+        editbutton_text.addEventListener('click',function(){
+            document.getElementsByClassName('textchangediv')[0].style.display = 'block';
+        });
+        editbutton_text.innerText = 'Text';
 
-    var changetextdiv = document.createElement('div');
-    changetextdiv.classList.add('textchangediv');
+        var changetextdiv = document.createElement('div');
+        changetextdiv.classList.add('textchangediv');
 
-    var changetext_input = document.createElement('input');
-    changetext_input.classList.add('input');
-    changetext_input.setAttribute('placeholder',"Enter text here");
-    changetext_input.addEventListener('keyup',function(){
-      var ele = document.getElementById('preview'+element);
+        var changetext_input = document.createElement('input');
+        changetext_input.classList.add('input');
+        changetext_input.setAttribute('placeholder',"Enter text here");
+        changetext_input.addEventListener('keyup',function(){
+            var ele = document.getElementById('preview'+element);
 
-      if(this.value == ''){
+            if(this.value == ''){
 
-        if(element == 'input'){
-          ele.value = 'Preview '+element;
-        }else{
-          ele.innerText = 'Preview '+element;
-        }
+                if(element == 'input'){
+                    ele.value = 'Preview '+element;
+                }else{
+                    ele.innerText = 'Preview '+element;
+                }
 
-      }else{
+            }else{
 
-        if(element == 'input'){
-          ele.value = this.value;
-        }else{
-          ele.innerText = this.value;
-        }
+                if(element == 'input'){
+                    ele.value = this.value;
+                }else{
+                    ele.innerText = this.value;
+                }
 
-      }
+            }
 
-    });
+        });
 
-    var changetext_ul = document.createElement('ul');
-    var changetext_li = document.createElement('li');
-    changetext_li.addEventListener('click',function(){
-      changetextdiv.style.display = 'none';
-    });
-    changetext_ul.appendChild(changetext_li);
+        var changetext_ul = document.createElement('ul');
+        var changetext_li = document.createElement('li');
+        changetext_li.addEventListener('click',function(){
+            changetextdiv.style.display = 'none';
+        });
+        changetext_ul.appendChild(changetext_li);
 
-    changetextdiv.appendChild(changetext_input);
-    changetextdiv.appendChild(changetext_ul);
+        changetextdiv.appendChild(changetext_input);
+        changetextdiv.appendChild(changetext_ul);
 
-    previewbox.appendChild(changetextdiv);
-    editbuttons.appendChild(editbutton_text);
+        previewbox.appendChild(changetextdiv);
+        editbuttons.appendChild(editbutton_text);
 
     }
 
     var editbutton_shape = document.createElement('label');
     editbutton_shape.addEventListener('click',function(){
 
-      document.getElementsByClassName('shapechangediv')[0].style.display = 'block';
-      document.getElementsByClassName('spinner')[0].style.display = 'block';
+        document.getElementsByClassName('shapechangediv')[0].style.display = 'block';
+        document.getElementsByClassName('spinner')[0].style.display = 'block';
 
-      setTimeout(function(){
-        document.getElementsByClassName('shapechangediv')[0].style.opacity = '1';
-        document.getElementsByClassName('spinner')[0].style.display = 'none';
-      },500);
+        setTimeout(function(){
+            document.getElementsByClassName('shapechangediv')[0].style.opacity = '1';
+            document.getElementsByClassName('spinner')[0].style.display = 'none';
+        },500);
 
     });
     editbutton_shape.innerText = 'Shape';
@@ -117,43 +116,43 @@ function function_BasicSetup(element){
     var changeshapediv_ul_square = document.createElement('li');
     changeshapediv_ul_square.innerText = 'Square';
     changeshapediv_ul_square.addEventListener('click',function(){
-      shape(element,'square');
+        shape(element,'square');
     });
 
     var changeshapediv_ul_rectangle = document.createElement('li');
     changeshapediv_ul_rectangle.innerText = 'Rectangle';
     changeshapediv_ul_rectangle.addEventListener('click',function(){
-      shape(element,'rectangle');
+        shape(element,'rectangle');
     });
 
     var changeshapediv_ul_circle = document.createElement('li');
     changeshapediv_ul_circle.innerText = 'Circle';
     changeshapediv_ul_circle.addEventListener('click',function(){
-      shape(element,'circle');
+        shape(element,'circle');
     });
 
     var changeshapediv_ul_oval = document.createElement('li');
     changeshapediv_ul_oval.innerText = 'Oval';
     changeshapediv_ul_oval.addEventListener('click',function(){
-      shape(element,'oval');
+        shape(element,'oval');
     });
 
     var changeshapediv_ul_trapezoid = document.createElement('li');
     changeshapediv_ul_trapezoid.innerText = 'Trapezoid';
     changeshapediv_ul_trapezoid.addEventListener('click',function(){
-      shape(element,'trapezoid');
+        shape(element,'trapezoid');
     });
 
     var changeshapediv_ul_parallelogram = document.createElement('li');
     changeshapediv_ul_parallelogram.innerText = 'Parallelogram';
     changeshapediv_ul_parallelogram.addEventListener('click',function(){
-      shape(element,'parallelogram');
+        shape(element,'parallelogram');
     });
 
     var changeshapediv_ul_triangle = document.createElement('li');
     changeshapediv_ul_triangle.innerText = 'Triangle';
     changeshapediv_ul_triangle.addEventListener('click',function(){
-      shape(element,'triangle');
+        shape(element,'triangle');
     });
 
     var changeshapediv_ul_warning = document.createElement('li');
@@ -166,11 +165,11 @@ function function_BasicSetup(element){
     changeshapediv_ul.appendChild(changeshapediv_ul_parallelogram);
 
     if(element == 'div' || element == 'button'){
-      changeshapediv_ul.appendChild(changeshapediv_ul_triangle);
+        changeshapediv_ul.appendChild(changeshapediv_ul_triangle);
     }
 
     if(element == 'div'){
-      changeshapediv_ul.appendChild(changeshapediv_ul_trapezoid);
+        changeshapediv_ul.appendChild(changeshapediv_ul_trapezoid);
     }
 
     changeshapediv_ul.appendChild(changeshapediv_ul_warning);
@@ -229,7 +228,7 @@ function function_BasicSetup(element){
     fontsize_options_1.appendChild(fontsize_options_1_a);
 
     fontsize_options_1.addEventListener('click',function(){
-      tb(element,'fs',fontsize_options_1_a.innerText);
+        tb(element,'fs',fontsize_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -246,7 +245,7 @@ function function_BasicSetup(element){
     fontsize_options_2.appendChild(fontsize_options_2_a);
 
     fontsize_options_2.addEventListener('click',function(){
-      tb(element,'fs',fontsize_options_2_a.innerText);
+        tb(element,'fs',fontsize_options_2_a.innerText);
     });
 
     //-------------------------3----------------------------
@@ -264,7 +263,7 @@ function function_BasicSetup(element){
     fontsize_options_3.appendChild(fontsize_options_3_a);
 
     fontsize_options_3.addEventListener('click',function(){
-      tb(element,'fs',fontsize_options_3_a.innerText);
+        tb(element,'fs',fontsize_options_3_a.innerText);
     });
 
     //---------------FontSize Options End---------------------
@@ -286,33 +285,33 @@ function function_BasicSetup(element){
 
     fontsize_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(fontsize_options.style.display == 'block'){
+            if(fontsize_options.style.display == 'block'){
 
-        fontsize_options.style.display = 'none';
-          fontsize_options_ul.style.display = 'none';
-          fontsize_customedit.style.display = 'none';
-          fontsize_selected_a_span.style.textAlign = '';
+                fontsize_options.style.display = 'none';
+                fontsize_options_ul.style.display = 'none';
+                fontsize_customedit.style.display = 'none';
+                fontsize_selected_a_span.style.textAlign = '';
 
-      }else{
+            }else{
 
-        fontsize_options.style.display = 'block';
-          fontsize_options_ul.style.display = 'block';
-          fontsize_customedit.style.display = 'block';
-          fontsize_selected_a_span.style.textAlign = 'left';
+                fontsize_options.style.display = 'block';
+                fontsize_options_ul.style.display = 'block';
+                fontsize_customedit.style.display = 'block';
+                fontsize_selected_a_span.style.textAlign = 'left';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
     fontsize_customedit.addEventListener('keyup',function(){
-      fontsize_selected_a_span.innerText = 'Font Size: ' + this.value+'px';
-      updateelement(element,'fontsize',this.value+'px');
+        fontsize_selected_a_span.innerText = 'Font Size: ' + this.value+'px';
+        updateElement(element,'fontsize',this.value+'px');
     });
 
     //-------End FontSize--------
@@ -348,7 +347,7 @@ function function_BasicSetup(element){
     fontfamily_options_1.appendChild(fontfamily_options_1_a);
 
     fontfamily_options_1.addEventListener('click',function(){
-      tb(element,'ff',fontfamily_options_1_a.innerText);
+        tb(element,'ff',fontfamily_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -366,7 +365,7 @@ function function_BasicSetup(element){
     fontfamily_options_2.appendChild(fontfamily_options_2_a);
 
     fontfamily_options_2.addEventListener('click',function(){
-      tb(element,'ff',fontfamily_options_2_a.innerText);
+        tb(element,'ff',fontfamily_options_2_a.innerText);
     });
 
     //-------------------------3----------------------------
@@ -384,7 +383,7 @@ function function_BasicSetup(element){
     fontfamily_options_3.appendChild(fontfamily_options_3_a);
 
     fontfamily_options_3.addEventListener('click',function(){
-      tb(element,'ff',fontfamily_options_3_a.innerText);
+        tb(element,'ff',fontfamily_options_3_a.innerText);
     });
 
     //-------------------------4----------------------------
@@ -402,7 +401,7 @@ function function_BasicSetup(element){
     fontfamily_options_4.appendChild(fontfamily_options_4_a);
 
     fontfamily_options_4.addEventListener('click',function(){
-      tb(element,'ff',fontfamily_options_4_a.innerText);
+        tb(element,'ff',fontfamily_options_4_a.innerText);
     });
 
     //-------------------------5----------------------------
@@ -420,7 +419,7 @@ function function_BasicSetup(element){
     fontfamily_options_5.appendChild(fontfamily_options_5_a);
 
     fontfamily_options_5.addEventListener('click',function(){
-      tb(element,element,'ff',fontfamily_options_5_a.innerText);
+        tb(element,element,'ff',fontfamily_options_5_a.innerText);
     });
 
     //-------------------------6----------------------------
@@ -439,7 +438,7 @@ function function_BasicSetup(element){
     fontfamily_options_6.appendChild(fontfamily_options_6_a);
 
     fontfamily_options_6.addEventListener('click',function(){
-      tb(element,'ff',fontfamily_options_6_a.innerText);
+        tb(element,'ff',fontfamily_options_6_a.innerText);
     });
 
     //---------------FontFamily Options End---------------------
@@ -463,23 +462,23 @@ function function_BasicSetup(element){
 
     fontfamily_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(fontfamily_options.style.display == 'block'){
+            if(fontfamily_options.style.display == 'block'){
 
-        fontfamily_options.style.display = 'none';
-          fontfamily_options_ul.style.display = 'none';
+                fontfamily_options.style.display = 'none';
+                fontfamily_options_ul.style.display = 'none';
 
-      }else{
+            }else{
 
-        fontfamily_options.style.display = 'block';
-          fontfamily_options_ul.style.display = 'block';
+                fontfamily_options.style.display = 'block';
+                fontfamily_options_ul.style.display = 'block';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
@@ -515,7 +514,7 @@ function function_BasicSetup(element){
     fontweight_options_1.appendChild(fontweight_options_1_a);
 
     fontweight_options_1.addEventListener('click',function(){
-      tb(element,'fw',fontweight_options_1_a.innerText);
+        tb(element,'fw',fontweight_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -534,7 +533,7 @@ function function_BasicSetup(element){
     fontweight_options_2.appendChild(fontweight_options_2_a);
 
     fontweight_options_2.addEventListener('click',function(){
-      tb(element,'fw',fontweight_options_2_a.innerText);
+        tb(element,'fw',fontweight_options_2_a.innerText);
     });
 
 
@@ -555,23 +554,23 @@ function function_BasicSetup(element){
 
     fontweight_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(fontweight_options.style.display == 'block'){
+            if(fontweight_options.style.display == 'block'){
 
-        fontweight_options.style.display = 'none';
-          fontweight_options_ul.style.display = 'none';
+                fontweight_options.style.display = 'none';
+                fontweight_options_ul.style.display = 'none';
 
-      }else{
+            }else{
 
-        fontweight_options.style.display = 'block';
-          fontweight_options_ul.style.display = 'block';
+                fontweight_options.style.display = 'block';
+                fontweight_options_ul.style.display = 'block';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
@@ -607,7 +606,7 @@ function function_BasicSetup(element){
     fontstyle_options_1.appendChild(fontstyle_options_1_a);
 
     fontstyle_options_1.addEventListener('click',function(){
-      tb(element,'fst',fontstyle_options_1_a.innerText);
+        tb(element,'fst',fontstyle_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -626,7 +625,7 @@ function function_BasicSetup(element){
     fontstyle_options_2.appendChild(fontstyle_options_2_a);
 
     fontstyle_options_2.addEventListener('click',function(){
-      tb(element,'fst',fontstyle_options_2_a.innerText);
+        tb(element,'fst',fontstyle_options_2_a.innerText);
     });
 
 
@@ -647,23 +646,23 @@ function function_BasicSetup(element){
 
     fontstyle_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(fontstyle_options.style.display == 'block'){
+            if(fontstyle_options.style.display == 'block'){
 
-        fontstyle_options.style.display = 'none';
-          fontstyle_options_ul.style.display = 'none';
+                fontstyle_options.style.display = 'none';
+                fontstyle_options_ul.style.display = 'none';
 
-      }else{
+            }else{
 
-        fontstyle_options.style.display = 'block';
-          fontstyle_options_ul.style.display = 'block';
+                fontstyle_options.style.display = 'block';
+                fontstyle_options_ul.style.display = 'block';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
@@ -699,7 +698,7 @@ function function_BasicSetup(element){
     fontvariant_options_1.appendChild(fontvariant_options_1_a);
 
     fontvariant_options_1.addEventListener('click',function(){
-      tb(element,'fv',fontvariant_options_1_a.innerText);
+        tb(element,'fv',fontvariant_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -718,7 +717,7 @@ function function_BasicSetup(element){
     fontvariant_options_2.appendChild(fontvariant_options_2_a);
 
     fontvariant_options_2.addEventListener('click',function(){
-      tb(element,'fv',fontvariant_options_2_a.innerText);
+        tb(element,'fv',fontvariant_options_2_a.innerText);
     });
 
 
@@ -739,23 +738,23 @@ function function_BasicSetup(element){
 
     fontvariant_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(fontvariant_options.style.display == 'block'){
+            if(fontvariant_options.style.display == 'block'){
 
-        fontvariant_options.style.display = 'none';
-          fontvariant_options_ul.style.display = 'none';
+                fontvariant_options.style.display = 'none';
+                fontvariant_options_ul.style.display = 'none';
 
-      }else{
+            }else{
 
-        fontvariant_options.style.display = 'block';
-          fontvariant_options_ul.style.display = 'block';
+                fontvariant_options.style.display = 'block';
+                fontvariant_options_ul.style.display = 'block';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
@@ -793,7 +792,7 @@ function function_BasicSetup(element){
     fontstretch_options_1.appendChild(fontstretch_options_1_a);
 
     fontstretch_options_1.addEventListener('click',function(){
-      tb(element,'fstr',fontstretch_options_1_a.innerText);
+        tb(element,'fstr',fontstretch_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -811,7 +810,7 @@ function function_BasicSetup(element){
     fontstretch_options_2.appendChild(fontstretch_options_2_a);
 
     fontstretch_options_2.addEventListener('click',function(){
-      tb(element,'fstr',fontstretch_options_2_a.innerText);
+        tb(element,'fstr',fontstretch_options_2_a.innerText);
     });
 
     //-------------------------3----------------------------
@@ -830,7 +829,7 @@ function function_BasicSetup(element){
     fontstretch_options_3.appendChild(fontstretch_options_3_a);
 
     fontstretch_options_3.addEventListener('click',function(){
-      tb(element,'fstr',fontstretch_options_3_a.innerText);
+        tb(element,'fstr',fontstretch_options_3_a.innerText);
     });
 
     //---------------FontStretch Options End---------------------
@@ -851,23 +850,23 @@ function function_BasicSetup(element){
 
     fontstretch_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(fontstretch_options.style.display == 'block'){
+            if(fontstretch_options.style.display == 'block'){
 
-        fontstretch_options.style.display = 'none';
-          fontstretch_options_ul.style.display = 'none';
+                fontstretch_options.style.display = 'none';
+                fontstretch_options_ul.style.display = 'none';
 
-      }else{
+            }else{
 
-        fontstretch_options.style.display = 'block';
-          fontstretch_options_ul.style.display = 'block';
+                fontstretch_options.style.display = 'block';
+                fontstretch_options_ul.style.display = 'block';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
@@ -891,17 +890,17 @@ function function_BasicSetup(element){
     fontcolor_colordisplay.style.display = 'none';
     fontcolor_colordisplay.addEventListener('click',function(){
 
-      var colorpicker = document.getElementById('fcp');
+        var colorpicker = document.getElementById('fcp');
 
-      if(colorpicker.style.display == 'block'){
+        if(colorpicker.style.display == 'block'){
 
-        colorpicker.style.display = 'none';
+            colorpicker.style.display = 'none';
 
-      }else{
+        }else{
 
-        colorpicker.style.display = 'block';
+            colorpicker.style.display = 'block';
 
-      }
+        }
 
     });
 
@@ -921,14 +920,14 @@ function function_BasicSetup(element){
     fontcolor_colorpicker_input_rgba.setAttribute('placeholder','Color Rgba: ');
     fontcolor_colorpicker_input_rgba.setAttribute('id','fcprgba');
     fontcolor_colorpicker_input_rgba.addEventListener('input',function(){
-    	Globals.pageHandler.userInterface.textToColorPickerColor(this,'color',element);
+        textToColorPickerColor(this,'color',element);
     });
 
     var fontcolor_colorpicker_input_hex = document.createElement('input');
     fontcolor_colorpicker_input_hex.setAttribute('placeholder','Color Hex: ');
     fontcolor_colorpicker_input_hex.setAttribute('id','fcphex');
     fontcolor_colorpicker_input_hex.addEventListener('input',function(){
-    	Globals.pageHandler.userInterface.textToColorPickerColor(this,'color',element);
+        textToColorPickerColor(this,'color',element);
     });
 
     fontcolor_colorpicker.appendChild(fontcolor_colorpicker_box);
@@ -949,17 +948,17 @@ function function_BasicSetup(element){
 
         if(e.target == this){
 
-        if(fontcolor_colordisplay.style.display == 'block'){
+            if(fontcolor_colordisplay.style.display == 'block'){
 
-            fontcolor_colordisplay.style.display = 'none';
-            fontcolor.style.textAlign = '';
+                fontcolor_colordisplay.style.display = 'none';
+                fontcolor.style.textAlign = '';
 
-        }else{
+            }else{
 
-            fontcolor_colordisplay.style.display = 'block';
-            fontcolor.style.textAlign = 'left';
+                fontcolor_colordisplay.style.display = 'block';
+                fontcolor.style.textAlign = 'left';
 
-        }
+            }
 
         }else{
 
@@ -988,17 +987,17 @@ function function_BasicSetup(element){
     backgroundcolor_colordisplay.style.display = 'none';
     backgroundcolor_colordisplay.addEventListener('click',function(){
 
-      var colorpicker = document.getElementById('bgcp');
+        var colorpicker = document.getElementById('bgcp');
 
-      if(colorpicker.style.display == 'block'){
+        if(colorpicker.style.display == 'block'){
 
-        colorpicker.style.display = 'none';
+            colorpicker.style.display = 'none';
 
-      }else{
+        }else{
 
-        colorpicker.style.display = 'block';
+            colorpicker.style.display = 'block';
 
-      }
+        }
 
     });
 
@@ -1018,7 +1017,7 @@ function function_BasicSetup(element){
     backgroundcolor_colorpicker_input_rgba.setAttribute('placeholder','Color Rgba: ');
     backgroundcolor_colorpicker_input_rgba.setAttribute('id','bgcprgba');
     backgroundcolor_colorpicker_input_rgba.addEventListener('input',function(){
-    	Globals.pageHandler.userInterface.textToColorPickerColor(this,'background-color',element);
+        textToColorPickerColor(this,'background-color',element);
     });
 
 
@@ -1026,7 +1025,7 @@ function function_BasicSetup(element){
     backgroundcolor_colorpicker_input_hex.setAttribute('placeholder','Color Hex: ');
     backgroundcolor_colorpicker_input_hex.setAttribute('id','bgcphex');
     backgroundcolor_colorpicker_input_hex.addEventListener('input',function(){
-    	Globals.pageHandler.userInterface.textToColorPickerColor(this,'background-color',element);
+        textToColorPickerColor(this,'background-color',element);
     });
 
     backgroundcolor_colorpicker.appendChild(backgroundcolor_colorpicker_box);
@@ -1047,17 +1046,17 @@ function function_BasicSetup(element){
 
         if(e.target == this){
 
-        if(backgroundcolor_colordisplay.style.display == 'block'){
+            if(backgroundcolor_colordisplay.style.display == 'block'){
 
-            backgroundcolor_colordisplay.style.display = 'none';
-            backgroundcolor.style.textAlign = '';
+                backgroundcolor_colordisplay.style.display = 'none';
+                backgroundcolor.style.textAlign = '';
 
-        }else{
+            }else{
 
-            backgroundcolor_colordisplay.style.display = 'block';
-            backgroundcolor.style.textAlign = 'left';
+                backgroundcolor_colordisplay.style.display = 'block';
+                backgroundcolor.style.textAlign = 'left';
 
-        }
+            }
 
         }else{
 
@@ -1086,17 +1085,17 @@ function function_BasicSetup(element){
     bordercolor_colordisplay.style.display = 'none';
     bordercolor_colordisplay.addEventListener('click',function(){
 
-      var colorpicker = document.getElementById('bcp');
+        var colorpicker = document.getElementById('bcp');
 
-      if(colorpicker.style.display == 'block'){
+        if(colorpicker.style.display == 'block'){
 
-        colorpicker.style.display = 'none';
+            colorpicker.style.display = 'none';
 
-      }else{
+        }else{
 
-        colorpicker.style.display = 'block';
+            colorpicker.style.display = 'block';
 
-      }
+        }
 
     });
 
@@ -1116,14 +1115,14 @@ function function_BasicSetup(element){
     bordercolor_colorpicker_input_rgba.setAttribute('placeholder','Color Rgba: ');
     bordercolor_colorpicker_input_rgba.setAttribute('id','bcprgba');
     bordercolor_colorpicker_input_rgba.addEventListener('input',function(){
-    	Globals.pageHandler.userInterface.textToColorPickerColor(this,'border-color',element);
+        textToColorPickerColor(this,'border-color',element);
     });
 
     var bordercolor_colorpicker_input_hex = document.createElement('input');
     bordercolor_colorpicker_input_hex.setAttribute('placeholder','Color Hex: ');
     bordercolor_colorpicker_input_hex.setAttribute('id','bcphex');
     bordercolor_colorpicker_input_hex.addEventListener('input',function(){
-    	Globals.pageHandler.userInterface.textToColorPickerColor(this,'border-color',element);
+        textToColorPickerColor(this,'border-color',element);
     });
 
     bordercolor_colorpicker.appendChild(bordercolor_colorpicker_box);
@@ -1144,17 +1143,17 @@ function function_BasicSetup(element){
 
         if(e.target == this){
 
-        if(bordercolor_colordisplay.style.display == 'block'){
+            if(bordercolor_colordisplay.style.display == 'block'){
 
-            bordercolor_colordisplay.style.display = 'none';
-            bordercolor.style.textAlign = '';
+                bordercolor_colordisplay.style.display = 'none';
+                bordercolor.style.textAlign = '';
 
-        }else{
+            }else{
 
-            bordercolor_colordisplay.style.display = 'block';
-            bordercolor.style.textAlign = 'left';
+                bordercolor_colordisplay.style.display = 'block';
+                bordercolor.style.textAlign = 'left';
 
-        }
+            }
 
         }else{
 
@@ -1196,7 +1195,7 @@ function function_BasicSetup(element){
     textalign_options_1.appendChild(textalign_options_1_a);
 
     textalign_options_1.addEventListener('click',function(){
-      tb(element,'ta',textalign_options_1_a.innerText);
+        tb(element,'ta',textalign_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -1214,7 +1213,7 @@ function function_BasicSetup(element){
     textalign_options_2.appendChild(textalign_options_2_a);
 
     textalign_options_2.addEventListener('click',function(){
-      tb(element,'ta',textalign_options_2_a.innerText);
+        tb(element,'ta',textalign_options_2_a.innerText);
     });
 
     //-------------------------3----------------------------
@@ -1233,7 +1232,7 @@ function function_BasicSetup(element){
     textalign_options_3.appendChild(textalign_options_3_a);
 
     textalign_options_3.addEventListener('click',function(){
-      tb(element,'ta',textalign_options_3_a.innerText);
+        tb(element,'ta',textalign_options_3_a.innerText);
     });
 
 
@@ -1255,23 +1254,23 @@ function function_BasicSetup(element){
 
     textalign_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(textalign_options.style.display == 'block'){
+            if(textalign_options.style.display == 'block'){
 
-        textalign_options.style.display = 'none';
-          textalign_options_ul.style.display = 'none';
+                textalign_options.style.display = 'none';
+                textalign_options_ul.style.display = 'none';
 
-      }else{
+            }else{
 
-        textalign_options.style.display = 'block';
-          textalign_options_ul.style.display = 'block';
+                textalign_options.style.display = 'block';
+                textalign_options_ul.style.display = 'block';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
@@ -1299,17 +1298,17 @@ function function_BasicSetup(element){
     textdecoration_colordisplay.style.display = 'none';
     textdecoration_colordisplay.addEventListener('click',function(){
 
-      var colorpicker = document.getElementById('tdcp');
+        var colorpicker = document.getElementById('tdcp');
 
-      if(colorpicker.style.display == 'block'){
+        if(colorpicker.style.display == 'block'){
 
-        colorpicker.style.display = 'none';
+            colorpicker.style.display = 'none';
 
-      }else{
+        }else{
 
-        colorpicker.style.display = 'block';
+            colorpicker.style.display = 'block';
 
-      }
+        }
 
     });
 
@@ -1329,14 +1328,14 @@ function function_BasicSetup(element){
     textdecoration_colorpicker_input_rgba.setAttribute('placeholder','Color Rgba: ');
     textdecoration_colorpicker_input_rgba.setAttribute('id','tdcprgba');
     textdecoration_colorpicker_input_rgba.addEventListener('input',function(){
-    	Globals.pageHandler.userInterface.textToColorPickerColor(this,'text-decoration-color',element);
+        textToColorPickerColor(this,'text-decoration-color',element);
     });
 
     var textdecoration_colorpicker_input_hex = document.createElement('input');
     textdecoration_colorpicker_input_hex.setAttribute('placeholder','Color Hex: ');
     textdecoration_colorpicker_input_hex.setAttribute('id','tdcphex');
     textdecoration_colorpicker_input_hex.addEventListener('input',function(){
-    	Globals.pageHandler.userInterface.textToColorPickerColor(this,'text-decoration-color',element);
+        textToColorPickerColor(this,'text-decoration-color',element);
     });
 
     textdecoration_colorpicker.appendChild(textdecoration_colorpicker_box);
@@ -1360,7 +1359,7 @@ function function_BasicSetup(element){
     textdecoration_options_1.appendChild(textdecoration_options_1_a);
 
     textdecoration_options_1.addEventListener('click',function(){
-      tb(element,'td',textdecoration_options_1_a.innerText);
+        tb(element,'td',textdecoration_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -1378,7 +1377,7 @@ function function_BasicSetup(element){
     textdecoration_options_2.appendChild(textdecoration_options_2_a);
 
     textdecoration_options_2.addEventListener('click',function(){
-      tb(element,'td',textdecoration_options_2_a.innerText);
+        tb(element,'td',textdecoration_options_2_a.innerText);
     });
 
     //-------------------------3----------------------------
@@ -1396,7 +1395,7 @@ function function_BasicSetup(element){
     textdecoration_options_3.appendChild(textdecoration_options_3_a);
 
     textdecoration_options_3.addEventListener('click',function(){
-      tb(element,'td',textdecoration_options_3_a.innerText);
+        tb(element,'td',textdecoration_options_3_a.innerText);
     });
 
     //-------------------------4----------------------------
@@ -1414,7 +1413,7 @@ function function_BasicSetup(element){
     textdecoration_options_4.appendChild(textdecoration_options_4_a);
 
     textdecoration_options_4.addEventListener('click',function(){
-      tb(element,'td',textdecoration_options_4_a.innerText);
+        tb(element,'td',textdecoration_options_4_a.innerText);
     });
 
     //-------------------------5----------------------------
@@ -1433,7 +1432,7 @@ function function_BasicSetup(element){
     textdecoration_options_5.appendChild(textdecoration_options_5_a);
 
     textdecoration_options_5.addEventListener('click',function(){
-      tb(element,'td',textdecoration_options_5_a.innerText);
+        tb(element,'td',textdecoration_options_5_a.innerText);
     });
 
     //---------------TextDecoration Options End---------------------
@@ -1458,33 +1457,33 @@ function function_BasicSetup(element){
 
     textdecoration_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(textdecoration_options.style.display == 'block'){
+            if(textdecoration_options.style.display == 'block'){
 
-        textdecoration_options.style.display = 'none';
-          textdecoration_options_ul.style.display = 'none';
-            textdecoration_colordisplay.style.display = 'none';
+                textdecoration_options.style.display = 'none';
+                textdecoration_options_ul.style.display = 'none';
+                textdecoration_colordisplay.style.display = 'none';
 
-            textdecoration_selected_a_span.style.textAlign = '';
-            textdecoration_selected_a_span.style.fontSize = '';
-            textdecoration_selected_a_span.style.width = '';
+                textdecoration_selected_a_span.style.textAlign = '';
+                textdecoration_selected_a_span.style.fontSize = '';
+                textdecoration_selected_a_span.style.width = '';
 
-      }else{
+            }else{
 
-        textdecoration_options.style.display = 'block';
-          textdecoration_options_ul.style.display = 'block';
-            textdecoration_colordisplay.style.display = 'block';
+                textdecoration_options.style.display = 'block';
+                textdecoration_options_ul.style.display = 'block';
+                textdecoration_colordisplay.style.display = 'block';
 
-            textdecoration_selected_a_span.style.textAlign = 'Left';
-            textdecoration_selected_a_span.style.fontSize = '10px';
-            textdecoration_selected_a_span.style.width = '100px';
+                textdecoration_selected_a_span.style.textAlign = 'Left';
+                textdecoration_selected_a_span.style.fontSize = '10px';
+                textdecoration_selected_a_span.style.width = '100px';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
@@ -1523,7 +1522,7 @@ function function_BasicSetup(element){
     textdecorationstyle_options_1.appendChild(textdecorationstyle_options_1_a);
 
     textdecorationstyle_options_1.addEventListener('click',function(){
-      tb(element,'tds',textdecorationstyle_options_1_a.innerText);
+        tb(element,'tds',textdecorationstyle_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -1542,7 +1541,7 @@ function function_BasicSetup(element){
     textdecorationstyle_options_2.appendChild(textdecorationstyle_options_2_a);
 
     textdecorationstyle_options_2.addEventListener('click',function(){
-      tb(element,'tds',textdecorationstyle_options_2_a.innerText);
+        tb(element,'tds',textdecorationstyle_options_2_a.innerText);
     });
 
     //-------------------------3----------------------------
@@ -1561,7 +1560,7 @@ function function_BasicSetup(element){
     textdecorationstyle_options_3.appendChild(textdecorationstyle_options_3_a);
 
     textdecorationstyle_options_3.addEventListener('click',function(){
-      tb(element,'tds',textdecorationstyle_options_3_a.innerText);
+        tb(element,'tds',textdecorationstyle_options_3_a.innerText);
     });
 
     //-------------------------4----------------------------
@@ -1580,7 +1579,7 @@ function function_BasicSetup(element){
     textdecorationstyle_options_4.appendChild(textdecorationstyle_options_4_a);
 
     textdecorationstyle_options_4.addEventListener('click',function(){
-      tb(element,'tds',textdecorationstyle_options_4_a.innerText);
+        tb(element,'tds',textdecorationstyle_options_4_a.innerText);
     });
 
     //-------------------------5----------------------------
@@ -1600,7 +1599,7 @@ function function_BasicSetup(element){
     textdecorationstyle_options_5.appendChild(textdecorationstyle_options_5_a);
 
     textdecorationstyle_options_5.addEventListener('click',function(){
-      tb(element,'tds',textdecorationstyle_options_5_a.innerText);
+        tb(element,'tds',textdecorationstyle_options_5_a.innerText);
     });
 
     //---------------TextDecorationStyle Options End---------------------
@@ -1623,23 +1622,23 @@ function function_BasicSetup(element){
 
     textdecorationstyle_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(textdecorationstyle_options.style.display == 'block'){
+            if(textdecorationstyle_options.style.display == 'block'){
 
-        textdecorationstyle_options.style.display = 'none';
-          textdecorationstyle_options_ul.style.display = 'none';
+                textdecorationstyle_options.style.display = 'none';
+                textdecorationstyle_options_ul.style.display = 'none';
 
-      }else{
+            }else{
 
-        textdecorationstyle_options.style.display = 'block';
-          textdecorationstyle_options_ul.style.display = 'block';
+                textdecorationstyle_options.style.display = 'block';
+                textdecorationstyle_options_ul.style.display = 'block';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
@@ -1679,7 +1678,7 @@ function function_BasicSetup(element){
     borderradius_options_1.appendChild(borderradius_options_1_a);
 
     borderradius_options_1.addEventListener('click',function(){
-      tb(element,'br',borderradius_options_1_a.innerText);
+        tb(element,'br',borderradius_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -1696,7 +1695,7 @@ function function_BasicSetup(element){
     borderradius_options_2.appendChild(borderradius_options_2_a);
 
     borderradius_options_2.addEventListener('click',function(){
-      tb(element,'br',borderradius_options_2_a.innerText);
+        tb(element,'br',borderradius_options_2_a.innerText);
     });
 
     //-------------------------3----------------------------
@@ -1714,7 +1713,7 @@ function function_BasicSetup(element){
     borderradius_options_3.appendChild(borderradius_options_3_a);
 
     borderradius_options_3.addEventListener('click',function(){
-      tb(element,'br',borderradius_options_3_a.innerText);
+        tb(element,'br',borderradius_options_3_a.innerText);
     });
 
     //---------------BorderRadius Options End---------------------
@@ -1736,33 +1735,33 @@ function function_BasicSetup(element){
 
     borderradius_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(borderradius_options.style.display == 'block'){
+            if(borderradius_options.style.display == 'block'){
 
-        borderradius_options.style.display = 'none';
-          borderradius_options_ul.style.display = 'none';
-          borderradius_customedit.style.display = 'none';
-          borderradius_selected_a_span.style.textAlign = '';
+                borderradius_options.style.display = 'none';
+                borderradius_options_ul.style.display = 'none';
+                borderradius_customedit.style.display = 'none';
+                borderradius_selected_a_span.style.textAlign = '';
 
-      }else{
+            }else{
 
-        borderradius_options.style.display = 'block';
-          borderradius_options_ul.style.display = 'block';
-          borderradius_customedit.style.display = 'block';
-          borderradius_selected_a_span.style.textAlign = 'left';
+                borderradius_options.style.display = 'block';
+                borderradius_options_ul.style.display = 'block';
+                borderradius_customedit.style.display = 'block';
+                borderradius_selected_a_span.style.textAlign = 'left';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
     borderradius_customedit.addEventListener('keyup',function(){
-      borderradius_selected_a_span.innerText = 'Border Radius: ' + this.value+'px';
-      updateelement(element,'borderradius',this.value+'px');
+        borderradius_selected_a_span.innerText = 'Border Radius: ' + this.value+'px';
+        updateElement(element,'borderradius',this.value+'px');
     });
 
     //-----End BorderRadius------
@@ -1802,7 +1801,7 @@ function function_BasicSetup(element){
     bordersize_options_1.appendChild(bordersize_options_1_a);
 
     bordersize_options_1.addEventListener('click',function(){
-      tb(element,'bs',bordersize_options_1_a.innerText);
+        tb(element,'bs',bordersize_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -1820,7 +1819,7 @@ function function_BasicSetup(element){
     bordersize_options_2.appendChild(bordersize_options_2_a);
 
     bordersize_options_2.addEventListener('click',function(){
-      tb(element,'bs',bordersize_options_2_a.innerText);
+        tb(element,'bs',bordersize_options_2_a.innerText);
     });
 
     //-------------------------3----------------------------
@@ -1839,7 +1838,7 @@ function function_BasicSetup(element){
     bordersize_options_3.appendChild(bordersize_options_3_a);
 
     bordersize_options_3.addEventListener('click',function(){
-      tb(element,'bs',bordersize_options_3_a.innerText);
+        tb(element,'bs',bordersize_options_3_a.innerText);
     });
 
     //---------------BorderSize Options End---------------------
@@ -1861,33 +1860,33 @@ function function_BasicSetup(element){
 
     bordersize_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(bordersize_options.style.display == 'block'){
+            if(bordersize_options.style.display == 'block'){
 
-        bordersize_options.style.display = 'none';
-          bordersize_options_ul.style.display = 'none';
-          bordersize_customedit.style.display = 'none';
-          bordersize_selected_a_span.style.textAlign = '';
+                bordersize_options.style.display = 'none';
+                bordersize_options_ul.style.display = 'none';
+                bordersize_customedit.style.display = 'none';
+                bordersize_selected_a_span.style.textAlign = '';
 
-      }else{
+            }else{
 
-        bordersize_options.style.display = 'block';
-          bordersize_options_ul.style.display = 'block';
-          bordersize_customedit.style.display = 'block';
-          bordersize_selected_a_span.style.textAlign = 'left';
+                bordersize_options.style.display = 'block';
+                bordersize_options_ul.style.display = 'block';
+                bordersize_customedit.style.display = 'block';
+                bordersize_selected_a_span.style.textAlign = 'left';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
     bordersize_customedit.addEventListener('keyup',function(){
-      bordersize_selected_a_span.innerText = 'Border Size: ' + this.value+'px';
-      updateelement(element,'bordersize',this.value+'px');
+        bordersize_selected_a_span.innerText = 'Border Size: ' + this.value+'px';
+        updateElement(element,'bordersize',this.value+'px');
     });
 
     //-------End BorderSize--------
@@ -1924,7 +1923,7 @@ function function_BasicSetup(element){
     borderstyle_options_1.appendChild(borderstyle_options_1_a);
 
     borderstyle_options_1.addEventListener('click',function(){
-      tb(element,'bsty',borderstyle_options_1_a.innerText);
+        tb(element,'bsty',borderstyle_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -1942,7 +1941,7 @@ function function_BasicSetup(element){
     borderstyle_options_2.appendChild(borderstyle_options_2_a);
 
     borderstyle_options_2.addEventListener('click',function(){
-      tb(element,'bsty',borderstyle_options_2_a.innerText);
+        tb(element,'bsty',borderstyle_options_2_a.innerText);
     });
 
     //-------------------------3----------------------------
@@ -1960,7 +1959,7 @@ function function_BasicSetup(element){
     borderstyle_options_3.appendChild(borderstyle_options_3_a);
 
     borderstyle_options_3.addEventListener('click',function(){
-      tb(element,'bsty',borderstyle_options_3_a.innerText);
+        tb(element,'bsty',borderstyle_options_3_a.innerText);
     });
 
     //-------------------------4----------------------------
@@ -1978,7 +1977,7 @@ function function_BasicSetup(element){
     borderstyle_options_4.appendChild(borderstyle_options_4_a);
 
     borderstyle_options_4.addEventListener('click',function(){
-      tb(element,'bsty',borderstyle_options_4_a.innerText);
+        tb(element,'bsty',borderstyle_options_4_a.innerText);
     });
 
     //-------------------------5----------------------------
@@ -1996,7 +1995,7 @@ function function_BasicSetup(element){
     borderstyle_options_5.appendChild(borderstyle_options_5_a);
 
     borderstyle_options_5.addEventListener('click',function(){
-      tb(element,'bsty',borderstyle_options_5_a.innerText);
+        tb(element,'bsty',borderstyle_options_5_a.innerText);
     });
 
     //-------------------------6----------------------------
@@ -2014,7 +2013,7 @@ function function_BasicSetup(element){
     borderstyle_options_6.appendChild(borderstyle_options_6_a);
 
     borderstyle_options_6.addEventListener('click',function(){
-      tb(element,'bsty',borderstyle_options_6_a.innerText);
+        tb(element,'bsty',borderstyle_options_6_a.innerText);
     });
 
     //-------------------------7----------------------------
@@ -2032,7 +2031,7 @@ function function_BasicSetup(element){
     borderstyle_options_7.appendChild(borderstyle_options_7_a);
 
     borderstyle_options_7.addEventListener('click',function(){
-      tb(element,'bsty',borderstyle_options_7_a.innerText);
+        tb(element,'bsty',borderstyle_options_7_a.innerText);
     });
 
     //-------------------------8----------------------------
@@ -2051,7 +2050,7 @@ function function_BasicSetup(element){
     borderstyle_options_8.appendChild(borderstyle_options_8_a);
 
     borderstyle_options_8.addEventListener('click',function(){
-      tb(element,'bsty',borderstyle_options_8_a.innerText);
+        tb(element,'bsty',borderstyle_options_8_a.innerText);
     });
 
     //-------------------------9----------------------------
@@ -2069,7 +2068,7 @@ function function_BasicSetup(element){
     borderstyle_options_9.appendChild(borderstyle_options_9_a);
 
     borderstyle_options_9.addEventListener('click',function(){
-      tb(element,'bsty',borderstyle_options_9_a.innerText);
+        tb(element,'bsty',borderstyle_options_9_a.innerText);
     });
 
     //-------------------------10----------------------------
@@ -2088,7 +2087,7 @@ function function_BasicSetup(element){
     borderstyle_options_10.appendChild(borderstyle_options_10_a);
 
     borderstyle_options_10.addEventListener('click',function(){
-      tb(element,'bsty',borderstyle_options_10_a.innerText);
+        tb(element,'bsty',borderstyle_options_10_a.innerText);
     });
 
     //---------------BorderStyle Options End---------------------
@@ -2115,23 +2114,23 @@ function function_BasicSetup(element){
     //-----------------Event Handlers--------------------
     borderstyle_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(borderstyle_options.style.display == 'block'){
+            if(borderstyle_options.style.display == 'block'){
 
-        borderstyle_options.style.display = 'none';
-          borderstyle_options_ul.style.display = 'none';
+                borderstyle_options.style.display = 'none';
+                borderstyle_options_ul.style.display = 'none';
 
-      }else{
+            }else{
 
-        borderstyle_options.style.display = 'block';
-          borderstyle_options_ul.style.display = 'block';
+                borderstyle_options.style.display = 'block';
+                borderstyle_options_ul.style.display = 'block';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
@@ -2161,17 +2160,17 @@ function function_BasicSetup(element){
     boxshadow_colordisplay.style.display = 'none';
     boxshadow_colordisplay.addEventListener('click',function(){
 
-      var colorpicker = document.getElementById('boxscp');
+        var colorpicker = document.getElementById('boxscp');
 
-      if(colorpicker.style.display == 'block'){
+        if(colorpicker.style.display == 'block'){
 
-        colorpicker.style.display = 'none';
+            colorpicker.style.display = 'none';
 
-      }else{
+        }else{
 
-        colorpicker.style.display = 'block';
+            colorpicker.style.display = 'block';
 
-      }
+        }
 
     });
 
@@ -2191,14 +2190,14 @@ function function_BasicSetup(element){
     boxshadow_colorpicker_input_rgba.setAttribute('placeholder','Color Rgba: ');
     boxshadow_colorpicker_input_rgba.setAttribute('id','boxscprgba');
     boxshadow_colorpicker_input_rgba.addEventListener('input',function(){
-    	Globals.pageHandler.userInterface.textToColorPickerColor(this,'box-shadow-color',element);
+        textToColorPickerColor(this,'box-shadow-color',element);
     });
 
     var boxshadow_colorpicker_input_hex = document.createElement('input');
     boxshadow_colorpicker_input_hex.setAttribute('placeholder','Color Hex: ');
     boxshadow_colorpicker_input_hex.setAttribute('id','boxscphex');
     boxshadow_colorpicker_input_hex.addEventListener('input',function(){
-    	Globals.pageHandler.userInterface.textToColorPickerColor(this,'box-shadow-color',element);
+        textToColorPickerColor(this,'box-shadow-color',element);
     });
 
     boxshadow_colorpicker.appendChild(boxshadow_colorpicker_box);
@@ -2220,31 +2219,31 @@ function function_BasicSetup(element){
 
     boxshadow_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(boxshadow_customedit.style.display == 'block'){
+            if(boxshadow_customedit.style.display == 'block'){
 
-          boxshadow_customedit.style.display = 'none';
-          boxshadow_selected_a_span.style.opacity = '1';
-          boxshadow_colordisplay.style.display = 'none';
+                boxshadow_customedit.style.display = 'none';
+                boxshadow_selected_a_span.style.opacity = '1';
+                boxshadow_colordisplay.style.display = 'none';
 
-      }else{
+            }else{
 
-          boxshadow_customedit.style.display = 'block';
-          boxshadow_selected_a_span.style.opacity = '0';
-          boxshadow_colordisplay.style.display = 'block';
+                boxshadow_customedit.style.display = 'block';
+                boxshadow_selected_a_span.style.opacity = '0';
+                boxshadow_colordisplay.style.display = 'block';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
     boxshadow_customedit.addEventListener('keyup',function(){
-      boxshadow_selected_a_span.innerText = 'Box Shadow: ' + this.value;
-      updateelement(element,'boxshadow',this.value);
+        boxshadow_selected_a_span.innerText = 'Box Shadow: ' + this.value;
+        updateElement(element,'boxshadow',this.value);
 
     });
 
@@ -2286,7 +2285,7 @@ function function_BasicSetup(element){
     display_options_1.appendChild(display_options_1_a);
 
     display_options_1.addEventListener('click',function(){
-      tb(element,'d',display_options_1_a.innerText);
+        tb(element,'d',display_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -2304,7 +2303,7 @@ function function_BasicSetup(element){
     display_options_2.appendChild(display_options_2_a);
 
     display_options_2.addEventListener('click',function(){
-      tb(element,'d',display_options_2_a.innerText);
+        tb(element,'d',display_options_2_a.innerText);
     });
 
     //-------------------------3----------------------------
@@ -2322,7 +2321,7 @@ function function_BasicSetup(element){
     display_options_3.appendChild(display_options_3_a);
 
     display_options_3.addEventListener('click',function(){
-      tb(element,'d',display_options_3_a.innerText);
+        tb(element,'d',display_options_3_a.innerText);
     });
 
     //-------------------------4----------------------------
@@ -2340,7 +2339,7 @@ function function_BasicSetup(element){
     display_options_4.appendChild(display_options_4_a);
 
     display_options_4.addEventListener('click',function(){
-      tb(element,'d',display_options_4_a.innerText);
+        tb(element,'d',display_options_4_a.innerText);
     });
 
     //-------------------------5----------------------------
@@ -2358,7 +2357,7 @@ function function_BasicSetup(element){
     display_options_5.appendChild(display_options_5_a);
 
     display_options_5.addEventListener('click',function(){
-      tb(element,'d',display_options_5_a.innerText);
+        tb(element,'d',display_options_5_a.innerText);
     });
 
     //-------------------------6----------------------------
@@ -2376,7 +2375,7 @@ function function_BasicSetup(element){
     display_options_6.appendChild(display_options_6_a);
 
     display_options_6.addEventListener('click',function(){
-      tb(element,'d',display_options_6_a.innerText);
+        tb(element,'d',display_options_6_a.innerText);
     });
 
     //-------------------------7----------------------------
@@ -2394,7 +2393,7 @@ function function_BasicSetup(element){
     display_options_7.appendChild(display_options_7_a);
 
     display_options_7.addEventListener('click',function(){
-      tb(element,'d',display_options_7_a.innerText);
+        tb(element,'d',display_options_7_a.innerText);
     });
 
     //-------------------------8----------------------------
@@ -2412,7 +2411,7 @@ function function_BasicSetup(element){
     display_options_8.appendChild(display_options_8_a);
 
     display_options_8.addEventListener('click',function(){
-      tb(element,'d',display_options_8_a.innerText);
+        tb(element,'d',display_options_8_a.innerText);
     });
 
     //-------------------------9----------------------------
@@ -2430,7 +2429,7 @@ function function_BasicSetup(element){
     display_options_9.appendChild(display_options_9_a);
 
     display_options_9.addEventListener('click',function(){
-      tb(element,'d',display_options_9_a.innerText);
+        tb(element,'d',display_options_9_a.innerText);
     });
 
     //-------------------------10----------------------------
@@ -2448,7 +2447,7 @@ function function_BasicSetup(element){
     display_options_10.appendChild(display_options_10_a);
 
     display_options_10.addEventListener('click',function(){
-      tb(element,'d',display_options_10_a.innerText);
+        tb(element,'d',display_options_10_a.innerText);
     });
 
     //-------------------------11----------------------------
@@ -2466,7 +2465,7 @@ function function_BasicSetup(element){
     display_options_11.appendChild(display_options_11_a);
 
     display_options_11.addEventListener('click',function(){
-      tb(element,'d',display_options_11_a.innerText);
+        tb(element,'d',display_options_11_a.innerText);
     });
 
     //-------------------------12----------------------------
@@ -2484,7 +2483,7 @@ function function_BasicSetup(element){
     display_options_12.appendChild(display_options_12_a);
 
     display_options_12.addEventListener('click',function(){
-      tb(element,'d',display_options_12_a.innerText);
+        tb(element,'d',display_options_12_a.innerText);
     });
 
     //-------------------------13----------------------------
@@ -2502,7 +2501,7 @@ function function_BasicSetup(element){
     display_options_13.appendChild(display_options_13_a);
 
     display_options_13.addEventListener('click',function(){
-      tb(element,'d',display_options_13_a.innerText);
+        tb(element,'d',display_options_13_a.innerText);
     });
 
     //-------------------------14----------------------------
@@ -2520,7 +2519,7 @@ function function_BasicSetup(element){
     display_options_14.appendChild(display_options_14_a);
 
     display_options_14.addEventListener('click',function(){
-      tb(element,'d',display_options_14_a.innerText);
+        tb(element,'d',display_options_14_a.innerText);
     });
 
     //-------------------------15----------------------------
@@ -2538,7 +2537,7 @@ function function_BasicSetup(element){
     display_options_15.appendChild(display_options_15_a);
 
     display_options_15.addEventListener('click',function(){
-      tb(element,'d',display_options_15_a.innerText);
+        tb(element,'d',display_options_15_a.innerText);
     });
 
     //-------------------------16----------------------------
@@ -2556,7 +2555,7 @@ function function_BasicSetup(element){
     display_options_16.appendChild(display_options_16_a);
 
     display_options_16.addEventListener('click',function(){
-      tb(element,'d',display_options_16_a.innerText);
+        tb(element,'d',display_options_16_a.innerText);
     });
 
     //-------------------------17----------------------------
@@ -2574,7 +2573,7 @@ function function_BasicSetup(element){
     display_options_17.appendChild(display_options_17_a);
 
     display_options_17.addEventListener('click',function(){
-      tb(element,'d',display_options_17_a.innerText);
+        tb(element,'d',display_options_17_a.innerText);
     });
 
     //-------------------------18----------------------------
@@ -2592,7 +2591,7 @@ function function_BasicSetup(element){
     display_options_18.appendChild(display_options_18_a);
 
     display_options_18.addEventListener('click',function(){
-      tb(element,'d',display_options_18_a.innerText);
+        tb(element,'d',display_options_18_a.innerText);
     });
 
     //-------------------------19----------------------------
@@ -2610,7 +2609,7 @@ function function_BasicSetup(element){
     display_options_19.appendChild(display_options_19_a);
 
     display_options_19.addEventListener('click',function(){
-      tb(element,'d',display_options_19_a.innerText);
+        tb(element,'d',display_options_19_a.innerText);
     });
 
     //-------------------------20----------------------------
@@ -2628,7 +2627,7 @@ function function_BasicSetup(element){
     display_options_20.appendChild(display_options_20_a);
 
     display_options_20.addEventListener('click',function(){
-      tb(element,'d',display_options_20_a.innerText);
+        tb(element,'d',display_options_20_a.innerText);
     });
 
     //-------------------------21----------------------------
@@ -2647,7 +2646,7 @@ function function_BasicSetup(element){
     display_options_21.appendChild(display_options_21_a);
 
     display_options_21.addEventListener('click',function(){
-      tb(element,'d',display_options_21_a.innerText);
+        tb(element,'d',display_options_21_a.innerText);
     });
 
     //---------------Display Options End---------------------
@@ -2686,23 +2685,23 @@ function function_BasicSetup(element){
 
     display_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(display_options.style.display == 'block'){
+            if(display_options.style.display == 'block'){
 
-        display_options.style.display = 'none';
-          display_options_ul.style.display = 'none';
+                display_options.style.display = 'none';
+                display_options_ul.style.display = 'none';
 
-      }else{
+            }else{
 
-        display_options.style.display = 'block';
-          display_options_ul.style.display = 'block';
+                display_options.style.display = 'block';
+                display_options_ul.style.display = 'block';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
@@ -2740,29 +2739,29 @@ function function_BasicSetup(element){
 
     opacity_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(opacity_customedit.style.display == 'block'){
+            if(opacity_customedit.style.display == 'block'){
 
-          opacity_customedit.style.display = 'none';
-          opacity_selected_a_span.style.textAlign = '';
+                opacity_customedit.style.display = 'none';
+                opacity_selected_a_span.style.textAlign = '';
 
-      }else{
+            }else{
 
-          opacity_customedit.style.display = 'block';
-          opacity_selected_a_span.style.textAlign = 'left';
+                opacity_customedit.style.display = 'block';
+                opacity_selected_a_span.style.textAlign = 'left';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
     opacity_customedit.addEventListener('keyup',function(){
-      opacity_selected_a_span.innerText = 'Opacity: ' + this.value;
-      updateelement(element,'opacity',this.value);
+        opacity_selected_a_span.innerText = 'Opacity: ' + this.value;
+        updateElement(element,'opacity',this.value);
 
     });
 
@@ -2804,7 +2803,7 @@ function function_BasicSetup(element){
     whitespace_options_1.appendChild(whitespace_options_1_a);
 
     whitespace_options_1.addEventListener('click',function(){
-      tb(element,'ws',whitespace_options_1_a.innerText);
+        tb(element,'ws',whitespace_options_1_a.innerText);
     });
 
     //-------------------------2----------------------------
@@ -2821,7 +2820,7 @@ function function_BasicSetup(element){
     whitespace_options_2.appendChild(whitespace_options_2_a);
 
     whitespace_options_2.addEventListener('click',function(){
-      tb(element,'ws',whitespace_options_2_a.innerText);
+        tb(element,'ws',whitespace_options_2_a.innerText);
     });
 
     //-------------------------3----------------------------
@@ -2838,7 +2837,7 @@ function function_BasicSetup(element){
     whitespace_options_3.appendChild(whitespace_options_3_a);
 
     whitespace_options_3.addEventListener('click',function(){
-      tb(element,'ws',whitespace_options_3_a.innerText);
+        tb(element,'ws',whitespace_options_3_a.innerText);
     });
 
     //-------------------------4----------------------------
@@ -2855,7 +2854,7 @@ function function_BasicSetup(element){
     whitespace_options_4.appendChild(whitespace_options_4_a);
 
     whitespace_options_4.addEventListener('click',function(){
-      tb(element,'ws',whitespace_options_4_a.innerText);
+        tb(element,'ws',whitespace_options_4_a.innerText);
     });
 
     //-------------------------5----------------------------
@@ -2873,7 +2872,7 @@ function function_BasicSetup(element){
     whitespace_options_5.appendChild(whitespace_options_5_a);
 
     whitespace_options_5.addEventListener('click',function(){
-      tb(element,'ws',whitespace_options_5_a.innerText);
+        tb(element,'ws',whitespace_options_5_a.innerText);
     });
 
     //---------------WhiteSpace Options End---------------------
@@ -2907,23 +2906,23 @@ function function_BasicSetup(element){
 
     whitespace_selected_a_span.addEventListener('click',function(e){
 
-      if(e.target == this){
+        if(e.target == this){
 
-      if(whitespace_options.style.display == 'block'){
+            if(whitespace_options.style.display == 'block'){
 
-        whitespace_options.style.display = 'none';
-          whitespace_options_ul.style.display = 'none';
+                whitespace_options.style.display = 'none';
+                whitespace_options_ul.style.display = 'none';
 
-      }else{
+            }else{
 
-        whitespace_options.style.display = 'block';
-          whitespace_options_ul.style.display = 'block';
+                whitespace_options.style.display = 'block';
+                whitespace_options_ul.style.display = 'block';
 
-      }
+            }
 
-      }else{
+        }else{
 
-      }
+        }
 
     });
 
@@ -2951,19 +2950,19 @@ function function_BasicSetup(element){
     basicdiv.appendChild(whitespace);
 
     $('#panel').append(basicdiv);
-    Globals.pageHandler.userInterface.setupRotate(element);
-    Globals.pageHandler.userInterface.setupSkew(element);
-    Globals.pageHandler.userInterface.setupScale(element);
-    Globals.pageHandler.userInterface.setupSteps(element);
+    setupRotate(element);
+    setupSkew(element);
+    setupScale(element);
+    setupSteps(element);
     previewbox.appendChild(editbuttons);
 
     setTimeout(function(){
 
-      Globals.pageHandler.userInterface.setupColorPicker('fcpb','fcps','preview'+element,'font','fcd','fcprgba','fcphex');
-      Globals.pageHandler.userInterface.setupColorPicker('bgcpb','bgcps','preview'+element,'background','bgcd','bgcprgba','bgcphex');
-      Globals.pageHandler.userInterface.setupColorPicker('bcpb','bcps','preview'+element,'border','bcd','bcprgba','bcphex');
-      Globals.pageHandler.userInterface.setupColorPicker('tdcpb','tdcps','preview'+element,'textdecorationcolor','tdcd','tdcprgba','tdcphex');
-      Globals.pageHandler.userInterface.setupColorPicker('boxscpb','boxscps','preview'+element,'boxshadowcolor','boxscd','boxscprgba','boxscphex');
+        setupColorPicker('fcpb','fcps','preview'+element,'font','fcd','fcprgba','fcphex');
+        setupColorPicker('bgcpb','bgcps','preview'+element,'background','bgcd','bgcprgba','bgcphex');
+        setupColorPicker('bcpb','bcps','preview'+element,'border','bcd','bcprgba','bcphex');
+        setupColorPicker('tdcpb','tdcps','preview'+element,'textdecorationcolor','tdcd','tdcprgba','tdcphex');
+        setupColorPicker('boxscpb','boxscps','preview'+element,'boxshadowcolor','boxscd','boxscprgba','boxscphex');
 
-  },1000);
+    },1000);
 }

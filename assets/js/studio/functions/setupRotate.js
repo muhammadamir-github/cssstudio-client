@@ -1,4 +1,4 @@
-function function_setupRotate(element){
+function setupRotate(element){
     var rotatebox = document.createElement('div');
     rotatebox.setAttribute('id','rotatebox');
     rotatebox.style.display = 'block';
@@ -40,13 +40,13 @@ function function_setupRotate(element){
 
     rotatebox_slider_x.addEventListener('input',function(){
 
-      updateelement(element,'rotateX',this.value);
+        updateElement(element,'rotateX',this.value);
 
     });
 
     rotatebox_slider_y.addEventListener('input',function(){
 
-      updateelement(element,'rotateY',this.value);
+        updateElement(element,'rotateY',this.value);
 
     });
 

@@ -18,44 +18,44 @@ class ProfileHandler{
         document.getElementsByTagName('body')[0].appendChild(profiletabs);
 
         setTimeout(function(){
-          var tabs = document.getElementById('profileTabs').getElementsByTagName('ul')[0].getElementsByTagName('li');
+            var tabs = document.getElementById('profileTabs').getElementsByTagName('ul')[0].getElementsByTagName('li');
 
             for(var i=0; i < tabs.length; i++){
-              tabs[i].addEventListener('click',function(){
-                self.switchProfileTab(this);
-            });
+                tabs[i].addEventListener('click',function(){
+                    self.switchProfileTab(this);
+                });
             }
         },2000);
 
         if(window.location.href.includes('p=')){
-          if(window.location.href.includes('pi=')){
-            if(window.location.href.includes('pi2=')){
-              var pi = self.getParameter("pi");
-              var pi2 = self.getParameter("pi2");
-              paypal_sale(pi,pi2);
+            if(window.location.href.includes('pi=')){
+                if(window.location.href.includes('pi2=')){
+                    var pi = self.getParameter("pi");
+                    var pi2 = self.getParameter("pi2");
+                    paypal_sale(pi,pi2);
+                }
             }
-          }
         }
 
-          if(window.location.href.includes('plan=')){
+        if(window.location.href.includes('plan=')){
             if(window.location.href.includes('paymentId=')){
-              if(window.location.href.includes('token=')){
-                if(window.location.href.includes('PayerID=')){
-                  if(window.location.href.includes('ct=')){
-                    if(window.location.href.includes('c=')){
-                      var plan = self.getParameter("plan");
-                      var paymentId = self.getParameter("paymentId");
-                      var token = self.getParameter("token");
-                      var PayerID = self.getParameter("PayerID");
-                      var ct = self.getParameter("ct");
-                      var c = self.getParameter("c");
-                      Globals.paypalHandler.paypal_execute(paymentId,PayerID,token,plan,ct,c);
+                if(window.location.href.includes('token=')){
+                    if(window.location.href.includes('PayerID=')){
+                        if(window.location.href.includes('ct=')){
+                            if(window.location.href.includes('c=')){
+                                var plan = self.getParameter("plan");
+                                var paymentId = self.getParameter("paymentId");
+                                var token = self.getParameter("token");
+                                var PayerID = self.getParameter("PayerID");
+                                var ct = self.getParameter("ct");
+                                var c = self.getParameter("c");
+                                Globals.paypalHandler.paypal_execute(paymentId,PayerID,token,plan,ct,c);
+                            }
+                        }
                     }
-                  }
                 }
-              }
             }
-          }
+        }
 
         String.prototype.capitalize = function() {
             return this.charAt(0).toUpperCase() + this.slice(1);
@@ -97,10 +97,10 @@ class ProfileHandler{
 
         var membershipExpiresAt = document.createElement('li');
         if(moment(self.data.expires_at).isBefore(moment())){
-          membershipExpiresAt.innerText = 'Your ' + self.data.plan + ' plan expired on '+ exat + '.';
-          Globals.membershipHandler.notice('plan-expired',exat);
+            membershipExpiresAt.innerText = 'Your ' + self.data.plan + ' plan expired on '+ exat + '.';
+            Globals.membershipHandler.notice('plan-expired',exat);
         }else{
-          membershipExpiresAt.innerText = 'Your ' + self.data.plan + ' plan will expire on '+ exat + '.';
+            membershipExpiresAt.innerText = 'Your ' + self.data.plan + ' plan will expire on '+ exat + '.';
         }
 
 
@@ -114,18 +114,18 @@ class ProfileHandler{
         upgrade_account.setAttribute('id','upgbtn');
         upgrade_account.innerText = 'Upgrade Account';
         upgrade_account.addEventListener('click',function(){
-          document.getElementById('upgp').style.display = "block";
-          setTimeout(function(){
-            document.getElementById('upgp').style.opacity = 1;
+            document.getElementById('upgp').style.display = "block";
+            setTimeout(function(){
+                document.getElementById('upgp').style.opacity = 1;
 
-            general.style.opacity = '0.5';
-            history.style.opacity = '0.5';
-            basic.style.opacity = '0.5';
+                general.style.opacity = '0.5';
+                history.style.opacity = '0.5';
+                basic.style.opacity = '0.5';
 
-            general.style.pointerEvents = 'none';
-            history.style.pointerEvents = 'none';
-            basic.style.pointerEvents = 'none';
-          },450);
+                general.style.pointerEvents = 'none';
+                history.style.pointerEvents = 'none';
+                basic.style.pointerEvents = 'none';
+            },450);
 
         });
 
@@ -178,36 +178,36 @@ class ProfileHandler{
 
         var orangebutton = document.createElement('orangebutton');
         orangebutton.addEventListener('click',function(){
-          self.update();
+            self.update();
         });
         orangebutton.innerText = 'Update';
 
         emailinput_input.addEventListener('click',function(){
-          this.style.border = '1px solid #e67300';
-          passwordinput_input.style.border = '1px solid black';
-          usernameinput_input.style.border = '1px solid black';
-          phoneinput_input.style.border = '1px solid black';
+            this.style.border = '1px solid #e67300';
+            passwordinput_input.style.border = '1px solid black';
+            usernameinput_input.style.border = '1px solid black';
+            phoneinput_input.style.border = '1px solid black';
         });
 
         usernameinput_input.addEventListener('click',function(){
-          this.style.border = '1px solid #e67300';
-          passwordinput_input.style.border = '1px solid black';
-          emailinput_input.style.border = '1px solid black';
-          phoneinput_input.style.border = '1px solid black';
+            this.style.border = '1px solid #e67300';
+            passwordinput_input.style.border = '1px solid black';
+            emailinput_input.style.border = '1px solid black';
+            phoneinput_input.style.border = '1px solid black';
         });
 
         passwordinput_input.addEventListener('click',function(){
-          this.style.border = '1px solid #e67300';
-          emailinput_input.style.border = '1px solid black';
-          usernameinput_input.style.border = '1px solid black';
-          phoneinput_input.style.border = '1px solid black';
+            this.style.border = '1px solid #e67300';
+            emailinput_input.style.border = '1px solid black';
+            usernameinput_input.style.border = '1px solid black';
+            phoneinput_input.style.border = '1px solid black';
         });
 
         phoneinput_input.addEventListener('click',function(){
-          this.style.border = '1px solid #e67300';
-          emailinput_input.style.border = '1px solid black';
-          usernameinput_input.style.border = '1px solid black';
-          passwordinput_input.style.border = '1px solid black';
+            this.style.border = '1px solid #e67300';
+            emailinput_input.style.border = '1px solid black';
+            usernameinput_input.style.border = '1px solid black';
+            passwordinput_input.style.border = '1px solid black';
         });
 
         updateprofile.appendChild(emailinput);
@@ -250,14 +250,14 @@ class ProfileHandler{
         var tablebody = document.createElement('tbody');
 
         for(var i=0; i < self.data.activity.length; i++){
-        	var tr = document.createElement('tr');
-        	var th1 = document.createElement('td');
-        	var th2 = document.createElement('td');
-        	th1.innerText = self.data.activity[i].type;
-        	th2.innerText = moment(moment.utc(self.data.activity[i].created_at)).fromNow();//.local().format("dddd, MMMM Do YYYY, h:mm:ss a");
-        	tr.appendChild(th1);
-        	tr.appendChild(th2);
-        	tablebody.appendChild(tr);
+            var tr = document.createElement('tr');
+            var th1 = document.createElement('td');
+            var th2 = document.createElement('td');
+            th1.innerText = self.data.activity[i].type;
+            th2.innerText = moment(moment.utc(self.data.activity[i].created_at)).fromNow();//.local().format("dddd, MMMM Do YYYY, h:mm:ss a");
+            tr.appendChild(th1);
+            tr.appendChild(th2);
+            tablebody.appendChild(tr);
         }
 
         table.appendChild(tablebody);
@@ -301,27 +301,27 @@ class ProfileHandler{
         var table2body = document.createElement('tbody');
 
         for(var i=0; i < self.data.loginhistory.length; i++){
-          var tr = document.createElement('tr');
-          var th1 = document.createElement('td');
-          var th2 = document.createElement('td');
-          var th3 = document.createElement('td');
+            var tr = document.createElement('tr');
+            var th1 = document.createElement('td');
+            var th2 = document.createElement('td');
+            var th3 = document.createElement('td');
 
-          var th2ip = document.createElement('span');
-          th2ip.innerText = self.data.loginhistory[i].country;
+            var th2ip = document.createElement('span');
+            th2ip.innerText = self.data.loginhistory[i].country;
 
-          var flag = document.createElement('img');
+            var flag = document.createElement('img');
 
-          //self.getIpFlag(self.data.loginhistory[i].ip_address,flag);
+            //self.getIpFlag(self.data.loginhistory[i].ip_address,flag);
 
-          th1.innerText = self.data.loginhistory[i].ip_address;
-          th2.appendChild(flag);
-          th2.appendChild(th2ip);
-          flag.src = self.data.loginhistory[i].flag;
-          th3.innerText = moment(moment.utc(self.data.loginhistory[i].created_at)).fromNow();//.local().format("dddd, MMMM Do YYYY, h:mm:ss a");
-          tr.appendChild(th1);
-          tr.appendChild(th2);
-          tr.appendChild(th3);
-          table2body.appendChild(tr);
+            th1.innerText = self.data.loginhistory[i].ip_address;
+            th2.appendChild(flag);
+            th2.appendChild(th2ip);
+            flag.src = self.data.loginhistory[i].flag;
+            th3.innerText = moment(moment.utc(self.data.loginhistory[i].created_at)).fromNow();//.local().format("dddd, MMMM Do YYYY, h:mm:ss a");
+            tr.appendChild(th1);
+            tr.appendChild(th2);
+            tr.appendChild(th3);
+            table2body.appendChild(tr);
         }
 
         table2.appendChild(table2body);
@@ -333,7 +333,7 @@ class ProfileHandler{
         deactivatebtn.setAttribute('class','dactbtn');
         deactivatebtn.innerText = "Deactivate Account";
         deactivatebtn.addEventListener('click',function(){
-          self.deactivateacc();
+            self.deactivateacc();
         });
 
         var deactivate_warning = document.createElement('p');
@@ -349,17 +349,17 @@ class ProfileHandler{
         var upgradeplanclose = document.createElement('i');
         upgradeplanclose.setAttribute('class','fas fa-times close');
         upgradeplanclose.addEventListener('click',function(){
-          upgradeplan.style.opacity = 0;
-          setTimeout(function(){
-            upgradeplan.style.display = "none";
-            general.style.opacity = '1';
-            history.style.opacity = '1';
-            basic.style.opacity = '1';
+            upgradeplan.style.opacity = 0;
+            setTimeout(function(){
+                upgradeplan.style.display = "none";
+                general.style.opacity = '1';
+                history.style.opacity = '1';
+                basic.style.opacity = '1';
 
-            general.style.pointerEvents = 'unset';
-            history.style.pointerEvents = 'unset';
-            basic.style.pointerEvents = 'unset';
-          },750);
+                general.style.pointerEvents = 'unset';
+                history.style.pointerEvents = 'unset';
+                basic.style.pointerEvents = 'unset';
+            },750);
         });
 
         upgradeplan.appendChild(upgradeplanclose);
@@ -392,33 +392,33 @@ class ProfileHandler{
         document.getElementById('upgp').style.opacity = '1';
 
         if(window.location.href.includes('p=')){
-          if(window.location.href.includes('pi=')){
-            if(window.location.href.includes('pi2=')){
-              var pi = self.getParameter("pi");
-              var pi2 = self.getParameter("pi2");
-              paypal_sale(pi,pi2);
+            if(window.location.href.includes('pi=')){
+                if(window.location.href.includes('pi2=')){
+                    var pi = self.getParameter("pi");
+                    var pi2 = self.getParameter("pi2");
+                    paypal_sale(pi,pi2);
+                }
             }
-          }
         }
 
         if(window.location.href.includes('plan=')){
-          if(window.location.href.includes('paymentId=')){
-            if(window.location.href.includes('token=')){
-              if(window.location.href.includes('PayerID=')){
-                if(window.location.href.includes('ct=')){
-                  if(window.location.href.includes('c=')){
-                    var plan = self.getParameter("plan");
-                    var paymentId = self.getParameter("paymentId");
-                    var token = self.getParameter("token");
-                    var PayerID = self.getParameter("PayerID");
-                    var ct = self.getParameter("ct");
-                    var c = self.getParameter("c");
-                    Globals.paypalHandler.paypal_execute(paymentId,PayerID,token,plan,ct,c);
-                  }
+            if(window.location.href.includes('paymentId=')){
+                if(window.location.href.includes('token=')){
+                    if(window.location.href.includes('PayerID=')){
+                        if(window.location.href.includes('ct=')){
+                            if(window.location.href.includes('c=')){
+                                var plan = self.getParameter("plan");
+                                var paymentId = self.getParameter("paymentId");
+                                var token = self.getParameter("token");
+                                var PayerID = self.getParameter("PayerID");
+                                var ct = self.getParameter("ct");
+                                var c = self.getParameter("c");
+                                Globals.paypalHandler.paypal_execute(paymentId,PayerID,token,plan,ct,c);
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
         }
     }
 
@@ -448,10 +448,10 @@ class ProfileHandler{
     ip(){
         const self = this;
         $.ajax({
-    		url:'https://api.ipify.org/?format=json',
-    		type:'get',
-    		success: self.country,
-    	});
+            url:'https://api.ipify.org/?format=json',
+            type:'get',
+            success: self.country,
+        });
     }
 
     async country(data){
@@ -504,15 +504,15 @@ class ProfileHandler{
         history.style.display = 'none';
 
         for(var i=0; i < tabs.length; i++){
-          tabs[i].style.color = 'black';
+            tabs[i].style.color = 'black';
         }
 
         if(tabName == 'General'){
-          general.style.display = 'block';
+            general.style.display = 'block';
         }else{
-          if(tabName == 'History'){
-            history.style.display = 'block';
-          }
+            if(tabName == 'History'){
+                history.style.display = 'block';
+            }
         }
 
         e.style.color = '#e67300';

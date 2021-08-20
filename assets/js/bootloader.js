@@ -83,22 +83,22 @@ class BootLoader{
         const route = pageName === "profile" || pageName === "studio" ? "me" : pageName === "billing" ? "me/payments" : pageName === "notifications" ? "me/notifications" : pageName === "storage" ? "me/storage" : pageName === "support" ? "me/tickets" : "";
         const response = await Globals.api.request({ route: route, method: "get" });
         //if(response.success === true){
-            const isMember = Globals.membershipHandler.checkIfIsMember(response.data.success.expires_at);
-            if(isMember === true){
-                Globals.pageHandler = pageName === "profile" ? new ProfileHandler(response.data.success) : pageName === "billing" ? new BillingHandler(response.data.success) : pageName === "notifications" ? new NotificationsHandler(response.data.success) : pageName === "storage" ? new StorageHandler(response.data.success) : pageName === "support" ? new SupportHandler(response.data.success) : pageName === "studio" ? new StudioHandler(response.data.success) : null;
-                Globals.paypalHandler = pageName === "profile" ? new PaypalHandler(response.data.success) : null;
+        const isMember = Globals.membershipHandler.checkIfIsMember(response.data.success.expires_at);
+        if(isMember === true){
+            Globals.pageHandler = pageName === "profile" ? new ProfileHandler(response.data.success) : pageName === "billing" ? new BillingHandler(response.data.success) : pageName === "notifications" ? new NotificationsHandler(response.data.success) : pageName === "storage" ? new StorageHandler(response.data.success) : pageName === "support" ? new SupportHandler(response.data.success) : pageName === "studio" ? new StudioHandler(response.data.success) : null;
+            Globals.paypalHandler = pageName === "profile" ? new PaypalHandler(response.data.success) : null;
 
-                Globals.sideBar = new SideBar(pageName);
-                Globals.pageHandler.setup();
-            }else{
-                Globals.pageHandler.planExpired();
-            }
+            Globals.sideBar = new SideBar(pageName);
+            Globals.pageHandler.setup();
+        }else{
+            Globals.pageHandler.planExpired();
+        }
 
-            self.loader.hide();
+        self.loader.hide();
         /*}else{
-            if(pageName !== "login"){
-                window.location.href = '../login/';
-            }
-        }*/
+        if(pageName !== "login"){
+        window.location.href = '../login/';
     }
+}*/
+}
 }

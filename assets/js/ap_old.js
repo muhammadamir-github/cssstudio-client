@@ -41,7 +41,7 @@ users_box.appendChild(total_user_logins_this_month);
 //----------------------
 
 var sales_box = document.createElement('box');
-sales_box.setAttribute('class','sales_box'); 
+sales_box.setAttribute('class','sales_box');
 
 var total_sales = document.createElement('p');
 total_sales.setAttribute('class','t_s');
@@ -173,19 +173,19 @@ supporticketbox.setAttribute('class','supporticketbox');
 
 var total_supporttickets = document.createElement('p');
 total_supporttickets.setAttribute('class','t_st');
-total_supporttickets.innerText = 'Total Support Tickets: ' + response.success.tickets; 
+total_supporttickets.innerText = 'Total Support Tickets: ' + response.success.tickets;
 
 var total_supporttickets_this_month = document.createElement('p');
 total_supporttickets_this_month.setAttribute('class','t_st_t_m');
-total_supporttickets_this_month.innerText = response.success.tickets_this_month + ' Tickets were opened this month.'; 
+total_supporttickets_this_month.innerText = response.success.tickets_this_month + ' Tickets were opened this month.';
 
 var total_supporttickets_open = document.createElement('p');
 total_supporttickets_open.setAttribute('class','t_st_o');
-total_supporttickets_open.innerText = 'Tickets Open: ' + response.success.tickets_open; 
+total_supporttickets_open.innerText = 'Tickets Open: ' + response.success.tickets_open;
 
 var total_supporttickets_closed = document.createElement('p');
 total_supporttickets_closed.setAttribute('class','t_st_c');
-total_supporttickets_closed.innerText = 'Tickets Closed: ' + response.success.tickets_closed; 
+total_supporttickets_closed.innerText = 'Tickets Closed: ' + response.success.tickets_closed;
 
 supporticketbox.appendChild(total_supporttickets);
 supporticketbox.appendChild(total_supporttickets_this_month);

@@ -46,28 +46,28 @@ class NotificationsHandler{
         var tablebody = document.createElement('tbody');
 
         for(var i=0; i < self.data.notifications.length; i++){
-          var tr = document.createElement('tr');
-          tr.setAttribute('data-tid', self.data.notifications[i].id);
+            var tr = document.createElement('tr');
+            tr.setAttribute('data-tid', self.data.notifications[i].id);
 
-          var th1 = document.createElement('td');
-          th1.style.textAlign = "left";
-          th1.style.paddingLeft = '10px';
-          var th2 = document.createElement('td');
-          th2.style.textAlign = "left";
-          th2.style.paddingLeft = '10px';
-          th2.style.verticalAlign = 'top'
+            var th1 = document.createElement('td');
+            th1.style.textAlign = "left";
+            th1.style.paddingLeft = '10px';
+            var th2 = document.createElement('td');
+            th2.style.textAlign = "left";
+            th2.style.paddingLeft = '10px';
+            th2.style.verticalAlign = 'top'
 
-          th1.innerText = self.data.notifications[i].notification;
+            th1.innerText = self.data.notifications[i].notification;
 
-          var datetimetext = moment.utc(self.data.notifications[i].created_at).local().format("dddd, MMMM Do YYYY, h:mm:ss a");
-          var datetimeobjmoment = moment.utc(self.data.notifications[i].created_at);
+            var datetimetext = moment.utc(self.data.notifications[i].created_at).local().format("dddd, MMMM Do YYYY, h:mm:ss a");
+            var datetimeobjmoment = moment.utc(self.data.notifications[i].created_at);
 
-          th2.innerText =  moment(datetimeobjmoment).fromNow();
+            th2.innerText =  moment(datetimeobjmoment).fromNow();
 
-          tr.appendChild(th1);
-          tr.appendChild(th2);
+            tr.appendChild(th1);
+            tr.appendChild(th2);
 
-          tablebody.appendChild(tr);
+            tablebody.appendChild(tr);
         }
 
         notificationstable.appendChild(tablebody);

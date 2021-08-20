@@ -10,28 +10,28 @@ export default class NotificationHandler{
         notification_message.innerText = text;
 
         if(text.includes('saved') || text.includes('Saved')){
-          notification_heading.innerText = 'Saved';
-          notification_heading.style.color = 'Green';
-          notification.style.border = '2px solid Green';
+            notification_heading.innerText = 'Saved';
+            notification_heading.style.color = 'Green';
+            notification.style.border = '2px solid Green';
         }
 
         if(text.includes('successfully') || ('Successfully')){
-          notification_heading.innerText = 'Success';
-          notification_heading.style.color = 'Green';
-          notification.style.border = '2px solid Green';
+            notification_heading.innerText = 'Success';
+            notification_heading.style.color = 'Green';
+            notification.style.border = '2px solid Green';
         }
 
         if(text.includes('error') || text.includes('Error')){
-          notification_heading.innerText = 'Error';
-          notification_heading.style.color = 'DarkRed';
-          notification.style.border = '2px solid DarkRed';
+            notification_heading.innerText = 'Error';
+            notification_heading.style.color = 'DarkRed';
+            notification.style.border = '2px solid DarkRed';
         }
 
         notification.appendChild(notification_heading);
         notification.appendChild(notification_message);
 
         notification.addEventListener('click',function(){
-          this.remove();
+            this.remove();
         });
 
         $('body').append(notification);

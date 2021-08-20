@@ -12,9 +12,9 @@ class PaypalHandler{
         referralcode.setAttribute('class','refcode');
         referralcode.setAttribute('maxlength','8');
         referralcode.addEventListener('input',function(){
-          if(this.value.length == '8'){
-            self.checkReferralCode(this.value);
-          }
+            if(this.value.length == '8'){
+                self.checkReferralCode(this.value);
+            }
         });
 
         var bronzeplan = document.createElement('membershipplan');
@@ -43,28 +43,28 @@ class PaypalHandler{
         diamondplan.appendChild(diamondplan_price);
 
         bronzeplan.addEventListener('click',function(){
-          silverplan.classList.remove('selectedplan');
-          goldplan.classList.remove('selectedplan');
-          diamondplan.classList.remove('selectedplan');
-          this.classList.add('selectedplan');
+            silverplan.classList.remove('selectedplan');
+            goldplan.classList.remove('selectedplan');
+            diamondplan.classList.remove('selectedplan');
+            this.classList.add('selectedplan');
         });
         silverplan.addEventListener('click',function(){
-          bronzeplan.classList.remove('selectedplan');
-          goldplan.classList.remove('selectedplan');
-          diamondplan.classList.remove('selectedplan');
-          this.classList.add('selectedplan');
+            bronzeplan.classList.remove('selectedplan');
+            goldplan.classList.remove('selectedplan');
+            diamondplan.classList.remove('selectedplan');
+            this.classList.add('selectedplan');
         });
         goldplan.addEventListener('click',function(){
-          bronzeplan.classList.remove('selectedplan');
-          silverplan.classList.remove('selectedplan');
-          diamondplan.classList.remove('selectedplan');
-          this.classList.add('selectedplan');
+            bronzeplan.classList.remove('selectedplan');
+            silverplan.classList.remove('selectedplan');
+            diamondplan.classList.remove('selectedplan');
+            this.classList.add('selectedplan');
         });
         diamondplan.addEventListener('click',function(){
-          bronzeplan.classList.remove('selectedplan');
-          silverplan.classList.remove('selectedplan');
-          goldplan.classList.remove('selectedplan');
-          this.classList.add('selectedplan');
+            bronzeplan.classList.remove('selectedplan');
+            silverplan.classList.remove('selectedplan');
+            goldplan.classList.remove('selectedplan');
+            this.classList.add('selectedplan');
         });
 
 
@@ -275,48 +275,48 @@ class PaypalHandler{
         var custombtn = document.createElement('button');
         custombtn.innerText = 'Purchase Plan';
         custombtn.addEventListener('click',function(){
-          self.paypal_link($(document.getElementsByClassName('selectedplan')[0]).attr('data-plan'));
+            self.paypal_link($(document.getElementsByClassName('selectedplan')[0]).attr('data-plan'));
         });
 
         document.getElementById('upgp').appendChild(referralcode);
 
         if(self.data.plan == 'Bronze'){
-          silverplan.setAttribute('class','selectedplan');
-          document.getElementById('upgp').appendChild(silverplan);
-          document.getElementById('upgp').appendChild(goldplan);
-          document.getElementById('upgp').appendChild(diamondplan);
+            silverplan.setAttribute('class','selectedplan');
+            document.getElementById('upgp').appendChild(silverplan);
+            document.getElementById('upgp').appendChild(goldplan);
+            document.getElementById('upgp').appendChild(diamondplan);
         }
 
         if(self.data.plan == 'Silver'){
-          goldplan.setAttribute('class','selectedplan');
-          document.getElementById('upgp').appendChild(goldplan);
-          document.getElementById('upgp').appendChild(diamondplan);
+            goldplan.setAttribute('class','selectedplan');
+            document.getElementById('upgp').appendChild(goldplan);
+            document.getElementById('upgp').appendChild(diamondplan);
         }
 
         if(self.data.plan == 'Gold'){
-          diamondplan.setAttribute('class','selectedplan');
-          document.getElementById('upgp').appendChild(diamondplan);
+            diamondplan.setAttribute('class','selectedplan');
+            document.getElementById('upgp').appendChild(diamondplan);
         }
 
         if(self.data.plan == 'Diamond'){
-          ads_p.innerText = 'You have upgraded your account to diamond plan already.';
-          ads_p.style.fontSize = '20px';
+            ads_p.innerText = 'You have upgraded your account to diamond plan already.';
+            ads_p.style.fontSize = '20px';
 
-          custombtn.addEventListener('click',function(){
-            //console.log('upgraded to max already');
-          });
+            custombtn.addEventListener('click',function(){
+                //console.log('upgraded to max already');
+            });
 
-          custombtn.style.display = 'none';
-          custombtn.style.pointerEvents = 'none';
-          referralcode.remove();
+            custombtn.style.display = 'none';
+            custombtn.style.pointerEvents = 'none';
+            referralcode.remove();
         }
 
         if(self.data.plan == 'Free'){
-          bronzeplan.setAttribute('class','selectedplan');
-          document.getElementById('upgp').appendChild(bronzeplan);
-          document.getElementById('upgp').appendChild(silverplan);
-          document.getElementById('upgp').appendChild(goldplan);
-          document.getElementById('upgp').appendChild(diamondplan);
+            bronzeplan.setAttribute('class','selectedplan');
+            document.getElementById('upgp').appendChild(bronzeplan);
+            document.getElementById('upgp').appendChild(silverplan);
+            document.getElementById('upgp').appendChild(goldplan);
+            document.getElementById('upgp').appendChild(diamondplan);
         }
 
         document.getElementById('upgp').appendChild(custombtn);
@@ -343,9 +343,9 @@ class PaypalHandler{
         var code = '';
 
         if(referralcode.value.length == '8'){
-          if(referralcode.style.pointerEvents == 'none'){
-            code = referralcode.value;
-          }
+            if(referralcode.style.pointerEvents == 'none'){
+                code = referralcode.value;
+            }
         }
 
         const response = await Globals.api.request({ route: "me/payment/create", method: "post", data: { 'p': p, 'code': code }, });
@@ -378,24 +378,24 @@ class PaypalHandler{
         setInterval(function(){self.updatePaymentStatus('Processing');},1000);
 
         if(ct == '' || ct == null || ct == ' ' || c == '' || c == null || c == ' '){
-          ct = 'none';
-          c = 'none';
+            ct = 'none';
+            c = 'none';
         }
 
-          var route = 'me/payment/'+plan+'/'+ct+'/'+c+'/execute';
-          const response = await Globals.api.request({ route: route, method: "post", data: { 'token': t, 'payId': payID, 'payerID': payerID }, });
-          if(response.success === true){
-              if(response.data.message == 'success'){
-                  window.location.href = 'https://www.cssstudio.co/profile/?p=t&pi='+response.data.data.si+'&pi2='+response.data.data.pi;
-              }
+        var route = 'me/payment/'+plan+'/'+ct+'/'+c+'/execute';
+        const response = await Globals.api.request({ route: route, method: "post", data: { 'token': t, 'payId': payID, 'payerID': payerID }, });
+        if(response.success === true){
+            if(response.data.message == 'success'){
+                window.location.href = 'https://www.cssstudio.co/profile/?p=t&pi='+response.data.data.si+'&pi2='+response.data.data.pi;
+            }
 
-              if(response.data.message == 'already executed.'){
-                  payment_p.innerText = 'Error occured while executing your payment. Please open a support ticket.';
-                  setTimeout(function(){
-                      window.location.href = 'https://www.cssstudio.co/profile/'
-                  },5000);
-              }
-          }
+            if(response.data.message == 'already executed.'){
+                payment_p.innerText = 'Error occured while executing your payment. Please open a support ticket.';
+                setTimeout(function(){
+                    window.location.href = 'https://www.cssstudio.co/profile/'
+                },5000);
+            }
+        }
     }
 
     async paypal_sale(pid,pid2){
@@ -434,15 +434,15 @@ class PaypalHandler{
         var payment_p = payment.getElementsByTagName('p')[0];
 
         if(payment_p.innerText == step+' your payment.'){
-          payment_p.innerText = step+' your payment..';
+            payment_p.innerText = step+' your payment..';
         }else{
-          if(payment_p.innerText == step+' your payment..'){
-             payment_p.innerText = step+' your payment...';
-          }else{
-            if(payment_p.innerText == step+' your payment...'){
-              payment_p.innerText = step+' your payment.';
+            if(payment_p.innerText == step+' your payment..'){
+                payment_p.innerText = step+' your payment...';
+            }else{
+                if(payment_p.innerText == step+' your payment...'){
+                    payment_p.innerText = step+' your payment.';
+                }
             }
-          }
         }
     }
 
@@ -504,34 +504,34 @@ class PaypalHandler{
         var membershipplans = document.getElementsByTagName('membershipplan');
 
         for(var i = 0; i < membershipplans.length; i++){
-          var price = membershipplans[i].getElementsByTagName('span')[0];
+            var price = membershipplans[i].getElementsByTagName('span')[0];
 
-          var discounted_price = document.createElement('span');
+            var discounted_price = document.createElement('span');
 
-          if(price.innerText == '4.99 $'){
-            discounted_price.innerText = '3.75 $';
-          }
+            if(price.innerText == '4.99 $'){
+                discounted_price.innerText = '3.75 $';
+            }
 
-          if(price.innerText == '9.99 $'){
-            discounted_price.innerText = '7.50 $';
-          }
+            if(price.innerText == '9.99 $'){
+                discounted_price.innerText = '7.50 $';
+            }
 
-          if(price.innerText == '19.99 $'){
-            discounted_price.innerText = '14.99 $';
-          }
+            if(price.innerText == '19.99 $'){
+                discounted_price.innerText = '14.99 $';
+            }
 
-          if(price.innerText == '44.99 $'){
-            discounted_price.innerText = '33.75 $';
-          }
+            if(price.innerText == '44.99 $'){
+                discounted_price.innerText = '33.75 $';
+            }
 
-          discounted_price.style.top = '35px';
-          discounted_price.style.background = 'darkgreen';
-          discounted_price.style.textDecoration = 'none';
+            discounted_price.style.top = '35px';
+            discounted_price.style.background = 'darkgreen';
+            discounted_price.style.textDecoration = 'none';
 
-          price.style.background = 'darkred';
-          price.style.textDecoration = 'line-through';
+            price.style.background = 'darkred';
+            price.style.textDecoration = 'line-through';
 
-          membershipplans[i].appendChild(discounted_price);
+            membershipplans[i].appendChild(discounted_price);
         }
     }
 }

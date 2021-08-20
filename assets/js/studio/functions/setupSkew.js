@@ -1,4 +1,4 @@
-function function_setupSkew(element){
+function setupSkew(element){
     var skewbox = document.createElement('div');
     skewbox.setAttribute('id','skewbox');
     skewbox.style.display = 'block';
@@ -40,13 +40,13 @@ function function_setupSkew(element){
 
     skewbox_slider_x.addEventListener('input',function(){
 
-      updateelement(element,'skewX',this.value);
+        updateElement(element,'skewX',this.value);
 
     });
 
     skewbox_slider_y.addEventListener('input',function(){
 
-      updateelement(element,'skewY',this.value);
+        updateElement(element,'skewY',this.value);
 
     });
 

@@ -61,39 +61,39 @@ class BillingHandler{
         var tablebody = document.createElement('tbody');
 
         for(var i=0; i < self.data.payments.length; i++){
-          var tr = document.createElement('tr');
-          var th1 = document.createElement('td');
-          var th2 = document.createElement('td');
-          var th3 = document.createElement('td');
-          var th4 = document.createElement('td');
-          var th3icon = document.createElement('i');
-          th3icon.style.fontSize = '30px';
-          th1.innerText = 'Purchased ' + self.data.payments[i].product;
-          th2.innerText = self.data.payments[i].amount + '$';
+            var tr = document.createElement('tr');
+            var th1 = document.createElement('td');
+            var th2 = document.createElement('td');
+            var th3 = document.createElement('td');
+            var th4 = document.createElement('td');
+            var th3icon = document.createElement('i');
+            th3icon.style.fontSize = '30px';
+            th1.innerText = 'Purchased ' + self.data.payments[i].product;
+            th2.innerText = self.data.payments[i].amount + '$';
 
-          if(self.data.payments[i].method == 'paypal'){
-            th3icon.setAttribute('class','fab fa-paypal');
-          }
+            if(self.data.payments[i].method == 'paypal'){
+                th3icon.setAttribute('class','fab fa-paypal');
+            }
 
-          if(self.data.payments[i].method == 'card'){
-            th3icon.setAttribute('class','fab fa-cc-visa');
+            if(self.data.payments[i].method == 'card'){
+                th3icon.setAttribute('class','fab fa-cc-visa');
 
-            var th3icon2 = document.createElement('i');
-            th3icon2.setAttribute('class','fab fa-cc-mastercard');
-            th3icon2.style.fontSize = '30px';
-            th3icon.style.marginLeft = '5px';
-            th3.appendChild(th3icon2);
-          }
-          var datetimetext = moment.utc(self.data.payments[i].created_at).local().format("dddd, MMMM Do YYYY, h:mm:ss a");
-          var datetimeobjmoment = moment.utc(self.data.payments[i].created_at);
-          var now = moment.utc();
-          th4.innerText =  moment(datetimeobjmoment).fromNow();
-          tr.appendChild(th1);
-          tr.appendChild(th2);
-          tr.appendChild(th3);
-          th3.appendChild(th3icon);
-          tr.appendChild(th4);
-          tablebody.appendChild(tr);
+                var th3icon2 = document.createElement('i');
+                th3icon2.setAttribute('class','fab fa-cc-mastercard');
+                th3icon2.style.fontSize = '30px';
+                th3icon.style.marginLeft = '5px';
+                th3.appendChild(th3icon2);
+            }
+            var datetimetext = moment.utc(self.data.payments[i].created_at).local().format("dddd, MMMM Do YYYY, h:mm:ss a");
+            var datetimeobjmoment = moment.utc(self.data.payments[i].created_at);
+            var now = moment.utc();
+            th4.innerText =  moment(datetimeobjmoment).fromNow();
+            tr.appendChild(th1);
+            tr.appendChild(th2);
+            tr.appendChild(th3);
+            th3.appendChild(th3icon);
+            tr.appendChild(th4);
+            tablebody.appendChild(tr);
         }
 
         table.appendChild(tablebody);
@@ -111,7 +111,7 @@ class BillingHandler{
         Globals.membershipHandler.notice('plan-expired',exatExpiry);
 
         setTimeout(function(){
-        window.location.href = '../profile/';
+            window.location.href = '../profile/';
         },7500);
 
         document.getElementsByTagName('head')[0].innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/notice.css">';

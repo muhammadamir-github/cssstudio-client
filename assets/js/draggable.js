@@ -26,7 +26,7 @@ class previewsite_draggable{
 
     element.style.top = top + "px";
     element.style.left = left + "px";
-    body.style.cursor = 'grabbing';
+    Globals.window.body.style.cursor = 'grabbing';
     element.style.cursor = 'grabbing';
 
     elementPosition.style.display = 'block';
@@ -49,12 +49,12 @@ class previewsite_draggable{
       if(e.target == element){
 
         element.style.transform = 'unset';
-        element.removeEventListener('click',site.elementClicked);
-        element.removeEventListener('contextmenu',site.elementClicked);
+        element.removeEventListener('click',Globals.pageHandler.site.elementClicked);
+        element.removeEventListener('contextmenu',Globals.pageHandler.site.elementClicked);
         e = e || window.event;
         e.preventDefault();
 
-        body.style.cursor = 'grab';
+        Globals.window.body.style.cursor = 'grab';
         element.style.cursor = 'grab';
 
         // get the mouse cursor position at startup:
@@ -94,13 +94,13 @@ class previewsite_draggable{
     document.onmousemove = null;
     document.onclick = null;
 
-    body.style.cursor = 'default';
+    Globals.window.body.style.cursor = 'default';
     element.style.cursor = 'default';
-    element.addEventListener('click',site.elementClicked);
-    element.addEventListener('contextmenu',site.elementClicked);
+    element.addEventListener('click',Globals.pageHandler.site.elementClicked);
+    element.addEventListener('contextmenu',Globals.pageHandler.site.elementClicked);
 
-    ui.hideCenterLines('horizontal');
-    ui.hideCenterLines('vertical');
+    Globals.pageHandler.userInterface.hideCenterLines('horizontal');
+    Globals.pageHandler.userInterface.hideCenterLines('vertical');
   }
 
   calculateCenterPosition(){
@@ -121,15 +121,15 @@ class previewsite_draggable{
     page_centerY = verticalCenterLineIndicator.offsetTop + verticalCenterLineIndicator.offsetHeight / 2;
 
     if(detectOverlap(element, verticalCenterLineIndicator)) {
-        ui.showCenterLines('vertical');
+        Globals.pageHandler.userInterface.showCenterLines('vertical');
     }else{
-        ui.hideCenterLines('vertical');
+        Globals.pageHandler.userInterface.hideCenterLines('vertical');
     }
 
     if(detectOverlap(element, horizontalCenterLineIndicator)) {
-       ui.showCenterLines('horizontal');
+       Globals.pageHandler.userInterface.showCenterLines('horizontal');
     }else{
-       ui.hideCenterLines('horizontal');
+       Globals.pageHandler.userInterface.hideCenterLines('horizontal');
     }
 
     detectBorderTouch(element);
@@ -262,7 +262,7 @@ class previewsite_resizeable{
 
     disable(){
         $('.eResizer').remove();
-        document.documentElement.removeEventListener('mousemove', resizeable.resizeDrag, false);    
+        document.documentElement.removeEventListener('mousemove', resizeable.resizeDrag, false);
         document.documentElement.removeEventListener('mouseup', resizeable.stopResizeDrag, false);
     }
 
@@ -317,10 +317,10 @@ class previewsite_resizeable{
     }
 
     stopResizeDrag(e){
-      document.documentElement.removeEventListener('mousemove', resizeable.resizeDrag, false);    
+      document.documentElement.removeEventListener('mousemove', resizeable.resizeDrag, false);
       document.documentElement.removeEventListener('mouseup', resizeable.stopResizeDrag, false);
     }
-    
+
 }
 
 var resizeable = new previewsite_resizeable;

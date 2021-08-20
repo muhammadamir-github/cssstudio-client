@@ -15,7 +15,7 @@ class SupportHandler{
 
         var tickets = document.createElement('div');
         tickets.setAttribute('class','tkts');
-
+        
         var ticketsHeading = document.createElement('h6');
         ticketsHeading.innerText = 'Your Tickets';
         ticketsHeading.style.top = '0px';
@@ -52,49 +52,49 @@ class SupportHandler{
         var tablebody = document.createElement('tbody');
 
         for(var i=0; i < self.data.tickets.length; i++){
-          var tr = document.createElement('tr');
-          tr.setAttribute('data-tid',self.data.tickets[i].id);
+            var tr = document.createElement('tr');
+            tr.setAttribute('data-tid',self.data.tickets[i].id);
 
-          if(self.data.tickets[i].status == 'Open'){
+            if(self.data.tickets[i].status == 'Open'){
 
-          tr.addEventListener('click',function(){
-            document.getElementsByTagName('replyticket')[0].style.opacity = 1;
-            document.getElementsByTagName('replyticket')[0].style.zIndex = 3;
-            document.getElementsByTagName('replyticket')[0].style.display = "block";
-            document.getElementsByTagName('replyticket')[0].setAttribute('data-tid',$(this).attr('data-tid'));
-            document.getElementsByClassName('tkts')[0].style.opacity = 0.5;
-            document.getElementsByClassName('tkts')[0].style.pointerEvents = "none";
-            document.getElementsByClassName('ntkt')[0].style.opacity = 0.5;
-            document.getElementsByClassName('ntkt')[0].style.pointerEvents = "none";
-            self.getreplies($(this).attr('data-tid'));
-          });
+                tr.addEventListener('click',function(){
+                    document.getElementsByTagName('replyticket')[0].style.opacity = 1;
+                    document.getElementsByTagName('replyticket')[0].style.zIndex = 3;
+                    document.getElementsByTagName('replyticket')[0].style.display = "block";
+                    document.getElementsByTagName('replyticket')[0].setAttribute('data-tid',$(this).attr('data-tid'));
+                    document.getElementsByClassName('tkts')[0].style.opacity = 0.5;
+                    document.getElementsByClassName('tkts')[0].style.pointerEvents = "none";
+                    document.getElementsByClassName('ntkt')[0].style.opacity = 0.5;
+                    document.getElementsByClassName('ntkt')[0].style.pointerEvents = "none";
+                    self.getreplies($(this).attr('data-tid'));
+                });
 
-          }else{
+            }else{
 
-            tr.style.opacity = '0.3';
-            tr.style.pointerEvents = 'none';
+                tr.style.opacity = '0.3';
+                tr.style.pointerEvents = 'none';
 
-          }
+            }
 
-          var th1 = document.createElement('td');
-          var th2 = document.createElement('td');
-          var th3 = document.createElement('td');
-          var th4 = document.createElement('td');
+            var th1 = document.createElement('td');
+            var th2 = document.createElement('td');
+            var th3 = document.createElement('td');
+            var th4 = document.createElement('td');
 
-          th1.innerText = self.data.tickets[i].id;
-          th2.innerText = self.data.tickets[i].topic + " ("+self.data.tickets[i].category+")";
-          th3.innerText = self.data.tickets[i].status;
+            th1.innerText = self.data.tickets[i].id;
+            th2.innerText = self.data.tickets[i].topic + " ("+self.data.tickets[i].category+")";
+            th3.innerText = self.data.tickets[i].status;
 
-          var datetimetext = moment.utc(self.data.tickets[i].created_at).local().format("dddd, MMMM Do YYYY, h:mm:ss a");
-          var datetimeobjmoment = moment.utc(self.data.tickets[i].created_at);
+            var datetimetext = moment.utc(self.data.tickets[i].created_at).local().format("dddd, MMMM Do YYYY, h:mm:ss a");
+            var datetimeobjmoment = moment.utc(self.data.tickets[i].created_at);
 
-          th4.innerText =  moment(datetimeobjmoment).fromNow();
+            th4.innerText =  moment(datetimeobjmoment).fromNow();
 
-          tr.appendChild(th1);
-          tr.appendChild(th2);
-          tr.appendChild(th3);
-          tr.appendChild(th4);
-          tablebody.appendChild(tr);
+            tr.appendChild(th1);
+            tr.appendChild(th2);
+            tr.appendChild(th3);
+            tr.appendChild(th4);
+            tablebody.appendChild(tr);
         }
 
         ticketstable.appendChild(tablebody);
@@ -135,7 +135,7 @@ class SupportHandler{
         categories_options_1.appendChild(categories_options_1_a);
 
         categories_options_1_a.addEventListener('click',function(){
-          self.changeCategory(categories_options_1_a.innerText);
+            self.changeCategory(categories_options_1_a.innerText);
         });
 
         //-------------------------2----------------------------
@@ -153,7 +153,7 @@ class SupportHandler{
         categories_options_2.appendChild(categories_options_2_a);
 
         categories_options_2_a.addEventListener('click',function(){
-          self.changeCategory(categories_options_2_a.innerText);
+            self.changeCategory(categories_options_2_a.innerText);
         });
 
         //-------------------------3----------------------------
@@ -171,7 +171,7 @@ class SupportHandler{
         categories_options_3.appendChild(categories_options_3_a);
 
         categories_options_3_a.addEventListener('click',function(){
-          self.changeCategory(categories_options_3_a.innerText);
+            self.changeCategory(categories_options_3_a.innerText);
         });
 
         //-------------------------4----------------------------
@@ -189,7 +189,7 @@ class SupportHandler{
         categories_options_4.appendChild(categories_options_4_a);
 
         categories_options_4_a.addEventListener('click',function(){
-          self.changeCategory(categories_options_4_a.innerText);
+            self.changeCategory(categories_options_4_a.innerText);
         });
 
         //-------------------------5----------------------------
@@ -207,7 +207,7 @@ class SupportHandler{
         categories_options_5.appendChild(categories_options_5_a);
 
         categories_options_5_a.addEventListener('click',function(){
-          self.changeCategory(categories_options_5_a.innerText);
+            self.changeCategory(categories_options_5_a.innerText);
         });
 
         //-------------------------6----------------------------
@@ -226,7 +226,7 @@ class SupportHandler{
         categories_options_6.appendChild(categories_options_6_a);
 
         categories_options_6_a.addEventListener('click',function(){
-          self.changeCategory(categories_options_6_a.innerText);
+            self.changeCategory(categories_options_6_a.innerText);
         });
 
         //---------------Category Options End---------------------
@@ -251,25 +251,25 @@ class SupportHandler{
 
         categories_selected_a_span.addEventListener('click',function(e){
 
-          if(e.target == this){
+            if(e.target == this){
 
-          if(categories_options.style.display == 'block'){
+                if(categories_options.style.display == 'block'){
 
-            categories_options.style.display = 'none';
-              categories_options_ul.style.display = 'none';
-              categories_selected_a_span.style.textAlign = '';
+                    categories_options.style.display = 'none';
+                    categories_options_ul.style.display = 'none';
+                    categories_selected_a_span.style.textAlign = '';
 
-          }else{
+                }else{
 
-            categories_options.style.display = 'block';
-              categories_options_ul.style.display = 'block';
-              categories_selected_a_span.style.textAlign = 'left';
+                    categories_options.style.display = 'block';
+                    categories_options_ul.style.display = 'block';
+                    categories_selected_a_span.style.textAlign = 'left';
 
-          }
+                }
 
-          }else{
+            }else{
 
-          }
+            }
 
         });
 
@@ -301,7 +301,7 @@ class SupportHandler{
         messageinput_input.style.overflowY = 'scroll';
         messageinput_input.value = "Describe your issue in less than 100 words here...";
         messageinput_input.addEventListener('input',function(){
-          //console.log(countWords(this.value));
+            //console.log(countWords(this.value));
         });
 
         var newticketbutton = document.createElement('button');
@@ -309,7 +309,7 @@ class SupportHandler{
         newticketbutton_i.setAttribute('class','fab fa-telegram-plane');
         newticketbutton.innerText = 'Create New Ticket';
         newticketbutton.addEventListener('click',function(){
-          self.addticket();
+            self.addticket();
         });
         newticketbutton.appendChild(newticketbutton_i);
 
@@ -334,7 +334,7 @@ class SupportHandler{
         var replyticketbutton = document.createElement('button');
         replyticketbutton.innerText = 'Send';
         replyticketbutton.addEventListener('click',function(){
-          self.reply($(replyticket).attr('data-tid'));
+            self.reply($(replyticket).attr('data-tid'));
         });
 
         var replyticketclose = document.createElement('i');
@@ -450,20 +450,20 @@ class SupportHandler{
         var topic = message.substring(0,40);
 
         if(self.countWords(message) == 0){
-          Globals.notificationHandler.new('Error, please describe your issue.');
+            Globals.notificationHandler.new('Error, please describe your issue.');
         }else{
-          if(self.countWords(message) > 100){
-            Globals.notificationHandler.new('Error, you can only describe your issue in 100 words.You have exceeded this limit by '+(self.countWords(message) - 100)+' words.');
-          }else{
-              const response = await Globals.api.request({ route: 'me/tickets/reply', method: "post", data: { 'topic': topic+"...", 'category': category, 'message': message } });
-              if(response.success === true){
-                  if(response.message == 'New ticket opened successfully.'){
-                      location.reload(true);
-                  }
-              }else{
-                  Globals.notificationHandler.new('An error occured, please try again later.');
-              }
-          }
+            if(self.countWords(message) > 100){
+                Globals.notificationHandler.new('Error, you can only describe your issue in 100 words.You have exceeded this limit by '+(self.countWords(message) - 100)+' words.');
+            }else{
+                const response = await Globals.api.request({ route: 'me/tickets/reply', method: "post", data: { 'topic': topic+"...", 'category': category, 'message': message } });
+                if(response.success === true){
+                    if(response.message == 'New ticket opened successfully.'){
+                        location.reload(true);
+                    }
+                }else{
+                    Globals.notificationHandler.new('An error occured, please try again later.');
+                }
+            }
         }
     }
 

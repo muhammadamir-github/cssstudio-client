@@ -9,14 +9,14 @@ class ElementStyleChanger{
 		var curvedBorder = document.createElement("curvedborder");
 
 		var heading = document.createElement('p');
-        heading.innerText = 'Element Styles';
-        heading.className = 'heading';
+		heading.innerText = 'Element Styles';
+		heading.className = 'heading';
 
-        close = document.createElement('i');
-        close.setAttribute('class','fas fa-times close');
-        close.addEventListener('click',function(){
-            elementStyles.close();
-        });
+		close = document.createElement('i');
+		close.setAttribute('class','fas fa-times close');
+		close.addEventListener('click',function(){
+			elementStyles.close();
+		});
 
 		stylesDiv.addEventListener("mousedown",elementStyles.mousedown);
 
@@ -25,7 +25,7 @@ class ElementStyleChanger{
 
 		stylesDiv.appendChild(curvedBorder);
 		stylesDiv.appendChild(heading);
-        stylesDiv.appendChild(close);
+		stylesDiv.appendChild(close);
 
 		var stylesCategories = ["Colors","Designs"];
 		var stylesCategoriesIcons = ["fas fa-palette","fas fa-pencil-ruler"];
@@ -54,9 +54,9 @@ class ElementStyleChanger{
 			stylesDiv.appendChild(previews);
 		}
 
-        stylesDiv.appendChild(categories);
+		stylesDiv.appendChild(categories);
 
-		body.appendChild(stylesDiv);
+		Globals.window.body.appendChild(stylesDiv);
 
 		elementStyles.getStyles(elementType);
 	}
@@ -65,112 +65,112 @@ class ElementStyleChanger{
 		$('.styles-category-selected').removeClass("styles-category-selected");
 		category.classList.add("styles-category-selected");
 
-	    var tabToSwitch = category.getAttribute("data-category");
-	    var allTabs = document.getElementsByTagName("styles")[0].getElementsByTagName("previews");
+		var tabToSwitch = category.getAttribute("data-category");
+		var allTabs = document.getElementsByTagName("styles")[0].getElementsByTagName("previews");
 
-	    for(var i=0; i<allTabs.length; i++){
-	    	if(allTabs[i].getAttribute("data-category") == tabToSwitch){
-	    		allTabs[i].style.display = "block";
-	    	}else{
-	    		allTabs[i].style.display = "none";
-	    	}
-	    }
+		for(var i=0; i<allTabs.length; i++){
+			if(allTabs[i].getAttribute("data-category") == tabToSwitch){
+				allTabs[i].style.display = "block";
+			}else{
+				allTabs[i].style.display = "none";
+			}
+		}
 	}
 
 	getStyles(elementType){
-	  var token = localStorage.getItem('auth');
+		var token = localStorage.getItem('auth');
 
-	  var createPreviewElement = 0;
-	  var isColor = 0;
+		var createPreviewElement = 0;
+		var isColor = 0;
 
-	  if(elementType.includes("checkbox")){
-	  	elementType = "checkbox";
-	  }else{
-	  	if(elementType.includes("toggle-switch")){
-	  	  elementType = "toggle-switch";
-	    }else{
-	    	if(elementType.includes("dropdown-list")){
-	  	      elementType = "dropdown-list";
-	        }
-	    }
-	  }
+		if(elementType.includes("checkbox")){
+			elementType = "checkbox";
+		}else{
+			if(elementType.includes("toggle-switch")){
+				elementType = "toggle-switch";
+			}else{
+				if(elementType.includes("dropdown-list")){
+					elementType = "dropdown-list";
+				}
+			}
+		}
 
-      $.ajax({
-        url: 'http://localhost:8000/api/me/elementStyles/'+elementType,
-        type: 'GET',
-        beforeSend: function(request){
-          request.setRequestHeader('Authorization','Bearer '+token);
-          request.setRequestHeader('Accept', 'application/json');
-        },
-        success: function(response){
-          var styles = response;
-          var allPreviews = document.getElementsByTagName("styles")[0].getElementsByTagName("previews");
+		$.ajax({
+			url: 'http://localhost:8000/api/me/elementStyles/'+elementType,
+			type: 'GET',
+			beforeSend: function(request){
+				request.setRequestHeader('Authorization','Bearer '+token);
+				request.setRequestHeader('Accept', 'application/json');
+			},
+			success: function(response){
+				var styles = response;
+				var allPreviews = document.getElementsByTagName("styles")[0].getElementsByTagName("previews");
 
-          var previews;
+				var previews;
 
-          elementStyles.switchTab(document.getElementsByTagName("styles")[0].getElementsByClassName("styles-categories")[0].getElementsByClassName("styles-category")[0]);
+				elementStyles.switchTab(document.getElementsByTagName("styles")[0].getElementsByClassName("styles-categories")[0].getElementsByClassName("styles-category")[0]);
 
-          for(var i=0; i<styles.length; i++){
-        	var stylePreview = document.createElement("stylePreview");
-        	stylePreview.id = "style-"+randomize.elementId(50);
+				for(var i=0; i<styles.length; i++){
+					var stylePreview = document.createElement("stylePreview");
+					stylePreview.id = "style-"+randomize.elementId(50);
 
-        	if(styles[i].category == "colors"){
-        		isColor = 1;
-        	}
+					if(styles[i].category == "colors"){
+						isColor = 1;
+					}
 
-        	// Picking suitable previews tab according to style category
+					// Picking suitable previews tab according to style category
 
-        	var categoryToMatch;
+					var categoryToMatch;
 
-        	if(isColor == 1){
-        		categoryToMatch = "Colors";
-        	}else{
-        		categoryToMatch = "Designs";
-        	}
+					if(isColor == 1){
+						categoryToMatch = "Colors";
+					}else{
+						categoryToMatch = "Designs";
+					}
 
-        	for(var o=0; o<allPreviews.length; o++){
-        		if(allPreviews[o].getAttribute("data-category") == categoryToMatch){
-        			previews = allPreviews[o];
-        		}
-        	}
+					for(var o=0; o<allPreviews.length; o++){
+						if(allPreviews[o].getAttribute("data-category") == categoryToMatch){
+							previews = allPreviews[o];
+						}
+					}
 
-        	// --------------------------------------------
+					// --------------------------------------------
 
-        	if(createPreviewElement == 1){
+					if(createPreviewElement == 1){
 
-        	}else{
-        		if(isColor == 1){
-        			if(elementType.includes("checkbox")){
-        				stylePreview.style.backgroundColor = styles[i].attr[0].attributes.split(":")[1].replace(";","");
-        			}else{
-        				if(elementType.includes("toggle-switch")){
-        					stylePreview.style.backgroundColor = styles[i].attr[0].attributes.split(":")[1].replace(";","");
-        			    }else{
-        			    	if(elementType.includes("dropdown-list")){
-        			    		var color1 = styles[i].attr[0].attributes.split("data-option-bg-hv")[0].split(":")[1].replace(" ","").replace(";","");
-        			    		var color2 = styles[i].attr[0].attributes.split("data-option-bg-clr")[0].split("data-option-bg-hv")[1].split(":")[1].replace(" ","").replace(";","");
+					}else{
+						if(isColor == 1){
+							if(elementType.includes("checkbox")){
+								stylePreview.style.backgroundColor = styles[i].attr[0].attributes.split(":")[1].replace(";","");
+							}else{
+								if(elementType.includes("toggle-switch")){
+									stylePreview.style.backgroundColor = styles[i].attr[0].attributes.split(":")[1].replace(";","");
+								}else{
+									if(elementType.includes("dropdown-list")){
+										var color1 = styles[i].attr[0].attributes.split("data-option-bg-hv")[0].split(":")[1].replace(" ","").replace(";","");
+										var color2 = styles[i].attr[0].attributes.split("data-option-bg-clr")[0].split("data-option-bg-hv")[1].split(":")[1].replace(" ","").replace(";","");
 
-        			    		stylePreview.style.backgroundColor = "unset";
+										stylePreview.style.backgroundColor = "unset";
 
-        			    		var backgroundGradientString = "-webkit-gradient(linear, left bottom, right top, color-stop(0%,"+color1+"), color-stop(49%, "+color1+"), color-stop(50%, "+color2+"), color-stop(100%, "+color2+"))";
-        			    	    stylePreview.style.background = backgroundGradientString;
-        			    	}
-        			    }
-        			}
-        		}
-        	}
+										var backgroundGradientString = "-webkit-gradient(linear, left bottom, right top, color-stop(0%,"+color1+"), color-stop(49%, "+color1+"), color-stop(50%, "+color2+"), color-stop(100%, "+color2+"))";
+										stylePreview.style.background = backgroundGradientString;
+									}
+								}
+							}
+						}
+					}
 
-        	(function(stylePreview,styles,i){
-        		stylePreview.addEventListener("click",function(e){
-        		    elementStyles.switchStyle(styles[i],e);
-        	    });
-        	})(stylePreview,styles,i);
+					(function(stylePreview,styles,i){
+						stylePreview.addEventListener("click",function(e){
+							elementStyles.switchStyle(styles[i],e);
+						});
+					})(stylePreview,styles,i);
 
-        	previews.appendChild(stylePreview);
-         }
+					previews.appendChild(stylePreview);
+				}
 
-        }
-      });
+			}
+		});
 	}
 
 	switchStyle(styleObj,e){
@@ -220,7 +220,7 @@ class ElementStyleChanger{
 
 			var allStyles = document.getElementsByTagName("styles")[0].getElementsByTagName("stylepreview");
 
-		    for(var o=0; o<allStyles.length; o++){
+			for(var o=0; o<allStyles.length; o++){
 				allStyles[o].classList.remove("selected");
 			}
 
@@ -233,44 +233,44 @@ class ElementStyleChanger{
 	}
 
 	drag(e){
-      var elmnt = document.getElementsByTagName('styles')[0];
-      e = e || window.event;
-      e.preventDefault();
+		var elmnt = document.getElementsByTagName('styles')[0];
+		e = e || window.event;
+		e.preventDefault();
 
-      // calculate the new cursor position:
-      elementStyles_pos1 = elementStyles_pos3 - e.clientX;
-      elementStyles_pos2 = elementStyles_pos4 - e.clientY;
-      elementStyles_pos3 = e.clientX;
-      elementStyles_pos4 = e.clientY;
+		// calculate the new cursor position:
+		Globals.pageHandler.elementStyles_pos1 = Globals.pageHandler.elementStyles_pos3 - e.clientX;
+		Globals.pageHandler.elementStyles_pos2 = Globals.pageHandler.elementStyles_pos4 - e.clientY;
+		Globals.pageHandler.elementStyles_pos3 = e.clientX;
+		Globals.pageHandler.elementStyles_pos4 = e.clientY;
 
-      // set the element's new position:
-      elmnt.style.top = (elmnt.offsetTop - elementStyles_pos2) + "px";
-      elmnt.style.left = (elmnt.offsetLeft - elementStyles_pos1) + "px";
-      elmnt.style.cursor = 'grabbing';
-    }
+		// set the element's new position:
+		elmnt.style.top = (elmnt.offsetTop - Globals.pageHandler.elementStyles_pos2) + "px";
+		elmnt.style.left = (elmnt.offsetLeft - Globals.pageHandler.elementStyles_pos1) + "px";
+		elmnt.style.cursor = 'grabbing';
+	}
 
-    mousedown(e){
-      var elmnt = document.getElementsByTagName('styles')[0];
-      if(e.target == elmnt){
-      e = e || window.event;
-      e.preventDefault();
+	mousedown(e){
+		var elmnt = document.getElementsByTagName('styles')[0];
+		if(e.target == elmnt){
+			e = e || window.event;
+			e.preventDefault();
 
-      elmnt.style.cursor = 'grab';
+			elmnt.style.cursor = 'grab';
 
-      // get the mouse cursor position at startup:
-      elementStyles_pos3 = e.clientX;
-      elementStyles_pos4 = e.clientY;
-      document.onmouseup = elementStyles.closeDrag;
+			// get the mouse cursor position at startup:
+			Globals.pageHandler.elementStyles_pos3 = e.clientX;
+			Globals.pageHandler.elementStyles_pos4 = e.clientY;
+			document.onmouseup = elementStyles.closeDrag;
 
-      // call a function whenever the cursor moves:
-      document.onmousemove = elementStyles.drag;
-      }
-    }
+			// call a function whenever the cursor moves:
+			document.onmousemove = elementStyles.drag;
+		}
+	}
 
-    closeDrag(){
-      var elmnt = document.getElementsByTagName('styles')[0];
-      document.onmouseup = null;
-      document.onmousemove = null;
-      elmnt.style.cursor = 'default';
-    }
+	closeDrag(){
+		var elmnt = document.getElementsByTagName('styles')[0];
+		document.onmouseup = null;
+		document.onmousemove = null;
+		elmnt.style.cursor = 'default';
+	}
 }

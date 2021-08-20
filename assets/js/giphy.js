@@ -167,12 +167,12 @@ if(mode == 'webpageBuilder'){
 
 if(mode == 'elementCreator'){
 
-var newimgs = document.getElementsByTagName("giphy")[0].getElementsByTagName("img"); 
-for(var i2=0; i2 < newimgs.length; i2++){ 
+var newimgs = document.getElementsByTagName("giphy")[0].getElementsByTagName("img");
+for(var i2=0; i2 < newimgs.length; i2++){
 		if(i2 == 0 || i2 == 1)
-		{ 
-			newimgs[i2].style.marginTop = "100px"; 
-        } 
+		{
+			newimgs[i2].style.marginTop = "100px";
+        }
 };
 
 }
@@ -356,14 +356,14 @@ if(mode == 'webpageBuilder'){
 function resetImages(mode){
 
 if(mode == 'elementCreator'){
-	var imgs = document.getElementsByTagName("giphy")[0].getElementsByTagName("img"); 
+	var imgs = document.getElementsByTagName("giphy")[0].getElementsByTagName("img");
 }
 
 if(mode == 'webpageBuilder'){
 	if(document.getElementById("bg-image-manager-images-box").getElementsByTagName('button')[0]){
 		document.getElementById("bg-image-manager-images-box").getElementsByTagName('button')[0].remove();
 	}
-	var imgs = document.getElementById("bg-image-manager-images-box").getElementsByTagName("div"); 
+	var imgs = document.getElementById("bg-image-manager-images-box").getElementsByTagName("div");
 }
 
 for(var i = imgs.length - 1; i >= 0; i--){
@@ -395,17 +395,17 @@ image.setAttribute("alt","");
 
 (function(image){
 	image.addEventListener('mouseover',function(e){
-	    VideoManager.showVideoInfo(e,image);
+	    Globals.pageHandler.VideoManager.showVideoInfo(e,image);
     });
 
     image.addEventListener('mouseout',function(){
-	    VideoManager.hideVideoInfo(image);
+	    Globals.pageHandler.VideoManager.hideVideoInfo(image);
     });
 })(image);
 
-image.id = randomize.elementId(5);
+image.id = Globals.pageHandler.randomize.elementId(5);
 
-image.addEventListener('click',VideoManager.changeVideo);
+image.addEventListener('click',Globals.pageHandler.VideoManager.changeVideo);
 
 div.appendChild(image);
 //div.appendChild(span);
@@ -463,9 +463,9 @@ image.setAttribute("data-title",response.list[i].title);
 image.setAttribute("data-views",response.list[i].views_total);
 image.setAttribute("alt","");
 
-image.addEventListener('mouseover',VideoManager.showVideoInfo);
-image.addEventListener('mouseout',VideoManager.hideVideoInfo);
-image.id = randomize.elementId(5);
+image.addEventListener('mouseover',Globals.pageHandler.VideoManager.showVideoInfo);
+image.addEventListener('mouseout',Globals.pageHandler.VideoManager.hideVideoInfo);
+image.id = Globals.pageHandler.randomize.elementId(5);
 
 div.appendChild(image);
 div.appendChild(span);
