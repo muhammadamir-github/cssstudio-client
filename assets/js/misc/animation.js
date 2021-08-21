@@ -18,7 +18,7 @@ function dataAttributeBalancer(property,value){
                 if($(sSlide).attr('data-action-two') == propertySplited){
                     sSlide.setAttribute('data-action-two-value',value);
                 }else{
-                    
+
                     //checks for third action availability.
                     if($(sSlide).attr('data-action-three') == propertySplited){
                         sSlide.setAttribute('data-action-three-value',value);
@@ -149,8 +149,8 @@ function setupanimator(element){
     animatorTimeline.appendChild(resetanimation);
     animatorTimeline.appendChild(playanimation);
 
-    if(plan !== 'Free'){
-        if(plan == 'Gold' || plan == 'Diamond'){
+    if(Globals.pageHandler.data.plan !== 'Free'){
+        if(Globals.pageHandler.data.plan == 'Gold' || Globals.pageHandler.data.plan == 'Diamond'){
             animatorTimeline.appendChild(switchtoreadymadeanimation);
         }
     }
@@ -812,10 +812,10 @@ function readymadeanimations(element){
     });
     animationcontainer.append(noanimation);
 
-    if(plan !== 'Free'){
-        if(plan == 'Gold' || plan == 'Diamond'){
+    if(Globals.pageHandler.data.plan !== 'Free'){
+        if(Globals.pageHandler.data.plan == 'Gold' || Globals.pageHandler.data.plan == 'Diamond'){
 
-            for(var i = 1; i < animations.length; i++){
+            for(var i = 1; i < Globals.pageHandler.animations.length; i++){
                 animationsstyle.innerText += '\n' + animations[i].css + '\n';
                 var animation = document.createElement('animationPreview');
                 animation.setAttribute('id','a'+animations[i].name);
@@ -903,7 +903,7 @@ function readymadeanimations(element){
             animationcontainer.append(animation);
             applyanimation(animations[i].name,element);
         }
-        readymadeanimations_div_banner_text.innerText = animations.length + ' Ready Made Animations';
+        readymadeanimations_div_banner_text.innerText = Globals.pageHandler.animations.length + ' Ready Made Animations';
         readymadeanimations_div.style.opacity = '1';
         readymadeanimations_div.style.pointerEvents = 'unset';
     }
@@ -970,7 +970,7 @@ function setupSlideOptions(element){
 
     percentage_customedit.addEventListener('keyup',function(){
         percentage_selected_a_span.innerText = 'Percentage: ' + this.value+'%';
-        updateelement(element,'slidePercentage',this.value+'%');
+        updateElement(element,'slidePercentage',this.value+'%');
 
     });
 
@@ -1704,7 +1704,7 @@ function animate(element,createnew){
 
         duration_customedit.addEventListener('keyup',function(){
             duration_selected_a_span.innerText = 'Duration: ' + this.value+'s';
-            updateelement(element,'animatedr',this.value+'s');
+            updateElement(element,'animatedr',this.value+'s');
 
         });
 
@@ -1759,7 +1759,7 @@ function animate(element,createnew){
 
         delay_customedit.addEventListener('keyup',function(){
             delay_selected_a_span.innerText = 'Delay: ' + this.value+'s';
-            updateelement(element,'animated',this.value+'s');
+            updateElement(element,'animated',this.value+'s');
 
         });
 
@@ -1815,7 +1815,7 @@ function animate(element,createnew){
         iteration_customedit.setAttribute('placeholder','9999 = Infinite');
         iteration_customedit.addEventListener('keyup',function(){
             iteration_selected_a_span.innerText = 'Iteration: ' + this.value;
-            updateelement(element,'animatei',this.value);
+            updateElement(element,'animatei',this.value);
 
         });
 

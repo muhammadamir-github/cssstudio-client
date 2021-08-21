@@ -103,7 +103,7 @@ class VideosManager{
 
                 searchInput.addEventListener('keydown',function(e){
                     if(e.keyCode == 13){
-                        searchYoutubeVideos(this.value);
+                        Globals.pageHandler.thirPartyMediaManager.searchYoutubeVideos(this.value);
                     }
                 });
             }

@@ -1,4 +1,4 @@
-import Globals from './globals.js';
+import Globals from '../globals.js';
 
 export default class SideBar{
     constructor(pageName){

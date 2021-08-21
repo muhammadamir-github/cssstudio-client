@@ -2832,7 +2832,7 @@ styles previews stylepreview .checkbox span:after{
 }
 
 #bg-image-manager .banner .checkbox-one p{
-    top: unset !important; 
+    top: unset !important;
     transform: unset !important;
     font-size: 13px !important;
     font-family: ProximaNovaBold !important;
@@ -3207,19 +3207,19 @@ styles previews stylepreview .checkbox span:after{
 }
 
 .posMatchLeft{
-    border-left: 1px solid rgb(232, 13, 199);
+    border-left: 1px solid rgb(232, 13, 199) !important;
 }
 
 .posMatchRight{
-    border-right: 1px solid rgb(232, 13, 199);
+    border-right: 1px solid rgb(232, 13, 199) !important;
 }
 
 .posMatchTop{
-    border-top: 1px solid rgb(232, 13, 199);
+    border-top: 1px solid rgb(232, 13, 199) !important;
 }
 
 .posMatchBottom{
-    border-bottom: 1px solid rgb(232, 13, 199);
+    border-bottom: 1px solid rgb(232, 13, 199) !important;
 }
 
 .mediaInfo{

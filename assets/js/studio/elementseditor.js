@@ -1,5 +1,9 @@
 class ElementsEditor{
-    constructor(){}
+    constructor(){
+        this.ImgGallery1And2_ImgRowEndNumbers = [3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57,60,63,66,69,72,75,78,81,84,87,90];
+        this.ImgGallery3_ImgRowEndNumbers = [2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90];
+        this.ImgSlider1_ImgSlideDivisions = [4,8,12,16,20,24,28,32,36,40,44,48,52,56,60,64,68,72,76,80,84,88,92,96,100,104,108,112,116,120];
+    }
 
     show(){
         const self = this;
@@ -682,7 +686,7 @@ class ElementsEditor{
                             }else{
                                 if($(element).attr('data-e-type').includes('slider')){
                                     if($(element).attr('data-e-type') == "image-slider-one"){
-                                        if(ImgSlider1_ImgSlideDivisions.includes(publicEvents.count_ImgSlider1Images(element))){
+                                        if(self.ImgSlider1_ImgSlideDivisions.includes(publicEvents.count_ImgSlider1Images(element))){
                                             var allImages = element.getElementsByTagName("img");
 
                                             var newImgSlide = document.createElement("div");
@@ -755,7 +759,7 @@ class ElementsEditor{
                                             var totalImages = element.getElementsByTagName("img").length;
                                             var newImageNumber = totalImages+1;
 
-                                            if(ImgGallery1And2_ImgRowEndNumbers.includes(newImageNumber)){
+                                            if(self.ImgGallery1And2_ImgRowEndNumbers.includes(newImageNumber)){
                                                 // Row End
                                                 // Don't add Margin Right
                                             }else{
@@ -772,7 +776,7 @@ class ElementsEditor{
                                                 var totalImages = element.getElementsByTagName("img").length;
                                                 var newImageNumber = totalImages+1;
 
-                                                if(ImgGallery3_ImgRowEndNumbers.includes(newImageNumber)){
+                                                if(self.ImgGallery3_ImgRowEndNumbers.includes(newImageNumber)){
                                                     // Row End
                                                     // Don't add Margin Right
                                                 }else{

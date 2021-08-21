@@ -118,10 +118,10 @@ class BackgroundIManager{
                 if(stateOf.checkbox(checkboxOption) == 1){
                     Globals.pageHandler.mediaManager.searchUserMedia("images",this.value);
                 }else{
-                    resetImages('webpageBuilder');
-                    searchGIFS(this.value,'','webpageBuilder');
-                    searchUnsplashPictures(this.value,'','webpageBuilder');
-                    searchPixelBayPictures(this.value,'','webpageBuilder');
+                    Globals.pageHandler.thirPartyMediaManager.resetImages('webpageBuilder');
+                    Globals.pageHandler.thirPartyMediaManager.searchGIFS(this.value,'','webpageBuilder');
+                    Globals.pageHandler.thirPartyMediaManager.searchUnsplashPictures(this.value,'','webpageBuilder');
+                    Globals.pageHandler.thirPartyMediaManager.searchPixelBayPictures(this.value,'','webpageBuilder');
                 }
             }
         });

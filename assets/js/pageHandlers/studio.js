@@ -59,6 +59,7 @@ class StudioHandler{
         this.tools = new WebPageBuilderTools;
         this.site = new SitePreview;
         this.pagebuilder = new WebPageBuilder;
+        this.thirPartyMediaManager = new ThirdPartyMediaManager;
     }
 
     setup(){
@@ -138,7 +139,7 @@ class StudioHandler{
                     request.setRequestHeader('Accept', 'application/json');
                 },
                 success: function(response){
-                  animations = response.success;
+                  this.animations = response.success;
                 },
                 error: function(response){
                   Globals.notificationHandler.new('Error, could not load animations. Please retry after some time.');

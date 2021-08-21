@@ -1,5 +1,4 @@
 self.addEventListener('message', function(e) {
-
     var style = document.createElement('style');
 
     var fonts = document.createElement('combobox');
@@ -85,34 +84,22 @@ self.addEventListener('message', function(e) {
     fonts.appendChild(fonts_selected);
     fonts.appendChild(fonts_options);
 
-    //-----------------Event Handlers--------------------
-
     fonts_selected_a_span.addEventListener('click',function(e){
-
         if(e.target == this){
-
             if(fonts_options.style.display == 'block'){
-
                 fonts_options.style.display = 'none';
                 fonts_options_ul.style.display = 'none';
                 fonts_customedit.style.display = 'none';
                 fonts_selected_a_span.style.textAlign = '';
-
             }else{
 
                 fonts_options.style.display = 'block';
                 fonts_options_ul.style.display = 'block';
                 fonts_customedit.style.display = 'block';
                 fonts_selected_a_span.style.textAlign = 'left';
-
             }
-
-        }else{
-
         }
-
     });
-
 
     style.innerText = style.innerText + stylecss;
 
@@ -121,5 +108,4 @@ self.addEventListener('message', function(e) {
 
     self.postMessage("done");
     self.close();
-
 }
