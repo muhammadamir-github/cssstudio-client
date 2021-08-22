@@ -160,7 +160,7 @@ style.href = '../assets/css/fonts.css';
 style.rel = 'stylesheet';
 style.type = 'text/css';*/
 
-$('head').append(style);
+//$('head').append(style);
 
 if(mode == 'elementCreator'){
     setTimeout(function(){document.getElementById('googlefontssdiv').appendChild(fonts);},5500);
