@@ -155,10 +155,10 @@ fonts_selected_a_span.addEventListener('click',function(e){
 
 });
 
-var style = document.createElement('link');
+/*var style = document.createElement('link');
 style.href = '../assets/css/fonts.css';
 style.rel = 'stylesheet';
-style.type = 'text/css';
+style.type = 'text/css';*/
 
 $('head').append(style);
 

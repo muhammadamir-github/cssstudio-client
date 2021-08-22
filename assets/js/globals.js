@@ -95,6 +95,7 @@ export default {
                 ...global_requiredFiles.css,
                 { type: "css", src: "Billy.css", isURL: false, isRaw: false, },
                 { type: "css", src: "PreviewSite.css", isURL: false, isRaw: false, },
+                { type: "css", src: "Fonts.css", isURL: false, isRaw: false, },
                 { type: "js", src: "https://www.youtube.com/iframe_api", isURL: true, isRaw: false, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "misc/Billy.js", isURL: false, isRaw: false, },
