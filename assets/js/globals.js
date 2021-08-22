@@ -8,11 +8,11 @@ const global_requiredFiles = {
         { type: "icon", src: "icon2.png", isURL: false, isRaw: false, }
     ],
     css: [
-        { type: "css", src: "loader.css", isURL: false, isRaw: false, },
-        { type: "css", src: "notice.css", isURL: false, isRaw: false, },
-        { type: "css", src: "style.css", isURL: false, isRaw: false, },
-        { type: "css", src: "notification.css", isURL: false, isRaw: false, },
-        { type: "css", src: "r.css", isURL: false, isRaw: false, },
+        { type: "css", src: "Loader.css", isURL: false, isRaw: false, },
+        { type: "css", src: "Notice.css", isURL: false, isRaw: false, },
+        { type: "css", src: "Style.css", isURL: false, isRaw: false, },
+        { type: "css", src: "Notification.css", isURL: false, isRaw: false, },
+        { type: "css", src: "MediaQueries.css", isURL: false, isRaw: false, },
         { type: "css", src: "thirdparty/fontawesome.all.css", isURL: false, isRaw: false, }
     ],
     js: [
@@ -64,7 +64,7 @@ export default {
             paths: [
                 ...global_requiredFiles.icon,
                 ...global_requiredFiles.css,
-                { type: "css", src: "fonts.css", isURL: false, isRaw: false, },
+                { type: "css", src: "Fonts.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "pageHandlers/Storage.js", isURL: false, isRaw: false, }
             ],
@@ -93,8 +93,8 @@ export default {
             paths: [
                 ...global_requiredFiles.icon,
                 ...global_requiredFiles.css,
-                { type: "css", src: "billy.css", isURL: false, isRaw: false, },
-                { type: "css", src: "previewsite.css", isURL: false, isRaw: false, },
+                { type: "css", src: "Billy.css", isURL: false, isRaw: false, },
+                { type: "css", src: "PreviewSite.css", isURL: false, isRaw: false, },
                 { type: "js", src: "https://www.youtube.com/iframe_api", isURL: true, isRaw: false, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "misc/Billy.js", isURL: false, isRaw: false, },
@@ -111,9 +111,9 @@ export default {
             paths: [
                 ...global_requiredFiles.icon,
                 ...global_requiredFiles.css,
-                { type: "css", src: "login.css", isURL: false, isRaw: false, },
-                { type: "css", src: "topnavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "bottomnavbar.css", isURL: false, isRaw: false, },
+                { type: "css", src: "Login.css", isURL: false, isRaw: false, },
+                { type: "css", src: "TopNavbar.css", isURL: false, isRaw: false, },
+                { type: "css", src: "BottomNavbar.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "pageHandlers/Login.js", isURL: false, isRaw: false, },
                 { type: "js", src: "pageHandlers/Static.js", isURL: false, isRaw: false, }
@@ -124,9 +124,9 @@ export default {
             paths: [
                 ...global_requiredFiles.icon,
                 ...global_requiredFiles.css,
-                { type: "css", src: "topnavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "bottomnavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "tandc.css", isURL: false, isRaw: false, },
+                { type: "css", src: "TopNavbar.css", isURL: false, isRaw: false, },
+                { type: "css", src: "BottomNavbar.css", isURL: false, isRaw: false, },
+                { type: "css", src: "TermsAndConditions.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "pageHandlers/Static.js", isURL: false, isRaw: false, }
             ],
@@ -136,9 +136,9 @@ export default {
             paths: [
                 ...global_requiredFiles.icon,
                 ...global_requiredFiles.css,
-                { type: "css", src: "topnavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "bottomnavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "home.css", isURL: false, isRaw: false, },
+                { type: "css", src: "TopNavbar.css", isURL: false, isRaw: false, },
+                { type: "css", src: "BottomNavbar.css", isURL: false, isRaw: false, },
+                { type: "css", src: "Home.css", isURL: false, isRaw: false, },
                 { type: "css", src: ".pageheading{color: black; font-family: ProximaNovaBold; }", isURL: false, isRaw: true, },
                 { type: "js", src: "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", isURL: true, isRaw: false, },
                 { type: "js", src: '(adsbygoogle = window.adsbygoogle || []).push({ google_ad_client: "'+global_configuration.google_ad_client+'", enable_page_level_ads: true});', isURL: false, isRaw: true, },
@@ -151,9 +151,9 @@ export default {
             paths: [
                 ...global_requiredFiles.icon,
                 ...global_requiredFiles.css,
-                { type: "css", src: "topnavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "bottomnavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "features.css", isURL: false, isRaw: false, },
+                { type: "css", src: "TopNavbar.css", isURL: false, isRaw: false, },
+                { type: "css", src: "BottomNavbar.css", isURL: false, isRaw: false, },
+                { type: "css", src: "Features.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "pageHandlers/Static.js", isURL: false, isRaw: false, }
             ],
@@ -163,9 +163,9 @@ export default {
             paths: [
                 ...global_requiredFiles.icon,
                 ...global_requiredFiles.css,
-                { type: "css", src: "topnavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "bottomnavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "blog.css", isURL: false, isRaw: false, },
+                { type: "css", src: "TopNavbar.css", isURL: false, isRaw: false, },
+                { type: "css", src: "BottomNavbar.css", isURL: false, isRaw: false, },
+                { type: "css", src: "Blog.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "pageHandlers/Static.js", isURL: false, isRaw: false, },
                 { type: "js", src: "pageHandlers/Blog.js", isURL: false, isRaw: false, }
@@ -175,7 +175,7 @@ export default {
             pageName: "adminpanel",
             paths: [
                 ...global_requiredFiles.icon,
-                { type: "css", src: "aplogin.css", isURL: false, isRaw: false, },
+                { type: "css", src: "AdminPanelLogin.css", isURL: false, isRaw: false, },
                 { type: "js", src: "pageHandlers/AdminPanelLogin.js", isURL: false, isRaw: false, }
             ],
         },
@@ -183,9 +183,9 @@ export default {
             pageName: "home.html", // adminpanel/home.html
             paths: [
                 ...global_requiredFiles.icon,
-                { type: "css", src: "bottomnavbar.css", isURL: false, isRaw: false, },
+                { type: "css", src: "BottomNavbar.css", isURL: false, isRaw: false, },
                 { type: "css", src: "thirdparty/fontawesome.all.css", isURL: false, isRaw: false, },
-                { type: "css", src: "ap.css", isURL: false, isRaw: false, },
+                { type: "css", src: "AdminPanel.css", isURL: false, isRaw: false, },
                 { type: "css", src: ".pageheading{ color: black; font-family: ProximaNovaBold; }", isURL: false, isRaw: true, },
                 { type: "js", src: "thirdparty/chart.bundle.js", isURL: false, isRaw: false, },
                 { type: "js", src: "adminpanel/*", isURL: false, isRaw: false, ignore: [], },
