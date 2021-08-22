@@ -15,7 +15,7 @@ class SupportHandler{
 
         var tickets = document.createElement('div');
         tickets.setAttribute('class','tkts');
-        
+
         var ticketsHeading = document.createElement('h6');
         ticketsHeading.innerText = 'Your Tickets';
         ticketsHeading.style.top = '0px';

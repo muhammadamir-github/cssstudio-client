@@ -6,7 +6,6 @@ var billy_orders = '';
 var billy_orders_types = '';
 
 setTimeout(function(){
-
     billy = document.getElementsByTagName('billy')[0];
     callbillyElement = document.getElementsByTagName('callbilly')[0];
     billy_tongue = billy.getElementsByTagName('tongue')[0];
@@ -26,7 +25,6 @@ setTimeout(function(){
 
     callbillyElement.style.opacity = '1';
     callbillyElement.style.pointerEvents = 'unset';
-
 },15000);
 
 //---------------------------------------------------------------
@@ -99,7 +97,7 @@ class BillyTheAssistant{
                             if(target.style.color == '' || target.style.color == null){
                                 billy_tongue.innerText = 'No font color to match.';
                             }else{
-                                var targetfontcolor = new color(target.style.color);
+                                var targetfontcolor = new Color(target.style.color);
                                 suggestor.display('BackgroundColor',targetfontcolor.matchingFontColor,helper.hexToRGB(targetfontcolor.matchingFontColor));
                             }
                         }else{
@@ -115,7 +113,7 @@ class BillyTheAssistant{
                                 if(target.style.backgroundColor == '' || target.style.backgroundColor == null){
                                     billy_tongue.innerText = 'No background color to match.';
                                 }else{
-                                    var targetbgcolor = new color(target.style.backgroundColor);
+                                    var targetbgcolor = new Color(target.style.backgroundColor);
                                     suggestor.display('FontColor',targetbgcolor.matchingFontColor,helper.hexToRGB(targetbgcolor.matchingFontColor));
                                 }
                             }else{
@@ -194,7 +192,7 @@ class Storage{
     constructor(){}
 }
 
-class suggest{
+class Suggest{
     constructor(){}
 
     fontColor(hex,type){
@@ -370,7 +368,7 @@ class suggest{
 
 //---------------------------------------------------------------
 
-class help{
+class Help{
     constructor(){}
 
     rgbToHex(rgb){
@@ -459,45 +457,43 @@ class help{
 
 }
 
-var helper = new help();
-var suggestor = new suggest();
+var helper = new Help();
+var suggestor = new Suggest();
 
-class color{
+class Color{
     constructor(colorInput){
-
         this.rgb = colorInput;
         this.hex = helper.rgbToHex(this.rgb);
 
-        if (colorInput.match(/^rgb/)) {
+        if(colorInput.match(/^rgb/)){
             // If HEX --> store the red, green, blue values in separate variables
             colorInput = colorInput.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
 
             this.r = colorInput[1];
             this.g = colorInput[2];
             this.b = colorInput[3];
-        }
-        else {
+        }else{
             // If RGB --> Convert it to HEX: http://gist.github.com/983661
             colorInput = +("0x" + colorInput.slice(1).replace(
-                colorInput.length < 5 && /./g, '$&$&'));
+                colorInput.length < 5 && /./g, '$&$&')
+            );
 
-                this.r = colorInput >> 16;
-                this.g = colorInput >> 8 & 255;
-                this.b = colorInput & 255;
-            }
-
-            /*this.hsl = helper.hsl(this.r,this.g,this.b);
-            this.h = this.hsl[0];
-            this.s = this.hsl[1];
-            this.l = this.hsl[2];*/
-
-            this.type = helper.colorType(this.r,this.g,this.b);
-            this.matchingFontColor = suggestor.fontColor(this.hex,this.type);
+            this.r = colorInput >> 16;
+            this.g = colorInput >> 8 & 255;
+            this.b = colorInput & 255;
         }
 
-        apply(){
-            document.getElementsByTagName('body')[0].style.backgroundColor = 'rgba('+this.r+','+this.g+','+this.b+',1)';
-            document.getElementsByTagName('h2')[0].style.color = this.matchingFontColor;
-        }
+        /*this.hsl = helper.hsl(this.r,this.g,this.b);
+        this.h = this.hsl[0];
+        this.s = this.hsl[1];
+        this.l = this.hsl[2];*/
 
+        this.type = helper.colorType(this.r,this.g,this.b);
+        this.matchingFontColor = suggestor.fontColor(this.hex,this.type);
     }
+
+    apply(){
+        document.getElementsByTagName('body')[0].style.backgroundColor = 'rgba('+this.r+','+this.g+','+this.b+',1)';
+        document.getElementsByTagName('h2')[0].style.color = this.matchingFontColor;
+    }
+}

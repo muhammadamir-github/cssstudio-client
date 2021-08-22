@@ -64,7 +64,9 @@ class BootLoader{
 
                         for(var x=0; x<allFilesInDir.length; x++){
                             let src = `${files.paths[i].src.replace("*", "")}${allFilesInDir[x]}`;
-                            files.paths.push({ type, src, isURL, isRaw, });
+                            if(!files.paths[i].ignore.includes(src)){
+                                files.paths.push({ type, src, isURL, isRaw, });
+                            }
                         }
 
                         files.paths[i] = null;

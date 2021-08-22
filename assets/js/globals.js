@@ -45,7 +45,7 @@ export default {
                 ...global_requiredFiles.css,
                 { type: "css", src: ".dactbtn{ width: 200px; height: 50px; position: relative; left: 25px; top: 25px; border: none; outline: none; background: #1a1a1a; color: white; transition: opacity 0.4s ease-in-out; cursor: pointer; } .dactbtn:hover{ opacity: 0.5; }.dwar{ display: block; position: relative; margin-left: 25px; left: 0px; text-align: left; width: 90%; font-size: 15px; } .pay{ margin-top: 100px; width: 100%; left: 50%; transform: translate(-50%); position: relative; display: inline-block; height: 100px; text-align: center;", isURL: false, isRaw: true, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "pageHandlers/profile.js", isURL: false, isRaw: false, },
+                { type: "js", src: "pageHandlers/Profile.js", isURL: false, isRaw: false, },
                 { type: "js", src: "misc/paypal.js", isURL: false, isRaw: false, }
             ],
         },
@@ -56,7 +56,7 @@ export default {
                 ...global_requiredFiles.css,
                 { type: "css", src: ".ntfs{ position: relative; left: 50%; transform: translate(-50%); border: 1px solid #f1f1f1; width: 70%; height: 750px; outline: none; margin-top: 50px; display: inline-block; overflow-x: hidden; overflow-y: scroll; padding-bottom: 30px; transition: opacity 0.3s ease-in-out; }", isURL: false, isRaw: true, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "pageHandlers/notifications.js", isURL: false, isRaw: false, }
+                { type: "js", src: "pageHandlers/Notifications.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -66,7 +66,7 @@ export default {
                 ...global_requiredFiles.css,
                 { type: "css", src: "fonts.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "pageHandlers/storage.js", isURL: false, isRaw: false, }
+                { type: "js", src: "pageHandlers/Storage.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -76,7 +76,7 @@ export default {
                 ...global_requiredFiles.css,
                 { type: "css", src: ".tkts{position:relative;left:50%;transform:translate(-50%);border:1px solid #f1f1f1;width:70%;height:300px;outline:0;margin-top:50px;display:inline-block;overflow-x:hidden;overflow-y:scroll;padding-bottom:30px;transition:opacity .3s ease-in-out}.ntkt{position:relative;left:50%;transform:translate(-50%);border:1px solid #f1f1f1;width:70%;max-height:300px;outline:0;margin-top:25px;display:inline-block;overflow:hidden;min-height:fit-content;padding-bottom:50px;transition:opacity .3s ease-in-out}.ntkt button{right:10px;top:20px;position:absolute;width:150px;height:40px;outline:0;border:none;background:#1a1a1a;color:#fff;border-radius:5px;font-family:sans-serif;font-size:11px;cursor:pointer}.ntkt button i{margin-left:5px;font-size:11px}.tkts table tbody tr:hover{opacity:.5;cursor:pointer}", isURL: false, isRaw: true, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "pageHandlers/support.js", isURL: false, isRaw: false, }
+                { type: "js", src: "pageHandlers/Support.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -85,7 +85,7 @@ export default {
                 ...global_requiredFiles.icon,
                 ...global_requiredFiles.css,
                 ...global_requiredFiles.js,
-                { type: "js", src: "pageHandlers/billing.js", isURL: false, isRaw: false, }
+                { type: "js", src: "pageHandlers/Billing.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -101,9 +101,9 @@ export default {
                 { type: "js", src: "misc/draggable.js", isURL: false, isRaw: false, },
                 { type: "js", src: "misc/publicEventHandler.js", isURL: false, isRaw: false, },
                 { type: "js", src: "thirdparty/resumable.js", isURL: false, isRaw: false, },
-                { type: "js", src: "studio/*", isURL: false, isRaw: false, },
-                { type: "js", src: "studio/functions/*", isURL: false, isRaw: false, },
-                { type: "js", src: "pageHandlers/studio.js", isURL: false, isRaw: false, },
+                { type: "js", src: "studio/*", isURL: false, isRaw: false, ignore: ["studio/Animator.js"], },
+                { type: "js", src: "studio/functions/*", isURL: false, isRaw: false, ignore: [], },
+                { type: "js", src: "pageHandlers/Studio.js", isURL: false, isRaw: false, },
             ],
         },
         {
@@ -115,7 +115,7 @@ export default {
                 { type: "css", src: "topnavbar.css", isURL: false, isRaw: false, },
                 { type: "css", src: "bottomnavbar.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "pageHandlers/login.js", isURL: false, isRaw: false, },
+                { type: "js", src: "pageHandlers/Login.js", isURL: false, isRaw: false, },
                 { type: "js", src: "pageHandlers/StaticPageHandler.js", isURL: false, isRaw: false, }
             ],
         },
@@ -168,7 +168,7 @@ export default {
                 { type: "css", src: "blog.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "pageHandlers/StaticPageHandler.js", isURL: false, isRaw: false, },
-                { type: "js", src: "pageHandlers/blog.js", isURL: false, isRaw: false, }
+                { type: "js", src: "pageHandlers/Blog.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -176,7 +176,7 @@ export default {
             paths: [
                 ...global_requiredFiles.icon,
                 { type: "css", src: "aplogin.css", isURL: false, isRaw: false, },
-                { type: "js", src: "pageHandlers/aplogin.js", isURL: false, isRaw: false, }
+                { type: "js", src: "pageHandlers/AdminPanelLogin.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -188,8 +188,8 @@ export default {
                 { type: "css", src: "ap.css", isURL: false, isRaw: false, },
                 { type: "css", src: ".pageheading{ color: black; font-family: ProximaNovaBold; }", isURL: false, isRaw: true, },
                 { type: "js", src: "thirdparty/chart.bundle.js", isURL: false, isRaw: false, },
-                { type: "js", src: "adminpanel/*", isURL: false, isRaw: false, },
-                { type: "js", src: "pageHandlers/ap.js", isURL: false, isRaw: false, }
+                { type: "js", src: "adminpanel/*", isURL: false, isRaw: false, ignore: [], },
+                { type: "js", src: "pageHandlers/AdminPanel.js", isURL: false, isRaw: false, }
             ],
         },
     ],

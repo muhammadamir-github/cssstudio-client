@@ -1,11 +1,11 @@
-//var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-
-var HoldTimer;
-
-var element_centerY, element_centerX, page_centerY, page_centerX;
-
 class PreviewSiteDraggable{
-    constructor(){}
+    constructor(){
+        this.element_centerY = 0;
+        this.element_centerX = 0;
+        this.page_centerY = 0;
+        this.page_centerX = 0;
+        this.HoldTimer = null;
+    }
 
     drag(e){
         var elementPosition = document.getElementsByClassName('elPos')[0];
@@ -42,7 +42,8 @@ class PreviewSiteDraggable{
     }
 
     mousedown(e){
-        HoldTimer = setTimeout(function() {
+        const self = this;
+        self.HoldTimer = setTimeout(function() {
             var container = document.getElementsByClassName('previewsite')[0];
             var element = document.getElementsByClassName('selected')[0];
             if(e.target == element){
@@ -65,8 +66,8 @@ class PreviewSiteDraggable{
                 document.onmousemove = draggable.drag;
 
                 document.onclick = function(){
-                    if(HoldTimer){
-                        clearTimeout(HoldTimer);
+                    if(self.HoldTimer){
+                        clearTimeout(self.HoldTimer);
                     }
                 };
 
@@ -77,8 +78,9 @@ class PreviewSiteDraggable{
     }
 
     closeDrag(){
-        if(HoldTimer){
-            clearTimeout(HoldTimer);
+        const self = this;
+        if(self.HoldTimer){
+            clearTimeout(self.HoldTimer);
         }
 
         //$('.selectedSpecialOptions, .eResizer').remove();
@@ -101,20 +103,21 @@ class PreviewSiteDraggable{
     }
 
     calculateCenterPosition(){
+        const self = this;
         var pageCenterPosition = document.getElementsByClassName('pcPos')[0];
         pageCenterPosition.style.display = 'inline-block';
         pageCenterPosition.style.opacity = '1';
 
         var element = document.getElementsByClassName('selected')[0];
 
-        element_centerX = element.offsetLeft + element.offsetWidth / 2;
-        element_centerY = element.offsetTop + element.offsetHeight / 2;
+        self.element_centerX = element.offsetLeft + element.offsetWidth / 2;
+        self.element_centerY = element.offsetTop + element.offsetHeight / 2;
 
         var verticalCenterLineIndicator = document.getElementsByClassName('vcenterline')[0];
         var horizontalCenterLineIndicator = document.getElementsByClassName('hcenterline')[0];
 
-        page_centerX = horizontalCenterLineIndicator.offsetLeft + horizontalCenterLineIndicator.offsetWidth / 2;
-        page_centerY = verticalCenterLineIndicator.offsetTop + verticalCenterLineIndicator.offsetHeight / 2;
+        self.page_centerX = horizontalCenterLineIndicator.offsetLeft + horizontalCenterLineIndicator.offsetWidth / 2;
+        self.page_centerY = verticalCenterLineIndicator.offsetTop + verticalCenterLineIndicator.offsetHeight / 2;
 
         if(detectOverlap(element, verticalCenterLineIndicator)) {
             Globals.pageHandler.userInterface.showCenterLines('vertical');
@@ -130,18 +133,8 @@ class PreviewSiteDraggable{
 
         detectBorderTouch(element);
 
-        pageCenterPosition.innerText = 'PageCenterX: '+(page_centerX-element_centerX)+' PageCenterY: '+(page_centerY-element_centerY);
-
-        //pageCenterPosition.innerText = 'PageCenterX: '+page_centerX+' PageCenterY: '+page_centerY+ ' | ElementCenterX: '+element_centerX+' ElementCenterY: '+element_centerY;
-
-        /*if(page_centerX == element_centerX && page_centerY == element_centerY){
-        pageCenterPosition.innerText = 'PageCenterX: '+(page_centerX-element_centerX)+' PageCenterY: '+(page_centerY-element_centerY);
-    }*/
-
-    //console.log('page center: x= '+page_centerX+' y= '+page_centerY);
-    //console.log('element center: x= '+element_centerX+' y= '+element_centerY);
-}
-
+        pageCenterPosition.innerText = 'PageCenterX: '+(self.page_centerX-self.element_centerX)+' PageCenterY: '+(self.page_centerY-self.element_centerY);
+    }
 }
 
 var draggable = new PreviewSiteDraggable;
@@ -171,12 +164,16 @@ var detectOverlap = (function () {
     };
 })();
 
-var selectedElementResize_startY, selectedElementResize_startHeight, selectedElementResize_startX, selectedElementResize_startWidth;
-
 class PreviewSiteResizeable{
-    constructor(){}
+    constructor(){
+        this.selectedElementResize_startY = 0;
+        this.selectedElementResize_startHeight = 0;
+        this.selectedElementResize_startX = 0;
+        this.selectedElementResize_startWidth = 0;
+    }
 
     enable(e){
+        const self = this;
         var element = document.getElementsByClassName('selected')[0];
         var previewsite = document.getElementsByClassName('previewsite')[0];
 
@@ -186,10 +183,10 @@ class PreviewSiteResizeable{
             relocateSpecialOptions();
         }
 
-        selectedElementResize_startY = (e.clientY/* - previewsite.offsetTop*/);
-        selectedElementResize_startX = (e.clientX/* - previewsite.offsetLeft*/);
-        selectedElementResize_startHeight = parseInt(document.defaultView.getComputedStyle(element).height, 10) - previewsite.offsetTop;
-        selectedElementResize_startWidth = parseInt(document.defaultView.getComputedStyle(element).width, 10) - element.offsetLeft/* - element.offsetLeft + element.getBoundingClientRect().width*/;
+        self.selectedElementResize_startY = (e.clientY/* - previewsite.offsetTop*/);
+        self.selectedElementResize_startX = (e.clientX/* - previewsite.offsetLeft*/);
+        self.selectedElementResize_startHeight = parseInt(document.defaultView.getComputedStyle(element).height, 10) - previewsite.offsetTop;
+        self.selectedElementResize_startWidth = parseInt(document.defaultView.getComputedStyle(element).width, 10) - element.offsetLeft/* - element.offsetLeft + element.getBoundingClientRect().width*/;
 
         var elementResizer = document.createElement('div');
         elementResizer.className = 'eResizer';
@@ -208,15 +205,51 @@ class PreviewSiteResizeable{
             document.documentElement.addEventListener('mouseup', resizeable.stopResizeDrag, false);
         });
 
-        /*var bottomResizer_div = document.createElement('div');
-        bottomResizer_div.className = 'elementResizers';
-        bottomResizer_div.id = 'bottomResizer';
 
-        var rightResizer_div = document.createElement('div');
-        rightResizer_div.className = 'elementResizers';
-        rightResizer_div.id = 'rightResizer';
+        previewsite.appendChild(elementResizer);
+    }
 
-        bottomResizer_div.style.width = element.style.width;
+    disable(){
+        $('.eResizer').remove();
+        document.documentElement.removeEventListener('mousemove', resizeable.resizeDrag, false);
+        document.documentElement.removeEventListener('mouseup', resizeable.stopResizeDrag, false);
+    }
+
+    resizeDrag(e){
+        const self = this;
+        var element = document.getElementsByClassName('selected')[0];
+        var previewsite = document.getElementsByClassName('previewsite')[0];
+        var elementResizer = document.getElementsByClassName('eResizer')[0];
+
+        //var bottomResizer_div = document.getElementById('bottomResizer');
+        //var rightResizer_div = document.getElementById('rightResizer');
+
+        //if(e.target.className.includes('bottom-elementResizer')){
+        element.style.height = (/*(self.selectedElementResize_startHeight - previewsite.offsetTop)*/ + ((e.clientY + previewsite.offsetTop) - self.selectedElementResize_startY)) + 'px';
+        //element.style.height = (self.selectedElementResize_startHeight + e.clientY - self.selectedElementResize_startY) + 'px';
+        //}else{
+        //if(e.target.className.includes('right-elementResizer')){
+        element.style.width = (/*self.selectedElementResize_startWidth*/ /*- element.offsetLeft*/ + ((e.clientX/* - previewsite.offsetLeft*/) - self.selectedElementResize_startX)) + 'px';
+        //element.style.width = (self.selectedElementResize_startWidth + e.clientX - self.selectedElementResize_startX) + 'px';
+        //}
+        //}
+
+        if(element.style.width == '100%' || element.getBoundingClientRect().width >= previewsite.getBoundingClientRect().width){
+            elementResizer.style.left = (element.offsetLeft + element.getBoundingClientRect().width - 25) + 'px';
+        }else{
+            elementResizer.style.left = (element.offsetLeft + element.getBoundingClientRect().width) + 'px';
+        }
+
+        elementResizer.style.top = (element.offsetTop + element.getBoundingClientRect().height) + 'px';
+        elementResizer.style.margin = '0';
+
+        if($(element).attr('data-e-type') == 'icon'){
+            element.style.lineHeight = element.style.height;
+        }
+
+        detectBorderTouch(element);
+
+        /*bottomResizer_div.style.width = element.style.width;
         bottomResizer_div.style.height = '10px';
         bottomResizer_div.style.left = element.offsetLeft + 'px';
         bottomResizer_div.style.top = (element.offsetTop + element.getBoundingClientRect().height) + 'px';
@@ -226,115 +259,31 @@ class PreviewSiteResizeable{
         rightResizer_div.style.height = element.getBoundingClientRect().height + 'px';
         rightResizer_div.style.width = '10px';
         rightResizer_div.style.left = (element.offsetLeft + element.getBoundingClientRect().width) + 'px';
-        rightResizer_div.style.top = element.offsetTop + 'px';
-        rightResizer_div.style.paddingTop = $(element).css('padding-top');
-        rightResizer_div.style.paddingBottom = $(element).css('padding-bottom');
+        rightResizer_div.style.top = element.offsetTop + 'px';*/
+        //rightResizer_div.style.paddingTop = $(element).css('padding-top');
+        //rightResizer_div.style.paddingBottom = $(element).css('padding-bottom');
 
-        var bottomresizer = document.createElement('div');
-        bottomresizer.className = 'bottom-elementResizer';
-        bottomresizer.style.marginTop = '5px';
-
-        bottomresizer.addEventListener('mousedown',function(e){
-        document.documentElement.addEventListener('mousemove', resizeable.resizeDrag, false);
-        document.documentElement.addEventListener('mouseup', resizeable.stopResizeDrag, false);
-    });
-
-    var rightresizer = document.createElement('div');
-    rightresizer.className = 'right-elementResizer';
-    rightresizer.style.top = (element.getBoundingClientRect().height / 2) + 'px';
-
-    rightresizer.addEventListener('mousedown',function(e){
-    document.documentElement.addEventListener('mousemove', resizeable.resizeDrag, false);
-    document.documentElement.addEventListener('mouseup', resizeable.stopResizeDrag, false);
-});
-
-bottomResizer_div.appendChild(bottomresizer);
-rightResizer_div.appendChild(rightresizer);
-previewsite.appendChild(bottomResizer_div);
-previewsite.appendChild(rightResizer_div);*/
-previewsite.appendChild(elementResizer);
-
-}
-
-disable(){
-    $('.eResizer').remove();
-    document.documentElement.removeEventListener('mousemove', resizeable.resizeDrag, false);
-    document.documentElement.removeEventListener('mouseup', resizeable.stopResizeDrag, false);
-}
-
-resizeDrag(e){
-    var element = document.getElementsByClassName('selected')[0];
-    var previewsite = document.getElementsByClassName('previewsite')[0];
-    var elementResizer = document.getElementsByClassName('eResizer')[0];
-
-    //var bottomResizer_div = document.getElementById('bottomResizer');
-    //var rightResizer_div = document.getElementById('rightResizer');
-
-    //if(e.target.className.includes('bottom-elementResizer')){
-    element.style.height = (/*(selectedElementResize_startHeight - previewsite.offsetTop)*/ + ((e.clientY + previewsite.offsetTop) - selectedElementResize_startY)) + 'px';
-    //element.style.height = (selectedElementResize_startHeight + e.clientY - selectedElementResize_startY) + 'px';
-    //}else{
-    //if(e.target.className.includes('right-elementResizer')){
-    element.style.width = (/*selectedElementResize_startWidth*/ /*- element.offsetLeft*/ + ((e.clientX/* - previewsite.offsetLeft*/) - selectedElementResize_startX)) + 'px';
-    //element.style.width = (selectedElementResize_startWidth + e.clientX - selectedElementResize_startX) + 'px';
-    //}
-    //}
-
-    if(element.style.width == '100%' || element.getBoundingClientRect().width >= previewsite.getBoundingClientRect().width){
-        elementResizer.style.left = (element.offsetLeft + element.getBoundingClientRect().width - 25) + 'px';
-    }else{
-        elementResizer.style.left = (element.offsetLeft + element.getBoundingClientRect().width) + 'px';
+        //element.style.width = (this.selectedElementResize_startWidth + e.clientX - this.electedElementResize_startX) + 'px';
     }
 
-    elementResizer.style.top = (element.offsetTop + element.getBoundingClientRect().height) + 'px';
-    elementResizer.style.margin = '0';
-
-    if($(element).attr('data-e-type') == 'icon'){
-        element.style.lineHeight = element.style.height;
+    stopResizeDrag(e){
+        document.documentElement.removeEventListener('mousemove', resizeable.resizeDrag, false);
+        document.documentElement.removeEventListener('mouseup', resizeable.stopResizeDrag, false);
     }
-
-    detectBorderTouch(element);
-
-    /*bottomResizer_div.style.width = element.style.width;
-    bottomResizer_div.style.height = '10px';
-    bottomResizer_div.style.left = element.offsetLeft + 'px';
-    bottomResizer_div.style.top = (element.offsetTop + element.getBoundingClientRect().height) + 'px';
-    bottomResizer_div.style.paddingLeft = $(element).css('padding-left');
-    bottomResizer_div.style.paddingRight = $(element).css('padding-right');
-
-    rightResizer_div.style.height = element.getBoundingClientRect().height + 'px';
-    rightResizer_div.style.width = '10px';
-    rightResizer_div.style.left = (element.offsetLeft + element.getBoundingClientRect().width) + 'px';
-    rightResizer_div.style.top = element.offsetTop + 'px';*/
-    //rightResizer_div.style.paddingTop = $(element).css('padding-top');
-    //rightResizer_div.style.paddingBottom = $(element).css('padding-bottom');
-
-    //element.style.width = (selectedElementResize_startWidth + e.clientX - selectedElementResize_startX) + 'px';
-}
-
-stopResizeDrag(e){
-    document.documentElement.removeEventListener('mousemove', resizeable.resizeDrag, false);
-    document.documentElement.removeEventListener('mouseup', resizeable.stopResizeDrag, false);
-}
 
 }
 
 var resizeable = new PreviewSiteResizeable;
 
 function relocateSpecialOptions(){
-
     var specialOptions = document.getElementsByClassName('selectedSpecialOptions')[0];
-
     if(specialOptions){
-
         var element = document.getElementsByClassName('selected')[0];
 
         specialOptions.style.top = (element.getBoundingClientRect().top + window.scrollY) + 'px';
         specialOptions.style.left = (element.getBoundingClientRect().left - 50) + 'px';
         specialOptions.style.transform = 'unset';
-
     }
-
 }
 
 function relocateElementResizer(){
@@ -342,7 +291,6 @@ function relocateElementResizer(){
     var previewsite = document.getElementsByClassName('previewsite')[0];
 
     if(eResizer){
-
         var element = document.getElementsByClassName('selected')[0];
 
         if(element.style.width == '100%' || element.getBoundingClientRect().width >= previewsite.getBoundingClientRect().width){
@@ -353,7 +301,6 @@ function relocateElementResizer(){
 
         eResizer.style.top = (element.offsetTop + element.getBoundingClientRect().height) + 'px';
         eResizer.style.margin = '0';
-
     }
 }
 
@@ -400,7 +347,6 @@ function detectBorderTouch(element){
             }else{
                 elements[i].classList.remove('posMatchBottom');
             }
-
         }
     }
 }

@@ -255,7 +255,7 @@ class StorageHandler{
                 request.setRequestHeader('Accept','application/json');
             },
             success: function(response){
-                notification(type+' deleted successfully.');
+                Globals.notificationHandler.new(type+' deleted successfully.');
                 element.parentNode.remove();
             },
         });

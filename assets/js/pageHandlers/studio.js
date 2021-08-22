@@ -60,6 +60,7 @@ class StudioHandler{
         this.site = new SitePreview;
         this.pagebuilder = new WebPageBuilder;
         this.thirPartyMediaManager = new ThirdPartyMediaManager;
+        this.Animator = null;
     }
 
     setup(){
@@ -82,9 +83,12 @@ class StudioHandler{
         if(plan !== 'Free'){
           if(plan == 'Gold' || plan == 'Diamond' || plan == 'Silver'){
             var script1 = document.createElement('script');
-            script1.setAttribute('src','../assets/js/animation.js');
+            script1.setAttribute('src','../assets/js/studio/Animator.js');
 
             $('script')[0].after(script1);
+            script1.addEventListener("load", function(){
+                self.Animator = new Animator;
+            });
           }
         }
 
