@@ -3,42 +3,33 @@ class UserMediaManager{
         this.user_images = [];
         this.user_videos = [];
     }
-    refreshMedia(){
+
+    async refreshMedia(){
         const self = this;
 
         //if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video' || $(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'image'){
 
-        var token = localStorage.getItem('auth');
+        const response = await Globals.api.request({ route: `me/media`, method: "get" });
+        if(response.success === true){
+            var media = response.data.Media;
+            console.log(media);
 
-        $.ajax({
-            url: 'http://localhost:8000/api/me/media',
-            type: 'GET',
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept', 'application/json');
-            },
-            success: function(response){
-                var media = response.Media;
-                console.log(media);
+            self.user_images = [];
+            self.user_videos = [];
 
-                self.user_images = [];
-                self.user_videos = [];
-
-                for(var i=0; i < media.length; i++){
-                    if(media[i].type == 'Image'){
-                        self.user_images.push(media[i]);
-                    }else{
-                        if(media[i].type == 'Video'){
-                            self.user_videos.push(media[i]);
-                        }
+            for(var i=0; i < media.length; i++){
+                if(media[i].type == 'Image'){
+                    self.user_images.push(media[i]);
+                }else{
+                    if(media[i].type == 'Video'){
+                        self.user_videos.push(media[i]);
                     }
                 }
-
-                self.updateStorageSpace(response.Storage);
-                self.updateSpaceDetails(self.user_images,self.user_videos,response.Storage.split('/')[0]);
-
             }
-        });
+
+            self.updateStorageSpace(response.data.Storage);
+            self.updateSpaceDetails(self.user_images,self.user_videos,response.data.Storage.split('/')[0]);
+        }
 
         //}
 
@@ -136,47 +127,36 @@ class UserMediaManager{
         var div = document.getElementById(target.id+'-meta').remove();
     }
 
-    deleteMedia(id,type){
+    async deleteMedia(id,type){
         const self = this;
-        var token = localStorage.getItem('auth');
 
-        $.ajax({
-            url:'http://localhost:8000/api/media/delete',
-            type:'POST',
-            dataType:'JSON',
-            data:{'media_id':id},
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept','application/json');
-            },
-            success: function(response){
-                console.log(response);
-                self.refreshMedia();
+        const response = await Globals.api.request({ route: `media/delete`, method: "post", data: {'media_id':id} });
+        if(response.success === true){
+            console.log(response);
+            self.refreshMedia();
 
-                if(response.Message == 'Media deleted successfully'){
-                    notification('Success, '+response.Message);
-                }
-
-                if(response.Message == "You don't have permissions to delete this media." || response.Message == "Invalid Input"){
-                    notification('Error, '+response.Message);
-                }
-
-                if(type == 'Image'){
-                    setTimeout(function(){self.showUserImages(null)},1000);
-                }else{
-                    if(type == 'Video'){
-                        setTimeout(function(){self.showUserVideos()},1000);
-                    }
-                }
-
-                Globals.pageHandler.storageLimit = Globals.pageHandler.calculator.formatBytes(response.Storage.split('/')[0]);
-                Globals.pageHandler.storageLeft = Globals.pageHandler.calculator.formatBytes(response.Storage.split('/')[1]);
-                Globals.pageHandler.storageUsed = Globals.pageHandler.calculator.formatBytes(response.Storage.split('/')[0]-response.Storage.split('/')[1]);
-
-                $('.storageSpace').text('Media Storage Usage: '+Globals.pageHandler.storageUsed+' / '+Globals.pageHandler.storageLimit);
-
+            if(response.data.Message == 'Media deleted successfully'){
+                Globals.notificationHandler.new('Success, '+response.data.Message);
             }
-        });
+
+            if(response.data.Message == "You don't have permissions to delete this media." || response.data.Message == "Invalid Input"){
+                Globals.notificationHandler.new('Error, '+response.data.Message);
+            }
+
+            if(type == 'Image'){
+                setTimeout(function(){self.showUserImages(null)},1000);
+            }else{
+                if(type == 'Video'){
+                    setTimeout(function(){self.showUserVideos()},1000);
+                }
+            }
+
+            Globals.pageHandler.storageLimit = Globals.pageHandler.calculator.formatBytes(response.data.Storage.split('/')[0]);
+            Globals.pageHandler.storageLeft = Globals.pageHandler.calculator.formatBytes(response.data.Storage.split('/')[1]);
+            Globals.pageHandler.storageUsed = Globals.pageHandler.calculator.formatBytes(response.data.Storage.split('/')[0]-response.data.Storage.split('/')[1]);
+
+            $('.storageSpace').text('Media Storage Usage: '+Globals.pageHandler.storageUsed+' / '+Globals.pageHandler.storageLimit);
+        }
     }
 
     changeThumbnailPreview(file,txtbox){
@@ -192,7 +172,7 @@ class UserMediaManager{
         }
     }
 
-    updateMedia(id,textboxContainer,type){
+    async updateMedia(id,textboxContainer,type){
         const self = this;
         var token = localStorage.getItem('auth');
 
@@ -239,348 +219,174 @@ class UserMediaManager{
             formData.append('thumbnail', image);
         }
 
-        $.ajax({
-            url:'http://localhost:8000/api/media/update',
-            type:'POST',
-            dataType:'JSON',
-            data:formData,
-            processData: false,
-            contentType: false,
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept','application/json');
-            },
-            success: function(response){
-                self.refreshMedia();
+        const response = await Globals.api.request({ route: `media/update`, method: "post", data: formData });
+        if(response.success === true){
+            self.refreshMedia();
 
-                var message = response.Message;
-                console.log(message);
+            var message = response.data.Message;
+            console.log(message);
 
-                if(message == 'Media updated successfully'){
-                    notification('Success, '+message);
-                }
-
-                if(message == "You don't have permissions to delete this media." || message == "Invalid Input"){
-                    notification('Error, '+message);
-                }
-
-                if(type == 'image'){
-                    setTimeout(function(){self.showUserImages(null)},1000);
-                }else{
-                    if(type == 'video'){
-                        setTimeout(function(){self.showUserVideos()},1000);
-                    }
-                }
-
-                mediaEditor.close(type);
-            },
-        });
-
-    }
-
-    /*uploadMedia(type, file){
-    const self = this;
-    var token = localStorage.getItem('auth');
-
-    var file_size = file.size;
-    var file_extension = file.type.split("/").pop();
-    var file_name = file.name.split(".")[0];
-
-    var upload = 0;
-
-    if(type == 'Image'){
-    if(file_extension !== 'png' && file_extension !== 'jpeg' && file_extension !== 'jpg'){
-    notification('Error, you can only upload png/jpeg/jpg type image.');
-    upload = 0;
-    return false;
-}else{
-upload = 1;
-}
-}else{
-if(type == 'Video'){
-if(file_extension !== 'mp4'){
-notification('Error, you can only upload mp4 type video.');
-upload = 0;
-return false;
-}else{
-upload = 1;
-}
-}
-}
-
-if(upload == 1){
-if(type == 'Image'){
-document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0].innerText = 'Uploading...';
-document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0].style.opacity = '0.5';
-document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0].style.pointerEvents = 'none';
-}else{
-if(type == 'Video'){
-document.getElementsByClassName('videoManager_panelbar')[0].getElementsByTagName('button')[0].innerText = 'Uploading...';
-document.getElementsByClassName('videoManager_panelbar')[0].getElementsByTagName('button')[0].style.opacity = '0.5';
-document.getElementsByClassName('videoManager_panelbar')[0].getElementsByTagName('button')[0].style.pointerEvents = 'none';
-}
-}
-
-var fileChunkInfo = self.generateChunkSize(file.size);
-
-console.log("File Size: "+Globals.pageHandler.calculator.formatBytes(file.size)+", "+fileChunkInfo[1]+" chunks of "+Globals.pageHandler.calculator.formatBytes(fileChunkInfo[0])+" each.");
-
-var r = new Resumable({
-target:'http://localhost:8000/api/media/upload',
-headers:{
-Authorization:"Bearer "+token,
-Accept:"application/json",
-},
-query: {
-file_name:file_name,
-file_type:type,
-},
-chunkSize: fileChunkInfo[0],
-simultaneousUploads: 3,
-testChunks: false,
-throttleProgressCallbacks: 1,
-method:"multipart",
-});
-
-r.addFile(file);
-
-r.on("error", function(message, file){
-console.log(message);
-});
-
-r.on('fileAdded', function(file, event){
-r.upload();
-});
-
-r.on('fileSuccess', function(file, response){
-self.refreshMedia();
-self.updateUploadButtonText(type,null);
-
-response = JSON.parse(response);
-
-var message;
-
-if(response.Message){
-message = response.Message;
-}else{
-if(response[0].original.message){
-message = response[0].original.message;
-}
-}
-
-if(message){
-if(message.includes('You already have a')){
-notification('Error, '+message);
-}else{
-if(type == 'Image'){
-setTimeout(function(){self.showUserImages(null)},1000);
-if(message.includes('Invalid')){
-
-}else{
-notification('Success, '+message);
-self.updateStorageSpace(response[1].Storage);
-}
-}else{
-if(type == 'Video'){
-setTimeout(function(){self.showUserVideos()},1000);
-if(message.includes('Invalid')){
-
-}else{
-notification('Success, '+message);
-self.updateStorageSpace(response[1].Storage);
-}
-}
-}
-}
-}
-
-});
-
-r.on('fileError', function(file, message){
-console.log(message);
-});
-
-(function(file,type){
-r.on('fileProgress', function(file) {
-self.updateUploadButtonText(type,Math.floor(file.progress() * 100));
-});
-})(file,type);
-
-}
-
-generateChunkSize(fileSize){
-var chunkSize = fileSize / 25;
-var chunkCount = fileSize / chunkSize;
-
-return [chunkSize,25];
-}
-
-}*/
-
-updateSpaceDetails(userImgs,userVids,totalSpace){
-    var totalImgSpace = 0;
-    var totalVidSpace = 0;
-
-    for(var i=0; i<userImgs.length; i++){
-        totalImgSpace = totalImgSpace + userImgs[i].size;
-        console.log(totalImgSpace);
-    }
-
-    for(var i=0; i<userVids.length; i++){
-        totalVidSpace = totalVidSpace + userVids[i].size;
-        console.log(totalVidSpace);
-    }
-
-    Globals.pageHandler.spaceUsedByImages = Globals.pageHandler.calculator.formatBytes(totalImgSpace);
-    Globals.pageHandler.spaceUsedByVideos = Globals.pageHandler.calculator.formatBytes(totalVidSpace);
-    Globals.pageHandler.FreeSpace = Globals.pageHandler.calculator.formatBytes(totalSpace - (totalImgSpace + totalVidSpace));
-}
-
-updateStorageSpace(storage){
-    Globals.pageHandler.storageLimit = Globals.pageHandler.calculator.formatBytes(storage.split('/')[0]);
-    Globals.pageHandler.storageLeft = Globals.pageHandler.calculator.formatBytes(storage.split('/')[1]);
-    Globals.pageHandler.storageUsed = Globals.pageHandler.calculator.formatBytes(storage.split('/')[0]-storage.split('/')[1]);
-
-    $('.storageSpace').text('Media Storage Usage: '+Globals.pageHandler.storageUsed+' / '+Globals.pageHandler.storageLimit);
-}
-
-updateUploadButtonText(type,state){
-    var text;
-    var button;
-
-    if(type == "Video"){
-        button = document.getElementsByClassName('videoManager_panelbar')[0].getElementsByTagName('button')[0];
-    }else{
-        if(type == "Image"){
-            button = document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0];
-        }
-    }
-
-    if(state == null){
-        if(type == "Image"){
-            text = "Upload Image";
-        }else{
-            if(type == "Video"){
-                text  = "Upload Video (50MB Max Size)";
+            if(message == 'Media updated successfully'){
+                Globals.notificationHandler.new('Success, '+message);
             }
-        }
 
-        button.style.opacity = '1';
-        button.style.pointerEvents = 'unset';
-    }else{
-        if(state !== null){
-            if(state == "finishing"){
-                text = "Finishing...";
+            if(message == "You don't have permissions to delete this media." || message == "Invalid Input"){
+                Globals.notificationHandler.new('Error, '+message);
+            }
+
+            if(type == 'image'){
+                setTimeout(function(){self.showUserImages(null)},1000);
             }else{
-                text = "Uploading... ("+state+"%)";
+                if(type == 'video'){
+                    setTimeout(function(){self.showUserVideos()},1000);
+                }
             }
+
+            mediaEditor.close(type);
         }
     }
 
-    button.innerText = text;
-}
+    updateSpaceDetails(userImgs,userVids,totalSpace){
+        var totalImgSpace = 0;
+        var totalVidSpace = 0;
 
-uploadMedia(type,file){
-    const self = this;
-    var token = localStorage.getItem('auth');
-
-    var file_size = file.size;
-    var file_extension = file.type.split("/").pop();
-    var file_name = file.name.split(".")[0];
-
-    var upload = 0;
-
-    if(type == 'Image'){
-        if(file_extension !== 'png' && file_extension !== 'jpeg' && file_extension !== 'jpg'){
-            notification('Error, you can only upload png/jpeg/jpg type image.');
-            upload = 0;
-            return false;
-        }else{
-            upload = 1;
+        for(var i=0; i<userImgs.length; i++){
+            totalImgSpace = totalImgSpace + userImgs[i].size;
+            console.log(totalImgSpace);
         }
-    }else{
-        if(type == 'Video'){
-            if(file_extension !== 'mp4'){
-                notification('Error, you can only upload mp4 type video.');
+
+        for(var i=0; i<userVids.length; i++){
+            totalVidSpace = totalVidSpace + userVids[i].size;
+            console.log(totalVidSpace);
+        }
+
+        Globals.pageHandler.spaceUsedByImages = Globals.pageHandler.calculator.formatBytes(totalImgSpace);
+        Globals.pageHandler.spaceUsedByVideos = Globals.pageHandler.calculator.formatBytes(totalVidSpace);
+        Globals.pageHandler.FreeSpace = Globals.pageHandler.calculator.formatBytes(totalSpace - (totalImgSpace + totalVidSpace));
+    }
+
+    updateStorageSpace(storage){
+        Globals.pageHandler.storageLimit = Globals.pageHandler.calculator.formatBytes(storage.split('/')[0]);
+        Globals.pageHandler.storageLeft = Globals.pageHandler.calculator.formatBytes(storage.split('/')[1]);
+        Globals.pageHandler.storageUsed = Globals.pageHandler.calculator.formatBytes(storage.split('/')[0]-storage.split('/')[1]);
+
+        $('.storageSpace').text('Media Storage Usage: '+Globals.pageHandler.storageUsed+' / '+Globals.pageHandler.storageLimit);
+    }
+
+    updateUploadButtonText(type,state){
+        var text;
+        var button;
+
+        if(type == "Video"){
+            button = document.getElementsByClassName('videoManager_panelbar')[0].getElementsByTagName('button')[0];
+        }else{
+            if(type == "Image"){
+                button = document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0];
+            }
+        }
+
+        if(state == null){
+            if(type == "Image"){
+                text = "Upload Image";
+            }else{
+                if(type == "Video"){
+                    text  = "Upload Video (50MB Max Size)";
+                }
+            }
+
+            button.style.opacity = '1';
+            button.style.pointerEvents = 'unset';
+        }else{
+            if(state !== null){
+                if(state == "finishing"){
+                    text = "Finishing...";
+                }else{
+                    text = "Uploading... ("+state+"%)";
+                }
+            }
+        }
+
+        button.innerText = text;
+    }
+
+    async uploadMedia(type,file){
+        const self = this;
+        var token = localStorage.getItem('auth');
+
+        var file_size = file.size;
+        var file_extension = file.type.split("/").pop();
+        var file_name = file.name.split(".")[0];
+
+        var upload = 0;
+
+        if(type == 'Image'){
+            if(file_extension !== 'png' && file_extension !== 'jpeg' && file_extension !== 'jpg'){
+                Globals.notificationHandler.new('Error, you can only upload png/jpeg/jpg type image.');
                 upload = 0;
                 return false;
             }else{
                 upload = 1;
             }
-        }
-    }
-
-    var formData = new FormData();
-    formData.append('file_name', file_name);
-    formData.append('file_type', type);
-    formData.append('file', file);
-
-    if(upload == 1){
-
-        if(type == 'Image'){
-            document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0].innerText = 'Uploading...';
-            document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0].style.opacity = '0.5';
-            document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0].style.pointerEvents = 'none';
         }else{
             if(type == 'Video'){
-                document.getElementsByClassName('videoManager_panelbar')[0].getElementsByTagName('button')[0].innerText = 'Uploading...';
-                document.getElementsByClassName('videoManager_panelbar')[0].getElementsByTagName('button')[0].style.opacity = '0.5';
-                document.getElementsByClassName('videoManager_panelbar')[0].getElementsByTagName('button')[0].style.pointerEvents = 'none';
+                if(file_extension !== 'mp4'){
+                    Globals.notificationHandler.new('Error, you can only upload mp4 type video.');
+                    upload = 0;
+                    return false;
+                }else{
+                    upload = 1;
+                }
             }
         }
 
-        $.ajax({
-            url:'http://localhost:8000/api/media/upload',
-            type:'POST',
-            processData: false,
-            contentType: false,
-            data:formData/*{'file_name':file_name,'file_type':type,'file':file}*/,
-            xhr: function() {
-                var xhr = new window.XMLHttpRequest();
-                xhr.upload.addEventListener("progress", function(evt) {
-                    if(evt.lengthComputable){
-                        var percentComplete = Math.round((evt.loaded / evt.total) * 100);
-                        if(percentComplete == 100){
-                            self.updateUploadButtonText(type,"finishing");
-                        }else{
-                            self.updateUploadButtonText(type,percentComplete);
-                        }
-                    }
-                }, false);
-                return xhr;
-            },
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept','application/json');
-            },
-            success: function(response){
-                console.log(response);
+        var formData = new FormData();
+        formData.append('file_name', file_name);
+        formData.append('file_type', type);
+        formData.append('file', file);
+
+        if(upload == 1){
+
+            if(type == 'Image'){
+                document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0].innerText = 'Uploading...';
+                document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0].style.opacity = '0.5';
+                document.getElementsByClassName('bg-image-manager_panelbar')[0].getElementsByTagName('button')[0].style.pointerEvents = 'none';
+            }else{
+                if(type == 'Video'){
+                    document.getElementsByClassName('videoManager_panelbar')[0].getElementsByTagName('button')[0].innerText = 'Uploading...';
+                    document.getElementsByClassName('videoManager_panelbar')[0].getElementsByTagName('button')[0].style.opacity = '0.5';
+                    document.getElementsByClassName('videoManager_panelbar')[0].getElementsByTagName('button')[0].style.pointerEvents = 'none';
+                }
+            }
+
+            const response = await Globals.api.request({ route: `me/upload`, method: "post", data: formData });
+            if(response.success === true){
+                console.log(response.data);
                 self.refreshMedia();
                 self.updateUploadButtonText(type,null);
 
                 var message;
 
-                if(response.Message){
-                    if(response.Message.original){
-                        message = response.Message.original;
+                if(response.data.Message){
+                    if(response.data.Message.original){
+                        message = response.data.Message.original;
                     }else{
-                        message = response.Message;
+                        message = response.data.Message;
                     }
                 }else{
-                    if(response[0].original.message){
-                        message = response[0].original.message;
+                    if(response.data[0].original.message){
+                        message = response.data[0].original.message;
                     }
                 }
 
                 if(message.includes('Not Enough Space')){
-                    notification('Error, '+message);
+                    Globals.notificationHandler.new('Error, '+message);
                 }else{
                     if(type == 'Image'){
                         setTimeout(function(){self.showUserImages(null)},1000);
                         if(message.includes('Invalid')){
 
                         }else{
-                            notification('Success, '+message);
+                            Globals.notificationHandler.new('Success, '+message);
                         }
                     }else{
                         if(type == 'Video'){
@@ -588,188 +394,63 @@ uploadMedia(type,file){
                             if(message.includes('Invalid')){
 
                             }else{
-                                notification('Success, '+message);
+                                Globals.notificationHandler.new('Success, '+message);
                             }
                         }
                     }
                 }
 
-                self.updateStorageSpace(response.Storage);
-
-            }
-        });
-    }
-
-}
-
-showUserImages(forElement){
-    const self = this;
-    const user_images = self.user_images;
-
-    $("#bg-image-manager-images-box").empty();
-
-    for(var i = 0; i < user_images.length; i++){
-
-        var image = document.createElement('img');
-        image.src = 'http://localhost:8000/api/assets/'+user_images[i].path;
-        image.setAttribute("data-title",user_images[i].name);
-        image.setAttribute("data-size",user_images[i].size);
-        image.setAttribute("data-image-title",user_images[i].title);
-        image.setAttribute("data-description",user_images[i].description);
-        image.setAttribute("data-m-id",user_images[i].id);
-
-        image.id = randomize.elementId(5);
-
-        var div = document.createElement('div');
-
-        var span = document.createElement('span');
-
-        if(user_images[i].title == null || user_images[i].title == ""){
-            if(user_images[i].name.length > 15){
-                span.innerText = user_images[i].name.substring(0,15)+"...";
-            }else{
-                span.innerText = user_images[i].name;
-            }
-        }else{
-            if(user_images[i].title !== null && user_images[i].title !== ""){
-                if(user_images[i].title.length > 15){
-                    span.innerText = user_images[i].title.substring(0,15)+"...";
-                }else{
-                    span.innerText = user_images[i].title;
-                }
+                self.updateStorageSpace(response.data.Storage);
             }
         }
 
-        (function(span,image){
-            span.addEventListener('mouseover',function(e){
-                self.showImageInfo(e,image);
-            });
-
-            span.addEventListener('mouseout',function(){
-                self.hideImageInfo(image);
-            });
-        })(span,image);
-
-        var editicon = document.createElement('i');
-        editicon.className = 'fas fa-pen';
-
-        (function(image,editicon,i){
-            editicon.addEventListener('click',function(){
-                mediaEditor.open("image",image);
-            });
-        })(image,editicon,i);
-
-        var deleteicon = document.createElement('i');
-        deleteicon.className = 'fas fa-trash';
-
-        (function(user_images,deleteicon,i){
-            deleteicon.addEventListener('click',function(){
-                self.deleteMedia(user_images[i].id,'Image');
-            });
-        })(user_images,deleteicon,i);
-
-        div.appendChild(image);
-        div.appendChild(span);
-        div.appendChild(deleteicon);
-        div.appendChild(editicon);
-
-        if(document.getElementsByClassName('selElForImgPik')[0]){
-            (function(div,image){
-                div.addEventListener('click',function(){
-                    if(document.getElementsByClassName('selElForImgPik')[0]){
-                        document.getElementsByClassName('selElForImgPik')[0].setAttribute('src',image.src);
-                        if(document.getElementsByClassName('selElForImgPik_invoker')[0]){
-                            document.getElementsByClassName('selElForImgPik_invoker')[0].setAttribute('src',image.src);
-                        }
-                    }
-                });
-            })(div,image);
-        }else{
-            if($(document.getElementsByClassName("selected")[0]).attr("data-e-type") == 'video'){
-                (function(div,image){
-                    div.addEventListener('click',function(){
-                        document.getElementsByClassName('selected')[0].setAttribute('poster',image.src);
-                    });
-                })(div,image);
-            }else{
-                (function(div,image){
-                    div.addEventListener('click',function(){
-                        document.getElementsByClassName('selected')[0].src = image.src;
-                    });
-                })(div,image);
-            }
-        }
-
-        document.getElementById("bg-image-manager-images-box").appendChild(div);
-
     }
 
-}
+    showUserImages(forElement){
+        const self = this;
+        const user_images = self.user_images;
 
-showUserVideos(forElement){
-    const self = this;
-    const user_videos = self.user_videos;
+        $("#bg-image-manager-images-box").empty();
 
-    $("#videoManager-videos-box").empty();
-
-    if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video' || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-player') || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-playlist')){
-
-        for(var i = 0; i < user_videos.length; i++){
-
-            var title = user_videos[i].title;
-            var description = user_videos[i].description;
-
-            if(title == null){
-                title == "";
-            }
-
-            if(description == null){
-                description == "";
-            }
+        for(var i = 0; i < user_images.length; i++){
 
             var image = document.createElement('img');
-            image.src = 'http://localhost:8000/api/assets/'+user_videos[i].thumbnail;
-            image.setAttribute("data-title",user_videos[i].name);
-            image.setAttribute("data-size",user_videos[i].size);
-            image.setAttribute("data-video-url",user_videos[i].path);
-            image.setAttribute("data-video-title",title);
-            image.setAttribute("data-video-des",description);
-            image.setAttribute("data-m-id",user_videos[i].id);
-            image.setAttribute("data-video-len",user_videos[i].length);
-            //image.setAttribute("data-video-thumbnail",response.items[i].snippet.thumbnails.high.url);
-            //image.setAttribute("alt","");
+            image.src = 'http://localhost:8000/api/assets/'+user_images[i].path;
+            image.setAttribute("data-title",user_images[i].name);
+            image.setAttribute("data-size",user_images[i].size);
+            image.setAttribute("data-image-title",user_images[i].title);
+            image.setAttribute("data-description",user_images[i].description);
+            image.setAttribute("data-m-id",user_images[i].id);
 
             image.id = randomize.elementId(5);
-
-            image.addEventListener('click',VideoManager.changeVideo);
 
             var div = document.createElement('div');
 
             var span = document.createElement('span');
 
-            if(title == null || title == ""){
-                if(user_videos[i].name.length > 15){
-                    span.innerText = user_videos[i].name.substring(0,15)+"...";
+            if(user_images[i].title == null || user_images[i].title == ""){
+                if(user_images[i].name.length > 15){
+                    span.innerText = user_images[i].name.substring(0,15)+"...";
                 }else{
-                    span.innerText = user_videos[i].name;
+                    span.innerText = user_images[i].name;
                 }
             }else{
-                if(title !== null && title !== ""){
-                    if(title.length > 15){
-                        span.innerText = title.substring(0,15)+"...";
+                if(user_images[i].title !== null && user_images[i].title !== ""){
+                    if(user_images[i].title.length > 15){
+                        span.innerText = user_images[i].title.substring(0,15)+"...";
                     }else{
-                        span.innerText = title;
+                        span.innerText = user_images[i].title;
                     }
                 }
             }
 
             (function(span,image){
                 span.addEventListener('mouseover',function(e){
-                    VideoManager.showVideoInfo(e,image);
+                    self.showImageInfo(e,image);
                 });
 
                 span.addEventListener('mouseout',function(){
-                    VideoManager.hideVideoInfo(image);
+                    self.hideImageInfo(image);
                 });
             })(span,image);
 
@@ -778,85 +459,208 @@ showUserVideos(forElement){
 
             (function(image,editicon,i){
                 editicon.addEventListener('click',function(){
-                    mediaEditor.open("video",image);
+                    mediaEditor.open("image",image);
                 });
             })(image,editicon,i);
 
             var deleteicon = document.createElement('i');
             deleteicon.className = 'fas fa-trash';
 
-            (function(user_videos,deleteicon,i){
+            (function(user_images,deleteicon,i){
                 deleteicon.addEventListener('click',function(){
-                    self.deleteMedia(user_videos[i].id,'Video');
+                    self.deleteMedia(user_images[i].id,'Image');
                 });
-            })(user_videos,deleteicon,i);
+            })(user_images,deleteicon,i);
 
             div.appendChild(image);
             div.appendChild(span);
-            div.appendChild(editicon);
             div.appendChild(deleteicon);
+            div.appendChild(editicon);
 
-            if(document.getElementsByClassName('selElForVidPik')[0]){
-                (function(div,image,forElement){
+            if(document.getElementsByClassName('selElForImgPik')[0]){
+                (function(div,image){
                     div.addEventListener('click',function(){
-                        if(document.getElementsByClassName('selElForVidPik')[0]){
-                            document.getElementsByClassName('selElForVidPik')[0].setAttribute("data-vid-url",'http://localhost:8000/api/assets/'+$(image).attr('data-video-url'));
-                            document.getElementsByClassName('selElForVidPik')[0].getElementsByTagName("img")[0].src = image.src;
-                            document.getElementsByClassName('selElForVidPik')[0].setAttribute("data-title",image.getAttribute("data-video-title"));
-                            document.getElementsByClassName('selElForVidPik')[0].setAttribute("data-description",image.getAttribute("data-video-des"));
-                            forElement.innerText = image.getAttribute("data-video-title");
-                            if(document.getElementsByClassName('selElForVidPik_invoker')[0]){
-                                document.getElementsByClassName('selElForVidPik_invoker')[0].setAttribute('src',image.src);
-                                document.getElementsByClassName('selElForVidPik_invoker')[0].parentElement.parentElement.getElementsByTagName("td")[1].innerText = image.getAttribute("data-video-title");
+                        if(document.getElementsByClassName('selElForImgPik')[0]){
+                            document.getElementsByClassName('selElForImgPik')[0].setAttribute('src',image.src);
+                            if(document.getElementsByClassName('selElForImgPik_invoker')[0]){
+                                document.getElementsByClassName('selElForImgPik_invoker')[0].setAttribute('src',image.src);
                             }
                         }
                     });
-                })(div,image,forElement);
+                })(div,image);
             }else{
-                if($(document.getElementsByClassName("selected")[0]).attr("data-e-type").includes('video-player')){
+                if($(document.getElementsByClassName("selected")[0]).attr("data-e-type") == 'video'){
                     (function(div,image){
                         div.addEventListener('click',function(){
-                            document.getElementsByClassName('selected')[0].getElementsByTagName("video")[0].src = 'http://localhost:8000/api/assets/'+$(image).attr('data-video-url');
-                            document.getElementsByClassName('selected')[0].getElementsByClassName("video-player-thumb")[0].setAttribute("src",image.src);
-
-                            document.getElementsByClassName('selected')[0].getElementsByClassName("video-info")[0].getElementsByClassName("heading")[0].innerText = image.getAttribute("data-video-title");
-                            document.getElementsByClassName('selected')[0].getElementsByClassName("video-info")[0].getElementsByClassName("description")[0].innerText = image.getAttribute("data-video-des");
-
-                            document.getElementsByClassName('selected')[0].setAttribute("data-title",image.getAttribute("data-video-title"));
-                            document.getElementsByClassName('selected')[0].setAttribute("data-description",image.getAttribute("data-video-des"));
-
-                            document.getElementsByClassName('selected')[0].getElementsByTagName("video")[0].setAttribute("data-len",image.getAttribute("data-video-len"));
-
-                            if(document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0]){
-                                document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].innerText = image.getAttribute("data-video-title");
-
-                                if(image.getAttribute("data-video-title").length >= 10){
-                                    document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].style.fontSize = "35px";
-                                }else{
-                                    if(image.getAttribute("data-video-title").length < 10){
-                                        document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].style.fontSize = "50px";
-                                    }
-                                }
-                            }
-
+                            document.getElementsByClassName('selected')[0].setAttribute('poster',image.src);
                         });
                     })(div,image);
                 }else{
                     (function(div,image){
                         div.addEventListener('click',function(){
-                            document.getElementsByClassName('selected')[0].src = 'http://localhost:8000/api/assets/'+$(image).attr('data-video-url');
-                            document.getElementsByClassName('selected')[0].setAttribute("poster",image.src);
+                            document.getElementsByClassName('selected')[0].src = image.src;
                         });
                     })(div,image);
                 }
             }
 
-            document.getElementById("videoManager-videos-box").appendChild(div);
+            document.getElementById("bg-image-manager-images-box").appendChild(div);
 
         }
 
     }
 
-}
+    showUserVideos(forElement){
+        const self = this;
+        const user_videos = self.user_videos;
+
+        $("#videoManager-videos-box").empty();
+
+        if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video' || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-player') || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-playlist')){
+
+            for(var i = 0; i < user_videos.length; i++){
+
+                var title = user_videos[i].title;
+                var description = user_videos[i].description;
+
+                if(title == null){
+                    title == "";
+                }
+
+                if(description == null){
+                    description == "";
+                }
+
+                var image = document.createElement('img');
+                image.src = 'http://localhost:8000/api/assets/'+user_videos[i].thumbnail;
+                image.setAttribute("data-title",user_videos[i].name);
+                image.setAttribute("data-size",user_videos[i].size);
+                image.setAttribute("data-video-url",user_videos[i].path);
+                image.setAttribute("data-video-title",title);
+                image.setAttribute("data-video-des",description);
+                image.setAttribute("data-m-id",user_videos[i].id);
+                image.setAttribute("data-video-len",user_videos[i].length);
+                //image.setAttribute("data-video-thumbnail",response.items[i].snippet.thumbnails.high.url);
+                //image.setAttribute("alt","");
+
+                image.id = randomize.elementId(5);
+
+                image.addEventListener('click',VideoManager.changeVideo);
+
+                var div = document.createElement('div');
+
+                var span = document.createElement('span');
+
+                if(title == null || title == ""){
+                    if(user_videos[i].name.length > 15){
+                        span.innerText = user_videos[i].name.substring(0,15)+"...";
+                    }else{
+                        span.innerText = user_videos[i].name;
+                    }
+                }else{
+                    if(title !== null && title !== ""){
+                        if(title.length > 15){
+                            span.innerText = title.substring(0,15)+"...";
+                        }else{
+                            span.innerText = title;
+                        }
+                    }
+                }
+
+                (function(span,image){
+                    span.addEventListener('mouseover',function(e){
+                        VideoManager.showVideoInfo(e,image);
+                    });
+
+                    span.addEventListener('mouseout',function(){
+                        VideoManager.hideVideoInfo(image);
+                    });
+                })(span,image);
+
+                var editicon = document.createElement('i');
+                editicon.className = 'fas fa-pen';
+
+                (function(image,editicon,i){
+                    editicon.addEventListener('click',function(){
+                        mediaEditor.open("video",image);
+                    });
+                })(image,editicon,i);
+
+                var deleteicon = document.createElement('i');
+                deleteicon.className = 'fas fa-trash';
+
+                (function(user_videos,deleteicon,i){
+                    deleteicon.addEventListener('click',function(){
+                        self.deleteMedia(user_videos[i].id,'Video');
+                    });
+                })(user_videos,deleteicon,i);
+
+                div.appendChild(image);
+                div.appendChild(span);
+                div.appendChild(editicon);
+                div.appendChild(deleteicon);
+
+                if(document.getElementsByClassName('selElForVidPik')[0]){
+                    (function(div,image,forElement){
+                        div.addEventListener('click',function(){
+                            if(document.getElementsByClassName('selElForVidPik')[0]){
+                                document.getElementsByClassName('selElForVidPik')[0].setAttribute("data-vid-url",'http://localhost:8000/api/assets/'+$(image).attr('data-video-url'));
+                                document.getElementsByClassName('selElForVidPik')[0].getElementsByTagName("img")[0].src = image.src;
+                                document.getElementsByClassName('selElForVidPik')[0].setAttribute("data-title",image.getAttribute("data-video-title"));
+                                document.getElementsByClassName('selElForVidPik')[0].setAttribute("data-description",image.getAttribute("data-video-des"));
+                                forElement.innerText = image.getAttribute("data-video-title");
+                                if(document.getElementsByClassName('selElForVidPik_invoker')[0]){
+                                    document.getElementsByClassName('selElForVidPik_invoker')[0].setAttribute('src',image.src);
+                                    document.getElementsByClassName('selElForVidPik_invoker')[0].parentElement.parentElement.getElementsByTagName("td")[1].innerText = image.getAttribute("data-video-title");
+                                }
+                            }
+                        });
+                    })(div,image,forElement);
+                }else{
+                    if($(document.getElementsByClassName("selected")[0]).attr("data-e-type").includes('video-player')){
+                        (function(div,image){
+                            div.addEventListener('click',function(){
+                                document.getElementsByClassName('selected')[0].getElementsByTagName("video")[0].src = 'http://localhost:8000/api/assets/'+$(image).attr('data-video-url');
+                                document.getElementsByClassName('selected')[0].getElementsByClassName("video-player-thumb")[0].setAttribute("src",image.src);
+
+                                document.getElementsByClassName('selected')[0].getElementsByClassName("video-info")[0].getElementsByClassName("heading")[0].innerText = image.getAttribute("data-video-title");
+                                document.getElementsByClassName('selected')[0].getElementsByClassName("video-info")[0].getElementsByClassName("description")[0].innerText = image.getAttribute("data-video-des");
+
+                                document.getElementsByClassName('selected')[0].setAttribute("data-title",image.getAttribute("data-video-title"));
+                                document.getElementsByClassName('selected')[0].setAttribute("data-description",image.getAttribute("data-video-des"));
+
+                                document.getElementsByClassName('selected')[0].getElementsByTagName("video")[0].setAttribute("data-len",image.getAttribute("data-video-len"));
+
+                                if(document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0]){
+                                    document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].innerText = image.getAttribute("data-video-title");
+
+                                    if(image.getAttribute("data-video-title").length >= 10){
+                                        document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].style.fontSize = "35px";
+                                    }else{
+                                        if(image.getAttribute("data-video-title").length < 10){
+                                            document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].style.fontSize = "50px";
+                                        }
+                                    }
+                                }
+
+                            });
+                        })(div,image);
+                    }else{
+                        (function(div,image){
+                            div.addEventListener('click',function(){
+                                document.getElementsByClassName('selected')[0].src = 'http://localhost:8000/api/assets/'+$(image).attr('data-video-url');
+                                document.getElementsByClassName('selected')[0].setAttribute("poster",image.src);
+                            });
+                        })(div,image);
+                    }
+                }
+
+                document.getElementById("videoManager-videos-box").appendChild(div);
+
+            }
+
+        }
+
+    }
 
 }

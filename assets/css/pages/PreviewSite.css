@@ -2218,7 +2218,7 @@ styles previews stylepreview .checkbox span:after{
 
 .previewsite [data-e-type="video"],
 .previewsite [data-e-type="ytvideo"]{
-    background-image: url('../images/icons/novideo.png');
+    background-image: url('../../images/icons/novideo.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;

@@ -1,4 +1,4 @@
-function saveToStorage(elementtype){
+async function saveToStorage(elementtype){
     var token = localStorage.getItem('auth');
     var animationCSS = document.getElementById('textareaA').value;
     var elementCSS = document.getElementById('textareaE').value;
@@ -22,79 +22,58 @@ function saveToStorage(elementtype){
         }
         document.getElementById('textareaE').value = elementCSS;
 
-        $.ajax({
-            url:'http://localhost:8000/api/me/animation/add',
-            type:'POST',
-            dataType:'JSON',
-            data:{'name':animationName,'css':animationCSS},
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept','application/json');
-            },
-            success: function(response){
-                if(response.message == 'animation saved to your account.'){
-                    Globals.notificationHandler.new(response.message);
-                }
+        const response = await Globals.api.request({ route: `me/animation/add`, method: "post", data:{'name':animationName,'css':animationCSS} });
+        if(response.success === true){
+            if(response.data.message == 'animation saved to your account.'){
+                Globals.notificationHandler.new(response.data.message);
+            }
 
-                if(response.message == 'an error occured.'){
-                    Globals.notificationHandler.new('an error occured, please try again.');
-                }
+            if(response.data.message == 'an error occured.'){
+                Globals.notificationHandler.new('an error occured, please try again.');
+            }
 
-                if(response.message == 'Error, You have reached your daily quota for saving animations.'){
-                    Globals.notificationHandler.new('Error, you have reached your daily animation creation quota, wait until it resets in 24 hours.');
-                }
+            if(response.data.message == 'Error, You have reached your daily quota for saving animations.'){
+                Globals.notificationHandler.new('Error, you have reached your daily animation creation quota, wait until it resets in 24 hours.');
+            }
 
-                if(response.message == 'User md doesn\'t exist, please contact support.'){
-                    Globals.notificationHandler.new('There is a problem with your account, please contact support.');
-                }
+            if(response.data.message == 'User md doesn\'t exist, please contact support.'){
+                Globals.notificationHandler.new('There is a problem with your account, please contact support.');
+            }
 
-                if(response.message == 'Storage is full.'){
-                    Globals.notificationHandler.new('Error, there is no space left in your storage, please make some space and retry.');
-                }
+            if(response.data.message == 'Storage is full.'){
+                Globals.notificationHandler.new('Error, there is no space left in your storage, please make some space and retry.');
+            }
 
-                $("#finish").remove();
-                $("#panel").find("*").not('#finish, #textareaE, #textareaA, #eH, #aH, #savebutton, #dltextbutton, #cancelbutton').css({'opacity':'1','pointer-events':'unset'});
-            },
-        });
-
+            $("#finish").remove();
+            $("#panel").find("*").not('#finish, #textareaE, #textareaA, #eH, #aH, #savebutton, #dltextbutton, #cancelbutton').css({'opacity':'1','pointer-events':'unset'});
+        }
     }
 
     if(elementCSS != ''){
-
         elementCSS = elementCSS.split("\n").slice(1).join("\n");
         elementCSS = '.'+ elementName + ' { \n' + elementCSS;
         document.getElementById('textareaE').value = elementCSS;
 
-        $.ajax({
-            url:'http://localhost:8000/api/me/element/add',
-            type:'POST',
-            dataType:'JSON',
-            data:{'name':elementName,'css':elementCSS,'type':elementtype},
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept','application/json');
-            },
-            success: function(response){
-                if(response.message == 'element saved to your account.'){
-                    Globals.notificationHandler.new(response.message);
-                }
+        const response = await Globals.api.request({ route: `me/element/add`, method: "post", data:{'name':elementName,'css':elementCSS,'type':elementtype} });
+        if(response.success === true){
+            if(response.data.message == 'element saved to your account.'){
+                Globals.notificationHandler.new(response.data.message);
+            }
 
-                if(response.message == 'an error occured.'){
-                    Globals.notificationHandler.new('an error occured, please try again.');
-                }
+            if(response.data.message == 'an error occured.'){
+                Globals.notificationHandler.new('an error occured, please try again.');
+            }
 
-                if(response.message == 'User md doesn\'t exist, please contact support.'){
-                    Globals.notificationHandler.new('There is a problem with your account, please contact support.');
-                }
+            if(response.data.message == 'User md doesn\'t exist, please contact support.'){
+                Globals.notificationHandler.new('There is a problem with your account, please contact support.');
+            }
 
-                if(response.message == 'Storage is full.'){
-                    Globals.notificationHandler.new('Error, there is no space left in your storage, please make some space and retry.');
-                }
+            if(response.data.message == 'Storage is full.'){
+                Globals.notificationHandler.new('Error, there is no space left in your storage, please make some space and retry.');
+            }
 
-                $("#finish").remove();
-                $("#panel").find("*").not('#finish, #textareaE, #textareaA, #eH, #aH, #savebutton, #dltextbutton, #cancelbutton, #animationName, #elementName').css({'opacity':'1','pointer-events':'unset'});
-            },
-        });
-
+            $("#finish").remove();
+            $("#panel").find("*").not('#finish, #textareaE, #textareaA, #eH, #aH, #savebutton, #dltextbutton, #cancelbutton, #animationName, #elementName').css({'opacity':'1','pointer-events':'unset'});
+        }
     }
 }

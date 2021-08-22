@@ -165,7 +165,7 @@ class AdminPanelHandler{
         });
     }
 
-    getUsers(){
+    async getUsers(){
         if($('#searchu').length){
             if(document.getElementById('searchu').style.display !== 'block'){
                 alert("Fetching users..");
@@ -173,20 +173,12 @@ class AdminPanelHandler{
                 document.getElementById('userstab').style.opacity = '0.5';
                 document.getElementById('userstab').style.pointerEvents = 'none';
 
-                $.ajax({
-                    url:'https://api.cssstudio.co/api/admin/users',
-                    type:'GET',
-                    beforeSend: function(request){
-                        request.setRequestHeader('Authorization','Bearer '+token);
-                        request.setRequestHeader('Accept','application/javascript');
-                    },
-                    success: function(response){
-                        self.loadUsers(response.success,'1');
-                    },
-                    error: function(response){
-                        // window.location.href = '../login/index.html';
-                    }
-                });
+                const response = await Globals.api.request({ route: `admin/users`, method: "get" });
+                if(response.success === true){
+                    self.loadUsers(response.data.success, '1');
+                }else{
+                    // window.location.href = '../login/index.html';
+                }
             }
         }else{
             alert("Fetching users..");
@@ -194,25 +186,16 @@ class AdminPanelHandler{
             document.getElementById('userstab').style.opacity = '0.5';
             document.getElementById('userstab').style.pointerEvents = 'none';
 
-            $.ajax({
-                url:'https://api.cssstudio.co/api/admin/users',
-                type:'GET',
-                beforeSend: function(request){
-                    request.setRequestHeader('Authorization','Bearer '+token);
-                    request.setRequestHeader('Accept','application/javascript');
-                },
-                success: function(response){
-                    self.loadUsers(response.success,'1');
-                },
-                error: function(response){
-                    // window.location.href = '../login/index.html';
-                }
-            });
-
+            const response = await Globals.api.request({ route: `admin/users`, method: "get" });
+            if(response.success === true){
+                self.loadUsers(response.data.success, '1');
+            }else{
+                // window.location.href = '../login/index.html';
+            }
         }
     }
 
-    getStatistics(){
+    async getStatistics(){
         const self = this;
         if($('#searchu').length){
             if(document.getElementById('searchu').style.display !== 'block'){
@@ -221,18 +204,12 @@ class AdminPanelHandler{
                 document.getElementById('statstab').style.opacity = '0.5';
                 document.getElementById('statstab').style.pointerEvents = 'none';
 
-                $.ajax({
-                    url:'https://api.cssstudio.co/api/admin/stats',
-                    type:'GET',
-                    beforeSend: function(request){
-                        request.setRequestHeader('Authorization','Bearer '+token);
-                        request.setRequestHeader('Accept','application/javascript');
-                    },
-                    success: self.loadStats,
-                    error: function(response){
-                        // window.location.href = '../login/index.html';
-                    }
-                });
+                const response = await Globals.api.request({ route: `admin/stats`, method: "get" });
+                if(response.success === true){
+                    self.loadStats(response.data.success);
+                }else{
+                    // window.location.href = '../login/index.html';
+                }
             }
         }else{
 
@@ -241,45 +218,38 @@ class AdminPanelHandler{
             document.getElementById('statstab').style.opacity = '0.5';
             document.getElementById('statstab').style.pointerEvents = 'none';
 
-            $.ajax({
-                url:'https://api.cssstudio.co/api/admin/stats',
-                type:'GET',
-                beforeSend: function(request){
-                    request.setRequestHeader('Authorization','Bearer '+token);
-                    request.setRequestHeader('Accept','application/javascript');
-                },
-                success: self.loadStats,
-                error: function(response){
-                    // window.location.href = '../login/index.html';
-                }
-            });
-
+            const response = await Globals.api.request({ route: `admin/stats`, method: "get" });
+            if(response.success === true){
+                self.loadStats(response.data.success);
+            }else{
+                // window.location.href = '../login/index.html';
+            }
         }
     }
 
-    searchUsers(value){
+    async searchUsers(value){
         var su_option1_input = document.getElementsByClassName('searchu_checkbox')[0];
         var su_option2_input = document.getElementsByClassName('searchu_checkbox')[1];
         var su_option3_input = document.getElementsByClassName('searchu_checkbox')[2];
         document.getElementById('searchu').getElementsByTagName('button')[0].style.opacity = '0.5';
         document.getElementById('searchu').getElementsByTagName('button')[0].style.pointerEvents = 'none';
 
-        var url = 'https://api.cssstudio.co/api/admin/search/users/count/'+value+'/u';
+        var url = 'admin/search/users/count/'+value+'/u';
 
         if($(su_option1_input).is(':checked')){
-            url = 'https://api.cssstudio.co/api/admin/search/users/count/'+value+'/u';
+            url = 'admin/search/users/count/'+value+'/u';
         }else {
             if($(su_option2_input).is(':checked')){
-                url = 'https://api.cssstudio.co/api/admin/search/users/count/'+value+'/e';
+                url = 'admin/search/users/count/'+value+'/e';
             }else{
                 if($(su_option3_input).is(':checked')){
-                    url = 'https://api.cssstudio.co/api/admin/search/users/count/'+value+'/i';
+                    url = 'admin/search/users/count/'+value+'/i';
                 }
             }
         }
 
         if($(su_option1_input).is(':checked') && $(su_option2_input).is(':checked')){
-            url = 'https://api.cssstudio.co/api/admin/search/users/count/'+value+'/ue';
+            url = 'admin/search/users/count/'+value+'/ue';
         }
 
         if($(su_option1_input).is(':checked') && $(su_option3_input).is(':checked')){
@@ -290,24 +260,18 @@ class AdminPanelHandler{
             url = '';
         }
 
-        $.ajax({
-            url:url,
-            type:'GET',
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept','application/javascript');
-            },
-            success: function(response){
-                var msg = response.success.count + ' users found for keyword "'+response.success.keyword+'" .';
+        if(url){
+            const response = await Globals.api.request({ route: url, method: "get" });
+            if(response.success === true){
+                var msg = response.data.success.count + ' users found for keyword "'+response.data.success.keyword+'" .';
                 document.getElementById('searchu').getElementsByTagName('p')[0].innerText = msg;
                 document.getElementById('searchu').getElementsByTagName('button')[0].style.opacity = '1';
                 document.getElementById('searchu').getElementsByTagName('button')[0].style.pointerEvents = 'unset';
-            },
-            error: function(response){
+            }else{
                 var msg = 'Error occured while searching.';
                 document.getElementById('searchu').getElementsByTagName('p')[0].innerText = msg;
             }
-        });
+        }
     }
 
     fetchSearchedUsers(value){
@@ -319,22 +283,22 @@ class AdminPanelHandler{
         var msg = 'Fetching information for each user...';
         document.getElementById('searchu').getElementsByTagName('p')[0].innerText = msg;
 
-        var url = 'https://api.cssstudio.co/api/admin/search/users/'+value+'/u';
+        var url = 'admin/search/users/'+value+'/u';
 
         if($(su_option1_input).is(':checked')){
-            url = 'https://api.cssstudio.co/api/admin/search/users/'+value+'/u';
+            url = 'admin/search/users/'+value+'/u';
         }else {
             if($(su_option2_input).is(':checked')){
-                url = 'https://api.cssstudio.co/api/admin/search/users/'+value+'/e';
+                url = 'admin/search/users/'+value+'/e';
             }else{
                 if($(su_option3_input).is(':checked')){
-                    url = 'https://api.cssstudio.co/api/admin/search/users/'+value+'/i';
+                    url = 'admin/search/users/'+value+'/i';
                 }
             }
         }
 
         if($(su_option1_input).is(':checked') && $(su_option2_input).is(':checked')){
-            url = 'https://api.cssstudio.co/api/admin/search/users/'+value+'/ue';
+            url = 'admin/search/users/'+value+'/ue';
         }
 
         if($(su_option1_input).is(':checked') && $(su_option3_input).is(':checked')){
@@ -345,21 +309,15 @@ class AdminPanelHandler{
             url = '';
         }
 
-        $.ajax({
-            url:url,
-            type:'GET',
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept','application/javascript');
-            },
-            success: function(response){
-                self.loadUsers(response.success.users,'0');
-            },
-            error: function(response){
+        if(url){
+            const response = await Globals.api.request({ route: url, method: "get" });
+            if(response.success === true){
+                self.loadUsers(response.data.success.users, '0');
+            }else{
                 msg = 'Error occured while fetching...';
                 document.getElementById('searchu').getElementsByTagName('p')[0].innerText = msg;
             }
-        });
+        }
     }
 
     loadUsers(response,firsttime){

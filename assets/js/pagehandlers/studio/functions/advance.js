@@ -127,8 +127,8 @@ function advance(element,createnew){
         giphysearchbtnIcon.setAttribute('class','fas fa-search');
         giphysearchbtn.setAttribute('class','searchbutton');
         giphysearchbtn.addEventListener('click',function(){
-            resetImages('elementCreator');
-            searchGIFS(giphysearchinput.value,element,'elementCreator');
+            Globals.pageHandler.thirdPartyMediaManager.resetImages('elementCreator');
+            Globals.pageHandler.thirdPartyMediaManager.searchGIFS(giphysearchinput.value,element,'elementCreator');
         });
         giphysearchbtn.appendChild(giphysearchbtnIcon);
 
@@ -139,7 +139,7 @@ function advance(element,createnew){
             setTimeout(function(){giphydiv.style.display = "none";},750);
             document.getElementById('panel').style.opacity = 1;
             document.getElementById('panel').style.pointerEvents = "unset";
-            resetGiphy();
+            Globals.pageHandler.thirdPartyMediaManager.resetGiphy();
         });
 
         giphydiv.appendChild(giphyclose);
@@ -156,7 +156,7 @@ function advance(element,createnew){
                 setTimeout(function(){giphydiv.style.display = "block";},750);
                 document.getElementById('panel').style.opacity = 0.5;
                 document.getElementById('panel').style.pointerEvents = "none";
-                resetGiphy();
+                Globals.pageHandler.thirdPartyMediaManager.resetGiphy();
             }
 
             if(giphydivopacity == 1){
@@ -164,7 +164,7 @@ function advance(element,createnew){
                 setTimeout(function(){giphydiv.style.display = "none";},750);
                 document.getElementById('panel').style.opacity = 1;
                 document.getElementById('panel').style.pointerEvents = "unset";
-                resetGiphy();
+                Globals.pageHandler.thirdPartyMediaManager.resetGiphy();
             }
 
         });

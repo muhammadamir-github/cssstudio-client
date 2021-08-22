@@ -1,84 +1,50 @@
 class ThirdPartyMediaManager{
 	constructor(){}
 
-	searchGIFS(q,element,mode){
+	async searchGIFS(q,element,mode){
 		const self = this;
-		var token = localStorage.getItem('auth');
 
-		$.ajax({
-			url:"http://localhost:8000/api/giphy/"+q,
-			type:"GET",
-			beforeSend: function(request){
-				request.setRequestHeader('Authorization','Bearer '+token);
-			},
-			success: function(response){
-				self.loadGIFS(JSON.parse(response).data,element,mode);
-			}
-		});
+		const response = await Globals.api.request({ route: `giphy/${q}`, method: "get" });
+        if(response.success === true){
+			self.loadGIFS(JSON.parse(response.data).data,element,mode);
+        }
 	}
 
-	searchUnsplashPictures(q,element,mode){
+	async searchUnsplashPictures(q,element,mode){
 		const self = this;
-		var token = localStorage.getItem('auth');
 
-		$.ajax({
-			url:"http://localhost:8000/api/unsplash/"+q,
-			type:"GET",
-			beforeSend: function(request){
-				request.setRequestHeader('Authorization','Bearer '+token);
-			},
-			success: function(response){
-				self.loadUnsplashPictures(JSON.parse(response).results,element,mode);
-			}
-		});
+		const response = await Globals.api.request({ route: `unsplash/${q}`, method: "get" });
+        if(response.success === true){
+			self.loadUnsplashPictures(JSON.parse(response.data).results,element,mode);
+        }
 	}
 
-	searchPixelBayPictures(q,element,mode){
+	async searchPixelBayPictures(q,element,mode){
 		const self = this;
-		var token = localStorage.getItem('auth');
 
-		$.ajax({
-			url:"http://localhost:8000/api/pixabay/"+q,
-			type:"GET",
-			beforeSend: function(request){
-				request.setRequestHeader('Authorization','Bearer '+token);
-			},
-			success: function(response){
-				self.loadPixelBayPictures(JSON.parse(response).hits,element,mode);
-			}
-		});
+		const response = await Globals.api.request({ route: `pixabay/${q}`, method: "get" });
+        if(response.success === true){
+			self.loadPixelBayPictures(JSON.parse(response.data).hits,element,mode);
+        }
 	}
 
-	searchYoutubeVideos(q){
+	async searchYoutubeVideos(q){
 		const self = this;
-		var token = localStorage.getItem('auth');
 
-		$.ajax({
-			url:"http://localhost:8000/api/youtube/videos/"+q,
-			type:"GET",
-			beforeSend: function(request){
-				request.setRequestHeader('Authorization','Bearer '+token);
-			},
-			success: function(response){
-				self.loadYoutubeVideos(JSON.parse(response));
-			}
-		})
+		const response = await Globals.api.request({ route: `youtube/videos/${q}`, method: "get" });
+        if(response.success === true){
+			self.loadYoutubeVideos(JSON.parse(response.data));
+        }
 	}
 
-	loadMetaDataForYoutubeVideo(videoId,element){
+	async loadMetaDataForYoutubeVideo(videoId,element){
 		var token = localStorage.getItem('auth');
 
-		$.ajax({
-			url:"http://localhost:8000/api/youtube/video/"+videoId,
-			type:"GET",
-			beforeSend: function(request){
-				request.setRequestHeader('Authorization','Bearer '+token);
-			},
-			success: function(response){
-				element.setAttribute("data-likes",JSON.parse(response).items[0].statistics.likeCount);
-				element.setAttribute("data-views",JSON.parse(response).items[0].statistics.viewCount);
-			}
-		});
+		const response = await Globals.api.request({ route: `youtube/video/${videoId}`, method: "get" });
+        if(response.success === true){
+			element.setAttribute("data-likes",JSON.parse(response.data).items[0].statistics.likeCount);
+			element.setAttribute("data-views",JSON.parse(response.data).items[0].statistics.viewCount);
+        }
 	}
 
 	loadGIFS(data,element,mode){
@@ -403,5 +369,9 @@ class ThirdPartyMediaManager{
 		for(var i = imgs.length - 1; i >= 0; i--){
 			imgs[i].remove();
 		}
+	}
+
+	resetGiphy(){
+
 	}
 }

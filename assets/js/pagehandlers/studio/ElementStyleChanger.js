@@ -77,7 +77,7 @@ class ElementStyleChanger{
 		}
 	}
 
-	getStyles(elementType){
+	async getStyles(elementType){
 		var token = localStorage.getItem('auth');
 
 		var createPreviewElement = 0;
@@ -95,82 +95,74 @@ class ElementStyleChanger{
 			}
 		}
 
-		$.ajax({
-			url: 'http://localhost:8000/api/me/elementStyles/'+elementType,
-			type: 'GET',
-			beforeSend: function(request){
-				request.setRequestHeader('Authorization','Bearer '+token);
-				request.setRequestHeader('Accept', 'application/json');
-			},
-			success: function(response){
-				var styles = response;
-				var allPreviews = document.getElementsByTagName("styles")[0].getElementsByTagName("previews");
+		const response = await Globals.api.request({ route: `elementStyles/${elementType}`, method: "get" });
+        if(response.success === true){
+			var styles = response.data;
+			var allPreviews = document.getElementsByTagName("styles")[0].getElementsByTagName("previews");
 
-				var previews;
+			var previews;
 
-				elementStyles.switchTab(document.getElementsByTagName("styles")[0].getElementsByClassName("styles-categories")[0].getElementsByClassName("styles-category")[0]);
+			elementStyles.switchTab(document.getElementsByTagName("styles")[0].getElementsByClassName("styles-categories")[0].getElementsByClassName("styles-category")[0]);
 
-				for(var i=0; i<styles.length; i++){
-					var stylePreview = document.createElement("stylePreview");
-					stylePreview.id = "style-"+randomize.elementId(50);
+			for(var i=0; i<styles.length; i++){
+				var stylePreview = document.createElement("stylePreview");
+				stylePreview.id = "style-"+randomize.elementId(50);
 
-					if(styles[i].category == "colors"){
-						isColor = 1;
+				if(styles[i].category == "colors"){
+					isColor = 1;
+				}
+
+				// Picking suitable previews tab according to style category
+
+				var categoryToMatch;
+
+				if(isColor == 1){
+					categoryToMatch = "Colors";
+				}else{
+					categoryToMatch = "Designs";
+				}
+
+				for(var o=0; o<allPreviews.length; o++){
+					if(allPreviews[o].getAttribute("data-category") == categoryToMatch){
+						previews = allPreviews[o];
 					}
+				}
 
-					// Picking suitable previews tab according to style category
+				// --------------------------------------------
 
-					var categoryToMatch;
+				if(createPreviewElement == 1){
 
+				}else{
 					if(isColor == 1){
-						categoryToMatch = "Colors";
-					}else{
-						categoryToMatch = "Designs";
-					}
-
-					for(var o=0; o<allPreviews.length; o++){
-						if(allPreviews[o].getAttribute("data-category") == categoryToMatch){
-							previews = allPreviews[o];
-						}
-					}
-
-					// --------------------------------------------
-
-					if(createPreviewElement == 1){
-
-					}else{
-						if(isColor == 1){
-							if(elementType.includes("checkbox")){
+						if(elementType.includes("checkbox")){
+							stylePreview.style.backgroundColor = styles[i].attr[0].attributes.split(":")[1].replace(";","");
+						}else{
+							if(elementType.includes("toggle-switch")){
 								stylePreview.style.backgroundColor = styles[i].attr[0].attributes.split(":")[1].replace(";","");
 							}else{
-								if(elementType.includes("toggle-switch")){
-									stylePreview.style.backgroundColor = styles[i].attr[0].attributes.split(":")[1].replace(";","");
-								}else{
-									if(elementType.includes("dropdown-list")){
-										var color1 = styles[i].attr[0].attributes.split("data-option-bg-hv")[0].split(":")[1].replace(" ","").replace(";","");
-										var color2 = styles[i].attr[0].attributes.split("data-option-bg-clr")[0].split("data-option-bg-hv")[1].split(":")[1].replace(" ","").replace(";","");
+								if(elementType.includes("dropdown-list")){
+									var color1 = styles[i].attr[0].attributes.split("data-option-bg-hv")[0].split(":")[1].replace(" ","").replace(";","");
+									var color2 = styles[i].attr[0].attributes.split("data-option-bg-clr")[0].split("data-option-bg-hv")[1].split(":")[1].replace(" ","").replace(";","");
 
-										stylePreview.style.backgroundColor = "unset";
+									stylePreview.style.backgroundColor = "unset";
 
-										var backgroundGradientString = "-webkit-gradient(linear, left bottom, right top, color-stop(0%,"+color1+"), color-stop(49%, "+color1+"), color-stop(50%, "+color2+"), color-stop(100%, "+color2+"))";
-										stylePreview.style.background = backgroundGradientString;
-									}
+									var backgroundGradientString = "-webkit-gradient(linear, left bottom, right top, color-stop(0%,"+color1+"), color-stop(49%, "+color1+"), color-stop(50%, "+color2+"), color-stop(100%, "+color2+"))";
+									stylePreview.style.background = backgroundGradientString;
 								}
 							}
 						}
 					}
-
-					(function(stylePreview,styles,i){
-						stylePreview.addEventListener("click",function(e){
-							elementStyles.switchStyle(styles[i],e);
-						});
-					})(stylePreview,styles,i);
-
-					previews.appendChild(stylePreview);
 				}
 
+				(function(stylePreview,styles,i){
+					stylePreview.addEventListener("click",function(e){
+						elementStyles.switchStyle(styles[i],e);
+					});
+				})(stylePreview,styles,i);
+
+				previews.appendChild(stylePreview);
 			}
-		});
+        }
 	}
 
 	switchStyle(styleObj,e){

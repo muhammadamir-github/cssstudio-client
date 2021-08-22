@@ -14,12 +14,12 @@
 
 @font-face {
   font-family: 'ProximaNovaBold';
-  src: url('../fonts/ProximaNovaBold.otf') format('opentype');
+  src: url('../webfonts/ProximaNovaBold.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'ProximaNovaRegular';
-  src: url('../fonts/ProximaNovaRegular.ttf') format('truetype');
+  src: url('../webfonts/ProximaNovaRegular.ttf') format('truetype');
 }
 
 textarea[readonly="readonly"], textarea[readonly] { background-color:white; }
@@ -108,8 +108,8 @@ body::-webkit-scrollbar-thumb,
 }
 
 combobox ul::-webkit-scrollbar,
-#rmadiv_acontainer::-webkit-scrollbar, 
-#aT::-webkit-scrollbar, 
+#rmadiv_acontainer::-webkit-scrollbar,
+#aT::-webkit-scrollbar,
 #animationSliderBox::-webkit-scrollbar,
 #finish::-webkit-scrollbar,
 #finish textarea::-webkit-scrollbar,
@@ -131,8 +131,8 @@ styles previews::-webkit-scrollbar
 
 
 combobox ul::-webkit-scrollbar-track,
-#rmadiv_acontainer::-webkit-scrollbar-track, 
-#aT::-webkit-scrollbar-track, 
+#rmadiv_acontainer::-webkit-scrollbar-track,
+#aT::-webkit-scrollbar-track,
 #animationSliderBox::-webkit-scrollbar-track,
 #finish::-webkit-scrollbar-track,
 #finish textarea::-webkit-scrollbar-track,
@@ -154,8 +154,8 @@ styles previews::-webkit-scrollbar-track
 
 
 combobox ul::-webkit-scrollbar-thumb,
-#rmadiv_acontainer::-webkit-scrollbar-thumb, 
-#aT::-webkit-scrollbar-thumb, 
+#rmadiv_acontainer::-webkit-scrollbar-thumb,
+#aT::-webkit-scrollbar-thumb,
 #animationSliderBox::-webkit-scrollbar-thumb,
 #finish::-webkit-scrollbar-thumb,
 #finish textarea::-webkit-scrollbar-thumb,
@@ -392,7 +392,7 @@ select{
 	-webkit-appearance: none;
 	-ms-appearance: none;
 	-moz-appearance: none;
-	
+
 	display: block;
 	width: 200px;
 	height: 40px;
@@ -801,7 +801,7 @@ z-index: 4;
 }
 
 .spinner{
-  
+
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -1106,20 +1106,20 @@ z-index: 4;
 }
 
 .textchangediv li, .sourcechangediv li , .pstick li{
-	position:relative; 
+	position:relative;
 	margin:0;
-	padding:3px; 
-	color:white; 
+	padding:3px;
+	color:white;
 	border-radius:4px;
 }
 
-.textchangediv li::after , .sourcechangediv li::after , .pstick li:after{  
-    content: ""; 
+.textchangediv li::after , .sourcechangediv li::after , .pstick li:after{
+    content: "";
     position: absolute;
     right:7px;
     top:6px;
     width:14px;
-    height:5px; 
+    height:5px;
     border-left:4px solid white;
     border-bottom:4px solid white;
     transform:rotate(-45deg);
@@ -1505,8 +1505,8 @@ profilebox ul li{
 	padding-bottom: 1px;
 }
 
-profilebox table, 
-.tkts table, 
+profilebox table,
+.tkts table,
 .ntfs table{
 	width: 100%;
     height: auto;
@@ -1519,8 +1519,8 @@ profilebox table,
 
 }
 
-profilebox table tbody tr td img, 
-.tkts table tbody tr td img, 
+profilebox table tbody tr td img,
+.tkts table tbody tr td img,
 .ntfs table tbody tr td img{
 	width: 17px;
     position: relative;
@@ -1531,8 +1531,8 @@ profilebox table tbody tr td img,
     margin-right: 15px;
 }
 
-profilebox table thead tr th, 
-.tkts table thead tr th, 
+profilebox table thead tr th,
+.tkts table thead tr th,
 .ntfs table thead tr th{
 	font-weight: bold;
 	font-size: 20px;
@@ -1541,8 +1541,8 @@ profilebox table thead tr th,
     font-family: sans-serif;
 }
 
-profilebox table thead tr th:nth-child(1), 
-.tkts table thead tr th:nth-child(1), 
+profilebox table thead tr th:nth-child(1),
+.tkts table thead tr th:nth-child(1),
 .ntfs table thead tr th:nth-child(1){
 	font-weight: bold;
 	font-size: 20px;
@@ -1551,14 +1551,14 @@ profilebox table thead tr th:nth-child(1),
 	font-family: ProximaNovaBold;
 }
 
-profilebox table th, 
-.tkts table th, 
+profilebox table th,
+.tkts table th,
 .ntfs table th{
 	width: 50%;
 }
 
-profilebox table tbody tr td, 
-.tkts table tbody tr td, 
+profilebox table tbody tr td,
+.tkts table tbody tr td,
 .ntfs table tbody tr td{
 	font-weight: normal;
 	font-size: 13px;
@@ -1595,8 +1595,8 @@ profilebox table tbody tr td:nth-child(2),
     line-height: 20px;
 }
 
-profilebox table tbody tr, 
-.tkts table tbody tr, 
+profilebox table tbody tr,
+.tkts table tbody tr,
 .ntfs table tbody tr{
 	height: 20px;
 }
@@ -2307,7 +2307,7 @@ giphybutton{
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    background-image: url(../images/giphylogo.png);
+    background-image: url(../../images/giphylogo.png);
     cursor: pointer;
 }
 
@@ -2849,8 +2849,8 @@ combobox selected a{
 }
 
 combobox selected a span{
-  cursor:pointer; 
-  display:block; 
+  cursor:pointer;
+  display:block;
   padding:5px;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2893,7 +2893,7 @@ combobox options ul li a:hover{
 
 .colorpicker {
   position: absolute;
-  left: 160px; 
+  left: 160px;
   top: 60px;
   background-color: #1a1a1a;
   height: 245px;
@@ -2908,7 +2908,7 @@ combobox options ul li a:hover{
 }
 
 .miniStyler .colorpicker{
-	left: unset; 
+	left: unset;
 	right: 0px;
     top: 70px;
     z-index: 7;
@@ -3682,7 +3682,7 @@ styles previews .selected:hover{
 	border-bottom: 5px solid #05bc5e;
 }
 
-#element-manager .section .wpb_ae_element_preview, 
+#element-manager .section .wpb_ae_element_preview,
 #element-manager .section .selected_element{
 	position: relative;
     display: inline-block;

@@ -85,30 +85,23 @@ class CRUDHandler{
         panel.appendChild(panel_notice);
     }
 
-    userInfo(uid, info){
+    async userInfo(uid, info){
         const self = this;
         var url = '';
 
         if(info == 'general'){
-            url = 'https://api.cssstudio.co/api/admin/user/general';
+            url = 'admin/user/general';
         }
 
         if(info == 'histories'){
-            url = 'https://api.cssstudio.co/api/admin/user/histories';
+            url = 'admin/user/histories';
         }
 
-        $.ajax({
-            url: url,
-            type: 'post',
-            dataType: 'json',
-            data: {'user_id':uid},
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept','application/javascript');
-            },
-            success: function(response){
-                self.panelHandler.loadInfo(response.success,info);
+        if(url){
+            const response = await Globals.api.request({ route: url, method: "post", data: {'user_id':uid} });
+            if(response.success === true){
+                self.panelHandler.loadInfo(response.data.success, info);
             }
-        });
+        }
     }
 }

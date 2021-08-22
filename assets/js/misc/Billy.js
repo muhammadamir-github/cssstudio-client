@@ -29,178 +29,18 @@ setTimeout(function(){
 
 //---------------------------------------------------------------
 
-class BillyTheAssistant{
-    constructor(){}
-
-    ready(elementtype){
-
-        for(var i=0; i < billy_orders_types.length; i++){
-            billy_orders_types[i].addEventListener('click',function(){
-
-                var datapaneltrigger = $(this).attr('data-panel-trigger');
-
-                (function(datapaneltrigger){
-                    setTimeout(function(){
-                        if(datapaneltrigger == 'suggestion'){
-                            billy_tongue.innerText = 'Alright, suggestion for what?';
-                        }else{
-                            if(datapaneltrigger == 'calculation'){
-                                billy_tongue.innerText = 'What do you want me to calculate?';
-                            }
-                        }
-                    },1000);
-                })(datapaneltrigger);
-
-                for(var j = 0; j < billy_orders_types.length; j++){
-                    if($(billy_orders_types[j]).attr('data-panel-trigger') == datapaneltrigger){
-
-                    }else{
-                        billy_orders_types[j].style.pointerEvents = 'none';
-
-                        (function(billy_orders_types,j){
-                            setTimeout(function(){billy_orders_types[j].style.pointerEvents = 'unset';},1000);
-                        })(billy_orders_types,j);
-                    }
-                }
-
-                for(var o=0; o < billy_orders.length; o++){
-
-                    if($(billy_orders[o]).attr('class') == datapaneltrigger){
-                        billy_orders[o].style.display = 'block';
-
-                        var spinner = this.getElementsByClassName('billyspinner')[0];
-                        spinner.style.opacity = '1';
-
-                        (function(spinner,billy_orders,o){
-                            setTimeout(function(){spinner.style.opacity = '0'; billy_orders[o].style.opacity = '1'; },1000);
-                        })(spinner,billy_orders,o);
-
-                    }else{
-                        billy_orders[o].style.display = 'none';
-
-                        (function(billy_orders,o){
-                            setTimeout(function(){billy_orders[o].style.opacity = '0'; },1000);
-                        })(billy_orders,o);
-                    }
-
-                }
-
-            });
-        }
-
-        for(var k=0; k < billy_orders.length; k++){
-            var target = document.getElementById('preview'+elementtype);
-            if($(billy_orders[k]).attr('class') == 'suggestion'){
-                if(billy_orders[k].innerText == 'Background Color'){
-                    billy_orders[k].addEventListener('click',function(){
-                        if(target !== null){
-                            if(target.style.color == '' || target.style.color == null){
-                                billy_tongue.innerText = 'No font color to match.';
-                            }else{
-                                var targetfontcolor = new Color(target.style.color);
-                                suggestor.display('BackgroundColor',targetfontcolor.matchingFontColor,helper.hexToRGB(targetfontcolor.matchingFontColor));
-                            }
-                        }else{
-                            if(target == null){
-                                billy_tongue.innerText = 'Please create an element first.';
-                            }
-                        }
-                    });
-                }else{
-                    if(billy_orders[k].innerText == 'Font Color'){
-                        billy_orders[k].addEventListener('click',function(){
-                            if(target !== null){
-                                if(target.style.backgroundColor == '' || target.style.backgroundColor == null){
-                                    billy_tongue.innerText = 'No background color to match.';
-                                }else{
-                                    var targetbgcolor = new Color(target.style.backgroundColor);
-                                    suggestor.display('FontColor',targetbgcolor.matchingFontColor,helper.hexToRGB(targetbgcolor.matchingFontColor));
-                                }
-                            }else{
-                                if(target == null){
-                                    billy_tongue.innerText = 'Please create an element first.';
-                                }
-                            }
-                        });
-                    }
-                }
-            }else{
-                if($(billy_orders[k]).attr('class') == 'calculation'){
-                    //tutorials
-                }
-            }
-        }
-
-    }
-
-    spawn(){
-        billy_orders_div.style.display = 'none';
-        billy_orders_div.style.opacity = '0';
-
-        billy_tongue.style.display = 'none';
-        billy_tongue.style.opacity = '0';
-
-        billy.style.display = 'block';
-        billy.style.opacity = '1';
-
-        billy.classList.add('spawnbilly');
-
-        setTimeout(function(){
-
-            billy_orders_div.style.display = 'block';
-            billy_tongue.style.display = 'block';
-            billy.classList.remove('spawnbilly');
-
-        },2000);
-
-        setTimeout(function(){
-
-            billy_orders_div.style.opacity = '1';
-            billy_tongue.style.opacity = '1';
-
-            BillyAssistant.ready(elementtype);
-
-        },2200);
-    }
-
-    leave(){
-        billy_orders_div.style.opacity = '0';
-        billy_tongue.style.opacity = '0';
-
-        setTimeout(function(){
-
-            billy_orders_div.style.display = 'none';
-            billy_tongue.style.display = 'none';
-            billy.classList.add('leavebilly');
-
-            setTimeout(function(){
-                billy.classList.remove('leavebilly');
-                billy.style.display = 'none';
-                billy.style.opacity = '0';
-            },1000);
-
-        },1000);
-    }
-
-
-}
-
-var BillyAssistant = new BillyTheAssistant();
-var assets = new Storage();
-
-class Storage{
-    constructor(){}
-}
-
 class Suggest{
-    constructor(){}
+    constructor(){
+        this.helper = new Helper;
+    }
 
     fontColor(hex,type){
+        const self = this;
         if(type == 'Dark'){
-            return helper.lighten(hex,75);
+            return self.helper.lighten(hex,75);
         }else{
             if(type == 'Light'){
-                return helper.darken(hex,35);
+                return self.helper.darken(hex,35);
             }
         }
     }
@@ -366,9 +206,169 @@ class Suggest{
 
 }
 
+class BillyTheAssistant{
+    constructor(){
+        this.helper = new Helper;
+        this.suggestor = new Suggest;
+    }
+
+    ready(elementtype){
+        const self = this;
+        for(var i=0; i < billy_orders_types.length; i++){
+            billy_orders_types[i].addEventListener('click',function(){
+
+                var datapaneltrigger = $(this).attr('data-panel-trigger');
+
+                (function(datapaneltrigger){
+                    setTimeout(function(){
+                        if(datapaneltrigger == 'suggestion'){
+                            billy_tongue.innerText = 'Alright, suggestion for what?';
+                        }else{
+                            if(datapaneltrigger == 'calculation'){
+                                billy_tongue.innerText = 'What do you want me to calculate?';
+                            }
+                        }
+                    },1000);
+                })(datapaneltrigger);
+
+                for(var j = 0; j < billy_orders_types.length; j++){
+                    if($(billy_orders_types[j]).attr('data-panel-trigger') == datapaneltrigger){
+
+                    }else{
+                        billy_orders_types[j].style.pointerEvents = 'none';
+
+                        (function(billy_orders_types,j){
+                            setTimeout(function(){billy_orders_types[j].style.pointerEvents = 'unset';},1000);
+                        })(billy_orders_types,j);
+                    }
+                }
+
+                for(var o=0; o < billy_orders.length; o++){
+
+                    if($(billy_orders[o]).attr('class') == datapaneltrigger){
+                        billy_orders[o].style.display = 'block';
+
+                        var spinner = this.getElementsByClassName('billyspinner')[0];
+                        spinner.style.opacity = '1';
+
+                        (function(spinner,billy_orders,o){
+                            setTimeout(function(){spinner.style.opacity = '0'; billy_orders[o].style.opacity = '1'; },1000);
+                        })(spinner,billy_orders,o);
+
+                    }else{
+                        billy_orders[o].style.display = 'none';
+
+                        (function(billy_orders,o){
+                            setTimeout(function(){billy_orders[o].style.opacity = '0'; },1000);
+                        })(billy_orders,o);
+                    }
+
+                }
+
+            });
+        }
+
+        for(var k=0; k < billy_orders.length; k++){
+            var target = document.getElementById('preview'+elementtype);
+            if($(billy_orders[k]).attr('class') == 'suggestion'){
+                if(billy_orders[k].innerText == 'Background Color'){
+                    billy_orders[k].addEventListener('click',function(){
+                        if(target !== null){
+                            if(target.style.color == '' || target.style.color == null){
+                                billy_tongue.innerText = 'No font color to match.';
+                            }else{
+                                var targetfontcolor = new Color(target.style.color);
+                                self.suggestor.display('BackgroundColor',targetfontcolor.matchingFontColor, self.helper.hexToRGB(targetfontcolor.matchingFontColor));
+                            }
+                        }else{
+                            if(target == null){
+                                billy_tongue.innerText = 'Please create an element first.';
+                            }
+                        }
+                    });
+                }else{
+                    if(billy_orders[k].innerText == 'Font Color'){
+                        billy_orders[k].addEventListener('click',function(){
+                            if(target !== null){
+                                if(target.style.backgroundColor == '' || target.style.backgroundColor == null){
+                                    billy_tongue.innerText = 'No background color to match.';
+                                }else{
+                                    var targetbgcolor = new Color(target.style.backgroundColor);
+                                    self.suggestor.display('FontColor',targetbgcolor.matchingFontColor, self.helper.hexToRGB(targetbgcolor.matchingFontColor));
+                                }
+                            }else{
+                                if(target == null){
+                                    billy_tongue.innerText = 'Please create an element first.';
+                                }
+                            }
+                        });
+                    }
+                }
+            }else{
+                if($(billy_orders[k]).attr('class') == 'calculation'){
+                    //tutorials
+                }
+            }
+        }
+
+    }
+
+    spawn(){
+        billy_orders_div.style.display = 'none';
+        billy_orders_div.style.opacity = '0';
+
+        billy_tongue.style.display = 'none';
+        billy_tongue.style.opacity = '0';
+
+        billy.style.display = 'block';
+        billy.style.opacity = '1';
+
+        billy.classList.add('spawnbilly');
+
+        setTimeout(function(){
+
+            billy_orders_div.style.display = 'block';
+            billy_tongue.style.display = 'block';
+            billy.classList.remove('spawnbilly');
+
+        },2000);
+
+        setTimeout(function(){
+
+            billy_orders_div.style.opacity = '1';
+            billy_tongue.style.opacity = '1';
+
+            BillyAssistant.ready(elementtype);
+
+        },2200);
+    }
+
+    leave(){
+        billy_orders_div.style.opacity = '0';
+        billy_tongue.style.opacity = '0';
+
+        setTimeout(function(){
+
+            billy_orders_div.style.display = 'none';
+            billy_tongue.style.display = 'none';
+            billy.classList.add('leavebilly');
+
+            setTimeout(function(){
+                billy.classList.remove('leavebilly');
+                billy.style.display = 'none';
+                billy.style.opacity = '0';
+            },1000);
+
+        },1000);
+    }
+
+
+}
+
+
 //---------------------------------------------------------------
 
-class Help{
+class Helper{
     constructor(){}
 
     rgbToHex(rgb){
@@ -457,13 +457,12 @@ class Help{
 
 }
 
-var helper = new Help();
-var suggestor = new Suggest();
-
 class Color{
     constructor(colorInput){
+        this.helper = new Helper;
+        this.suggestor = new Suggestor;
         this.rgb = colorInput;
-        this.hex = helper.rgbToHex(this.rgb);
+        this.hex = this.helper.rgbToHex(this.rgb);
 
         if(colorInput.match(/^rgb/)){
             // If HEX --> store the red, green, blue values in separate variables
@@ -483,13 +482,13 @@ class Color{
             this.b = colorInput & 255;
         }
 
-        /*this.hsl = helper.hsl(this.r,this.g,this.b);
+        /*this.hsl = this.helper.hsl(this.r,this.g,this.b);
         this.h = this.hsl[0];
         this.s = this.hsl[1];
         this.l = this.hsl[2];*/
 
-        this.type = helper.colorType(this.r,this.g,this.b);
-        this.matchingFontColor = suggestor.fontColor(this.hex,this.type);
+        this.type = this.helper.colorType(this.r,this.g,this.b);
+        this.matchingFontColor = this.suggestor.fontColor(this.hex,this.type);
     }
 
     apply(){

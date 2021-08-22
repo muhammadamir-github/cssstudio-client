@@ -1,4 +1,4 @@
-function finishWork(element){
+async function finishWork(element){
     var panel = document.getElementById('panel');
 
     var finishdiv = document.createElement('div')
@@ -179,16 +179,10 @@ function finishWork(element){
     }
 
     if(css.includes('animation-name')){
-        var token = localStorage.getItem('auth');
-        $.ajax({
-            type: "GET",
-            url: "http://localhost:8000/api/me/animations/"+e.style.animationName,
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept','application/json');
-            },
-            success: setAnimationTextArea,
-        });
+        const response = await Globals.api.request({ route: `me/animations/${e.style.animationName}`, method: "get" });
+        if(response.success === true){
+            setAnimationTextArea(response.success);
+        }
     }else{
         if(css.includes('animation:')){
             var animationAttribute = e.style.animation;

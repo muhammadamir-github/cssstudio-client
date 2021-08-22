@@ -49,18 +49,17 @@ class LoginHandler{
         });
     }
 
-    c1(response){
+    async c1(response){
         const self = this;
         var ip = response.ip;
 
-        $.ajax({
-            url:'http://localhost:8000/api/ip/'+ip,
-            type:'get',
-            success: self.sf,
-        });
+        const response = await Globals.api.request({ route: `ip/${ip}`, method: "get" });
+        if(response.success === true){
+            self.sf(response.data);
+        }
     }
 
-    sf(response){
+    async sf(response){
         const self = this;
         var username = document.getElementById('susername').value;
         var password = document.getElementById('spassword').value;
@@ -81,38 +80,33 @@ class LoginHandler{
         var z = response.zip;
         var f = response.location.country_flag;
 
-        $.ajax({
+        var data = {
+            'username':username,
+            'email':email,
+            'password':password,
+            't':'f',
+            'i':i,
+            'cy':cy,
+            'cty':cty,
+            'ctyc': ctyc,
+            'cnt':cnt,
+            'cntc':cntc,
+            'la':la,
+            'lo':lo,
+            'r':r,
+            'rc':rc,
+            'z':z,
+            'f':f,
+        };
 
-            url:'http://localhost:8000/api/signup',
-            type:'POST',
-            data:
-            {
-                'username':username,
-                'email':email,
-                'password':password,
-                't':'f',
-                'i':i,
-                'cy':cy,
-                'cty':cty,
-                'ctyc': ctyc,
-                'cnt':cnt,
-                'cntc':cntc,
-                'la':la,
-                'lo':lo,
-                'r':r,
-                'rc':rc,
-                'z':z,
-                'f':f,
-            },
-            dataType:'JSON',
-            success: self.sr,
-            error: function(){
-                Globals.notificationHandler.new('An Error Occured, please try again later.');
-                document.getElementById('signupform').style.opacity = '1';
-                document.getElementById('signupform').style.pointerEvents = 'unset';
-            },
-        });
-
+        const response = await Globals.api.request({ route: 'signup', method: "post", data });
+        if(response.success === true){
+            self.sr(response.data);
+        }else{
+            Globals.notificationHandler.new('An Error Occured, please try again later.');
+            document.getElementById('signupform').style.opacity = '1';
+            document.getElementById('signupform').style.pointerEvents = 'unset';
+		}
     }
 
     sr(response){
@@ -151,18 +145,17 @@ class LoginHandler{
         });
     }
 
-    c2(response){
+    async c2(response){
         const self = this;
         var ip = response.ip;
 
-        $.ajax({
-            url:'http://localhost:8000/api/ip/'+ip,
-            type:'get',
-            success: self.lf,
-        });
+        const response = await Globals.api.request({ route: `ip/${ip}`, method: "get" });
+        if(response.success === true){
+            self.lf(response.data);
+        }
     }
 
-    lf(response){
+    async lf(response){
         const self = this;
         response = JSON.parse(response);
         var i = response.ip;
@@ -174,28 +167,24 @@ class LoginHandler{
         var e = document.getElementById('lemail').value;
         var p = document.getElementById('lpassword').value;
 
-        $.ajax({
+        var data = {
+            'email':e,
+            'password':p,
+            'i':i,
+            'la':la,
+            'lo':lo,
+            'f':f,
+            'c':c,
+        };
 
-            url:'http://localhost:8000/api/login',
-            type:'POST',
-            data:
-            {
-                'email':e,
-                'password':p,
-                'i':i,
-                'la':la,
-                'lo':lo,
-                'f':f,
-                'c':c,
-            },
-            dataType:'JSON',
-            success: self.lr,
-            error: function(){
-                Globals.notificationHandler.new('Error , Invalid Credentials');
-                document.getElementById('loginform').style.opacity = '1';
-                document.getElementById('loginform').style.pointerEvents = 'unset';
-            },
-        });
+        const response = await Globals.api.request({ route: 'login', method: "post", data });
+        if(response.success === true){
+            self.lr(response.data);
+        }else{
+            Globals.notificationHandler.new('Error , Invalid Credentials');
+            document.getElementById('loginform').style.opacity = '1';
+            document.getElementById('loginform').style.pointerEvents = 'unset';
+		}
     }
 
     lr(response){

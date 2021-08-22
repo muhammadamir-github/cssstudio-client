@@ -3,22 +3,15 @@ class Live{
         this.tableHandler = new TableHandler;
     }
 
-    update(){
+    async update(){
         const self = this;
-        $.ajax({
-            url:'https://api.cssstudio.co/api/admin/live',
-            type:'get',
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept','application/javascript');
-            },
-            success: function(response){
-                self.show(response.success);
-            },
-        });
+        const response = await Globals.api.request({ route: `admin/live`, method: "get" });
+        if(response.success === true){
+            self.show(response.data.success);
+        }
     }
 
-    show(){
+    show(data){
         const self = this;
         $('.live_table').remove();
         self.tableHandler.newTable('live_table_activity','live_table','Activity','livetab','id','user id/type/time');

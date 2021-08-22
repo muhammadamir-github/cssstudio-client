@@ -11,29 +11,26 @@ class AdminPanelLoginHandler{
 		document.getElementById('loginform').style.display = 'block';
 	}
 
-	lf(response){
+	async lf(response){
 		const self = this;
 		var e = document.getElementById('lemail').value;
 		var p = document.getElementById('lpassword').value;
 		var gc = document.getElementById('lgotp').value;
 
-		$.ajax({
-			url:'https://api.cssstudio.co/api/admin/login',
-			type:'POST',
-			data:
-			{
-				'email':e,
-				'password':p,
-				'googleauthcode':gc,
-			},
-			dataType:'JSON',
-			success: self.lr,
-			error: function(){
-				Globals.notificationHandler.new('Error , Invalid Credentials');
-				document.getElementById('loginform').style.opacity = '1';
-				document.getElementById('loginform').style.pointerEvents = 'unset';
-			},
-		});
+		var data = {
+			'email':e,
+			'password':p,
+			'googleauthcode':gc,
+		};
+
+		const response = await Globals.api.request({ route: 'admin/login', method: "post", data });
+        if(response.success === true){
+            self.lr(response.data);
+        }else{
+			Globals.notificationHandler.new('Error , Invalid Credentials');
+			document.getElementById('loginform').style.opacity = '1';
+			document.getElementById('loginform').style.pointerEvents = 'unset';
+		}
 	}
 
 	lr(response){

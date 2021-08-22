@@ -234,7 +234,7 @@ class StorageHandler{
         //document.getElementById('upgp').style.opacity = '1';
     }
 
-    deleteElement(type,id,element){
+    async deleteElement(type,id,element){
         var data;
 
         if(type == 'animation'){
@@ -245,20 +245,11 @@ class StorageHandler{
             data = {'e_id':id};
         }
 
-        $.ajax({
-            url:global_host+'/api/me/'+type+'/delete',
-            type:'POST',
-            dataType:'json',
-            data:data,
-            beforeSend: function(request){
-                request.setRequestHeader('Authorization','Bearer '+token);
-                request.setRequestHeader('Accept','application/json');
-            },
-            success: function(response){
-                Globals.notificationHandler.new(type+' deleted successfully.');
-                element.parentNode.remove();
-            },
-        });
+        const response = await Globals.api.request({ route: `me/${type}/delete`, method: "post", data });
+        if(response.success === true){
+            Globals.notificationHandler.new(type+' deleted successfully.');
+            element.parentNode.remove();
+        }
     }
 
     stopAnimation(type,id,etype,element){

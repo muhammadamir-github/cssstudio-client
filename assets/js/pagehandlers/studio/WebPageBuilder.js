@@ -2,7 +2,6 @@ class WebPageBuilder{
     constructor(){}
 
     start(){
-
         Globals.pageHandler.mediaManager.refreshMedia();
 
         Globals.sideBar.close();
@@ -26,13 +25,11 @@ class WebPageBuilder{
         previewsite.appendChild(leftguide);
         previewsite.appendChild(centerguide);
         previewsite.appendChild(rightguide);
-        
+
         previewsite.appendChild(vcenterline);
         previewsite.appendChild(hcenterline);
 
         Globals.window.body.appendChild(previewsite);
         Globals.pageHandler.tools.load();
-
     }
-
 }

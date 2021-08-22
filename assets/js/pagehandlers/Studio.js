@@ -59,8 +59,9 @@ class StudioHandler{
         this.tools = new WebPageBuilderTools;
         this.site = new SitePreview;
         this.pagebuilder = new WebPageBuilder;
-        this.thirPartyMediaManager = new ThirdPartyMediaManager;
+        this.thirdPartyMediaManager = new ThirdPartyMediaManager;
         this.Animator = null;
+        this.BillyAssistant = new BillyTheAssistant;
     }
 
     setup(){
@@ -133,21 +134,12 @@ class StudioHandler{
       //document.getElementById('upgp').style.opacity = '1';
     }
 
-    getAnimations(){
-        var token = localStorage.getItem("auth");
-        $.ajax({
-                url:'http://localhost:8000/api/me/fetch/readymateanimations',
-                type:'GET',
-                beforeSend: function(request) {
-                    request.setRequestHeader('Authorization', 'Bearer '+token);
-                    request.setRequestHeader('Accept', 'application/json');
-                },
-                success: function(response){
-                  this.animations = response.success;
-                },
-                error: function(response){
-                  Globals.notificationHandler.new('Error, could not load animations. Please retry after some time.');
-                }
-        });
+    async getAnimations(){
+        const response = await Globals.api.request({ route: "me/fetch/readymateanimations", method: "get" });
+        if(response.success === true){
+            this.animations = response.data.success;
+        }else{
+            Globals.notificationHandler.new('Error, could not load animations. Please retry after some time.');
+        }
     }
 }
