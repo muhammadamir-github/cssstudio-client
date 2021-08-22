@@ -1,9 +1,9 @@
 import Globals from './globals.js';
-import Loader from './misc/loader.js';
-import Api from './misc/api.js';
-import SideBar from './misc/sidebar.js';
-import NotificationHandler from './misc/notification.js';
-import MembershipHandler from './misc/membership.js';
+import Loader from './misc/Loader.js';
+import Api from './misc/Api.js';
+import SideBar from './misc/SideBar.js';
+import NotificationHandler from './misc/Notification.js';
+import MembershipHandler from './misc/Membership.js';
 
 window.onload = () => {
     let pageName = new URL(window.location.href).pathname.split("/").filter(x => { return x.toString().trim() !== ""; }).pop();

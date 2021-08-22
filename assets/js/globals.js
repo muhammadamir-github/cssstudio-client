@@ -46,7 +46,7 @@ export default {
                 { type: "css", src: ".dactbtn{ width: 200px; height: 50px; position: relative; left: 25px; top: 25px; border: none; outline: none; background: #1a1a1a; color: white; transition: opacity 0.4s ease-in-out; cursor: pointer; } .dactbtn:hover{ opacity: 0.5; }.dwar{ display: block; position: relative; margin-left: 25px; left: 0px; text-align: left; width: 90%; font-size: 15px; } .pay{ margin-top: 100px; width: 100%; left: 50%; transform: translate(-50%); position: relative; display: inline-block; height: 100px; text-align: center;", isURL: false, isRaw: true, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "pageHandlers/Profile.js", isURL: false, isRaw: false, },
-                { type: "js", src: "misc/paypal.js", isURL: false, isRaw: false, }
+                { type: "js", src: "misc/Paypal.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -97,9 +97,9 @@ export default {
                 { type: "css", src: "previewsite.css", isURL: false, isRaw: false, },
                 { type: "js", src: "https://www.youtube.com/iframe_api", isURL: true, isRaw: false, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "misc/billy.js", isURL: false, isRaw: false, },
-                { type: "js", src: "misc/draggable.js", isURL: false, isRaw: false, },
-                { type: "js", src: "misc/publicEventHandler.js", isURL: false, isRaw: false, },
+                { type: "js", src: "misc/Billy.js", isURL: false, isRaw: false, },
+                { type: "js", src: "misc/Draggable.js", isURL: false, isRaw: false, },
+                { type: "js", src: "misc/PublicEventHandler.js", isURL: false, isRaw: false, },
                 { type: "js", src: "thirdparty/resumable.js", isURL: false, isRaw: false, },
                 { type: "js", src: "studio/*", isURL: false, isRaw: false, ignore: ["studio/Animator.js"], },
                 { type: "js", src: "studio/functions/*", isURL: false, isRaw: false, ignore: [], },
@@ -116,7 +116,7 @@ export default {
                 { type: "css", src: "bottomnavbar.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "pageHandlers/Login.js", isURL: false, isRaw: false, },
-                { type: "js", src: "pageHandlers/StaticPageHandler.js", isURL: false, isRaw: false, }
+                { type: "js", src: "pageHandlers/Static.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -128,7 +128,7 @@ export default {
                 { type: "css", src: "bottomnavbar.css", isURL: false, isRaw: false, },
                 { type: "css", src: "tandc.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "pageHandlers/StaticPageHandler.js", isURL: false, isRaw: false, }
+                { type: "js", src: "pageHandlers/Static.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -143,7 +143,7 @@ export default {
                 { type: "js", src: "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", isURL: true, isRaw: false, },
                 { type: "js", src: '(adsbygoogle = window.adsbygoogle || []).push({ google_ad_client: "'+global_configuration.google_ad_client+'", enable_page_level_ads: true});', isURL: false, isRaw: true, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "pageHandlers/StaticPageHandler.js", isURL: false, isRaw: false, }
+                { type: "js", src: "pageHandlers/Static.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -155,7 +155,7 @@ export default {
                 { type: "css", src: "bottomnavbar.css", isURL: false, isRaw: false, },
                 { type: "css", src: "features.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "pageHandlers/StaticPageHandler.js", isURL: false, isRaw: false, }
+                { type: "js", src: "pageHandlers/Static.js", isURL: false, isRaw: false, }
             ],
         },
         {
@@ -167,7 +167,7 @@ export default {
                 { type: "css", src: "bottomnavbar.css", isURL: false, isRaw: false, },
                 { type: "css", src: "blog.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
-                { type: "js", src: "pageHandlers/StaticPageHandler.js", isURL: false, isRaw: false, },
+                { type: "js", src: "pageHandlers/Static.js", isURL: false, isRaw: false, },
                 { type: "js", src: "pageHandlers/Blog.js", isURL: false, isRaw: false, }
             ],
         },
