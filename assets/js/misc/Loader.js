@@ -4,13 +4,18 @@ export default class Loader{
     }
 
     show(){
-        let element = document.createElement("loader");
-        let elementView = document.createElement("view");
-        let elementPara = document.createElement("p");
-        elementPara.innerText = "Getting things ready...";
-        element.appendChild(elementView);
-        element.appendChild(elementPara);
-        this.parent.appendChild(element);
+        let element = window.globals.elements.new({
+            type: "loader",
+            parent: this.parent,
+            children: [
+                { type: "view" },
+                {
+                    type: "p",
+                    text: "Getting things ready..."
+                }
+            ]
+        });
+
         this.element = element;
     }
 

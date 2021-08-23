@@ -7,7 +7,7 @@ class PublicEventHandler{
 
 		var elementXSpace = element.getBoundingClientRect().left;
 		var elementYSpace = element.getBoundingClientRect().top;
-		
+
 		var xDifference = posX-elementXSpace;
 		var yDifference = posY-elementYSpace;
 
@@ -44,17 +44,17 @@ class PublicEventHandler{
 	galleryImgDescription_show(e){
 		$('.galleryImgDescription').remove();
 		if($(e.target).attr('data-description') !== '-'){
-			var des = document.createElement('span');
-			des.innerText = $(e.target).attr('data-description');
-			des.className = 'galleryImgDescription';
-			des.style.left = e.clientX + 'px';
-			des.style.top = e.clientY + 'px';
-
-			console.log(des);
-			Globals.window.body.appendChild(des);
-			console.log("appeneded");
+			var description = Globals.elements.new({
+				type: "span",
+				parent: Globals.window.body,
+				text: $(e.target).attr('data-description'),
+				classes: [ "galleryImgDescription" ],
+				style: {
+					left: `${e.clientX}px`,
+					top: `${e.clientY}px`,
+				}
+			});
 		}
-		console.log("shown");
 	}
 
 	galleryImgDescription_hide(e){
@@ -108,21 +108,28 @@ class PublicEventHandler{
 	enlargeImage(e,src){
 		$('.fullScreenImageViewer').remove();
 
-		var viewer = document.createElement('div');
-		viewer.className = 'fullScreenImageViewer';
-		viewer.style.zIndex = '10';
-		viewer.style.margin = '0';
-
-		var img = document.createElement('img');
-		img.src = src;
-
-		var close = document.createElement('i');
-		close.className = 'fas fa-times';
-		close.addEventListener('click',publicEvents.closeFullScreenImageViewer);
-
-		viewer.appendChild(img);
-		viewer.appendChild(close);
-		document.getElementsByClassName('previewsite')[0].appendChild(viewer);
+		var viewer = Globals.elements.new({
+			type: "div",
+			parent: document.getElementsByClassName('previewsite')[0],
+			classes: [ "fullScreenImageViewer" ],
+			style: {
+				zIndex: `10`,
+				margin: `0`,
+			},
+			children: [
+				{
+					type: "img",
+					attributes: { src }
+				},
+				{
+					type: "i",
+					classes: [ "fas", "fa-times" ],
+					listeners: {
+						click: publicEvents.closeFullScreenImageViewer
+					}
+				}
+			]
+		});
 	}
 
 	closeFullScreenImageViewer(e){
@@ -555,42 +562,44 @@ class PublicEventHandler{
 		var option_text = e.target.innerText;
 		var alreadySelected = 0;
 
-
 		if(alreadySelected === 0){
 			options.style.display = 'none';
 			options_ul.style.display = 'none';
 
-			var span = document.createElement("span");
-			var i = document.createElement("i");
-			i.className = "fas fa-times";
-
-			span.innerText = option_text;
-
-			span.setAttribute("data-restrictions","selection");
-			i.setAttribute("data-restrictions","selection");
-
-			span.style.backgroundColor = element.getAttribute("data-selected-bg");
-			span.style.color = element.getAttribute("data-selected-bg-clr");
-
-			i.addEventListener("click",function(){
-				publicEvents.dropdownlist_multiselect_unselect(span,selected_multi_selects);
+			var span = Globals.elements.new({
+				type: "span",
+				parent: selected_multi_selects,
+				text: option_text,
+				classes: [ "fullScreenImageViewer" ],
+				attributes: {
+					"data-restrictions": "selection",
+				},
+				style: {
+					backgroundColor: element.getAttribute("data-selected-bg"),
+					color: element.getAttribute("data-selected-bg-clr"),
+				},
+				listeners: {
+					mouseover: () => { publicEvents.dropdownlist_multiselect_selected_hover(span,i,element); },
+					mouseout: () => { publicEvents.dropdownlist_multiselect_selected_hoverOut(span,i,element); }
+				},
+				children: [
+					{
+						type: "i",
+						classes: [ "fas", "fa-times" ],
+						attributes: {
+							"data-restrictions": "selection",
+						},
+						listeners: {
+							click: () => { publicEvents.dropdownlist_multiselect_unselect(span,selected_multi_selects); }
+						},
+						prepend: true
+					}
+				]
 			});
-
-			span.addEventListener("mouseover",function(){
-				publicEvents.dropdownlist_multiselect_selected_hover(span,i,element);
-			});
-
-			span.addEventListener("mouseout",function(){
-				publicEvents.dropdownlist_multiselect_selected_hoverOut(span,i,element);
-			});
-
-			$(span).prepend(i);
-			selected_multi_selects.appendChild(span);
 
 			selected_multi_selects.style.display = "block";
 
 			var oldSelections = element.getAttribute("data-selected");
-
 			if(oldSelections == "" || oldSelections == " " || oldSelections == null){
 				element.setAttribute("data-selected",option_text);
 			}else{
@@ -839,28 +848,34 @@ class PublicEventHandler{
 		var video = element.getElementsByTagName("video")[0];
 		var progressbar = element.getElementsByClassName("video-controls")[0].getElementsByTagName("input")[0];
 
-		var sparevideo = document.createElement("video");
-		sparevideo.style.display = "block";
-		sparevideo.style.opacity = 0;
-		sparevideo.style.position = "absolute";
-		sparevideo.style.pointerEvents = "none";
-
 		var videoMax = progressbar.getAttribute("max");
 		var videoMin = progressbar.getAttribute("min");
 
-		sparevideo.src = video.src;
-		sparevideo.setAttribute("max",videoMax);
-		sparevideo.setAttribute("min",videoMin);
+		var sparevideo = Globals.elements.new({
+			type: "video",
+			parent: Globals.window.body,
+			style: {
+				display: "block",
+				opacity: 0,
+				position: "absolute",
+				pointerEvents: "none"
+			},
+			attributes: {
+				src: video.src,
+				max: videoMax,
+				min: videoMin
+			},
+			listeners: {
+				loadeddata: () => {
+					var context = canvas.getContext('2d');
+					context.drawImage(sparevideo, 0, 0, canvas.width, canvas.height);
+
+					sparevideo.remove();
+				}
+			}
+		})
+
 		sparevideo.currentTime = timeToFrame;
-
-		Globals.window.body.appendChild(sparevideo);
-
-		sparevideo.addEventListener("loadeddata",function(){
-			var context = canvas.getContext('2d');
-			context.drawImage(sparevideo, 0, 0, canvas.width, canvas.height);
-
-			sparevideo.remove();
-		});
 	}
 
 	videoHideFrame(element,e){

@@ -4,6 +4,7 @@ import Api from './misc/Api.js';
 import SideBar from './misc/SideBar.js';
 import NotificationHandler from './misc/Notification.js';
 import MembershipHandler from './misc/Membership.js';
+import Elements from './misc/Elements.js';
 
 window.onload = () => {
     let pageName = new URL(window.location.href).pathname.split("/").filter(x => { return x.toString().trim() !== ""; }).pop();
@@ -13,6 +14,7 @@ window.onload = () => {
     Globals.window.head = document.getElementsByTagName("head")[0];
 
     Globals.api = new Api(Globals.api.hostname, Globals.api.port);
+    Globals.elements = new Elements;
     Globals.notificationHandler = new NotificationHandler;
     Globals.membershipHandler = new MembershipHandler;
     Globals.bootLoader = new BootLoader("../assets");
@@ -85,34 +87,45 @@ class BootLoader{
                             let folder = type === "icon" ? "images" : type;
                             let src = files.paths[i].isURL === true ? files.paths[i].src : (pageName === "termsandconditions" ? "../"+self.dir : self.dir)+"/"+folder+"/"+files.paths[i].src;
 
-                            file = document.createElement(elementTag);
-                            file.type = encoding;
-                            file.rel = rel;
-
-                            if(type === "icon"){
-                                file.sizes = "32x32";
-                            }
-
-                            if(type === "icon" || type === "css"){
-                                file.href = src;
-                            }
-
-                            file.src = src;
-
-                            Globals.window.head.appendChild(file);
-
                             if(type !== "icon"){
+                                var promiseResolve, promiseReject;
+
+                                file = Globals.elements.new({
+                                    type: elementTag,
+                                    parent: Globals.window.head,
+                                    attributes: {
+                                        type: encoding,
+                                        href: type === "css" ? src : null,
+                                        src: type === "css" ? null : src,
+                                        rel
+                                    },
+                                    listeners: {
+                                        load: () => { console.log("loaded"); promiseResolve(); }
+                                    }
+                                });
+
                                 await new Promise((resolve, reject) => {
-                                    file.addEventListener('load', function(){
-                                        resolve();
-                                    });
+                                    promiseResolve = resolve;
+                                    promiseReject = reject;
+                                });
+                            }else{
+                                file = Globals.elements.new({
+                                    type: elementTag,
+                                    parent: Globals.window.head,
+                                    attributes: {
+                                        type: encoding,
+                                        sizes: type === "icon" ? "32x32" : null,
+                                        href: type === "icon" || type === "css" ? src : null,
+                                        rel
+                                    }
                                 });
                             }
                         }else{
-                            file = document.createElement(type === "css" ? "style" : elementTag);
-                            file.innerHTML = files.paths[i].src;
-
-                            Globals.window.head.appendChild(file);
+                            file = Globals.elements.new({
+                                type: type === "css" ? "style" : elementTag,
+                                parent: Globals.window.head,
+                                html: files.paths[i].src
+                            });
                         }
                     }
                 }

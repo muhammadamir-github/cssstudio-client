@@ -48,8 +48,8 @@ class SitePreview{
     selectElement(element){
         const self = this;
 
-        if(HoldTimer){
-            clearTimeout(HoldTimer);
+        if(Globals.pageHandler.draggable.HoldTimer){
+            clearTimeout(Globals.pageHandler.draggable.HoldTimer);
         }
 
         if(element.getAttribute("data-restrictions") == "selection"){
@@ -57,7 +57,7 @@ class SitePreview{
         }
 
         if(element.classList.contains('selected')){
-            draggable.closeDrag();
+            Globals.pageHandler.draggable.closeDrag();
 
             $('.selected').removeClass('selected');
             document.getElementsByClassName('wpb_tool_se')[0].style.pointerEvents = 'none';
@@ -76,12 +76,12 @@ class SitePreview{
             if(typeof $(element).attr('data-restrictions') !== typeof undefined && $(element).attr('data-restrictions') !== false){
                 if(!$(element).attr('data-restrictions').includes("dragging")){
                     document.removeEventListener('keydown',self.moveElement,false);
-                    element.removeEventListener('mousedown',draggable.mousedown);
+                    element.removeEventListener('mousedown',Globals.pageHandler.draggable.mousedown);
                     $('.hint_element_move, .hint_element_exit').remove();
                 }
             }else{
                 document.removeEventListener('keydown',self.moveElement,false);
-                element.removeEventListener('mousedown',draggable.mousedown);
+                element.removeEventListener('mousedown',Globals.pageHandler.draggable.mousedown);
                 $('.hint_element_move, .hint_element_exit').remove();
             }
 
@@ -104,14 +104,14 @@ class SitePreview{
             if(typeof $(element).attr('data-restrictions') !== typeof undefined && $(element).attr('data-restrictions') !== false){
                 if(!$(element).attr('data-restrictions').includes("dragging")){
                     document.addEventListener('keydown',self.moveElement,false);
-                    element.addEventListener('mousedown',draggable.mousedown);
+                    element.addEventListener('mousedown',Globals.pageHandler.draggable.mousedown);
                     $('.hint_element_move, .hint_element_exit').remove();
 
                     Globals.pageHandler.userInterface.displayKeyGuide();
                 }
             }else{
                 document.addEventListener('keydown',self.moveElement,false);
-                element.addEventListener('mousedown',draggable.mousedown);
+                element.addEventListener('mousedown',Globals.pageHandler.draggable.mousedown);
                 $('.hint_element_move, .hint_element_exit').remove();
 
                 Globals.pageHandler.userInterface.displayKeyGuide();
@@ -122,7 +122,7 @@ class SitePreview{
             $(".posMatchTop").removeClass("posMatchTop");
             $(".posMatchBottom").removeClass("posMatchBottom");
 
-            draggable.closeDrag();
+            Globals.pageHandler.draggable.closeDrag();
 
             Globals.pageHandler.userInterface.displayElementSpecialOptions($(element).attr('data-e-type'));
 
@@ -233,7 +233,7 @@ moveElement(event){
             relocateElementResizer();
             detectBorderTouch(element);
         }
-        draggable.calculateCenterPosition();
+        Globals.pageHandler.draggable.calculateCenterPosition();
         Globals.pageHandler.tools.updateToolButton('toggle-gridlines');
         //}
     }
@@ -252,7 +252,7 @@ moveElement(event){
             relocateElementResizer();
             detectBorderTouch(element);
         }
-        draggable.calculateCenterPosition();
+        Globals.pageHandler.draggable.calculateCenterPosition();
         Globals.pageHandler.tools.updateToolButton('toggle-gridlines');
         //}
     }
@@ -271,7 +271,7 @@ moveElement(event){
             relocateElementResizer();
             detectBorderTouch(element);
         }
-        draggable.calculateCenterPosition();
+        Globals.pageHandler.draggable.calculateCenterPosition();
         Globals.pageHandler.tools.updateToolButton('toggle-gridlines');
         //}
     }
@@ -290,7 +290,7 @@ moveElement(event){
             relocateElementResizer();
             detectBorderTouch(element);
         }
-        draggable.calculateCenterPosition();
+        Globals.pageHandler.draggable.calculateCenterPosition();
         Globals.pageHandler.tools.updateToolButton('toggle-gridlines');
         //}
     }

@@ -62,34 +62,45 @@ class StudioHandler{
         this.thirdPartyMediaManager = new ThirdPartyMediaManager;
         this.Animator = null;
         this.BillyAssistant = new BillyTheAssistant;
+        this.draggable = new PreviewSiteDraggable;
     }
 
     setup(){
         const self = this;
-        var callbilly = document.createElement('callbilly');
-        var billyDiv = document.createElement('billy');
+        var callbilly = Globals.elements.new({
+            type: "callbilly",
+            parent: Globals.window.body
+        });
 
-        var notesdiv = document.createElement('div');
-        notesdiv.setAttribute('id','notes');
+        var billyDiv = Globals.elements.new({
+            type: "billy",
+            parent: Globals.window.body,
+            html: '<tongue>Hey , how can i help you today?</tongue><orders><type data-panel-trigger="suggestion"><p>I would like to have a suggestion.</p><div class="billyspinner"></div></type><order class="suggestion"><p>Background Color</p></order><order class="suggestion"><p>Font Color</p></order></orders>'
+        });
 
-        billyDiv.innerHTML = '<tongue>Hey , how can i help you today?</tongue><orders><type data-panel-trigger="suggestion"><p>I would like to have a suggestion.</p><div class="billyspinner"></div></type><order class="suggestion"><p>Background Color</p></order><order class="suggestion"><p>Font Color</p></order></orders>';
-        notesdiv.innerHTML = '<h6>We are sorry if you are facing any ux/ui problems.The software does not supports all small screen sizes.</h6><button id="ntsbtn">Okay</button>';
-
-        Globals.window.body.appendChild(notesdiv);
-        Globals.window.body.appendChild(callbilly);
-        Globals.window.body.appendChild(billyDiv);
+        var notesdiv = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            html: '<h6>We are sorry if you are facing any ux/ui problems.The software does not supports all small screen sizes.</h6><button id="ntsbtn">Okay</button>',
+            id: "notes"
+        });
 
         let plan = self.data.plan;
 
         if(plan !== 'Free'){
           if(plan == 'Gold' || plan == 'Diamond' || plan == 'Silver'){
-            var script1 = document.createElement('script');
-            script1.setAttribute('src','../assets/js/studio/Animator.js');
-
-            $('script')[0].after(script1);
-            script1.addEventListener("load", function(){
-                self.Animator = new Animator;
-            });
+              var script1 = Globals.elements.new({
+                  type: "script",
+                  parent: document.getElementsByTagName("head")[0],
+                  attributes: {
+                      src: "../assets/js/studio/Animator.js"
+                  },
+                  listeners: {
+                      load: () => {
+                          self.Animator = new Animator;
+                      }
+                  }
+              });
           }
         }
 
@@ -100,10 +111,14 @@ class StudioHandler{
         self.userInterface.greetUser();
 
         var notesbtn = document.getElementById('ntsbtn');
-
-        notesbtn.addEventListener('click',function(){
-          document.getElementById('notes').remove();
-        });
+        /*notesbtn.addListeners({
+            click: () => {
+                Globals.elements.getElementById('notes').remove();
+            }
+        });*/
+        notesbtn.addEventListener("click", function(){
+            document.getElementById('notes').remove();
+        })
 
         if(plan !== 'Free'){
           if(plan == 'Gold' || plan == 'Diamond'){

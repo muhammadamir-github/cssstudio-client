@@ -1,115 +1,81 @@
-class Elements{
+export default class Elements{
     constructor(){}
 
     new(options = {}){
         const self = this;
         if(options.type && options.parent){
-            var element = new Element({ type: options.type, parent: options.parent });
-            element.build();
-            element.addAttributes(options.attributes);
-            element.addClasses(options.classes);
-            element.addListeners(options.listeners);
+            let element = document.createElement(options.type);
 
+            self.addAttributes(element, options.attributes); // [{}]
+            self.addClasses(element, options.classes); // []
+            self.addListeners(element, options.listeners); // {}
+            self.updateId(element, options.id); // ""
+            self.updateStyle(element, options.style); // {}
+            self.updateText(element, options.text); // ""
+            self.updateHtml(element, options.html); // ""
+            self.addChildren(element, options.children); // [{}]
+
+            if(options.prepend === true){ options.parent.prepend(element); }else{ options.parent.appendChild(element); }
             return element;
         }
     }
-}
 
-class Element{
-    constructor(options){
-        this.type = options.type;
-        this.parent = options.parent;
-        this.ref = null;
-    }
-
-    build(){
-        this.ref = document.createElement(this.type);
-        this.parent.appendChild(this.ref);
-    }
-
-    remove(){
-        this.ref.remove();
-        this.ref = null;
-    }
-
-    hide(){
-        this.addAttributes([{ name: "data-internal[style.display]", value: this.ref.style.display }]);
-        this.ref.style.display = "none";
-    }
-
-    show(){
-        let attributes = this.ref.getAttributes([ "data-internal[style.display]" ]);
-        this.ref.style.display = attributes["data-internal[style.display]"] ? attributes["data-internal[style.display]"] : "block";
-    }
-
-    addAttributes(attributes = []){
-        if(attributes && Array.isArray(attributes)){
-            for(var i=0; i<attributes.length; i++){
-                this.ref.setAttribute(attributes[i].name, attributes[i].value);
-            }
-        }
-    }
-
-    getAttributes(attributes = []){
-        const self = this;
-        var toReturn = {};
-
-        if(attributes && Array.isArray(attributes)){
-            for(var i=0; i<attributes.length; i++){
-                toReturn[attributes[i]] = self.ref.getAttribute(attributes[i]);
-            }
-        }else{
-            for(var i=0; i<self.ref.attributes.length; i++){
-                toReturn[self.ref.attributes[i].nodeName] = self.ref.attributes[i].nodeValue;
-            }
-        }
-
-        return toReturn;
-    }
-
-    removeAttributes(attributes = []){
-        if(attributes && Array.isArray(attributes)){
-            for(var i=0; i<attributes.length; i++){
-                this.ref.removeAttribute(attributes[i]);
-            }
-        }
-    }
-
-    addClasses(classes = []){
-        if(classes && Array.isArray(classes)){
-            for(var i=0; i<classes.length; i++){
-                this.ref.classList.add(classes[i]);
-            }
-        }
-    }
-
-    getClasses(){
-        return this.ref.classList;
-    }
-
-    removeClasses(classes = []){
-        if(classes && Array.isArray(classes)){
-            for(var i=0; i<classes.length; i++){
-                if(this.ref.classList.contains(classes[i]){
-                  this.ref.classList.remove(classes[i]);
+    addAttributes(element, attributes = {}){
+        if(typeof attributes === "object" && attributes){
+            for(var i=0; i<Object.keys(attributes).length; i++){
+                if(attributes[Object.keys(attributes)[i]]){
+                    element.setAttribute(Object.keys(attributes)[i], attributes[Object.keys(attributes)[i]]);
                 }
             }
         }
     }
 
-    toggleClasses(classes = []){
+    addClasses(element, classes = []){
         if(classes && Array.isArray(classes)){
             for(var i=0; i<classes.length; i++){
-                this.ref.classList.toggle(classes[i]);
+                if(classes[i]){
+                    element.classList.add(classes[i]);
+                }
             }
         }
     }
 
-    addListeners(listeners = []){
-        if(listeners && Array.isArray(listeners)){
-            for(var i=0; i<listeners.length; i++){
-                this.ref.addEventListener(listeners[i].event, listeners[i].callback);
+    addListeners(element, listeners = {}){
+        if(typeof listeners === "object" && listeners){
+            for(var i=0; i<Object.keys(listeners).length; i++){
+                if(listeners[Object.keys(listeners)[i]]){
+                    element.addEventListener(Object.keys(listeners)[i], listeners[Object.keys(listeners)[i]]);
+                }
             }
         }
     }
+
+    updateId(element, id){
+        id ? element.id = id : false;
+    }
+
+    updateStyle(element, style = {}){
+        if(typeof style === "object" && style){
+            for(var i=0; i<Object.keys(style).length; i++){
+                if(style[Object.keys(style)[i]]){
+                    element.style[Object.keys(style)[i]] = style[Object.keys(style)[i]];
+                }
+            }
+        }
+    }
+
+    addChildren(element, children = []){
+        const self = this;
+        if(children && Array.isArray(children)){
+            for(var i=0; i<children.length; i++){
+                self.new({
+                    parent: element,
+                    ...children[i]
+                });
+            }
+        }
+    }
+
+    updateText(element, text = null){ text ? element.innerText = text : false; }
+    updateHtml(element, html = null){ html ? element.innerHTML = html : false; }
 }

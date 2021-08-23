@@ -14,13 +14,11 @@ setTimeout(function(){
     billy_orders_types = billy_orders_div.getElementsByTagName('type');
 
     callbillyElement.addEventListener('click',function(){
-
         if(billy_tongue.style.display == 'block'){
-            BillyAssistant.leave();
+            Globals.pageHandler.BillyAssistant.leave();
         }else{
-            BillyAssistant.spawn();
+            Globals.pageHandler.BillyAssistant.spawn();
         }
-
     });
 
     callbillyElement.style.opacity = '1';
@@ -46,7 +44,6 @@ class Suggest{
     }
 
     display(type,hex,rgb){
-
         $('suggestion').remove();
 
         billy_tongue.innerText = 'Give me few secs please...';
@@ -55,115 +52,120 @@ class Suggest{
         billy.style.pointerEvents = 'none';
         callbillyElement.style.pointerEvents = 'none';
 
-        var suggestion = document.createElement('suggestion');
-        var suggestion_p = document.createElement('p');
-        var suggestion_vline = document.createElement('verticalline');
-        var suggestion_colordisplay = document.createElement('color');
-        var suggestion_close = document.createElement('i');
-        var suggestion_hex = document.createElement('input');
-        var suggestion_rgb = document.createElement('input');
-        var suggestion_preview = document.createElement('button');
-        var suggestion_apply = document.createElement('button');
+        var suggestion = Globals.elements.new({
+            type: "suggestion",
+            parent: Globals.window.body,
+            children: [
+                {
+                    type: "p",
+                    text: `${type == 'FontColor' ? 'Billy has suggested you a font color.' : 'Billy has suggested you a Background color.'}`
+                },
+                { type: "verticalline" },
+                {
+                    type: "color",
+                    style: { backgroundColor: hex },
+                },
+                {
+                    type: "i",
+                    classes: [ "fas fa-times close" ],
+                    listeners: {
+                        click: () => {
+                            if(type == 'FontColor'){
+                                $('.fc-suggestion').remove();
+                            }else{
+                                if(type == 'BackgroundColor'){
+                                    $('.bgc-suggestion').remove();
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    type: "input",
+                    classes: [ "hex" ],
+                    attributes: {
+                        type: "text",
+                        placeholder: "Hex: ",
+                        value: "Hex: "+hex
+                    }
+                },
+                {
+                    type: "input",
+                    classes: [ "rgb" ],
+                    attributes: {
+                        type: "text",
+                        placeholder: "RGB: ",
+                        value: "RGB: "+rgb
+                    }
+                },
+                {
+                    type: "button",
+                    classes: [ "previewbtn" ],
+                    text: "Preview",
+                    style: {
+                        backgroundColor: '#1a1a1a',
+                        color: 'white'
+                    },
+                    listeners: {
+                        mouseover: (e) => {
+                            var target = document.getElementById('preview'+Globals.pageHandler.BillyAssistant.elementtype);
 
-        suggestion.appendChild(suggestion_p);
-        suggestion.appendChild(suggestion_vline);
-        suggestion.appendChild(suggestion_colordisplay);
-        suggestion.appendChild(suggestion_close);
-        suggestion.appendChild(suggestion_hex);
-        suggestion.appendChild(suggestion_rgb);
-        suggestion.appendChild(suggestion_apply);
-        suggestion.appendChild(suggestion_preview);
+                            if(type == 'FontColor'){
+                                var previouscolor = target.style.color;
+                                target.style.color = hex;
 
-        if(type == 'FontColor'){
-            suggestion.setAttribute('class','fc-suggestion');
-        }else{
-            if(type == 'BackgroundColor'){
-                suggestion.setAttribute('class','bgc-suggestion');
-            }
-        }
+                                this.addEventListener('mouseleave',function(){
+                                    target.style.color = previouscolor;
+                                });
+                            }else{
+                                if(type == 'BackgroundColor'){
+                                    var previouscolor = target.style.backgroundColor;
+                                    target.style.backgroundColor = hex;
 
-        suggestion_colordisplay.style.backgroundColor = hex;
-        suggestion_close.setAttribute('class','fas fa-times close');
-        suggestion_close.addEventListener('click',function(){
-            if(type == 'FontColor'){
-                $('.fc-suggestion').remove();
-            }else{
-                if(type == 'BackgroundColor'){
-                    $('.bgc-suggestion').remove();
-                }
-            }
+                                    this.addEventListener('mouseleave',function(){
+                                        target.style.backgroundColor = previouscolor;
+                                    });
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    type: "button",
+                    classes: [ "applybtn" ],
+                    text: "Apply",
+                    style: {
+                        backgroundColor: '#1a1a1a',
+                        color: 'white'
+                    },
+                    listeners: {
+                        click: () => {
+                            var target = document.getElementById('preview'+Globals.pageHandler.BillyAssistant.elementtype);
+
+                            if(type == 'FontColor'){
+                                target.style.color = hex;
+                                $('.fc-suggestion').remove();
+                            }else{
+                                if(type == 'BackgroundColor'){
+                                    target.style.backgroundColor = hex;
+                                    $('.bgc-suggestion').remove();
+                                }
+                            }
+                        }
+                    }
+                },
+            ],
+            classes: [ `${type == 'FontColor' ? 'fc-suggestion' : 'bgc-suggestion'}` ],
         });
 
-        suggestion_rgb.setAttribute('type','text');
-        suggestion_hex.setAttribute('type','text');
-        suggestion_rgb.setAttribute('placeholder','RGB: ');
-        suggestion_hex.setAttribute('placeholder','Hex: ');
-        suggestion_rgb.setAttribute('class','rgb');
-        suggestion_hex.setAttribute('class','hex');
-
-        suggestion_preview.setAttribute('class','previewbtn');
-        suggestion_apply.setAttribute('class','applybtn');
-
-        suggestion_apply.addEventListener('click',function(){
-            var target = document.getElementById('preview'+elementtype);
-
-            if(type == 'FontColor'){
-                target.style.color = hex;
-                $('.fc-suggestion').remove();
-            }else{
-                if(type == 'BackgroundColor'){
-                    target.style.backgroundColor = hex;
-                    $('.bgc-suggestion').remove();
-                }
-            }
-        });
-
-        suggestion_preview.addEventListener('mouseover',function(){
-
-            var target = document.getElementById('preview'+elementtype);
-
-            if(type == 'FontColor'){
-                var previouscolor = target.style.color;
-                target.style.color = hex;
-
-                this.addEventListener('mouseleave',function(){
-                    target.style.color = previouscolor;
-                });
-            }else{
-                if(type == 'BackgroundColor'){
-                    var previouscolor = target.style.backgroundColor;
-                    target.style.backgroundColor = hex;
-
-                    this.addEventListener('mouseleave',function(){
-                        target.style.backgroundColor = previouscolor;
-                    });
-                }
-            }
-
-        });
-
-        suggestion_rgb.value = 'RGB: '+rgb;
-        suggestion_hex.value = 'Hex: '+hex;
-
-        suggestion_preview.innerText = 'Preview';
-        suggestion_apply.innerText = 'Apply';
-
-        suggestion_preview.style.backgroundColor = '#1a1a1a';
-        suggestion_apply.style.backgroundColor = '#1a1a1a';
-        suggestion_preview.style.color = 'white';
-        suggestion_apply.style.color = 'white';
-
-        if(type == 'FontColor'){
-            suggestion_p.innerText = 'Billy has suggested you a font color.';
-        }else{
-            if(type == 'BackgroundColor'){
-                suggestion_p.innerText = 'Billy has suggested you a Background color.';
-            }
-        }
-
-        setTimeout(function(){
-            document.getElementsByTagName('body')[0].appendChild(suggestion);
-        },5000);
+        var suggestion_p = suggestion.getElementsByTagName('p')[0];
+        var suggestion_vline = suggestion.getElementsByTagName('verticalline')[0];
+        var suggestion_colordisplay = suggestion.getElementsByTagName('color')[0];
+        var suggestion_close = suggestion.getElementsByTagName('i')[0];
+        var suggestion_hex = suggestion.getElementsByTagName('input')[0];
+        var suggestion_rgb = suggestion.getElementsByTagName('input')[0];
+        var suggestion_preview = suggestion.getElementsByTagName('button')[0];
+        var suggestion_apply = suggestion.getElementsByTagName('button')[0];
 
         setTimeout(function(){
             billy_tongue.innerText = 'Let me know if you need anything else.';
@@ -173,7 +175,7 @@ class Suggest{
             callbillyElement.style.pointerEvents = 'unset';
 
             setTimeout(function(){
-                BillyAssistant.leave();
+                Globals.pageHandler.BillyAssistant.leave();
             },2000);
 
             setTimeout(function(){
@@ -210,26 +212,27 @@ class BillyTheAssistant{
     constructor(){
         this.helper = new Helper;
         this.suggestor = new Suggest;
+        this.elementtype = null;
     }
 
     ready(elementtype){
         const self = this;
+        self.elementtype = elementtype;
+
         for(var i=0; i < billy_orders_types.length; i++){
             billy_orders_types[i].addEventListener('click',function(){
 
                 var datapaneltrigger = $(this).attr('data-panel-trigger');
 
-                (function(datapaneltrigger){
-                    setTimeout(function(){
-                        if(datapaneltrigger == 'suggestion'){
-                            billy_tongue.innerText = 'Alright, suggestion for what?';
-                        }else{
-                            if(datapaneltrigger == 'calculation'){
-                                billy_tongue.innerText = 'What do you want me to calculate?';
-                            }
+                setTimeout(function(){
+                    if(datapaneltrigger == 'suggestion'){
+                        billy_tongue.innerText = 'Alright, suggestion for what?';
+                    }else{
+                        if(datapaneltrigger == 'calculation'){
+                            billy_tongue.innerText = 'What do you want me to calculate?';
                         }
-                    },1000);
-                })(datapaneltrigger);
+                    }
+                },1000);
 
                 for(var j = 0; j < billy_orders_types.length; j++){
                     if($(billy_orders_types[j]).attr('data-panel-trigger') == datapaneltrigger){
@@ -237,34 +240,24 @@ class BillyTheAssistant{
                     }else{
                         billy_orders_types[j].style.pointerEvents = 'none';
 
-                        (function(billy_orders_types,j){
-                            setTimeout(function(){billy_orders_types[j].style.pointerEvents = 'unset';},1000);
-                        })(billy_orders_types,j);
+                        setTimeout(function(){billy_orders_types[j].style.pointerEvents = 'unset';},1000);
                     }
                 }
 
                 for(var o=0; o < billy_orders.length; o++){
-
                     if($(billy_orders[o]).attr('class') == datapaneltrigger){
                         billy_orders[o].style.display = 'block';
 
                         var spinner = this.getElementsByClassName('billyspinner')[0];
                         spinner.style.opacity = '1';
 
-                        (function(spinner,billy_orders,o){
-                            setTimeout(function(){spinner.style.opacity = '0'; billy_orders[o].style.opacity = '1'; },1000);
-                        })(spinner,billy_orders,o);
-
+                        setTimeout(function(){spinner.style.opacity = '0'; billy_orders[o].style.opacity = '1'; },1000);
                     }else{
                         billy_orders[o].style.display = 'none';
 
-                        (function(billy_orders,o){
-                            setTimeout(function(){billy_orders[o].style.opacity = '0'; },1000);
-                        })(billy_orders,o);
+                        setTimeout(function(){billy_orders[o].style.opacity = '0'; },1000);
                     }
-
                 }
-
             });
         }
 
@@ -314,6 +307,7 @@ class BillyTheAssistant{
     }
 
     spawn(){
+        const self = this;
         billy_orders_div.style.display = 'none';
         billy_orders_div.style.opacity = '0';
 
@@ -326,20 +320,16 @@ class BillyTheAssistant{
         billy.classList.add('spawnbilly');
 
         setTimeout(function(){
-
             billy_orders_div.style.display = 'block';
             billy_tongue.style.display = 'block';
             billy.classList.remove('spawnbilly');
-
         },2000);
 
         setTimeout(function(){
-
             billy_orders_div.style.opacity = '1';
             billy_tongue.style.opacity = '1';
 
-            BillyAssistant.ready(elementtype);
-
+            Globals.pageHandler.BillyAssistant.ready(self.elementtype);
         },2200);
     }
 
@@ -348,7 +338,6 @@ class BillyTheAssistant{
         billy_tongue.style.opacity = '0';
 
         setTimeout(function(){
-
             billy_orders_div.style.display = 'none';
             billy_tongue.style.display = 'none';
             billy.classList.add('leavebilly');
@@ -358,13 +347,9 @@ class BillyTheAssistant{
                 billy.style.display = 'none';
                 billy.style.opacity = '0';
             },1000);
-
         },1000);
     }
-
-
 }
-
 
 //---------------------------------------------------------------
 
@@ -472,7 +457,7 @@ class Color{
             this.g = colorInput[2];
             this.b = colorInput[3];
         }else{
-            // If RGB --> Convert it to HEX: http://gist.github.com/983661
+            // If RGB --> Convert it to HEX
             colorInput = +("0x" + colorInput.slice(1).replace(
                 colorInput.length < 5 && /./g, '$&$&')
             );

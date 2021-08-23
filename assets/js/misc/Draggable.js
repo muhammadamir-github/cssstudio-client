@@ -35,7 +35,7 @@ class PreviewSiteDraggable{
         relocateSpecialOptions();
         relocateElementResizer();
 
-        draggable.calculateCenterPosition();
+        Globals.pageHandler.draggable.calculateCenterPosition();
 
         //pos3 = e.clientX;
         //pos4 = e.clientY;
@@ -60,10 +60,10 @@ class PreviewSiteDraggable{
                 // get the mouse cursor position at startup:
                 //pos3 = e.clientX;
                 //pos4 = e.clientY;
-                document.onmouseup = draggable.closeDrag;
+                document.onmouseup = Globals.pageHandler.draggable.closeDrag;
 
                 // call a function whenever the cursor moves:
-                document.onmousemove = draggable.drag;
+                document.onmousemove = Globals.pageHandler.draggable.drag;
 
                 document.onclick = function(){
                     if(self.HoldTimer){
@@ -137,8 +137,6 @@ class PreviewSiteDraggable{
     }
 }
 
-var draggable = new PreviewSiteDraggable;
-
 var detectOverlap = (function () {
     function getPositions(elem) {
         var pos = elem.getBoundingClientRect();
@@ -188,25 +186,22 @@ class PreviewSiteResizeable{
         self.selectedElementResize_startHeight = parseInt(document.defaultView.getComputedStyle(element).height, 10) - previewsite.offsetTop;
         self.selectedElementResize_startWidth = parseInt(document.defaultView.getComputedStyle(element).width, 10) - element.offsetLeft/* - element.offsetLeft + element.getBoundingClientRect().width*/;
 
-        var elementResizer = document.createElement('div');
-        elementResizer.className = 'eResizer';
-
-        if(element.style.width == '100%' || element.getBoundingClientRect().width >= previewsite.getBoundingClientRect().width){
-            elementResizer.style.left = (element.offsetLeft + element.getBoundingClientRect().width - 25) + 'px';
-        }else{
-            elementResizer.style.left = (element.offsetLeft + element.getBoundingClientRect().width) + 'px';
-        }
-
-        elementResizer.style.top = (element.offsetTop + element.getBoundingClientRect().height) + 'px';
-        elementResizer.style.margin = '0';
-
-        elementResizer.addEventListener('mousedown',function(e){
-            document.documentElement.addEventListener('mousemove', resizeable.resizeDrag, false);
-            document.documentElement.addEventListener('mouseup', resizeable.stopResizeDrag, false);
+        var elementResizer = Globals.elements.new({
+            type: "div",
+            parent: previewsite,
+            classes: [ "eResizer" ],
+            style: {
+                top: `${(element.offsetTop + element.getBoundingClientRect().height)}px`,
+                margin: "0",
+                left: element.style.width == '100%' || element.getBoundingClientRect().width >= previewsite.getBoundingClientRect().width ? `${(element.offsetLeft + element.getBoundingClientRect().width - 25)}px` : `${(element.offsetLeft + element.getBoundingClientRect().width)}px`
+            },
+            listeners: {
+                mousedown: (e) => {
+                    document.documentElement.addEventListener('mousemove', resizeable.resizeDrag, false);
+                    document.documentElement.addEventListener('mouseup', resizeable.stopResizeDrag, false);
+                }
+            }
         });
-
-
-        previewsite.appendChild(elementResizer);
     }
 
     disable(){

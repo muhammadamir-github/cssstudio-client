@@ -10,32 +10,35 @@ export default class MembershipHandler{
     }
 
     notice(type, date){
-        var notice = document.createElement('notice');
-        var heading = document.createElement('p');
-        var message = document.createElement('p');
-        var close = document.createElement('i');
-
-        close.addEventListener('click',function(){
-            $('#profileTabs').css({'opacity':'1','pointer-events':'unset'});
-            //$('#upgp').css({'opacity':'1','pointer-events':'unset'});
-            $('#ptHistory').css({'opacity':'1','pointer-events':'unset'});
-            $('#ptGeneral').css({'opacity':'1','pointer-events':'unset'});
-            notice.remove();
+        var notice = Globals.elements.new({
+            type: "notice",
+            parent: Globals.window.body,
+            children: [
+                {
+                    type: "p",
+                    classes: [ "heading" ],
+                    text: type == 'plan-expired' ? "Plan Expiry Notice" : null,
+                },
+                {
+                    type: "p",
+                    classes: [ "message" ],
+                    text: type == 'plan-expired' ? `Dear user, your membership has expired on '${date}'. You have lost access to premium features. You can upgrade your account to continue using premium features.` : null,
+                },
+                {
+                    type : "i",
+                    classes: [ "fas fa-times close" ],
+                    listeners: {
+                        click: () => {
+                            $('#profileTabs').css({'opacity':'1','pointer-events':'unset'});
+                            //$('#upgp').css({'opacity':'1','pointer-events':'unset'});
+                            $('#ptHistory').css({'opacity':'1','pointer-events':'unset'});
+                            $('#ptGeneral').css({'opacity':'1','pointer-events':'unset'});
+                            notice.remove();
+                        }
+                    }
+                }
+            ]
         });
-
-        heading.setAttribute('class','heading');
-        message.setAttribute('class','message');
-        close.setAttribute('class','fas fa-times close');
-
-        if(type == 'plan-expired'){
-            heading.innerText = 'Plan Expiry Notice';
-            message.innerText = 'Dear user, your membership has expired on '+date+'. You have lost access to premium features. You can upgrade your account to continue using premium features.';
-        }
-
-        //notice.appendChild(close);
-        notice.appendChild(heading);
-        notice.appendChild(message);
-        document.getElementsByTagName('body')[0].appendChild(notice);
 
         setTimeout(function(){
             $('#profileTabs').css({'opacity':'0.5','pointer-events':'none'});
