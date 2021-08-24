@@ -10,206 +10,202 @@ class StorageHandler{
         var animations = self.data.animations;
         var elements = self.data.elements;
 
-        var heading = document.createElement('div');
-        heading.setAttribute('class','ph');
-        var heading_p = document.createElement('p');
-        heading_p.innerText = 'Storage';
-        heading.appendChild(heading_p);
+        var heading = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "ph" ],
+            children: [
+                {
+                    type: "p",
+                    text: "Storage"
+                }
+            ]
+        });
 
+        var elements_div = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            id: "eldiv",
+            children: [
+                {
+                    type: "span",
+                    classes: [ "alabel_new" ],
+                    text: "Elements"
+                },
+                ...(() => {
+                    return elements.map((element, i) => {
+                        let width = element.type == 'button' || element.type == 'input' || element.type == 'heading' ? "70%" : element.type == 'image' || element.type == 'video' || element.type == 'div' ? "45%" : element.type == 'paragraph' || element.type == 'textarea' ? "75%" : null;
+                        let height = element.type == 'button' || element.type == 'input' || element.type == 'heading' ? "20%" : element.type == 'image' || element.type == 'video' || element.type == 'div' || element.type == 'paragraph' || element.type == 'textarea' ? "45%" : null;
+                        let eid = element.id;
+                        let etype = element.type;
 
-        var elements_div = document.createElement('div');
-        elements_div.setAttribute('id','eldiv');
-        var ellabel = document.createElement('span');
-        ellabel.setAttribute('class','alabel_new');
-        ellabel.innerText = 'Elements';
-        elements_div.appendChild(ellabel);
-
-        var animations_div = document.createElement('div');
-        animations_div.setAttribute('id','andiv');
-        var anlabel = document.createElement('span');
-        anlabel.setAttribute('class','alabel_new');
-        anlabel.innerText = 'Animations';
-        animations_div.appendChild(anlabel);
+                        return {
+                            type: "storagePreview",
+                            children: [
+                                {
+                                    type: "input",
+                                    attributes: { type: "text", value: element.css },
+                                    style: {
+                                        visible: "false",
+                                        pointerEvents: "none",
+                                        width: "1px",
+                                        height: "1px",
+                                        opacity: "0",
+                                        left: "-500px",
+                                        position: "relative"
+                                    }
+                                },
+                                {
+                                    type: element.type == "paragraph" ? "p" : element.type,
+                                    classes: [ element.name ],
+                                    attributes: element.type == 'textarea' || element.type == 'input' ? { value: `Preview ${element.type}` } : null,
+                                    text: element.type == 'image' || element.type == 'video' ? null : `Preview ${element.type}`,
+                                    style: {
+                                        transform: "translate(-50%,-50%)",
+                                        left: "50%",
+                                        top: "50%",
+                                        marginTop: "0px",
+                                        animationDuration: "0s",
+                                        width: width,
+                                        height: height,
+                                        minHeight: element.type == 'image' || element.type == 'video' ? "0%" : null,
+                                        minWidth: element.type == 'image' || element.type == 'video' ? "0%" : null,
+                                    }
+                                },
+                                {
+                                    type: "span",
+                                    classes: [ "alabel_new" ],
+                                    text: element.name,
+                                    style: {
+                                        backgroundColor: "#1a1a1a",
+                                        color: "white",
+                                        fontSize: "12px",
+                                        borderRadius: "0px",
+                                        height: "17px",
+                                        bottom: "0px",
+                                        width: "100%"
+                                    }
+                                },
+                                {
+                                    type: "p",
+                                    classes: [ "ctc" ],
+                                    text: "Copy Css",
+                                    listeners: {
+                                        click: function(){
+                                            this.classList.add('ctca');
+                                            this.parentElement.getElementsByTagName('input')[0].select();
+                                            document.execCommand("copy");
+                                            window.getSelection().removeAllRanges();
+                                            setTimeout(function(){$('.ctca').removeClass('ctca');},1000);
+                                        }
+                                    }
+                                },
+                                {
+                                    type: "i",
+                                    classes: [ "fas", "fa-trash" ],
+                                    listeners: {
+                                        click: function(){ self.deleteElement('element', eid, this); }
+                                    }
+                                },
+                                {
+                                    type: "i",
+                                    classes: [ "fas", "fa-toggle-off" ],
+                                    listeners: {
+                                        click: function(){ self.stopAnimation('element', eid, etype, this); }
+                                    },
+                                    style: { marginLeft: "25px" }
+                                }
+                            ]
+                        }
+                    });
+                })(),
+            ]
+        });
 
         for(var i=0; i < elements.length; i++){
-            var storagepreview = document.createElement('storagePreview');
-
-            var css = document.createElement("input");
-            css.setAttribute("type",'text');
-            var style = elements[i].css;
-            css.value = style;
-            css.style.visible = 'false';
-            css.style.pointerEvents = 'none';
-            css.style.width = '1px';
-            css.style.height = '1px';
-            css.style.opacity = '0';
-            css.style.left = '-500px';
-            css.style.position = 'relative';
-            storagepreview.appendChild(css);
-
-            if(elements[i].type == 'paragraph'){
-                var element = document.createElement('p');
-            }else{
-                var element = document.createElement(elements[i].type);
-            }
-            element.setAttribute('class',elements[i].name);
-            element.style.transform = 'translate(-50%,-50%)';
-            element.style.left = '50%';
-            element.style.top = '50%';
-
-            if(elements[i].type == 'button' || elements[i].type == 'input' || elements[i].type == 'heading'){
-                element.style.width = '70%';
-                element.style.height = '20%';
-                element.innerText = 'Preview '+elements[i].type;
-            }
-
-            if(elements[i].type == 'image' || elements[i].type == 'video'){
-                element.style.width = '45%';
-                element.style.height = '45%';
-                element.style.minWidth = '0%';
-                element.style.minHeight = '0%';
-            }
-
-            if(elements[i].type == 'div'){
-                element.style.width = '45%';
-                element.style.height = '45%';
-                element.innerText = 'Preview '+elements[i].type;
-            }
-
-            if(elements[i].type == 'paragraph' || elements[i].type == 'textarea'){
-                element.style.width = '75%';
-                element.style.height = '45%';
-                element.innerText = 'Preview '+elements[i].type;
-            }
-
-            if(elements[i].type == 'textarea' || elements[i].type == 'input'){
-                element.value = 'Preview ';+elements[i].name;
-                element.innerText = 'Preview '+elements[i].type;
-            }
-
-            element.style.marginTop = '0px';
-            element.style.animationDuration = '0s';
-
-            storagepreview.appendChild(element);
-
-            var label = document.createElement('span');
-            label.setAttribute('class','alabel_new');
-            label.innerText = elements[i].name;
-            label.style.backgroundColor = '#1a1a1a';
-            label.style.color = 'white';
-            label.style.fontSize = '12px';
-            label.style.borderRadius = '0px';
-            label.style.height = '17px';
-            label.style.bottom = '0px';
-            label.style.width = '100%';
-            storagepreview.appendChild(label);
-
-            var p = document.createElement('p');
-            p.setAttribute('class','ctc');
-            p.innerText = 'Copy Css';
-            p.addEventListener('click',function(){
-                this.classList.add('ctca');
-                this.parentElement.getElementsByTagName('input')[0].select();
-                document.execCommand("copy");
-                window.getSelection().removeAllRanges();
-                setTimeout(function(){$('.ctca').removeClass('ctca');},1000);
+            var stylesheet = Globals.elements.new({
+                type: "style",
+                parent: Globals.window.head,
+                text: elements[i].css
             });
-            storagepreview.appendChild(p);
-
-            var eid = elements[i].id;
-            var etype = elements[i].type;
-
-            var deleteicon = document.createElement('i');
-            deleteicon.setAttribute('class','fas fa-trash');
-
-            (function(eid){
-                deleteicon.addEventListener('click',function(){
-                    self.deleteElement('element',eid,this);
-                });
-            })(eid);
-
-            var toggleanimationicon = document.createElement('i');
-            toggleanimationicon.setAttribute('class','fas fa-toggle-off');
-            toggleanimationicon.style.marginLeft = '25px';
-
-            (function(eid,etype){
-                toggleanimationicon.addEventListener('click',function(){
-                    self.stopAnimation('element',eid,etype,this);
-                });
-            })(eid,etype);
-
-            storagepreview.appendChild(deleteicon);
-            storagepreview.appendChild(toggleanimationicon);
-
-            elements_div.appendChild(storagepreview);
-
-            var stylesheet = document.createElement('style');
-            stylesheet.innerText = elements[i].css;
-
-            document.getElementsByTagName('head')[0].appendChild(stylesheet);
         }
+
+        var animations_div = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            id: "andiv",
+            children: [
+                {
+                    type: "span",
+                    classes: [ "alabel_new" ],
+                    text: "Animations"
+                },
+                ...(() => {
+                    return animations.map((animation, i) => {
+                        var aid = animation.id;
+                        return {
+                            type: "storagePreview",
+                            children: [
+                                {
+                                    type: "textarea",
+                                    text: animation.css,
+                                    attributes: { readonly: "", value: animation.css },
+                                    style: {
+                                        resize: "none",
+                                        height: "85%",
+                                        width: "100%",
+                                        marginTop: "10%"
+                                    }
+                                },
+                                {
+                                    type: "span",
+                                    classes: [ "alabel_new" ],
+                                    text: animation.name,
+                                    style: {
+                                        backgroundColor: "#1a1a1a",
+                                        color: "white",
+                                        fontSize: "12px",
+                                        borderRadius: "0px",
+                                        height: "17px",
+                                        bottom: "0px",
+                                        width: "100%"
+                                    }
+                                },
+                                {
+                                    type: "i",
+                                    classes: [ "fas", "fa-trash" ],
+                                    listeners: {
+                                        click: function(){ self.deleteElement('animation', aid, this); }
+                                    }
+                                },
+                                {
+                                    type: "p",
+                                    classes: [ "ctc" ],
+                                    text: "Copy Css",
+                                    listeners: {
+                                        click: function(){
+                                            this.classList.add('ctca');
+                                            this.parentElement.getElementsByTagName('textarea')[0].select();
+                                            document.execCommand("copy");
+                                            window.getSelection().removeAllRanges();
+                                            setTimeout(function(){$('.ctca').removeClass('ctca');},1000);
+                                        }
+                                    }
+                                },
+                            ]
+                        }
+                    });
+                })()
+            ]
+        });
 
         for(var i=0; i < animations.length; i++){
-            var storagepreview = document.createElement('storagePreview');
-
-            var animation = document.createElement('textarea');
-            animation.setAttribute('readonly','');
-            animation.innerText = animations[i].css;
-            animation.style.resize = 'none';
-            animation.style.height = '85%';
-            animation.style.width = '100%';
-            animation.style.marginTop = '10%';
-
-            storagepreview.appendChild(animation);
-
-            var label = document.createElement('span');
-            label.setAttribute('class','alabel_new');
-            label.innerText = animations[i].name;
-            label.style.backgroundColor = '#1a1a1a';
-            label.style.color = 'white';
-            label.style.fontSize = '12px';
-            label.style.borderRadius = '0px';
-            label.style.height = '17px';
-            label.style.bottom = '0px';
-            label.style.width = '100%';
-            storagepreview.appendChild(label);
-
-            var aid = animations[i].id;
-
-            var deleteicon = document.createElement('i');
-            deleteicon.setAttribute('class','fas fa-trash');
-
-            (function(aid){
-                deleteicon.addEventListener('click',function(){
-                    self.deleteElement('animation',aid,this);
-                });
-            })(aid);
-
-            storagepreview.appendChild(deleteicon);
-
-            var p = document.createElement('p');
-            p.setAttribute('class','ctc');
-            p.innerText = 'Copy css';
-            p.addEventListener('click',function(){
-                this.classList.add('ctca');
-                this.parentElement.getElementsByTagName('textarea')[0].select();
-                document.execCommand("copy");
-                window.getSelection().removeAllRanges();
-                setTimeout(function(){$('.ctca').removeClass('ctca');},1000);
+            var stylesheet = Globals.elements.new({
+                type: "style",
+                parent: Globals.window.head,
+                text: animations[i].css
             });
-            storagepreview.appendChild(p);
-
-            animations_div.appendChild(storagepreview);
-
-            var stylesheet = document.createElement('style');
-            stylesheet.innerText = animations[i].css;
-
-            document.getElementsByTagName('head')[0].appendChild(stylesheet);
         }
-
-        $('body').append(heading);
-        $('body').append(elements_div);
-        $('body').append(animations_div);
     }
 
     planExpired(){
@@ -223,15 +219,6 @@ class StorageHandler{
         },7500);
 
         document.getElementsByTagName('head')[0].innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/notice.css">';
-
-        //var upgradeplan = document.createElement('div');
-        //upgradeplan.setAttribute('id','upgp');
-
-        //document.getElementsByTagName('body')[0].appendChild(upgradeplan);
-
-        //setUpPaypal(self.data);
-        //document.getElementById('upgp').style.display = 'block';
-        //document.getElementById('upgp').style.opacity = '1';
     }
 
     async deleteElement(type,id,element){

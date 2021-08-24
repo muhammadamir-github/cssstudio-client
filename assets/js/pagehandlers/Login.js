@@ -53,9 +53,9 @@ class LoginHandler{
         const self = this;
         var ip = response.ip;
 
-        const response = await Globals.api.request({ route: `ip/${ip}`, method: "get" });
-        if(response.success === true){
-            self.sf(response.data);
+        const res = await Globals.api.request({ route: `ip/${ip}`, method: "get" });
+        if(res.success === true){
+            self.sf(res.data);
         }
     }
 
@@ -99,9 +99,9 @@ class LoginHandler{
             'f':f,
         };
 
-        const response = await Globals.api.request({ route: 'signup', method: "post", data });
-        if(response.success === true){
-            self.sr(response.data);
+        const res = await Globals.api.request({ route: 'signup', method: "post", data });
+        if(res.success === true){
+            self.sr(res.data);
         }else{
             Globals.notificationHandler.new('An Error Occured, please try again later.');
             document.getElementById('signupform').style.opacity = '1';
@@ -149,9 +149,9 @@ class LoginHandler{
         const self = this;
         var ip = response.ip;
 
-        const response = await Globals.api.request({ route: `ip/${ip}`, method: "get" });
-        if(response.success === true){
-            self.lf(response.data);
+        const res = await Globals.api.request({ route: `ip/${ip}`, method: "get" });
+        if(res.success === true){
+            self.lf(res.data);
         }
     }
 
@@ -177,9 +177,9 @@ class LoginHandler{
             'c':c,
         };
 
-        const response = await Globals.api.request({ route: 'login', method: "post", data });
-        if(response.success === true){
-            self.lr(response.data);
+        const res = await Globals.api.request({ route: 'login', method: "post", data });
+        if(res.success === true){
+            self.lr(res.data);
         }else{
             Globals.notificationHandler.new('Error , Invalid Credentials');
             document.getElementById('loginform').style.opacity = '1';

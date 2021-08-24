@@ -31,6 +31,8 @@ class BootLoader{
             { name: "blog", dataRoute: "blogs", hasSidebar: false, loads: false },
             { name: "termsandconditions", dataRoute: null, hasSidebar: false, loads: false },
             { name: "login", dataRoute: "me", hasSidebar: false, loads: false },
+            { name: "adminpanel", dataRoute: null, hasSidebar: false, loads: false },
+            { name: "home.html", dataRoute: null, hasSidebar: false, loads: false },
             { name: "profile", dataRoute: "me", hasSidebar: true, loads: true },
             { name: "billing", dataRoute: "me/payments", hasSidebar: true, loads: true },
             { name: "notifications", dataRoute: "me/notifications", hasSidebar: true, loads: true },
@@ -66,7 +68,7 @@ class BootLoader{
 
                         for(var x=0; x<allFilesInDir.length; x++){
                             let src = `${files.paths[i].src.replace("*", "")}${allFilesInDir[x]}`;
-                            if(!files.paths[i].ignore.includes(src)){
+                            if(Array.isArray(files.paths[i].ignore) && !files.paths[i].ignore.includes(src)){
                                 files.paths.push({ type, src, isURL, isRaw, });
                             }
                         }
@@ -100,7 +102,7 @@ class BootLoader{
                                         rel
                                     },
                                     listeners: {
-                                        load: () => { console.log("loaded"); promiseResolve(); }
+                                        load: () => { promiseResolve(); }
                                     }
                                 });
 
@@ -139,26 +141,31 @@ class BootLoader{
         const self = this;
         const page = self.pages.find(x => (x.name === pageName));
         if(page){
-            const response = page.dataRoute ? await Globals.api.request({ route: page.dataRoute, method: "get" }) : null;
-            const data = response && response.data ? response.data : null;
-
-            if(response.success === true){
-                const isMember = response === null ? true : Globals.membershipHandler.checkIfIsMember(data.success.expires_at);
-                Globals.pageHandler = page.dataRoute === false ? new StaticPageHandler : pageName === "profile" ? new ProfileHandler(data.success) : pageName === "billing" ? new BillingHandler(data.success) : pageName === "notifications" ? new NotificationsHandler(data.success) : pageName === "storage" ? new StorageHandler(data.success) : pageName === "support" ? new SupportHandler(data.success) : pageName === "studio" ? new StudioHandler(data.success) : pageName === "blog" ? new BlogHandler(data.success) : pageName === "login" ? new LoginHandler(data.success) : null;
-
-                if(isMember === true && Globals.pageHandler){
-                    Globals.paypalHandler = pageName === "profile" ? new PaypalHandler(data.success) : null;
-
-                    if(page.hasSidebar === true){ Globals.sideBar = new SideBar(pageName); }
-                    Globals.pageHandler.setup();
-                }else{
-                    Globals.pageHandler.planExpired();
-                }
-
-                self.loader.hide();
+            if(page.name == "adminpanel" || page.name == "home.html"){
+                Globals.pageHandler = page.name == "adminpanel" ? new AdminPanelLoginHandler : new AdminPanelHandler;
+                Globals.pageHandler.setup();
             }else{
-                if(pageName !== "login"){
-                    window.location.href = '../login/';
+                const response = page.dataRoute ? await Globals.api.request({ route: page.dataRoute, method: "get" }) : { success: false, data: null };
+                const data = response && response.data ? response.data : null;
+
+                if(response.success === true){
+                    const isMember = response === null ? true : Globals.membershipHandler.checkIfIsMember(data.success.expires_at);
+                    Globals.pageHandler = page.dataRoute === false ? new StaticPageHandler : pageName === "profile" ? new ProfileHandler(data.success) : pageName === "billing" ? new BillingHandler(data.success) : pageName === "notifications" ? new NotificationsHandler(data.success) : pageName === "storage" ? new StorageHandler(data.success) : pageName === "support" ? new SupportHandler(data.success) : pageName === "studio" ? new StudioHandler(data.success) : pageName === "blog" ? new BlogHandler(data.success) : pageName === "login" ? new LoginHandler(data.success) : null;
+
+                    if(isMember === true && Globals.pageHandler){
+                        Globals.paypalHandler = pageName === "profile" ? new PaypalHandler(data.success) : null;
+
+                        if(page.hasSidebar === true){ Globals.sideBar = new SideBar(pageName); }
+                        Globals.pageHandler.setup();
+                    }else{
+                        Globals.pageHandler.planExpired();
+                    }
+
+                    self.loader.hide();
+                }else{
+                    if(pageName !== "login"){
+                        //window.location.href = '../login/';
+                    }
                 }
             }
         }

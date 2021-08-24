@@ -3,24 +3,16 @@ class InfoBoxHandler{
         this.fontawesomeHandler = new FontAwesomeHandler;
     }
 
-    newBow(id, appendTo, appendToType, width){
-        var box = document.createElement('div');
-        box.setAttribute('class','crud_infoBox');
-        box.setAttribute('id',id);
-
-        if(width == 'default'){
-
-        }else{
-            box.style.width = width;
-        }
-
-        if(appendToType == 'id'){
-            document.getElementById(appendTo).appendChild(box);
-        }else{
-            if(appendToType == 'class'){
-                document.getElementsByClassName(appendTo)[0].appendChild(box);
+    newBox(id, appendTo, appendToType, width){
+        var box = Globals.elements.new({
+            type: "div",
+            parent: appendToType == 'id' ? document.getElementById(appendTo) : document.getElementsByClassName(appendTo)[0],
+            classes: [ "crud_infoBox" ],
+            id,
+            style: {
+                width: width == "default" ? null : width,
             }
-        }
+        });
     }
 
     populateBox(boxId, data, dataCategory){
@@ -78,54 +70,68 @@ class InfoBoxHandler{
 
     addEntry(boxId, text, key, datetime, futurePastCheck, padding){
         const self = this;
-
-        var entry = document.createElement('entry');
-
-        if(padding == 'default'){
-
-        }else{
-            entry.style.padding = padding;
-        }
+        let momentResult = null;
 
         if(datetime == '1'){
             if(futurePastCheck == '1'){
                 if(text.includes('@')){
                     var datetimeInTextFormat = text.split('@')[1];
-                    var momentResult = moment(moment.utc(datetimeInTextFormat)).fromNow();
+                    momentResult = moment(moment.utc(datetimeInTextFormat)).fromNow();
                 }else{
-                    var momentResult = moment(moment.utc(text)).fromNow();
+                    momentResult = moment(moment.utc(text)).fromNow();
                 }
             }else{
                 if(futurePastCheck == '0'){
                     if(text.includes('@')){
                         var datetimeInTextFormat = text.split('@')[1];
-                        var momentResult = moment.utc(datetimeInTextFormat).local().format("dddd, MMMM Do YYYY");
+                        momentResult = moment.utc(datetimeInTextFormat).local().format("dddd, MMMM Do YYYY");
                     }else{
-                        var momentResult = moment.utc(text).local().format("dddd, MMMM Do YYYY");
+                        momentResult = moment.utc(text).local().format("dddd, MMMM Do YYYY");
                     }
                 }
             }
+
             if(text.length > 2){
                 if(text.includes('@')){
-                    entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ capitalizeFirstLetter(text.split('@')[0]) + ' @ ' + capitalizeFirstLetter(momentResult);
+                    //entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ capitalizeFirstLetter(text.split('@')[0]) + ' @ ' + capitalizeFirstLetter(momentResult);
+                    text = `${capitalizeFirstLetter(key)}: ${capitalizeFirstLetter(text.split('@')[0])} @ ${capitalizeFirstLetter(momentResult)}`;
                 }else{
-                    entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ capitalizeFirstLetter(momentResult);
+                    //entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ capitalizeFirstLetter(momentResult);
+                    text = `${capitalizeFirstLetter(key)}: ${capitalizeFirstLetter(momentResult)}`;
                 }
             }else{
                 if(text.includes('@')){
-                    entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ capitalizeFirstLetter(text.split('@')[0]) + ' @ ' + momentResult;
+                    //entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ capitalizeFirstLetter(text.split('@')[0]) + ' @ ' + momentResult;
+                    text = `${capitalizeFirstLetter(key)}: ${capitalizeFirstLetter(text.split('@')[0])} @ ${momentResult}`;
                 }else{
-                    entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ momentResult;
+                    //entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ momentResult;
+                    text = `${capitalizeFirstLetter(key)}: ${momentResult}`;
                 }
             }
         }else{
             if(text.length > 2){
-                entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ capitalizeFirstLetter(text);
+                //entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ capitalizeFirstLetter(text);
+                text = `${capitalizeFirstLetter(key)}: ${capitalizeFirstLetter(text)}`;
             }else{
-                entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ text;
+                //entry.innerHTML = '<i class="'+self.fontawesomeHandler.icon(key)+'"></i> ' + capitalizeFirstLetter(key) + ': '+ text;
+                text = `${capitalizeFirstLetter(key)}: ${text}`;
             }
         }
 
-        document.getElementById(boxId).appendChild(entry);
+        var entry = Globals.elements.new({
+            type: "entry",
+            parent: document.getElementById(boxId),
+            text: text,
+            style: {
+                padding: padding == "default" ? null : padding,
+            },
+            children: [
+                {
+                    type: "i",
+                    classes: [ ...self.fontawesomeHandler.icon(key).split(" ") ],
+                    prepend: true // before text
+                }
+            ]
+        });
     }
 }

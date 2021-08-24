@@ -181,7 +181,10 @@ export default {
             pageName: "adminpanel",
             paths: [
                 ...global_requiredFiles.icon,
+                ...global_requiredFiles.css,
                 { type: "css", src: "pages/AdminPanelLogin.css", isURL: false, isRaw: false, },
+                { type: "js", src: "thirdparty/jquery.min.js", isURL: false, isRaw: false, },
+                { type: "js", src: "thirdparty/moment.min.js", isURL: false, isRaw: false, },
                 { type: "js", src: "pagehandlers/AdminPanelLogin.js", isURL: false, isRaw: false, }
             ],
         },
@@ -189,10 +192,12 @@ export default {
             pageName: "home.html", // adminpanel/home.html
             paths: [
                 ...global_requiredFiles.icon,
-                { type: "css", src: "misc/BottomNavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "thirdparty/fontawesome.all.css", isURL: false, isRaw: false, },
+                ...global_requiredFiles.css,
+                { type: "css", src: "misc/TopNavbar.css", isURL: false, isRaw: false, },
                 { type: "css", src: "pages/AdminPanel.css", isURL: false, isRaw: false, },
                 { type: "css", src: ".pageheading{ color: black; font-family: ProximaNovaBold; }", isURL: false, isRaw: true, },
+                { type: "js", src: "thirdparty/jquery.min.js", isURL: false, isRaw: false, },
+                { type: "js", src: "thirdparty/moment.min.js", isURL: false, isRaw: false, },
                 { type: "js", src: "thirdparty/chart.bundle.js", isURL: false, isRaw: false, },
                 { type: "js", src: "pagehandlers/adminpanel/*", isURL: false, isRaw: false, ignore: [], },
                 { type: "js", src: "pagehandlers/AdminPanel.js", isURL: false, isRaw: false, }

@@ -22,15 +22,15 @@ export default class Api{
         const tokenToUse = options.route.startsWith("admin") ? self.adminToken : self.token;
 
         let toReturn = { success: false, data: null };
-        if(!tokenToUse){ return toReturn; }
+        if(!tokenToUse && options.route !== "login" && options.route !== "admin/login"){ return toReturn; }
 
         await $.ajax({
             url: self.hostname+":"+self.port+"/api/"+options.route,
             type: options.method,
             dataType: options.method === "post" ? "json" : null,
             data: options.data ? options.data : null,
-            processData: false,
-            contentType: false,
+            processData: typeof options.data === "FORMDATA" ? false : true,
+            contentType: typeof options.data === "FORMDATA" ? false : 'application/x-www-form-urlencoded; charset=UTF-8', // ajax default = 'application/x-www-form-urlencoded; charset=UTF-8'
             beforeSend: function(request) {
                 request.setRequestHeader('Authorization', 'Bearer '+tokenToUse);
                 request.setRequestHeader('Accept', 'application/json');

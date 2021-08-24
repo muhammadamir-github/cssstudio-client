@@ -10,7 +10,7 @@ export default class NotificationHandler{
                 border: condition === 1 ? "2px solid Green" : condition === 2 ? "2px solid Green" : condition === 3 ? "2px solid DarkRed" : null
             },
             listeners: {
-                click: () => {
+                click: function(){
                     notification.remove();
                 }
             },

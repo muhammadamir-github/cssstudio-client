@@ -21,43 +21,48 @@ class BlogHandler{
         }
 
         for(var i=0; i < self.data.length; i++){
-            var blog = document.createElement('blog');
-
-            var heading = document.createElement('p');
-            heading.setAttribute('class','heading');
-            heading.innerText = self.data[i].heading;
-
-            var image = document.createElement('img');
-            image.setAttribute('class','image');
-            image.src = self.data[i].image_link;
-
-            var author = document.createElement('p');
-            author.setAttribute('class','author');
-            author.innerText = moment.utc(self.data[i].created_at).local().format("MMMM Do YYYY h:mm a") + ', By ' + self.data[i].author + '.';
-
-            var content = document.createElement('p');
-            content.setAttribute('class','content');
-            content.innerText = self.data[i].content.slice(0, 500)+'...';
-
-            blog.appendChild(heading);
-            blog.appendChild(image);
-            blog.appendChild(content);
-            blog.appendChild(author);
-
-            blog.addEventListener("click",function(){
-                var fullview = document.getElementsByTagName('fullview')[0];
-                fullview.style.right = '0%';
-                fullview.getElementsByClassName('fw_heading')[0].innerText = self.data[i].heading;
-                fullview.getElementsByClassName('fw_image')[0].src = self.data[i].image_link;
-                fullview.getElementsByClassName('fw_content')[0].innerText = self.data[i].content;
-                fullview.getElementsByClassName('fw_author')[0].innerText = moment.utc(self.data[i].created_at).local().format("MMMM Do YYYY h:mm a") + ', By ' + self.data[i].author + '.';;
-            });
-
-            document.getElementsByTagName('body')[0].appendChild(blog);
+            var blog = Globals.elements.new({
+                type: "blog",
+                parent: Globals.window.body,
+                listeners: {
+                    click: function(){
+                        var fullview = document.getElementsByTagName('fullview')[0];
+                        fullview.style.right = '0%';
+                        fullview.getElementsByClassName('fw_heading')[0].innerText = self.data[i].heading;
+                        fullview.getElementsByClassName('fw_image')[0].src = self.data[i].image_link;
+                        fullview.getElementsByClassName('fw_content')[0].innerText = self.data[i].content;
+                        fullview.getElementsByClassName('fw_author')[0].innerText = moment.utc(self.data[i].created_at).local().format("MMMM Do YYYY h:mm a") + ', By ' + self.data[i].author + '.';;
+                    }
+                },
+                children: [
+                    {
+                        type: "p",
+                        classes: [ "heading" ],
+                        text: self.data[i].heading
+                    },
+                    {
+                        type: "img",
+                        classes: [ "image" ],
+                        text: self.data[i].image_link
+                    },
+                    {
+                        type: "p",
+                        classes: [ "author" ],
+                        text: moment.utc(self.data[i].created_at).local().format("MMMM Do YYYY h:mm a") + ', By ' + self.data[i].author + '.'
+                    },
+                    {
+                        type: "p",
+                        classes: [ "content" ],
+                        text: self.data[i].content.slice(0, 500)+'...'
+                    }
+                ]
+            })
         }
 
-        var whitespace = document.createElement('div');
-        whitespace.setAttribute('class','whitespace');
-        document.getElementsByTagName('body')[0].appendChild(whitespace);
+        var whitespace = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "whitespace" ]
+        });
     }
 }

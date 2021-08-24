@@ -3,65 +3,65 @@ class Servers{
 
     status(){
         const self = this;
-        var serverlist = [
+        const serverlist = [
             {
-                ip:'127.0.0.1',
+                ip: 'localhost',
                 name:'Application Programming Interface',
             },
             {
-                ip:'127.0.0.1',
+                ip: 'localhost',
                 name:'MySQL Database',
             },
         ];
 
-        for(var i=0; i < serverlist.length; i++){
-            $('.server_status_box').remove();
-            var ip = serverlist[i].ip;
-            var name = serverlist[i].name;
-
-            var test_image = document.createElement('img');
-            test_image.setAttribute('hidden','');
-            test_image.src = "https://"+ip+"/favicon.png";
-
-            test_image.onload = function() {
-                self.showResult(ip,'online',name);
-                this.remove();
-            }
-
-            test_image.onerror = function() {
-                self.showResult(ip,'offline',name);
-                this.remove();
-            }
-        }
+        $('.server_status_box').remove();
+        serverlist.forEach(x => {
+            let test_image = Globals.elements.new({
+                type: "img",
+                parent: Globals.window.body,
+                attributes: {
+                    hidden: "",
+                    src: "http://"+x.ip+"/assets/images/icon2.png"
+                },
+                listeners: {
+                    load: function(){
+                        self.showResult(x.ip, 'online', x.name);
+                        this.remove();
+                    },
+                    error: function(){
+                        self.showResult(x.ip, 'offline', x.name);
+                        this.remove();
+                    },
+                }
+            });
+        });
     }
 
     showResult(ip, serverstatus, severname){
-        var statusdiv = document.createElement('div');
-        statusdiv.setAttribute('class','server_status_box');
-
-        var img = document.createElement('img');
-        img.src = '../assets/images/digitalocean.png';
-
-        var name = document.createElement('p');
-        name.setAttribute('class','server_name');
-        name.innerText = capitalizeFirstLetter(severname);
-
-        var status = document.createElement('p');
-        status.setAttribute('class','server_status');
-        if(serverstatus == 'offline'){
-            status.style.backgroundColor = 'darkred';
-            status.style.textDecoration = 'underline darkred';
-        }else{
-            if(serverstatus == 'online'){
-                status.style.backgroundColor = 'darkgreen';
-                status.style.textDecoration = 'underline darkgreen';
-            }
-        }
-        status.innerText = capitalizeFirstLetter(serverstatus);
-
-        statusdiv.appendChild(img);
-        statusdiv.appendChild(name);
-        statusdiv.appendChild(status);
-        document.getElementById('statustab').appendChild(statusdiv);
+        var statusdiv = Globals.elements.new({
+            type: "div",
+            parent: document.getElementById('statustab'),
+            classes: [ "server_status_box" ],
+            children: [
+                {
+                    type: "img",
+                    attributes: { src: '../assets/images/digitalocean.png' }
+                },
+                {
+                    type: "p",
+                    classes: [ "server_name" ],
+                    text: capitalizeFirstLetter(severname)
+                },
+                {
+                    type: "p",
+                    classes: [ "server_status" ],
+                    text: capitalizeFirstLetter(serverstatus),
+                    style: {
+                        backgroundColor: serverstatus == 'offline' ? "darkred" : "underline darkred",
+                        textDecoration: serverstatus == 'offline' ? "darkgreen" : "underline darkgreen"
+                    }
+                }
+            ]
+        });
     }
 }

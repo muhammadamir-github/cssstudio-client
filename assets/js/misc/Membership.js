@@ -28,7 +28,7 @@ export default class MembershipHandler{
                     type : "i",
                     classes: [ "fas fa-times close" ],
                     listeners: {
-                        click: () => {
+                        click: function(){
                             $('#profileTabs').css({'opacity':'1','pointer-events':'unset'});
                             //$('#upgp').css({'opacity':'1','pointer-events':'unset'});
                             $('#ptHistory').css({'opacity':'1','pointer-events':'unset'});

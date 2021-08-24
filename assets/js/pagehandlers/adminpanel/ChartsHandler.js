@@ -17,17 +17,24 @@ class ChartsHandler{
         var sorted_monthsyears = sorted_monthsyears_values[0];
         var sorted_values = sorted_monthsyears_values[1];
 
-        var signups_box = document.createElement('box');
-        signups_box.setAttribute('class','signups_box');
-        signups_box.style.width = '40%';
-        signups_box.style.height = '350px';
-        signups_box.style.marginTop = '50px';
+        var signups_box = Globals.elements.new({
+            type: "box",
+            parent: document.getElementById("statstab"),
+            classes: [ "signups_box" ],
+            style: {
+                width: "40%",
+                height: "350px",
+                marginTop: "50px"
+            },
+            children: [
+                {
+                    type: "canvas",
+                }
+            ]
+        });
 
-        var signups_canvas = document.createElement("canvas");
+        var signups_canvas = signups_box.getElementsByTagName("canvas")[0];
         var signups_ctx = signups_canvas.getContext('2d');
-
-        console.log(monthsyears);
-        console.log(values);
 
         var signups_data = {
             labels: [
@@ -87,24 +94,31 @@ class ChartsHandler{
             legend: { display: false },
         };
 
-        var signups_chart = new Chart(signups_ctx,{
+        var signups_chart = new Chart(signups_ctx, {
             type: 'bar',
             data: signups_data,
             options: signups_options
         });
-
-        signups_box.appendChild(signups_canvas);
-        $('#statstab').append(signups_box);
     }
 
     chart_planUpgrades(data){
-        var planUpgrades_box = document.createElement('box');
-        planUpgrades_box.setAttribute('class','planUpgrades_box');
-        planUpgrades_box.style.width = '40%';
-        planUpgrades_box.style.height = '350px';
-        planUpgrades_box.style.marginTop = '50px';
+        var planUpgrades_box = Globals.elements.new({
+            type: "box",
+            parent: document.getElementById("statstab"),
+            classes: [ "planUpgrades_box" ],
+            style: {
+                width: "40%",
+                height: "350px",
+                marginTop: "50px"
+            },
+            children: [
+                {
+                    type: "canvas",
+                }
+            ]
+        });
 
-        var planUpgrades_canvas = document.createElement("canvas");
+        var planUpgrades_canvas = planUpgrades_box.getElementsByTagName("canvas")[0];
         var planUpgrades_ctx = planUpgrades_canvas.getContext('2d');
 
         var planUpgrades_data = {
@@ -171,19 +185,26 @@ class ChartsHandler{
             data: planUpgrades_data,
             options: planUpgrades_options
         });
-
-        planUpgrades_box.appendChild(planUpgrades_canvas);
-        $('#statstab').append(planUpgrades_box);
     }
 
     chart_users(data){
-        var users_box = document.createElement('box');
-        users_box.setAttribute('class','users_box');
-        users_box.style.width = '40%';
-        users_box.style.height = '350px';
-        users_box.style.marginTop = '50px';
+        var users_box = Globals.elements.new({
+            type: "box",
+            parent: document.getElementById("statstab"),
+            classes: [ "users_box" ],
+            style: {
+                width: "40%",
+                height: "350px",
+                marginTop: "50px"
+            },
+            children: [
+                {
+                    type: "canvas",
+                }
+            ]
+        });
 
-        var users_canvas = document.createElement("canvas");
+        var users_canvas = users_box.getElementsByTagName("canvas")[0];
         var users_ctx = users_canvas.getContext('2d');
 
         var users_data = {
@@ -242,19 +263,26 @@ class ChartsHandler{
             data: users_data,
             options: users_options
         });
-
-        users_box.appendChild(users_canvas);
-        $('#statstab').append(users_box);
     }
 
     chart_elementsDetailed(data){
-        var elements_detailed_box = document.createElement('box');
-        elements_detailed_box.setAttribute('class','elements_detailed_box');
-        elements_detailed_box.style.width = '40%';
-        elements_detailed_box.style.height = '350px';
-        elements_detailed_box.style.marginTop = '50px';
+        var elements_detailed_box = Globals.elements.new({
+            type: "box",
+            parent: document.getElementById("statstab"),
+            classes: [ "elements_detailed_box" ],
+            style: {
+                width: "40%",
+                height: "350px",
+                marginTop: "50px"
+            },
+            children: [
+                {
+                    type: "canvas",
+                }
+            ]
+        });
 
-        var elements_detailed_canvas = document.createElement("canvas");
+        var elements_detailed_canvas = elements_detailed_box.getElementsByTagName("canvas")[0];
         var elements_detailed_ctx = elements_detailed_canvas.getContext('2d');
 
         var elements_detailed_data = {
@@ -343,13 +371,23 @@ class ChartsHandler{
     }
 
     chart_storage(data){
-        var storage_box = document.createElement('box');
-        storage_box.setAttribute('class','storage_box');
-        storage_box.style.width = '40%';
-        storage_box.style.height = '350px';
-        storage_box.style.marginTop = '50px';
+        var storage_box = Globals.elements.new({
+            type: "box",
+            parent: document.getElementById("statstab"),
+            classes: [ "storage_box" ],
+            style: {
+                width: "40%",
+                height: "350px",
+                marginTop: "50px"
+            },
+            children: [
+                {
+                    type: "canvas",
+                }
+            ]
+        });
 
-        var storage_canvas = document.createElement("canvas");
+        var storage_canvas = storage_box.getElementsByTagName("canvas")[0];
         var storage_ctx = storage_canvas.getContext('2d');
 
         var storage_data = {
@@ -408,19 +446,26 @@ class ChartsHandler{
             data: storage_data,
             options: storage_options
         });
-
-        storage_box.appendChild(storage_canvas);
-        $('#statstab').append(storage_box);
     }
 
     chart_tickets(data){
-        var tickets_box = document.createElement('box');
-        tickets_box.setAttribute('class','tickets_box');
-        tickets_box.style.width = '40%';
-        tickets_box.style.height = '350px';
-        tickets_box.style.marginTop = '50px';
+        var tickets_box = Globals.elements.new({
+            type: "box",
+            parent: document.getElementById("statstab"),
+            classes: [ "tickets_box" ],
+            style: {
+                width: "40%",
+                height: "350px",
+                marginTop: "50px"
+            },
+            children: [
+                {
+                    type: "canvas",
+                }
+            ]
+        });
 
-        var tickets_canvas = document.createElement("canvas");
+        var tickets_canvas = tickets_box.getElementsByTagName("canvas")[0];
         var tickets_ctx = tickets_canvas.getContext('2d');
 
         var tickets_data = {
@@ -495,12 +540,10 @@ class ChartsHandler{
             data: tickets_data,
             options: tickets_options
         });
-
-        tickets_box.appendChild(tickets_canvas);
-        $('#statstab').append(tickets_box);
     }
 
     chart_sales(data){
+        const self = this;
         var monthsyears = [];
         var values = [];
 
@@ -513,13 +556,23 @@ class ChartsHandler{
         var sorted_monthsyears = sorted_monthsyears_values[0];
         var sorted_values = sorted_monthsyears_values[1];
 
-        var sales_box = document.createElement('box');
-        sales_box.setAttribute('class','sales_box');
-        sales_box.style.width = '40%';
-        sales_box.style.height = '350px';
-        sales_box.style.marginTop = '50px';
+        var sales_box = Globals.elements.new({
+            type: "box",
+            parent: document.getElementById("statstab"),
+            classes: [ "sales_box" ],
+            style: {
+                width: "40%",
+                height: "350px",
+                marginTop: "50px"
+            },
+            children: [
+                {
+                    type: "canvas",
+                }
+            ]
+        });
 
-        var sales_canvas = document.createElement("canvas");
+        var sales_canvas = sales_box.getElementsByTagName("canvas")[0];
         var sales_ctx = sales_canvas.getContext('2d');
 
         var sales_data = {
@@ -610,8 +663,5 @@ class ChartsHandler{
             data: sales_data,
             options: sales_options
         });
-
-        sales_box.appendChild(sales_canvas);
-        $('#statstab').append(sales_box);
     }
 }

@@ -579,8 +579,8 @@ class PublicEventHandler{
 					color: element.getAttribute("data-selected-bg-clr"),
 				},
 				listeners: {
-					mouseover: () => { publicEvents.dropdownlist_multiselect_selected_hover(span,i,element); },
-					mouseout: () => { publicEvents.dropdownlist_multiselect_selected_hoverOut(span,i,element); }
+					mouseover: function(){ publicEvents.dropdownlist_multiselect_selected_hover(span,i,element); },
+					mouseout: function(){ publicEvents.dropdownlist_multiselect_selected_hoverOut(span,i,element); }
 				},
 				children: [
 					{
@@ -590,7 +590,7 @@ class PublicEventHandler{
 							"data-restrictions": "selection",
 						},
 						listeners: {
-							click: () => { publicEvents.dropdownlist_multiselect_unselect(span,selected_multi_selects); }
+							click: function(){ publicEvents.dropdownlist_multiselect_unselect(span,selected_multi_selects); }
 						},
 						prepend: true
 					}
@@ -866,7 +866,7 @@ class PublicEventHandler{
 				min: videoMin
 			},
 			listeners: {
-				loadeddata: () => {
+				loadeddata: function(){
 					var context = canvas.getContext('2d');
 					context.drawImage(sparevideo, 0, 0, canvas.width, canvas.height);
 

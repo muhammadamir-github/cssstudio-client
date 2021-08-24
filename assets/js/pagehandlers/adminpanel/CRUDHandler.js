@@ -37,31 +37,35 @@ class CRUDHandler{
 
     addLi(text, panelId){
         const self = this;
-        var li = document.createElement('li');
-        li.addEventListener('click',function(){
-            self.showPanel(panelId);
 
-            var lis = crud_ul.getElementsByTagName('li');
+        var li = Globals.elements.new({
+            type: "li",
+            parent: self.crud_ul,
+            text,
+            listeners: {
+                click: function(){
+                    self.showPanel(panelId);
 
-            for(var i =0; i < lis.length; i++){
-                lis[i].style.paddingLeft = '0px';
+                    var lis = self.crud_ul.getElementsByTagName('li');
+                    for(var i =0; i < lis.length; i++){
+                        lis[i].style.paddingLeft = '0px';
+                    }
+
+                    this.style.paddingLeft = '20px';
+                }
             }
-
-            li.style.paddingLeft = '20px';
-
         });
-
-        li.innerText = text;
-        self.crud_ul.appendChild(li);
     }
 
     addPanel(id){
         const self = this;
-        var panel = document.createElement("div");
-        panel.setAttribute('class','crud_panel');
-        panel.setAttribute('id',id);
+        var panel = Globals.elements.new({
+            type: "div",
+            parent: self.crud,
+            classes: [ "crud_panel" ],
+            id
+        });
 
-        self.crud.appendChild(panel);
         self.setupPanel(id);
     }
 
@@ -73,16 +77,19 @@ class CRUDHandler{
 
     setupPanel(panelId){
         var panel = document.getElementById(panelId);
-        panelIdSplit = panelId.split('_')[1];
+        var panelIdSplit = panelId.split('_')[1];
 
-        var panel_notice = document.createElement('span');
-        panel_notice.setAttribute('class','crud_panel_notice');
-        panel_notice.innerText = "You are viewing user's "+capitalizeFirstLetter(panelIdSplit);
-        panel_notice.addEventListener('click',function(){
-            this.remove();
+        var panel_notice = Globals.elements.new({
+            type: "span",
+            parent: panel,
+            classes: [ "crud_panel_notice" ],
+            text: "You are viewing user's "+capitalizeFirstLetter(panelIdSplit),
+            listeners: {
+                click: function(){
+                    this.remove();
+                }
+            }
         });
-
-        panel.appendChild(panel_notice);
     }
 
     async userInfo(uid, info){

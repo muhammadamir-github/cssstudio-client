@@ -196,7 +196,7 @@ class PreviewSiteResizeable{
                 left: element.style.width == '100%' || element.getBoundingClientRect().width >= previewsite.getBoundingClientRect().width ? `${(element.offsetLeft + element.getBoundingClientRect().width - 25)}px` : `${(element.offsetLeft + element.getBoundingClientRect().width)}px`
             },
             listeners: {
-                mousedown: (e) => {
+                mousedown: function(e){
                     document.documentElement.addEventListener('mousemove', resizeable.resizeDrag, false);
                     document.documentElement.addEventListener('mouseup', resizeable.stopResizeDrag, false);
                 }

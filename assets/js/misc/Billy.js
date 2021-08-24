@@ -69,7 +69,7 @@ class Suggest{
                     type: "i",
                     classes: [ "fas fa-times close" ],
                     listeners: {
-                        click: () => {
+                        click: function(){
                             if(type == 'FontColor'){
                                 $('.fc-suggestion').remove();
                             }else{
@@ -107,7 +107,7 @@ class Suggest{
                         color: 'white'
                     },
                     listeners: {
-                        mouseover: (e) => {
+                        mouseover: function(e){
                             var target = document.getElementById('preview'+Globals.pageHandler.BillyAssistant.elementtype);
 
                             if(type == 'FontColor'){
@@ -139,7 +139,7 @@ class Suggest{
                         color: 'white'
                     },
                     listeners: {
-                        click: () => {
+                        click: function(){
                             var target = document.getElementById('preview'+Globals.pageHandler.BillyAssistant.elementtype);
 
                             if(type == 'FontColor'){

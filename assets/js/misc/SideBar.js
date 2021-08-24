@@ -81,7 +81,7 @@ export default class SideBar{
                     classes: [ "fas", "fa-angle-left" ],
                     id: "openclose",
                     listeners: {
-                        click: () => {
+                        click: function(){
                             self.toggle();
                         }
                     }

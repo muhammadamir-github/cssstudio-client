@@ -4,8 +4,13 @@ class AdminPanelLoginHandler{
 	constructor(){}
 
 	setup(){
+		const self = this;
+		if(localStorage.getItem('aauth') != null){
+			window.location.href = '../adminpanel/home.html';
+		}
+
 		document.getElementById('loginform').getElementsByTagName('button')[0].addEventListener('click',function(){
-			lf();
+			self.lf();
 		});
 
 		document.getElementById('loginform').style.display = 'block';
@@ -23,9 +28,9 @@ class AdminPanelLoginHandler{
 			'googleauthcode':gc,
 		};
 
-		const response = await Globals.api.request({ route: 'admin/login', method: "post", data });
-        if(response.success === true){
-            self.lr(response.data);
+		const res = await Globals.api.request({ route: 'admin/login', method: "post", data });
+        if(res.success === true){
+            self.lr(res.data);
         }else{
 			Globals.notificationHandler.new('Error , Invalid Credentials');
 			document.getElementById('loginform').style.opacity = '1';
@@ -45,21 +50,10 @@ class AdminPanelLoginHandler{
 		if(response.message == 'Logged in successfully!'){
 
 			localStorage.setItem("aauth", response.accessToken);
-			setTimeout(function(){ window.location.href = '../home/'; },2500);
+			setTimeout(function(){ window.location.href = '../adminpanel/home.html'; },2500);
 
 		}
 		document.getElementById('loginform').style.opacity = '1';
 		document.getElementById('loginform').style.pointerEvents = 'unset';
 	}
 }
-
-
-$(document).ready(function(){
-	Globals.pageHandler = new AdminPanelLoginHandler;
-
-	if(localStorage.getItem('aauth') != null){
-		window.location.href = '../home/';
-	}else{
-		Globals.pageHandler.setup();
-	}
-});

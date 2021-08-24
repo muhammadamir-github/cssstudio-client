@@ -3,16 +3,25 @@ const Globals = window.globals;
 class AdminPanelHandler{
     constructor(){
         this.token = localStorage.getItem("aauth");
-        this.servers = new Servers;
-        this.live = new Live;
-        this.clock = new Clock;
-        this.chartsHandler = new ChartsHandler;
-        this.crudHandler = new CRUDHandler;
+        this.servers = null;
+        this.live = null;
+        this.clock = null;
+        this.chartsHandler = null;
+        this.crudHandler = null;
     }
 
     setup(){
         const self = this;
+        if(localStorage.getItem('aauth') == null){
+            window.location.href = '../adminpanel/';
+        }
+
         self.token = localStorage.getItem("aauth");
+        self.servers = new Servers;
+        self.live = new Live;
+        self.clock = new Clock;
+        self.chartsHandler = new ChartsHandler;
+        self.crudHandler = new CRUDHandler;
 
         self.servers.status();
         setInterval(function(){ self.servers.status(); }, 60000);
@@ -28,75 +37,77 @@ class AdminPanelHandler{
 
     setupUI(){
         const self = this;
-        var searchusers = document.createElement('div');
-        searchusers.setAttribute('id','searchu');
 
-        var su_p = document.createElement('p');
-        su_p.innerText = 'Waiting for your action....';
-
-        var su_input = document.createElement('input');
-        su_input.setAttribute('type','text');
-        su_input.setAttribute('placeholder','Search Users...');
-        su_input.addEventListener('keyup',function(e){
-            if (e.keyCode == 13) {
-                searchUsers(this.value);
-                su_p.innerText = 'Searching...';
-            }
+        var searchusers = Globals.elements.new({
+            type: "div",
+            parent: document.getElementById("userstab"),
+            id: "searchu",
+            style: {
+                display: "none",
+                pointerEvents: "none"
+            },
+            children: [
+                {
+                    type: "p",
+                    text: "Waiting for your action...."
+                },
+                {
+                    // su_input
+                    type: "input",
+                    attributes: {
+                        type: "text",
+                        placeholder: "Search Users..."
+                    },
+                    listeners: {
+                        keyup: function(e){
+                            if(e.keyCode == 13){
+                                let su_p = this.parentElement.getElementsByTagName('p')[0];
+                                self.searchUsers(this.value);
+                                su_p.innerText = 'Searching...';
+                            }
+                        }
+                    }
+                },
+                ...(() => {
+                    return ["Username", "Email", "User Id"].map((x,i) => {
+                        return {
+                            type: "label",
+                            text: x,
+                            children: [
+                                {
+                                    type: "input",
+                                    classes: [ "searchu_checkbox" ],
+                                    attributes: { type: "checkbox" }
+                                }
+                            ]
+                        }
+                    });
+                })(),
+                {
+                    type: "button",
+                    text: "View Users",
+                    style: {
+                        opacity: "0.5",
+                        pointerEvents: "none"
+                    },
+                    listeners: {
+                        click: function(){
+                            let su_input = this.parentElement.getElementsByTagName('input')[0];
+                            self.fetchSearchedUsers(su_input.value);
+                        }
+                    }
+                }
+            ]
         });
-
-        var su_option1_label = document.createElement('label');
-        var su_option1_input = document.createElement('input');
-        su_option1_input.setAttribute('type','checkbox');
-        su_option1_input.setAttribute('class','searchu_checkbox');
-        su_option1_label.innerText = 'Username';
-
-        var su_option2_label = document.createElement('label');
-        var su_option2_input = document.createElement('input');
-        su_option2_input.setAttribute('type','checkbox');
-        su_option2_input.setAttribute('class','searchu_checkbox');
-        su_option2_label.innerText = 'Email';
-
-        var su_option3_label = document.createElement('label');
-        var su_option3_input = document.createElement('input');
-        su_option3_input.setAttribute('type','checkbox');
-        su_option3_input.setAttribute('class','searchu_checkbox');
-        su_option3_label.innerText = 'User Id';
-
-        su_option1_label.appendChild(su_option1_input);
-        su_option2_label.appendChild(su_option2_input);
-        su_option3_label.appendChild(su_option3_input);
-
-        var su_view_users_button = document.createElement('button');
-        su_view_users_button.innerText = 'View Users';
-        su_view_users_button.addEventListener('click',function(){
-            self.fetchSearchedUsers(su_input.value);
-        });
-
-        su_view_users_button.style.opacity = '0.5';
-        su_view_users_button.style.pointerEvents = 'none';
-
-        searchusers.appendChild(su_input);
-        searchusers.appendChild(su_p);
-        searchusers.appendChild(su_option1_label);
-        searchusers.appendChild(su_option2_label);
-        searchusers.appendChild(su_option3_label);
-        searchusers.appendChild(su_view_users_button);
-
-        searchusers.style.display = 'none';
-        searchusers.style.pointerEvents = 'none';
-
-        $('#userstab').append(searchusers);
-
-        //--------------------------------------
 
         document.addEventListener('keydown', function(e) {
-            if (e.keyCode == 85){
+            if (e.keyCode == 85){ // u
                 self.getUsers();
             }
         });
 
         document.addEventListener('keydown', function(e) {
-            if (e.keyCode == 81){
+            if (e.keyCode == 81){ // q
                 self.getStatistics();
             }
         });
@@ -166,6 +177,7 @@ class AdminPanelHandler{
     }
 
     async getUsers(){
+        const self = this;
         if($('#searchu').length){
             if(document.getElementById('searchu').style.display !== 'block'){
                 alert("Fetching users..");
@@ -176,8 +188,6 @@ class AdminPanelHandler{
                 const response = await Globals.api.request({ route: `admin/users`, method: "get" });
                 if(response.success === true){
                     self.loadUsers(response.data.success, '1');
-                }else{
-                    // window.location.href = '../login/index.html';
                 }
             }
         }else{
@@ -189,8 +199,6 @@ class AdminPanelHandler{
             const response = await Globals.api.request({ route: `admin/users`, method: "get" });
             if(response.success === true){
                 self.loadUsers(response.data.success, '1');
-            }else{
-                // window.location.href = '../login/index.html';
             }
         }
     }
@@ -207,8 +215,6 @@ class AdminPanelHandler{
                 const response = await Globals.api.request({ route: `admin/stats`, method: "get" });
                 if(response.success === true){
                     self.loadStats(response.data.success);
-                }else{
-                    // window.location.href = '../login/index.html';
                 }
             }
         }else{
@@ -221,8 +227,6 @@ class AdminPanelHandler{
             const response = await Globals.api.request({ route: `admin/stats`, method: "get" });
             if(response.success === true){
                 self.loadStats(response.data.success);
-            }else{
-                // window.location.href = '../login/index.html';
             }
         }
     }
@@ -274,7 +278,7 @@ class AdminPanelHandler{
         }
     }
 
-    fetchSearchedUsers(value){
+    async fetchSearchedUsers(value){
         const self = this;
         var su_option1_input = document.getElementsByClassName('searchu_checkbox')[0];
         var su_option2_input = document.getElementsByClassName('searchu_checkbox')[1];
@@ -338,141 +342,112 @@ class AdminPanelHandler{
         if(firsttime == '1'){
             $('#searchu').remove();
 
-            var searchusers = document.createElement('div');
-            searchusers.setAttribute('id','searchu');
-
-            var su_p = document.createElement('p');
-            su_p.innerText = 'Waiting for your action....';
-
-            var su_input = document.createElement('input');
-            su_input.setAttribute('type','text');
-            su_input.setAttribute('placeholder','Search Users...');
-            su_input.addEventListener('keyup',function(e){
-                if (e.keyCode == 13) {
-                    self.searchUsers(this.value);
-                    su_p.innerText = 'Searching...';
-                }
+            var searchusers = Globals.elements.new({
+                type: "div",
+                parent: document.getElementById("userstab"),
+                id: "searchu",
+                style: {
+                    display: "none",
+                    pointerEvents: "none"
+                },
+                children: [
+                    {
+                        type: "p",
+                        text: "Waiting for your action...."
+                    },
+                    {
+                        // su_input
+                        type: "input",
+                        attributes: {
+                            type: "text",
+                            placeholder: "Search Users..."
+                        },
+                        listeners: {
+                            keyup: function(e){
+                                if(e.keyCode == 13){
+                                    let su_p = this.parentElement.getElementsByTagName('p')[0];
+                                    self.searchUsers(this.value);
+                                    su_p.innerText = 'Searching...';
+                                }
+                            }
+                        }
+                    },
+                    ...(() => {
+                        return ["Username", "Email", "User Id"].map((x,i) => {
+                            return {
+                                type: "label",
+                                text: x,
+                                children: [
+                                    {
+                                        type: "input",
+                                        classes: [ "searchu_checkbox" ],
+                                        attributes: { type: "checkbox" }
+                                    }
+                                ]
+                            }
+                        });
+                    })(),
+                    {
+                        type: "button",
+                        text: "View Users",
+                        style: {
+                            opacity: "0.5",
+                            pointerEvents: "none"
+                        },
+                        listeners: {
+                            click: function(){
+                                let su_input = this.parentElement.getElementsByTagName('input')[0];
+                                self.fetchSearchedUsers(su_input.value);
+                            }
+                        }
+                    }
+                ]
             });
-
-            var su_option1_label = document.createElement('label');
-            var su_option1_input = document.createElement('input');
-            su_option1_input.setAttribute('type','checkbox');
-            su_option1_input.setAttribute('class','searchu_checkbox');
-            su_option1_label.innerText = 'Username';
-
-            var su_option2_label = document.createElement('label');
-            var su_option2_input = document.createElement('input');
-            su_option2_input.setAttribute('type','checkbox');
-            su_option2_input.setAttribute('class','searchu_checkbox');
-            su_option2_label.innerText = 'Email';
-
-            var su_option3_label = document.createElement('label');
-            var su_option3_input = document.createElement('input');
-            su_option3_input.setAttribute('type','checkbox');
-            su_option3_input.setAttribute('class','searchu_checkbox');
-            su_option3_label.innerText = 'User Id';
-
-            su_option1_label.appendChild(su_option1_input);
-            su_option2_label.appendChild(su_option2_input);
-            su_option3_label.appendChild(su_option3_input);
-
-            var su_view_users_button = document.createElement('button');
-            su_view_users_button.innerText = 'View Users';
-            su_view_users_button.addEventListener('click',function(){
-                self.fetchSearchedUsers(su_input.value);
-            });
-
-            su_view_users_button.style.opacity = '0.5';
-            su_view_users_button.style.pointerEvents = 'none';
-
-            searchusers.appendChild(su_input);
-            searchusers.appendChild(su_p);
-            searchusers.appendChild(su_option1_label);
-            searchusers.appendChild(su_option2_label);
-            searchusers.appendChild(su_option3_label);
-            searchusers.appendChild(su_view_users_button);
-
-            searchusers.style.display = 'none';
-            searchusers.style.pointerEvents = 'none';
-
         }
 
         for(var i=0; i < response.length; i++){
-            var userdiv = document.createElement('div');
-            userdiv.setAttribute('class','user');
-            userdiv.setAttribute('data-id',response[i].id);
-            userdiv.addEventListener('click',function(){
-                self.crudHandler.setup('user',$(this).attr('data-id'));
-            });
-
-            var name = document.createElement('name');
-            name.innerText = capitalizeFirstLetter(response[i].name);
-
-            var span_plan = document.createElement('span');
-            span_plan.setAttribute('class','plan');
-            span_plan.innerText = capitalizeFirstLetter(response[i].plan) + ' User';
-
-            if(response[i].plan == 'Bronze'){
-                span_plan.style.backgroundColor = 'saddlebrown';
-            }else{
-                if(response[i].plan == 'Silver'){
-                    span_plan.style.backgroundColor = 'silver';
-                }else{
-                    if(response[i].plan == 'Gold'){
-                        span_plan.style.backgroundColor = 'goldenrod';
-                    }else{
-                        if(response[i].plan == 'Diamond'){
-                            span_plan.style.backgroundColor = 'dimgray';
-                        }
+            var userdiv = Globals.elements.new({
+                type: "div",
+                parent: document.getElementById("userstab"),
+                classes: [ "user" ],
+                attributes: { "data-id": response[i].id },
+                listeners: {
+                    click: function(){
+                        self.crudHandler.setup('user',$(this).attr('data-id'));
                     }
-                }
-            }
-
-            var p_membersince = document.createElement('p');
-            p_membersince.setAttribute('class','membersince');
-            p_membersince.innerText = "Member Since: " + moment.utc(response[i].membersince).local().format("DD MMMM YY");
-
-            var p_storage = document.createElement('p');
-            p_storage.setAttribute('class','storage');
-            p_storage.innerText = "Storage: " + response[i].storage;
-
-            var p_country = document.createElement('p');
-            p_country.setAttribute('class','country');
-            p_country.innerText = "Country: " + response[i].country;
-
-            var p_totalspending = document.createElement('p');
-            p_totalspending.setAttribute('class','totalspending');
-            p_totalspending.innerText = "Total Amount Spent: " + response[i].totalspending;
-
-            var p_lastvisit = document.createElement('p');
-            p_lastvisit.setAttribute('class','lastvisit');
-            p_lastvisit.innerText = "Last Visit: " + moment(moment.utc(response[i].lastvisit)).fromNow();
-
-            var p_expiringin = document.createElement('p');
-            p_expiringin.setAttribute('class','expiringin');
-
-            var expiresinmessage = moment(moment.utc(response[i].expiringin)).fromNow();
-
-            if(expiresinmessage.includes('ago')){
-                p_expiringin.innerText = "Membership expired " + expiresinmessage;
-            }else{
-                if(expiresinmessage.includes('in')){
-                    p_expiringin.innerText = "Membership expires " + expiresinmessage;
-                }
-            }
-
-            userdiv.appendChild(name);
-            userdiv.appendChild(p_membersince);
-            userdiv.appendChild(p_lastvisit);
-            userdiv.appendChild(p_storage);
-            userdiv.appendChild(p_country);
-            userdiv.appendChild(p_totalspending);
-            userdiv.appendChild(p_expiringin);
-            userdiv.appendChild(span_plan);
-
-            $('#userstab').append(searchusers);
-            $('#userstab').append(userdiv);
-
+                },
+                children: [
+                    {
+                        type: "name",
+                        text: capitalizeFirstLetter(response[i].name)
+                    },
+                    {
+                        type: "span",
+                        classes: [ "plan" ],
+                        text: capitalizeFirstLetter(response[i].plan) + ' User',
+                        style: {
+                            backgroundColor: response[i].plan == 'Bronze' ? "saddlebrown" : response[i].plan == 'Silver' ? "silver" : response[i].plan == 'Gold' ? "goldenrod" : response[i].plan == 'Diamond' ? "dimgray" : null
+                        }
+                    },
+                    ...(() => {
+                        let expiresinmessage = moment(moment.utc(response[i].expiringin)).fromNow();
+                        return [
+                            { text: "Member Since: " + moment.utc(response[i].membersince).local().format("DD MMMM YY"), class: "membersince" },
+                            { text: "Storage: " + response[i].storage, class: "storage" },
+                            { text: "Country: " + response[i].country, class: "country" },
+                            { text: "Total Amount Spent: " + response[i].totalspending, class: "totalspending" },
+                            { text: "Last Visit: " + moment(moment.utc(response[i].lastvisit)).fromNow(), class: "lastvisit" },
+                            { text: expiresinmessage.includes('ago') ? "Membership expired " + expiresinmessage : "Membership expires " + expiresinmessage, class: "expiringin" }
+                        ].map((x, i) => {
+                            return {
+                                type: "p",
+                                text: x.text,
+                                classes: [ x.class ]
+                            }
+                        });
+                    })(),
+                ]
+            });
         }
     }
 
@@ -484,13 +459,13 @@ class AdminPanelHandler{
 
         Chart.defaults.global.defaultFontColor = 'black';
 
-        self.chartsHandler.chart_planUpgrades(response.success.planupgrades);
-        self.chartsHandler.chart_users(response.success.users);
-        self.chartsHandler.chart_storage(response.success.storage);
-        self.chartsHandler.chart_elementsDetailed(response.success.elements_detail);
-        self.chartsHandler.chart_tickets(response.success.tickets);
-        self.chartsHandler.chart_sales(response.success.sales);
-        self.chartsHandler.chart_signups(response.success.users.new_users);
+        self.chartsHandler.chart_planUpgrades(response.planupgrades);
+        self.chartsHandler.chart_users(response.users);
+        self.chartsHandler.chart_storage(response.storage);
+        self.chartsHandler.chart_elementsDetailed(response.elements_detail);
+        self.chartsHandler.chart_tickets(response.tickets);
+        self.chartsHandler.chart_sales(response.sales);
+        self.chartsHandler.chart_signups(response.users.new_users);
     }
 
     filterUsers(filterPlan){
@@ -520,16 +495,6 @@ class AdminPanelHandler{
         }
     }
 }
-
-$(document).ready(function (){
-    Globals.pageHandler = new AdminPanelHandler;
-
-    if(localStorage.getItem('aauth') == null){
-        window.location.href = '../';
-    }else{
-        Globals.pageHandler.setup();
-    }
-});
 
 function switchTab(e){
     if(e.innerText == 'Users'){

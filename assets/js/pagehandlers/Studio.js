@@ -138,15 +138,6 @@ class StudioHandler{
       },7500);
 
       document.getElementsByTagName('head')[0].innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/notice.css">';
-
-      //var upgradeplan = document.createElement('div');
-      //upgradeplan.setAttribute('id','upgp');
-
-      //Globals.window.body.appendChild(upgradeplan);
-
-      //setUpPaypal(self.data);
-      //document.getElementById('upgp').style.display = 'block';
-      //document.getElementById('upgp').style.opacity = '1';
     }
 
     async getAnimations(){
