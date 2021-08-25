@@ -1,3 +1,5 @@
+// Responsible for setting up page building environment.
+
 class WebPageBuilder{
     constructor(){}
 
@@ -5,31 +7,35 @@ class WebPageBuilder{
         Globals.pageHandler.mediaManager.refreshMedia();
 
         Globals.sideBar.close();
-        var previewsite = document.createElement('div');
-        previewsite.setAttribute('class','previewsite');
 
-        var leftguide = document.createElement('div');
-        var centerguide = document.createElement('div');
-        var rightguide = document.createElement('div');
+        var previewsite = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "previewsite" ],
+            children: [
+                {
+                    type: "div",
+                    classes: [ "lguide" ]
+                },
+                {
+                    type: "div",
+                    classes: [ "cguide" ]
+                },
+                {
+                    type: "div",
+                    classes: [ "rguide" ]
+                },
+                {
+                    type: "div",
+                    classes: [ "vcenterline" ]
+                },
+                {
+                    type: "div",
+                    classes: [ "hcenterline" ]
+                }
+            ]
+        });
 
-        var vcenterline = document.createElement('div');
-        var hcenterline = document.createElement('div');
-
-        leftguide.className = 'lguide';
-        centerguide.className = 'cguide';
-        rightguide.className = 'rguide';
-
-        vcenterline.className = 'vcenterline';
-        hcenterline.className = 'hcenterline';
-
-        previewsite.appendChild(leftguide);
-        previewsite.appendChild(centerguide);
-        previewsite.appendChild(rightguide);
-
-        previewsite.appendChild(vcenterline);
-        previewsite.appendChild(hcenterline);
-
-        Globals.window.body.appendChild(previewsite);
         Globals.pageHandler.tools.load();
     }
 }

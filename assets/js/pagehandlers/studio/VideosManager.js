@@ -1,3 +1,5 @@
+// Responsible for handling Background Video Changer/Selector/Manager which allows user to change video of an video element.
+
 class VideosManager{
     constructor(){}
 
@@ -11,104 +13,110 @@ class VideosManager{
     open(e,forElement){
         const self = Globals.pageHandler.VideoManager;
 
+        let condition1 = $(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video' || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-player') || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-playlist');
+        let condition2 = $(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video-overlay';
+
         $('.storageSpace').remove();
-
-        var storageSpace = document.createElement('span');
-        storageSpace.className = 'storageSpace';
-        storageSpace.innerText = 'Media Storage Usage: '+Globals.pageHandler.storageUsed+' / '+Globals.pageHandler.storageLimit;
-
-        storageSpace.addEventListener("mouseover",function(e){
-            storageSpace_showDetails(storageSpace,e);
-        });
-
-        storageSpace.addEventListener("mouseout",function(e){
-            storageSpace_hideDetails(storageSpace,e);
-        });
-
-        var videoManager = document.createElement('div');
-        videoManager.className = 'videoManager';
-        videoManager.addEventListener('mousedown',function(e){
-            self.mousedown(e);
-        });
-
-        var videosbox = document.createElement('div');
-        videosbox.className = 'mediaManager_box';
-        videosbox.id = 'videoManager-videos-box';
-
-        var fileinput = document.createElement('input');
-        fileinput.type = 'file';
-        fileinput.accept = 'video/mp4,video/x-m4v,video/*';
-        fileinput.style.display = 'none';
-        fileinput.style.opacity = 0;
-        fileinput.style.width = '0px';
-        fileinput.style.height = '0px';
-        fileinput.addEventListener('change',function(){
-            Globals.pageHandler.mediaManager.uploadMedia('Video',this.files[0]);
-        });
-
-        var uploadBtn = document.createElement('button');
-        uploadBtn.innerText = 'Upload Video (50MB Max Size)';
-        uploadBtn.addEventListener('click',function(){
-            fileinput.click();
-        });
-
-        var panelbar = document.createElement('div');
-        panelbar.className = 'videoManager_panelbar';
-
-        var youtube_panelbutton = document.createElement('img');
-        var dailymotion_panelbutton = document.createElement('img');
-        var vimeo_panelbutton = document.createElement('img');
-        youtube_panelbutton.src = '../assets/images/youtubelogo.png';
-        //dailymotion_panelbutton.src = '../assets/images/dailymotionlogo.png';
-        //vimeo_panelbutton.src = '../assets/images/vimeologo.png';
-
-        //panelbar.appendChild(dailymotion_panelbutton);
-        //panelbar.appendChild(vimeo_panelbutton);
-
-        var searchInput = document.createElement('input');
-        searchInput.type = 'text';
-        searchInput.placeholder = 'Enter keyword and press enter to search...';
-
-        var banner = document.createElement('div');
-        banner.className = 'banner';
-
-        var banner_p = document.createElement('p');
-        banner_p.innerText = 'Video Manager';
-
-        banner.appendChild(banner_p);
-
-        videoManager.appendChild(banner);
-        videoManager.appendChild(videosbox);
-        videoManager.appendChild(panelbar);
-        Globals.window.body.appendChild(videoManager);
-
-        if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video' || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-player') || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-playlist')){
-            Globals.pageHandler.mediaManager.showUserVideos(forElement);
-            Globals.window.body.appendChild(storageSpace);
-
-            banner.appendChild(searchInput);
-
-            panelbar.appendChild(uploadBtn);
-            panelbar.appendChild(fileinput);
-
-            searchInput.addEventListener('keydown',function(e){
-                if(e.keyCode == 13){
-                    Globals.pageHandler.mediaManager.searchUserMedia("videos",this.value);
+        var storageSpace = Globals.elements.new({
+            type: "span",
+            parent: Globals.window.body,
+            classes: [ "storageSpace" ],
+            text: `Media Storage Usage: ${Globals.pageHandler.storageUsed}/${Globals.pageHandler.storageLimit}`,
+            listeners: {
+                mouseover: function(e){
+                    storageSpace_showDetails(storageSpace,e);
+                },
+                mouseout: function(e){
+                    storageSpace_hideDetails(storageSpace,e);
                 }
-            });
-        }else{
-            if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video-overlay'){
-                panelbar.appendChild(youtube_panelbutton);
-                banner.appendChild(searchInput);
-
-                searchInput.addEventListener('keydown',function(e){
-                    if(e.keyCode == 13){
-                        Globals.pageHandler.thirPartyMediaManager.searchYoutubeVideos(this.value);
-                    }
-                });
             }
-        }
+        });
 
+        var videoManager = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "videoManager" ],
+            listeners: {
+                mousedown: function(e){
+                    self.mousedown(e);
+                }
+            },
+            children: [
+                {
+                    type: "div",
+                    classes: [ "banner" ],
+                    children: [
+                        {
+                            type: "input",
+                            attributes: { type: "text", placeholder: "Enter keyword and press enter to search..." },
+                            listeners: {
+                                keydown: condition1 ? function(e){
+                                    if(e.keyCode == 13){
+                                        Globals.pageHandler.mediaManager.searchUserMedia("videos", this.value);
+                                    }
+                                } : condition2 ? function(e){
+                                    if(e.keyCode == 13){
+                                        Globals.pageHandler.thirdPartyMediaManager.searchYoutubeVideos(this.value);
+                                    }
+                                } : null,
+                            }
+                        },
+                        {
+                            type: "p",
+                            text: "Video Manager",
+                        }
+                    ]
+                },
+                {
+                    type: "div",
+                    classes: [ "mediaManager_box" ],
+                    id: "videoManager-videos-box"
+                },
+                {
+                    type: "div",
+                    classes: [ "videoManager_panelbar" ],
+                    children: [
+                        ...(() => {
+                            return ["../assets/images/youtubelogo.png"].map((x,i) => {
+                                return {
+                                    type: "img",
+                                    attributes: { src: x }
+                                }
+                            });
+                        })(),
+                        {
+                            type: "button",
+                            text: "Upload Video (50MB Max Size)",
+                            listeners: {
+                                click: function(){
+                                    let fileinput = this.parentElement.getElementsByTagName("input")[0];
+                                    fileinput.click();
+                                }
+                            }
+                        },
+                        {
+                            type: "input",
+                            attributes: { type: "file", accept: "video/mp4,video/x-m4v,video/*" },
+                            style: {
+                                display: "none",
+                                opacity: "0",
+                                width: "0px",
+                                height: "0px"
+                            },
+                            listeners: {
+                                change: function(){
+                                    Globals.pageHandler.mediaManager.uploadMedia('Video', this.files[0]);
+                                }
+                            }
+                        }
+                    ]
+                },
+            ]
+        });
+
+        if(condition1){
+            Globals.pageHandler.mediaManager.showUserVideos(forElement);
+        }
     }
 
     close(){
@@ -163,86 +171,74 @@ class VideosManager{
         var mousePositions = publicEvents.detectHoverSideOfElement(target,e);
 
         var title = $(target).attr('data-title');
+        if(title == "null" || title == null){ title = ""; }
 
-        if(title == "null" || title == null){
-            title = "";
-        }
-
-        var div = document.createElement('div');
-        div.className = 'mediaInfo';
-        div.id = target.id+'-meta';
-
-        div.addEventListener('mouseover',function(){
-            this.remove();
-        });
-
-        var p = document.createElement('p');
-        p.innerText = title;
-
+        let children = [];
         if(target.src.includes('localhost')){
             var size = $(target).attr('data-size');
             var description = $(target).attr('data-video-des');
             var videoTitle = $(target).attr('data-video-title');
 
-            if(description == "null" || description == null){
-                description = "";
-            }
+            if(description == "null" || description == null){ description = ""; }
+            if(videoTitle == "null" || videoTitle == null){ videoTitle = ""; }
 
-            if(videoTitle == "null" || videoTitle == null){
-                videoTitle = "";
-            }
-
-            p.innerText = "File Name: "+title;
-
-            var p2 = document.createElement('p');
-            p2.innerText = 'Title: '+videoTitle;
-
-            var p3 = document.createElement('p');
-
-            if(description.length > 150){
-                p3.innerText = 'Description: '+description.substring(0,150)+"...";
-            }else{
-                p3.innerText = 'Description: '+description;
-            }
-
-            var p4 = document.createElement('p');
-            p4.innerText = 'Size: '+calculator.formatBytes(size);
-
-            div.appendChild(p2);
-            div.appendChild(p3);
-            div.appendChild(p);
-            div.appendChild(p4);
+            children.push({ type: "p", text: `Title: ${videoTitle}` });
+            children.push({ type: "p", text: description.length > 150 ? `Description: ${description.substring(0,150)}...` : `Description: ${description}` });
+            children.push({ type: "p", text: `File Name: ${title}` });
+            children.push({ type: "p", text: `Size: ${calculator.formatBytes(size)}` });
         }else{
             var views = $(target).attr('data-views');
             var likes = $(target).attr('data-likes');
 
-            var likes_span = document.createElement('span');
-            likes_span.innerHTML = '<i class="fas fa-thumbs-up"></i>'+likes;
+            children.push({ type: "p", text: `File Name: ${title}` });
+            children.push({
+                type: "span",
+                text: likes,
+                children: [
+                    {
+                        type: "i",
+                        classes: [ "fas", "fa-thumbs-up" ],
+                        prepend: true
+                    }
+                ]
+            });
 
-            var views_span = document.createElement('span');
-            views_span.innerHTML = '<i class="fas fa-eye"></i>'+views;
-
-            div.appendChild(p);
-
-            div.appendChild(likes_span);
-            div.appendChild(views_span);
+            children.push({
+                type: "span",
+                text: views,
+                children: [
+                    {
+                        type: "i",
+                        classes: [ "fas", "fa-eye" ],
+                        prepend: true
+                    }
+                ]
+            });
         }
 
-        div.style.left = e.clientX + 'px';
-        div.style.top = (e.clientY + window.scrollY) + 'px';
-
-        //document.getElementsByClassName('mediaManager_box')[0].appendChild(div);
-        Globals.window.body.appendChild(div);
+        var div = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "mediaInfo" ],
+            id: `${target.id}-meta`,
+            style: {
+                left: `${e.clientX}px`,
+                top: `${(e.clientY + window.scrollY)}px`
+            },
+            listeners: {
+                mouseover: function(){
+                    this.remove();
+                }
+            },
+            children
+        });
     }
 
     hideVideoInfo(target){
-
         var div = document.getElementById(target.id+'-meta').remove();
-
     }
 
     changeVideo(e,videoId,el){
-
         if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video-overlay'){
             var element = document.getElementById(document.getElementsByClassName('selected')[0].id+'videoPlayer');
             var videoId = $(e.target).attr('data-video-id');
@@ -256,5 +252,4 @@ class VideosManager{
         }
 
     }
-
 }

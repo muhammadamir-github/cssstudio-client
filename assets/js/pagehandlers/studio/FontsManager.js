@@ -1,3 +1,5 @@
+// Responsible for handling Font Changer/Selector which allows user to change font of an element.
+
 class FontsManager{
     constructor(){}
 
@@ -13,28 +15,33 @@ class FontsManager{
     }
 
     open(){
-        var fontManager = document.createElement('div');
-        fontManager.className = 'fontManager';
-        fontManager.addEventListener('mousedown',function(e){
-            fontmanager.mousedown(e);
+        var fontManager = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "fontManager" ],
+            listeners: {
+                mousedown: function(e){
+                    Globals.pageHandler.fontmanager.mousedown(e);
+                }
+            },
+            children: [
+                {
+                    type: "div",
+                    classes: [ "banner" ],
+                    children: [
+                        {
+                            type: "p",
+                            text: "Font Manager"
+                        }
+                    ]
+                }
+            ]
         });
-
-        var banner = document.createElement('div');
-        banner.className = 'banner';
-
-        var banner_p = document.createElement('p');
-        banner_p.innerText = 'Font Manager';
-
-        banner.appendChild(banner_p);
-
-        fontManager.appendChild(banner);
-        Globals.window.body.appendChild(fontManager);
 
         Globals.pageHandler.progressLoader.show();
 
         this.addFontComboBox();
         getGoogleFonts(document.getElementsByClassName('selected')[0],'webpageBuilder');
-
     }
 
     close(){
@@ -47,14 +54,14 @@ class FontsManager{
         e.preventDefault();
 
         // calculate the new cursor position:
-        styler_pos1 = styler_pos3 - e.clientX;
-        styler_pos2 = styler_pos4 - e.clientY;
-        styler_pos3 = e.clientX;
-        styler_pos4 = e.clientY;
+        Globals.pageHandler.styler_pos1 = Globals.pageHandler.styler_pos3 - e.clientX;
+        Globals.pageHandler.styler_pos2 = Globals.pageHandler.styler_pos4 - e.clientY;
+        Globals.pageHandler.styler_pos3 = e.clientX;
+        Globals.pageHandler.styler_pos4 = e.clientY;
 
         // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - styler_pos2) + "px";
-        elmnt.style.left = (elmnt.offsetLeft - styler_pos1) + "px";
+        elmnt.style.top = (elmnt.offsetTop - Globals.pageHandler.styler_pos2) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - Globals.pageHandler.styler_pos1) + "px";
         elmnt.style.cursor = 'grabbing';
     }
 
@@ -67,8 +74,8 @@ class FontsManager{
             elmnt.style.cursor = 'grab';
 
             // get the mouse cursor position at startup:
-            styler_pos3 = e.clientX;
-            styler_pos4 = e.clientY;
+            Globals.pageHandler.styler_pos3 = e.clientX;
+            Globals.pageHandler.styler_pos4 = e.clientY;
             document.onmouseup = this.closeDrag;
 
             // call a function whenever the cursor moves:
@@ -84,83 +91,96 @@ class FontsManager{
     }
 
     addFontComboBox(){
-        var comboboxOptions = [{value:'Sans'},{value:'Sans-Serif'},{value:'Helvectia'},{value:'Monospace'},{value:'Cursive'},{value:'Fantasy'}]
-        var combobox = document.createElement('combobox');
-        combobox.setAttribute('id','wpb_fontFamily');
-        combobox.style.marginTop = '50px';
+        var comboboxOptions = ["Sans", "Sans-Serif", "Helvectia", "Monospace", "Cursive", "Fantasy"];
 
-        var combobox_selected = document.createElement('selected');
-        var combobox_selected_a = document.createElement('a');
-        var combobox_selected_a_span = document.createElement('span');
-        combobox_selected_a_span.innerText = 'Font Family';
-
-        combobox_selected.appendChild(combobox_selected_a);
-        combobox_selected_a.appendChild(combobox_selected_a_span);
-
-        var combobox_options = document.createElement('options');
-        var combobox_options_ul = document.createElement('ul');
-
-        for(var x=0; x<comboboxOptions.length; x++){
-            var combobox_option = document.createElement('li');
-
-            var combobox_option_a = document.createElement('a');
-            combobox_option_a.innerText = comboboxOptions[x].value;
-            combobox_option_a.style.fontFamily = comboboxOptions[x].value;
-
-            if(x == comboboxOptions.length-1){
-                combobox_option_a.className = 'lastoption';
-            }
-
-            var combobox_option_a_span = document.createElement('span');
-            combobox_option_a_span.innerText = comboboxOptions[x].value;
-            combobox_option_a_span.setAttribute('class','value');
-
-            combobox_option_a.appendChild(combobox_option_a_span);
-            combobox_option.appendChild(combobox_option_a);
-
-            combobox_option.addEventListener('click',function(){
-                document.getElementsByClassName('selected')[0].style.fontFamily = this.getElementsByTagName('a')[0].innerText;
-                combobox_selected_a_span.innerText = 'Font Family' + ': ' + this.getElementsByTagName('a')[0].innerText;
-                combobox_options.style.display = 'none';
-            });
-
-            combobox_options_ul.appendChild(combobox_option);
-
-        }
-
-        combobox_selected_a_span.addEventListener('click',function(e){
-
-            if(e.target == combobox_selected_a_span){
-
-                if(combobox_options.style.display == 'block'){
-
-                    combobox_options.style.display = 'none';
-                    combobox_options_ul.style.display = 'none';
-                    //combobox_customedit.style.display = 'none';
-                    combobox_selected_a_span.style.textAlign = '';
-                    combobox.classList.remove('selectedCombobox');
-
-                }else{
-
-                    combobox_options.style.display = 'block';
-                    combobox_options_ul.style.display = 'block';
-                    //combobox_customedit.style.display = 'block';
-                    combobox_selected_a_span.style.textAlign = 'left';
-                    combobox.classList.add('selectedCombobox');
-
+        var combobox = Globals.elements.new({
+            type: "combobox",
+            parent: document.getElementsByClassName('fontManager')[0],
+            id: "wpb_fontFamily",
+            style: { marginTop: "50px" },
+            listeners: {
+                mousedown: function(e){
+                    Globals.pageHandler.fontmanager.mousedown(e);
                 }
+            },
+            children: [
+                {
+                    type: "selected",
+                    children: [
+                        {
+                            type: "a",
+                            children: [
+                                {
+                                    type: "span",
+                                    text: "Font Family",
+                                    listeners: {
+                                        click: function(e){
+                                            if(e.target == this){
+                                                let combobox_options = this.parentElement.parentElement.parentElement.getElementsByTagName("options")[0];
+                                                let combobox_options_ul = combobox_options.getElementsByTagName("ul")[0];
 
-            }else{
+                                                if(combobox_options.style.display == 'block'){
+                                                    combobox_options.style.display = 'none';
+                                                    combobox_options_ul.style.display = 'none';
 
-            }
+                                                    this.style.textAlign = '';
+                                                    combobox.classList.remove('selectedCombobox');
+                                                }else{
+                                                    combobox_options.style.display = 'block';
+                                                    combobox_options_ul.style.display = 'block';
 
+                                                    this.style.textAlign = 'left';
+                                                    combobox.classList.add('selectedCombobox');
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    type: "options",
+                    children: [
+                        {
+                            type: "ul",
+                            children: (() => {
+                                return comboboxOptions.map((x,i) => {
+                                    return {
+                                        type: "li",
+                                        listeners: {
+                                            click: function(){
+                                                let combobox_selected_a_span = this.parentElement.parentElement.parentElement.getElementsByTagName("selected")[0].getElementsByTagName("span")[0];
+                                                let combobox_options = this.parentElement.parentElement;
+
+                                                document.getElementsByClassName('selected')[0].style.fontFamily = this.getElementsByTagName('a')[0].innerText;
+                                                combobox_selected_a_span.innerText = 'Font Family' + ': ' + this.getElementsByTagName('a')[0].innerText;
+                                                combobox_options.style.display = 'none';
+                                            }
+                                        },
+                                        children: [
+                                            {
+                                                type: "a",
+                                                text: x,
+                                                style: { fontFamily: x },
+                                                classes: i == comboboxOptions.length-1 ? [ "lastoption" ] : null,
+                                                children: [
+                                                    {
+                                                        type: "span",
+                                                        text: x,
+                                                        classes: [ "value" ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                })
+                            })(),
+                        }
+                    ]
+                },
+            ]
         });
-
-        combobox_options.appendChild(combobox_options_ul);
-        combobox.appendChild(combobox_selected);
-        combobox.appendChild(combobox_options);
-        document.getElementsByClassName('fontManager')[0].appendChild(combobox);
-
     }
-
 }

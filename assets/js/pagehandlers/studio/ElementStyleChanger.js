@@ -1,64 +1,84 @@
+// Responsible for handling Element Style Changer which allows user to apply ready made styles of some elements.
+// This feature is under development.
+
 class ElementStyleChanger{
 	constructor(){}
 
 	show(){
+		const self = this;
 		var element = document.getElementsByClassName("selected")[0];
 		var elementType = element.getAttribute("data-e-type");
 
-		var stylesDiv = document.createElement("styles");
-		var curvedBorder = document.createElement("curvedborder");
-
-		var heading = document.createElement('p');
-		heading.innerText = 'Element Styles';
-		heading.className = 'heading';
-
-		close = document.createElement('i');
-		close.setAttribute('class','fas fa-times close');
-		close.addEventListener('click',function(){
-			elementStyles.close();
+		var stylesDiv = Globals.elements.new({
+			type: "styles",
+			parent: Globals.window.body,
+			listeners: {
+				mousedown: self.mousedown,
+			},
+			children: [
+				{
+					type: "curvedborder"
+				},
+				{
+					type: "p",
+					classes: [ "heading" ],
+					text: "Element Styles"
+				},
+				{
+					type: "i",
+					classes: [ "fas", "fa-times", "close" ],
+					listeners: {
+						click: function(){
+							self.close();
+						}
+					}
+				},
+				{
+					type: "div",
+					classes: [ "styles-categories" ],
+					children: (() => {
+						return [
+							{ name: "Colors", icon: "fas fa-palette" },
+							{ name: "Designs", icon: "fas fa-pencil-ruler" }
+						].map((x,i) => {
+							return {
+								type: "div",
+								classes: [ "styles-category" ],
+								attributes: { "data-category": x.name },
+								listeners: {
+									click: function(){
+										self.switchTab(this);
+									}
+								},
+								children: [
+									{
+										type: "i",
+										classes: x.icon.split(" ")
+									},
+									{
+										type: "p",
+										text: x.name
+									}
+								]
+							}
+						});
+					})(),
+				},
+				...(() => {
+					return [
+						{ name: "Colors", icon: "fas fa-palette" },
+						{ name: "Designs", icon: "fas fa-pencil-ruler" }
+					].map((x,i) => {
+						return {
+							type: "previews",
+							attributes: { "data-category": x.name },
+						}
+					});
+				})(),
+			]
 		});
 
-		stylesDiv.addEventListener("mousedown",elementStyles.mousedown);
-
-		var categories = document.createElement("div");
-		categories.className = "styles-categories";
-
-		stylesDiv.appendChild(curvedBorder);
-		stylesDiv.appendChild(heading);
-		stylesDiv.appendChild(close);
-
-		var stylesCategories = ["Colors","Designs"];
-		var stylesCategoriesIcons = ["fas fa-palette","fas fa-pencil-ruler"];
-
-		for(var i=0; i<stylesCategories.length; i++){
-			var category = document.createElement("div");
-			var icon = document.createElement("i");
-			var p = document.createElement("p");
-
-			category.className = "styles-category";
-			icon.className = stylesCategoriesIcons[i];
-			p.innerText = stylesCategories[i];
-			category.setAttribute("data-category",stylesCategories[i]);
-
-			category.appendChild(icon);
-			category.appendChild(p);
-
-			categories.appendChild(category);
-
-			category.addEventListener("click",function(e){
-				elementStyles.switchTab(this);
-			});
-
-			var previews = document.createElement("previews");
-			previews.setAttribute("data-category",stylesCategories[i]);
-			stylesDiv.appendChild(previews);
-		}
-
-		stylesDiv.appendChild(categories);
-
-		Globals.window.body.appendChild(stylesDiv);
-
-		elementStyles.getStyles(elementType);
+		self.getStyles(elementType);
 	}
 
 	switchTab(category){
@@ -78,6 +98,7 @@ class ElementStyleChanger{
 	}
 
 	async getStyles(elementType){
+		const self = this;
 		var token = localStorage.getItem('auth');
 
 		var createPreviewElement = 0;
@@ -102,12 +123,9 @@ class ElementStyleChanger{
 
 			var previews;
 
-			elementStyles.switchTab(document.getElementsByTagName("styles")[0].getElementsByClassName("styles-categories")[0].getElementsByClassName("styles-category")[0]);
+			self.switchTab(document.getElementsByTagName("styles")[0].getElementsByClassName("styles-categories")[0].getElementsByClassName("styles-category")[0]);
 
 			for(var i=0; i<styles.length; i++){
-				var stylePreview = document.createElement("stylePreview");
-				stylePreview.id = "style-"+randomize.elementId(50);
-
 				if(styles[i].category == "colors"){
 					isColor = 1;
 				}
@@ -115,7 +133,6 @@ class ElementStyleChanger{
 				// Picking suitable previews tab according to style category
 
 				var categoryToMatch;
-
 				if(isColor == 1){
 					categoryToMatch = "Colors";
 				}else{
@@ -130,37 +147,40 @@ class ElementStyleChanger{
 
 				// --------------------------------------------
 
+				let style = {};
 				if(createPreviewElement == 1){
 
 				}else{
 					if(isColor == 1){
 						if(elementType.includes("checkbox")){
-							stylePreview.style.backgroundColor = styles[i].attr[0].attributes.split(":")[1].replace(";","");
+							style = { backgroundColor: styles[i].attr[0].attributes.split(":")[1].replace(";","") };
 						}else{
 							if(elementType.includes("toggle-switch")){
-								stylePreview.style.backgroundColor = styles[i].attr[0].attributes.split(":")[1].replace(";","");
+								style = { backgroundColor: styles[i].attr[0].attributes.split(":")[1].replace(";","") };
 							}else{
 								if(elementType.includes("dropdown-list")){
 									var color1 = styles[i].attr[0].attributes.split("data-option-bg-hv")[0].split(":")[1].replace(" ","").replace(";","");
 									var color2 = styles[i].attr[0].attributes.split("data-option-bg-clr")[0].split("data-option-bg-hv")[1].split(":")[1].replace(" ","").replace(";","");
 
-									stylePreview.style.backgroundColor = "unset";
-
 									var backgroundGradientString = "-webkit-gradient(linear, left bottom, right top, color-stop(0%,"+color1+"), color-stop(49%, "+color1+"), color-stop(50%, "+color2+"), color-stop(100%, "+color2+"))";
-									stylePreview.style.background = backgroundGradientString;
+									style = { background: backgroundGradientString };
 								}
 							}
 						}
 					}
 				}
 
-				(function(stylePreview,styles,i){
-					stylePreview.addEventListener("click",function(e){
-						elementStyles.switchStyle(styles[i],e);
-					});
-				})(stylePreview,styles,i);
-
-				previews.appendChild(stylePreview);
+				var stylePreview = Globals.elements.new({
+					type: "stylePreview",
+					parent: previews,
+					id: `style-${randomize.elementId(50)}`,
+					style,
+					listeners: {
+						click: function(e){
+							self.switchStyle(styles[i], e);
+						}
+					}
+				});
 			}
         }
 	}
@@ -242,6 +262,7 @@ class ElementStyleChanger{
 	}
 
 	mousedown(e){
+		const self = this;
 		var elmnt = document.getElementsByTagName('styles')[0];
 		if(e.target == elmnt){
 			e = e || window.event;
@@ -252,10 +273,10 @@ class ElementStyleChanger{
 			// get the mouse cursor position at startup:
 			Globals.pageHandler.elementStyles_pos3 = e.clientX;
 			Globals.pageHandler.elementStyles_pos4 = e.clientY;
-			document.onmouseup = elementStyles.closeDrag;
+			document.onmouseup = self.closeDrag;
 
 			// call a function whenever the cursor moves:
-			document.onmousemove = elementStyles.drag;
+			document.onmousemove = self.drag;
 		}
 	}
 

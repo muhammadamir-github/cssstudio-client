@@ -1,3 +1,5 @@
+// Responsible for fetching and loading third party media.
+
 class ThirdPartyMediaManager{
 	constructor(){}
 
@@ -48,89 +50,92 @@ class ThirdPartyMediaManager{
 	}
 
 	loadGIFS(data,element,mode){
+		let div = null;
 		for(var i = 0; i < data.length; i++){
-			var gif = document.createElement('img');
-			gif.src = data[i].images.original.url;
-			gif.setAttribute("data-title",data[i].title);
-			gif.setAttribute("alt","");
-
-			if(mode == 'elementCreator'){
-				gif.addEventListener('click',function(){
-					document.getElementById("preview"+element).style.background = "url("+this.src+")"
-					document.getElementById("preview"+element).style.backgroundRepeat = "no-repeat";
-					document.getElementById("preview"+element).style.backgroundPosition = "center";
-					document.getElementById("preview"+element).style.backgroundSize = "cover";
-				});
-
-				document.getElementsByTagName("giphy")[0].appendChild(gif);
-			}
+			let listeners = {};
 
 			if(mode == 'webpageBuilder'){
-				var div = document.createElement('div');
-
-				var span = document.createElement('span');
-				span.innerText = 'Giphy.com';
-
-				div.appendChild(gif);
-				div.appendChild(span);
-
 				if(document.getElementsByClassName('selected')[0].tagName == 'img' || document.getElementsByClassName('selected')[0].tagName == 'IMG' || document.getElementsByClassName('selElForImgPik')[0]){
 					if(document.getElementsByClassName('selElForImgPik')[0]){
-						(function(div,gif){
-							div.addEventListener('click',function(){
-								document.getElementsByClassName('selElForImgPik')[0].src = gif.src;
+						listeners = {
+							click: function(){
+								document.getElementsByClassName('selElForImgPik')[0].src = this.getElementsByTagName("img")[0].src;
 								if(document.getElementsByClassName('selElForImgPik_invoker')[0]){
-									document.getElementsByClassName('selElForImgPik_invoker')[0].setAttribute('src',gif.src);
+									document.getElementsByClassName('selElForImgPik_invoker')[0].setAttribute('src',this.getElementsByTagName("img")[0].src);
 								}
-							});
-						})(div,gif);
+							}
+						};
 					}else{
-						(function(div,gif){
-							div.addEventListener('click',function(){
-								document.getElementsByClassName('selected')[0].src = gif.src;
-							});
-						})(div,gif);
+						listeners = {
+							click: function(){
+								document.getElementsByClassName('selected')[0].src = this.getElementsByTagName("img")[0].src;
+							}
+						};
 					}
-
 				}else{
 					if(document.getElementsByClassName('selected')[0].tagName == 'DIV' && $(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video-overlay'){
-						(function(div,gif){
-							div.addEventListener('click',function(){
-								document.getElementById(document.getElementsByClassName("selected")[0].id+'videoPlayer').setAttribute('poster',gif.src);
-							});
-						})(div,gif);
+						listeners = {
+							click: function(){
+								document.getElementById(document.getElementsByClassName("selected")[0].id+'videoPlayer').setAttribute('poster',this.getElementsByTagName("img")[0].src);
+							}
+						};
 					}else{
-
 						if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video'){
-							(function(div,gif){
-								div.addEventListener('click',function(){
-									document.getElementsByClassName("selected")[0].setAttribute('poster',gif.src);
-								});
-							})(div,gif);
+							listeners = {
+								click: function(){
+									document.getElementsByClassName("selected")[0].setAttribute('poster',this.getElementsByTagName("img")[0].src);
+								}
+							};
 						}else{
-							(function(div,gif){
-								div.addEventListener('click',function(){
-									document.getElementsByClassName("selected")[0].style.background = "url("+gif.src+")"
+							listeners = {
+								click: function(){
+									document.getElementsByClassName("selected")[0].style.background = "url("+this.getElementsByTagName("img")[0].src+")"
 									document.getElementsByClassName("selected")[0].style.backgroundRepeat = "no-repeat";
 									document.getElementsByClassName("selected")[0].style.backgroundPosition = "center";
 									document.getElementsByClassName("selected")[0].style.backgroundSize = "cover";
-								});
-							})(div,gif);
+								}
+							};
 						}
-
 					}
-
 				}
 
-				document.getElementById("bg-image-manager-images-box").appendChild(div);
+				div = Globals.elements.new({
+					type: "div",
+					parent: document.getElementById("bg-image-manager-images-box"),
+					listeners,
+					children: [
+						{
+							type: "span",
+							text: "Giphy.com"
+						}
+					]
+				});
 			}
+
+			var gif = Globals.elements.new({
+				type: "img",
+				parent: mode == "elementCreator" ? document.getElementsByTagName("giphy")[0] : div,
+				attributes: {
+					src: data[i].images.original.url,
+					alt: "",
+					"data-title": data[i].title
+				},
+				listeners: {
+					click: mode == "elementCreator" ? function(){
+						document.getElementById("preview"+element).style.background = "url("+this.src+")"
+						document.getElementById("preview"+element).style.backgroundRepeat = "no-repeat";
+						document.getElementById("preview"+element).style.backgroundPosition = "center";
+						document.getElementById("preview"+element).style.backgroundSize = "cover";
+					} : null,
+				},
+				prepend: mode == "elementCreator" ? false : true, // Before span to make span visible (css issue)
+			});
 		}
 
 		if(mode == 'elementCreator'){
 			var newimgs = document.getElementsByTagName("giphy")[0].getElementsByTagName("img");
 			for(var i2=0; i2 < newimgs.length; i2++){
-				if(i2 == 0 || i2 == 1)
-				{
+				if(i2 == 0 || i2 == 1){
 					newimgs[i2].style.marginTop = "100px";
 				}
 			};
@@ -138,166 +143,170 @@ class ThirdPartyMediaManager{
 	}
 
 	loadUnsplashPictures(data,element,mode){
-		for(var i = 0; i < data.length; i++){
-			var image = document.createElement('img');
-			image.src = data[i].urls.full;
-			image.setAttribute("data-title",data[i].description);
-			image.setAttribute("alt","");
-
-			if(mode == 'elementCreator'){
-				image.addEventListener('click',function(){
-					document.getElementById("preview"+element).style.background = "url("+this.src+")"
-					document.getElementById("preview"+element).style.backgroundRepeat = "no-repeat";
-					document.getElementById("preview"+element).style.backgroundPosition = "center";
-					document.getElementById("preview"+element).style.backgroundSize = "cover";
-				});
-
-				document.getElementsByTagName("giphy")[0].appendChild(image);
-			}
-
+		for(var i=0; i<data.length; i++){
+			let div = null;
 			if(mode == 'webpageBuilder'){
-				var div = document.createElement('div');
-
-				var span = document.createElement('span');
-				span.innerText = 'Unsplash.com';
-
-				div.appendChild(image);
-				div.appendChild(span);
+				let listeners = {};
 
 				if(document.getElementsByClassName('selected')[0].tagName == 'img' || document.getElementsByClassName('selected')[0].tagName == 'IMG' || document.getElementsByClassName('selElForImgPik')[0]){
-
 					if(document.getElementsByClassName('selElForImgPik')[0]){
-						(function(div,image){
-							div.addEventListener('click',function(){
-								document.getElementsByClassName('selElForImgPik')[0].src = image.src;
+						listeners = {
+							click: function(){
+								document.getElementsByClassName('selElForImgPik')[0].src = this.getElementsByTagName("img")[0].src;
 								if(document.getElementsByClassName('selElForImgPik_invoker')[0]){
-									document.getElementsByClassName('selElForImgPik_invoker')[0].setAttribute('src',image.src);
+									document.getElementsByClassName('selElForImgPik_invoker')[0].setAttribute('src',this.getElementsByTagName("img")[0].src);
 								}
-							});
-						})(div,image);
+							}
+						};
 					}else{
-						(function(div,image){
-							div.addEventListener('click',function(){
-								document.getElementsByClassName('selected')[0].src = image.src;
-							});
-						})(div,image);
+						listeners = {
+							click: function(){
+								document.getElementsByClassName('selected')[0].src = this.getElementsByTagName("img")[0].src;
+							}
+						};
 					}
-
 				}else{
-
 					if(document.getElementsByClassName('selected')[0].tagName == 'DIV' && $(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video-overlay'){
-						(function(div,image){
-							div.addEventListener('click',function(){
-								document.getElementById(document.getElementsByClassName("selected")[0].id+'videoPlayer').setAttribute('poster',image.src);
-							});
-						})(div,image);
+						listeners = {
+							click: function(){
+								document.getElementById(document.getElementsByClassName("selected")[0].id+'videoPlayer').setAttribute('poster',this.getElementsByTagName("img")[0].src);
+							}
+						};
 					}else{
-
 						if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video'){
-							(function(div,image){
-								div.addEventListener('click',function(){
-									document.getElementsByClassName("selected")[0].setAttribute('poster',image.src);
-								});
-							})(div,image);
+							listeners = {
+								click: function(){
+									document.getElementsByClassName("selected")[0].setAttribute('poster',this.getElementsByTagName("img")[0].src);
+								}
+							};
 						}else{
-							(function(div,image){
-								div.addEventListener('click',function(){
-									document.getElementsByClassName("selected")[0].style.background = "url("+image.src+")"
+							listeners = {
+								click: function(){
+									document.getElementsByClassName("selected")[0].style.background = "url("+this.getElementsByTagName("img")[0].src+")"
 									document.getElementsByClassName("selected")[0].style.backgroundRepeat = "no-repeat";
 									document.getElementsByClassName("selected")[0].style.backgroundPosition = "center";
 									document.getElementsByClassName("selected")[0].style.backgroundSize = "cover";
-								});
-							})(div,image);
+								}
+							};
 						}
-
 					}
-
 				}
 
-				document.getElementById("bg-image-manager-images-box").appendChild(div);
+				div = Globals.elements.new({
+					type: "div",
+					parent: document.getElementById("bg-image-manager-images-box"),
+					listeners,
+					children: [
+						{
+							type: "span",
+							text: "Unsplash.com"
+						}
+					]
+				});
 			}
+
+			var image = Globals.elements.new({
+				type: "img",
+				parent: mode == "elementCreator" ? document.getElementsByTagName("giphy")[0] : div,
+				attributes: {
+					src: data[i].urls.full,
+					alt: "",
+					"data-title": data[i].description
+				},
+				listeners: {
+					click: mode == "elementCreator" ? function(){
+						document.getElementById("preview"+element).style.background = "url("+this.src+")"
+						document.getElementById("preview"+element).style.backgroundRepeat = "no-repeat";
+						document.getElementById("preview"+element).style.backgroundPosition = "center";
+						document.getElementById("preview"+element).style.backgroundSize = "cover";
+					} : null,
+				},
+				prepend: mode == "elementCreator" ? false : true, // Before span to make span visible (css issue)
+			});
 		}
 	}
 
 	loadPixelBayPictures(data,element,mode){
-		for(var i = 0; i < data.length; i++){
-			var image = document.createElement('img');
-			image.src = data[i].largeImageURL;
-			image.setAttribute("data-title",data[i].tags);
-			image.setAttribute("alt","");
-
-			if(mode == 'elementCreator'){
-				image.addEventListener('click',function(){
-					document.getElementById("preview"+element).style.background = "url("+this.src+")"
-					document.getElementById("preview"+element).style.backgroundRepeat = "no-repeat";
-					document.getElementById("preview"+element).style.backgroundPosition = "center";
-					document.getElementById("preview"+element).style.backgroundSize = "cover";
-				});
-
-				document.getElementsByTagName("giphy")[0].appendChild(image);
-			}
-
+		for(var i=0; i< data.length; i++){
+			let div = null;
 			if(mode == 'webpageBuilder'){
-				var div = document.createElement('div');
-
-				var span = document.createElement('span');
-				span.innerText = 'Pixabay.com';
-
-				div.appendChild(image);
-				div.appendChild(span);
+				let listeners = {};
 
 				if(document.getElementsByClassName('selected')[0].tagName == 'img' || document.getElementsByClassName('selected')[0].tagName == 'IMG' || document.getElementsByClassName('selElForImgPik')[0]){
-
 					if(document.getElementsByClassName('selElForImgPik')[0]){
-						(function(div,image){
-							div.addEventListener('click',function(){
-								document.getElementsByClassName('selElForImgPik')[0].src = image.src;
+						listeners = {
+							click: function(){
+								document.getElementsByClassName('selElForImgPik')[0].src = this.getElementsByTagName("img")[0].src;
 								if(document.getElementsByClassName('selElForImgPik_invoker')[0]){
-									document.getElementsByClassName('selElForImgPik_invoker')[0].setAttribute('src',image.src);
+									document.getElementsByClassName('selElForImgPik_invoker')[0].setAttribute('src',this.getElementsByTagName("img")[0].src);
 								}
-							});
-						})(div,image);
+							}
+						};
 					}else{
-						(function(div,image){
-							div.addEventListener('click',function(){
-								document.getElementsByClassName('selected')[0].src = image.src;
-							});
-						})(div,image);
+						listeners = {
+							click: function(){
+								document.getElementsByClassName('selected')[0].src = this.getElementsByTagName("img")[0].src;
+							}
+						};
 					}
-
 				}else{
-
 					if(document.getElementsByClassName('selected')[0].tagName == 'DIV' && $(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video-overlay'){
-						(function(div,image){
-							div.addEventListener('click',function(){
-								document.getElementById(document.getElementsByClassName("selected")[0].id+'videoPlayer').setAttribute('poster',image.src);
-							});
-						})(div,image);
+						listeners = {
+							click: function(){
+								document.getElementById(document.getElementsByClassName("selected")[0].id+'videoPlayer').setAttribute('poster',this.getElementsByTagName("img")[0].src);
+							}
+						};
 					}else{
-
 						if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video'){
-							(function(div,image){
-								div.addEventListener('click',function(){
-									document.getElementsByClassName("selected")[0].setAttribute('poster',image.src);
-								});
-							})(div,image);
+							listeners = {
+								click: function(){
+									document.getElementsByClassName("selected")[0].setAttribute('poster',this.getElementsByTagName("img")[0].src);
+								}
+							};
 						}else{
-							(function(div,image){
-								div.addEventListener('click',function(){
-									document.getElementsByClassName("selected")[0].style.background = "url("+image.src+")"
+							listeners = {
+								click: function(){
+									document.getElementsByClassName("selected")[0].style.background = "url("+this.getElementsByTagName("img")[0].src+")"
 									document.getElementsByClassName("selected")[0].style.backgroundRepeat = "no-repeat";
 									document.getElementsByClassName("selected")[0].style.backgroundPosition = "center";
 									document.getElementsByClassName("selected")[0].style.backgroundSize = "cover";
-								});
-							})(div,image);
+								}
+							};
 						}
-
 					}
-
 				}
 
-				document.getElementById("bg-image-manager-images-box").appendChild(div);
+				div = Globals.elements.new({
+					type: "div",
+					parent: document.getElementById("bg-image-manager-images-box"),
+					listeners,
+					children: [
+						{
+							type: "span",
+							text: "Pixabay.com"
+						}
+					]
+				});
 			}
+
+			var image = Globals.elements.new({
+				type: "img",
+				parent: mode == "elementCreator" ? document.getElementsByTagName("giphy")[0] : div,
+				attributes: {
+					src: data[i].largeImageURL,
+					alt: "",
+					"data-title": data[i].tags
+				},
+				listeners: {
+					click: mode == "elementCreator" ? function(){
+						document.getElementById("preview"+element).style.background = "url("+this.src+")"
+						document.getElementById("preview"+element).style.backgroundRepeat = "no-repeat";
+						document.getElementById("preview"+element).style.backgroundPosition = "center";
+						document.getElementById("preview"+element).style.backgroundSize = "cover";
+					} : null,
+				},
+				prepend: mode == "elementCreator" ? false : true, // Before span to make span visible (css issue)
+			});
 		}
 	}
 
@@ -321,41 +330,41 @@ class ThirdPartyMediaManager{
 	loadYoutubeVideos(response){
 		const self = this;
 		self.resetVideos();
+
 		for(var i=0; i < response.items.length; i++){
+			var div = Globals.elements.new({
+				type: "div",
+				parent: document.getElementById("videoManager-videos-box"),
+				children: [
+					{
+						type: "img",
+						id:  Globals.pageHandler.randomize.elementId(5),
+						attributes: {
+							src: response.items[i].snippet.thumbnails.high.url,
+							alt: "",
+							"data-title": response.items[i].snippet.title,
+							"data-video-id": response.items[i].id.videoId,
+							"data-video-thumbnail": response.items[i].snippet.thumbnails.high.url,
+						},
+						listeners: {
+							click: Globals.pageHandler.VideoManager.changeVideo,
+							mouseover: function(e){
+								Globals.pageHandler.VideoManager.showVideoInfo(e, this);
+							},
+							mouseout: function(e){
+								Globals.pageHandler.VideoManager.hideVideoInfo(this);
+							}
+						}
+					},
+					{
+						type: "span",
+						text: "Youtube.com"
+					},
+				]
+			});
 
-			var div = document.createElement('div');
-
-			var span = document.createElement('span');
-			span.innerText = 'Youtube.com';
-
-			var image = document.createElement('img');
-			image.src = response.items[i].snippet.thumbnails.high.url;
-			image.setAttribute("data-title",response.items[i].snippet.title);
-			image.setAttribute("data-video-id",response.items[i].id.videoId);
-			image.setAttribute("data-video-thumbnail",response.items[i].snippet.thumbnails.high.url);
-			image.setAttribute("alt","");
-
-
-			(function(image){
-				image.addEventListener('mouseover',function(e){
-					Globals.pageHandler.VideoManager.showVideoInfo(e,image);
-				});
-
-				image.addEventListener('mouseout',function(){
-					Globals.pageHandler.VideoManager.hideVideoInfo(image);
-				});
-			})(image);
-
-			image.id = Globals.pageHandler.randomize.elementId(5);
-
-			image.addEventListener('click',Globals.pageHandler.VideoManager.changeVideo);
-
-			div.appendChild(image);
-			//div.appendChild(span);
-
-			document.getElementById("videoManager-videos-box").appendChild(div);
-
-			self.loadMetaDataForYoutubeVideo(response.items[i].id.videoId,image);
+			var image = div.getElementsByTagName("img")[0];
+			self.loadMetaDataForYoutubeVideo(response.items[i].id.videoId, image);
 		}
 	}
 
@@ -371,7 +380,5 @@ class ThirdPartyMediaManager{
 		}
 	}
 
-	resetGiphy(){
-
-	}
+	resetGiphy(){}
 }

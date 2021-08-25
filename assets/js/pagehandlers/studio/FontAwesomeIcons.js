@@ -1,3 +1,5 @@
+// Responsible for handling FontAwesome Icon Changer/Selector which allows user to change icon of an icon element.
+
 class FontAwesomeIcons{
     constructor(){}
 
@@ -5,201 +7,190 @@ class FontAwesomeIcons{
 
         var appendIcon = 0;
         var isIconElement = 0;
+        var target;
+
+        if(document.getElementsByClassName('selected')[0].tagName == 'I'){
+            console.log("yes!");
+            target = document.getElementsByClassName('selected')[0];
+            isIconElement = 1;
+        }else{
+            if(elementToAffect !== null){
+                if(elementToAffect.tagName == 'A' && forElement == "navbar"){
+                    appendIcon = 1;
+                }else{
+                    if(elementToAffect.tagName == 'SPAN' && forElement == "dropdown-list"){
+                        appendIcon = 1;
+                        publicEvents.dropdownlist_position_icons(document.getElementsByClassName("selected")[0].getElementsByClassName("options")[0].getElementsByTagName("ul")[0],"left");
+                    }else{
+                        if(elementToAffect.tagName == "i" && forElement == "textbox"){
+                            target = elementToAffect;
+                            isIconElement = 1;
+                            appendIcon = 0;
+                        }else{
+                            if(elementToAffect[0].tagName == "i" && forElement == "ratings"){
+                                target = elementToAffect;
+                                isIconElement = 1;
+                                appendIcon = 0;
+                            }
+                        }
+                    }
+                }
+
+                target = elementToAffect;
+            }else{
+                target = e.target;
+            }
+        }
 
         if($('.fontAwesomeSelector')[0]){
             $('.fontAwesomeSelector').remove();
         }else{
-            var selectorDiv = document.createElement('div');
-            selectorDiv.className = 'fontAwesomeSelector';
+            var selectorDiv = Globals.elements.new({
+                type: "div",
+                parent: Globals.window.body,
+                classes: [ "fontAwesomeSelector" ],
+                children: [
+                    {
+                        type: "i",
+                        classes: [ "fas", "fa-times", "close" ],
+                        listeners: {
+                            click: function(){
+                                $('.fontAwesomeSelector').remove();
+                            }
+                        }
+                    },
+                    {
+                        type: "p",
+                        classes: [ "heading" ],
+                        text: "Pick an Icon"
+                    },
+                    {
+                        type: "input",
+                        attributes: {
+                            placeholder: "Search Icons...",
+                            maxlength: 20,
+                            type: "text"
+                        },
+                        listeners: {
+                            keypress: function(e){
+                                if(e.keyCode == 13){
+                                    Globals.pageHandler.fontAwesomeSelector.searchIcons(this.value);
+                                }
+                            }
+                        },
+                    },
+                    ...(() => {
+                        let icons = [...Globals.pageHandler.fontawesome_solid.map(x => ({ name: x, type: "fas" })), ...Globals.pageHandler.fontawesome_brands.map(x => ({ name: x, type: "fab" })), ...Globals.pageHandler.fontawesome_regular.map(x => ({ name: x, type: "far" }))];
+                        return icons.map((x, i) => {
+                            const className = `${x.type} fa-${x.name}`;
+                            return {
+                                type: "div",
+                                listeners: {
+                                    click: function(){
+                                        let regexes = ["fas fa-[a-zA-Z0-9-]+", "fab fa-[a-zA-Z0-9-]+", "far fa-[a-zA-Z0-9-]+"];
+                                        if(appendIcon == 1){
+                                            if(target.getElementsByTagName('i')[0]){
+                                                let oldIconClass = [
+                                                    ...(() => {
+                                                        return regexes.map(regex => {
+                                                            let matches = target.getElementsByTagName("i")[0].className.match(regex);
+                                                            if(matches && Array.isArray(matches)){ return matches; }else{ return []; }
+                                                        });
+                                                    })()
+                                                ].flat();
+
+                                                if(Array.isArray(oldIconClass)){
+                                                    oldIconClass.forEach(x => { x.split(" ").forEach(y => target.getElementsByTagName('i')[0].classList.remove(y)); })
+                                                }
+
+                                                className.split(" ").forEach(x => target.getElementsByTagName('i')[0].classList.add(x));
+                                            }else{
+                                                let iToAppend = Globals.elements.new({
+                                                    type: "i",
+                                                    classes: [...className.split(" ")]
+                                                });
+
+                                                $(target).prepend(iToAppend);
+                                            }
+                                        }else{
+                                            if(appendIcon == 0){
+                                                if(target && !Array.isArray(target)){
+                                                    let oldIconClass = [
+                                                        ...(() => {
+                                                            return regexes.map(regex => {
+                                                                let matches = target.className.match(regex);
+                                                                if(matches && Array.isArray(matches)){ return matches; }else{ return []; }
+                                                            });
+                                                        })()
+                                                    ].flat();
+
+                                                    console.log(oldIconClass);
+
+                                                    if(Array.isArray(oldIconClass)){
+                                                        oldIconClass.forEach(x => { x.split(" ").forEach(y => target.classList.remove(y)); })
+                                                    }
+
+                                                    className.split(" ").forEach(x => target.classList.add(x));
+                                                }else{
+                                                    if(target && Array.isArray(target) && target.length > 0){
+                                                        for(var y=0; y<target.length; y++){
+                                                            let oldIconClass = [
+                                                                ...(() => {
+                                                                    return regexes.map(regex => {
+                                                                        let matches = target[y].className.match(regex);
+                                                                        if(matches && Array.isArray(matches)){ return matches; }else{ return []; }
+                                                                    });
+                                                                })()
+                                                            ].flat();
+
+                                                            if(Array.isArray(oldIconClass)){
+                                                                oldIconClass.forEach(x => { x.split(" ").forEach(y => target[y].classList.remove(y)); })
+                                                            }
+
+                                                            className.split(" ").forEach(x => target[y].classList.add(x));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        if(isIconElement == 0){
+                                            let oldIconClass = [
+                                                ...(() => {
+                                                    return regexes.map(regex => {
+                                                        let matches = iconPreview.className.match(regex);
+                                                        if(matches && Array.isArray(matches)){ return matches; }else{ return []; }
+                                                    });
+                                                })()
+                                            ].flat();
+
+                                            if(Array.isArray(oldIconClass)){
+                                                oldIconClass.forEach(x => { x.split(" ").forEach(y => iconPreview.classList.remove(y)); })
+                                            }
+
+                                            className.split(" ").forEach(x => iconPreview.classList.add(x));
+                                        }
+
+                                        $('.fontAwesomeSelector').remove();
+                                    }
+                                },
+                                children: [
+                                    {
+                                        type: "i",
+                                        classes: [...className.split(" ")]
+                                    }
+                                ]
+                            }
+                        });
+                    })(),
+                ]
+            });
+
             //selectorDiv.style.top = /*e.target.getBoundingClientRect().top*/ e.clientY - document.getElementsByClassName('elementEditor')[0].getBoundingClientRect().top + window.scrollY + 'px';
             //selectorDiv.style.left = /*e.target.getBoundingClientRect().left*/ e.clientX - document.getElementsByClassName('elementEditor')[0].getBoundingClientRect().left + 10 + 'px';
             //selectorDiv.style.transform = 'translate(-'+e.target.getBoundingClientRect().left + 25 + 'px)';
 
-            var heading = document.createElement('p');
-            heading.innerText = 'Pick an Icon';
-            heading.className = 'heading';
-
-            var searchBox = document.createElement("input");
-            searchBox.type = "text";
-            searchBox.setAttribute("placeholder","Search Icons...");
-            searchBox.setAttribute("maxlength",20);
-
-            searchBox.addEventListener("keypress",function(e){
-                if(e.keyCode == 13){
-                    Globals.pageHandler.fontAwesomeSelector.searchIcons(this.value);
-                }
-            });
-
-            var close = document.createElement('i');
-            close.className = 'fas fa-times close';
-            close.addEventListener('click',function(){
-                $('.fontAwesomeSelector').remove();
-            });
-
-            selectorDiv.appendChild(close);
-            selectorDiv.appendChild(heading);
-            selectorDiv.appendChild(searchBox);
-            Globals.window.body.appendChild(selectorDiv);
-
-            var target;
-
-            if(document.getElementsByClassName('selected')[0].tagName == 'I'){
-                target = document.getElementsByClassName('selected')[0];
-                isIconElement = 1;
-            }else{
-                if(elementToAffect !== null){
-                    if(elementToAffect.tagName == 'A' && forElement == "navbar"){
-                        appendIcon = 1;
-                    }else{
-                        if(elementToAffect.tagName == 'SPAN' && forElement == "dropdown-list"){
-                            appendIcon = 1;
-                            publicEvents.dropdownlist_position_icons(document.getElementsByClassName("selected")[0].getElementsByClassName("options")[0].getElementsByTagName("ul")[0],"left");
-                        }else{
-                            if(elementToAffect.tagName == "i" && forElement == "textbox"){
-                                target = elementToAffect;
-                                isIconElement = 1;
-                                appendIcon = 0;
-                            }else{
-                                if(elementToAffect[0].tagName == "i" && forElement == "ratings"){
-                                    target = elementToAffect;
-                                    isIconElement = 1;
-                                    appendIcon = 0;
-                                }
-                            }
-                        }
-                    }
-
-                    target = elementToAffect;
-                }else{
-                    target = e.target;
-                }
-            }
-
-            for(var i=0; i < Globals.pageHandler.fontawesome_solid.length; i++){
-                var div = document.createElement('div');
-                var icon = document.createElement('i');
-                icon.className = 'fas fa-'+Globals.pageHandler.fontawesome_solid[i];
-
-                (function(e,div,icon,target,appendIcon){
-                    div.addEventListener('click',function(){
-                        if(appendIcon == 1){
-                            if(target.getElementsByTagName('i')[0]){
-                                target.getElementsByTagName('i')[0].className = icon.className;
-                                if(isIconElement == 0){ iconPreview.className = icon.className; }
-                            }else{
-                                var iToAppend = document.createElement('i');
-                                iToAppend.className = icon.className;
-
-                                $(target).prepend(iToAppend);
-                                if(isIconElement == 0){ iconPreview.className = icon.className; }
-                            }
-                        }else{
-                            if(appendIcon == 0){
-                                if(target.length == 0){
-                                    target.className = icon.className;
-                                    if(isIconElement == 0){ iconPreview.className = icon.className; }
-                                }else{
-                                    if(target.length > 0){
-                                        for(var y=0; y<target.length; y++){
-                                            target[y].className = icon.className;
-                                            if(isIconElement == 0){ iconPreview.className = icon.className; }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        $('.fontAwesomeSelector').remove();
-                    });
-                })(e,div,icon,target,appendIcon);
-
-                div.appendChild(icon);
-                selectorDiv.appendChild(div);
-            }
-
-            for(var o=0; o < Globals.pageHandler.fontawesome_brands.length; o++){
-                var div = document.createElement('div');
-                var icon = document.createElement('i');
-                icon.className = 'fab fa-'+Globals.pageHandler.fontawesome_brands[o];
-
-                (function(e,div,icon,target,appendIcon){
-                    div.addEventListener('click',function(){
-                        if(appendIcon == 1){
-                            if(target.getElementsByTagName('i')[0]){
-                                target.getElementsByTagName('i')[0].className = icon.className;
-                                if(isIconElement == 0){ iconPreview.className = icon.className; }
-                            }else{
-                                var iToAppend = document.createElement('i');
-                                iToAppend.className = icon.className;
-
-                                $(target).prepend(iToAppend);
-                                if(isIconElement == 0){ iconPreview.className = icon.className; }
-                            }
-                        }else{
-                            if(appendIcon == 0){
-                                if(target.length == 0){
-                                    target.className = icon.className;
-                                    if(isIconElement == 0){ iconPreview.className = icon.className; }
-                                }else{
-                                    if(target.length > 0){
-                                        for(var y=0; y<target.length; y++){
-                                            target[y].className = icon.className;
-                                            if(isIconElement == 0){ iconPreview.className = icon.className; }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        $('.fontAwesomeSelector').remove();
-                    });
-                })(e,div,icon,target,appendIcon);
-
-                div.appendChild(icon);
-                selectorDiv.appendChild(div);
-            }
-
-            for(var k=0; k < Globals.pageHandler.fontawesome_regular.length; k++){
-                var div = document.createElement('div');
-                var icon = document.createElement('i');
-                icon.className = 'far fa-'+Globals.pageHandler.fontawesome_regular[k];
-
-                (function(e,div,icon,target,appendIcon){
-                    div.addEventListener('click',function(){
-                        if(appendIcon == 1){
-                            if(target.getElementsByTagName('i')[0]){
-                                target.getElementsByTagName('i')[0].className = icon.className;
-                                if(isIconElement == 0){ iconPreview.className = icon.className; }
-                            }else{
-                                var iToAppend = document.createElement('i');
-                                iToAppend.className = icon.className;
-
-                                $(target).prepend(iToAppend);
-                                if(isIconElement == 0){ iconPreview.className = icon.className; }
-                            }
-                        }else{
-                            if(appendIcon == 0){
-                                if(target.length == 0){
-                                    target.className = icon.className;
-                                    if(isIconElement == 0){ iconPreview.className = icon.className; }
-                                }else{
-                                    if(target.length > 0){
-                                        for(var y=0; y<target.length; y++){
-                                            target[y].className = icon.className;
-                                            if(isIconElement == 0){ iconPreview.className = icon.className; }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        $('.fontAwesomeSelector').remove();
-                    });
-                })(e,div,icon,target,appendIcon);
-
-                div.appendChild(icon);
-                selectorDiv.appendChild(div);
-            }
-
         }
-
     }
 
     searchIcons(value){

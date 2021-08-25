@@ -22,7 +22,7 @@ class UserInterface{
             this.remove();
 
             Globals.pageHandler.progressLoader.show();
-            
+
             setTimeout(function(){
                 Globals.pageHandler.progressLoader.hide();
 
@@ -643,7 +643,7 @@ class UserInterface{
         }
 
         if(type == 'changeIcon'){
-            option.addEventListener('click',fontAwesomeSelector.show);
+            option.addEventListener('click',Globals.pageHandler.fontAwesomeSelector.show);
         }
 
         if(type == 'switchImageShape'){

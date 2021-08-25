@@ -1,4 +1,6 @@
-var alphabets
+// 
+
+var alphabets;
 
 class Validator{
 	constructor(){}

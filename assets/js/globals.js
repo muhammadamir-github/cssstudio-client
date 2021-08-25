@@ -1,6 +1,5 @@
 const global_configuration = {
-    gtag_id: "UA-139069615-1",
-    google_ad_client: "ca-pub-4336282269367311",
+    gtag_id: ""
 };
 
 const global_requiredFiles = {
@@ -147,7 +146,6 @@ export default {
                 { type: "css", src: "pages/Home.css", isURL: false, isRaw: false, },
                 { type: "css", src: ".pageheading{color: black; font-family: ProximaNovaBold; }", isURL: false, isRaw: true, },
                 { type: "js", src: "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", isURL: true, isRaw: false, },
-                { type: "js", src: '(adsbygoogle = window.adsbygoogle || []).push({ google_ad_client: "'+global_configuration.google_ad_client+'", enable_page_level_ads: true});', isURL: false, isRaw: true, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "pagehandlers/Static.js", isURL: false, isRaw: false, }
             ],

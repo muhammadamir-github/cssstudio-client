@@ -1,3 +1,5 @@
+// Responsible for handling Background Image Changer/Selector/Manager which allows user to change background image of an element.
+
 class BackgroundIManager{
     constructor(){}
 
@@ -10,140 +12,151 @@ class BackgroundIManager{
 
     open(e,forElement){
         const self = this;
+
         $('.storageSpace').remove();
-
-        var storageSpace = document.createElement('span');
-        storageSpace.className = 'storageSpace';
-        storageSpace.innerText = 'Media Storage Usage: '+Globals.pageHandler.storageUsed+' / '+Globals.pageHandler.storageLimit;
-
-        storageSpace.addEventListener("mouseover",function(e){
-            storageSpace_showDetails(storageSpace,e);
-        });
-
-        storageSpace.addEventListener("mouseout",function(e){
-            storageSpace_hideDetails(storageSpace,e);
-        });
-
-        var bgiManager = document.createElement('div');
-        bgiManager.id = 'bg-image-manager';
-        bgiManager.addEventListener('mousedown',function(e){
-            self.mousedown(e);
-        });
-
-        var imagesbox = document.createElement('div');
-        imagesbox.className = 'mediaManager_box';
-        imagesbox.id = 'bg-image-manager-images-box';
-
-        var fileinput = document.createElement('input');
-        fileinput.type = 'file';
-        fileinput.accept = 'image/png, image/jpeg, image/jpg';
-        fileinput.style.display = 'none';
-        fileinput.style.opacity = 0;
-        fileinput.style.width = '0px';
-        fileinput.style.height = '0px';
-        fileinput.addEventListener('change',function(){
-            Globals.pageHandler.mediaManager.uploadMedia('Image',this.files[0]);
-        });
-
-        var uploadBtn = document.createElement('button');
-        uploadBtn.innerText = 'Upload Image';
-        uploadBtn.addEventListener('click',function(){
-            fileinput.click();
-        });
-
-        var panelbar = document.createElement('div');
-        panelbar.className = 'bg-image-manager_panelbar'
-
-        var giphy_panelbutton = document.createElement('img');
-        var pixelbay_panelbutton = document.createElement('img');
-        var unsplash_panelbutton = document.createElement('img');
-        giphy_panelbutton.src = '../assets/images/giphylogo2.png';
-        pixelbay_panelbutton.src = '../assets/images/pixelbaylogo.png';
-        unsplash_panelbutton.src = '../assets/images/unsplashlogo.jpg';
-
-        panelbar.appendChild(giphy_panelbutton);
-        panelbar.appendChild(pixelbay_panelbutton);
-        panelbar.appendChild(unsplash_panelbutton);
-        panelbar.appendChild(uploadBtn);
-        panelbar.appendChild(fileinput);
-
-        var searchInput = document.createElement('input');
-        searchInput.type = 'text';
-        searchInput.placeholder = 'Enter keyword and press enter to search...';
-
-        // checkbox -----
-
-        var checkboxOption = document.createElement('div');
-
-        var span = document.createElement("span");
-        var p = document.createElement("p");
-        var checkmark = document.createElement("span");
-        checkmark.className = "checkmark";
-
-        checkboxOption.setAttribute("data-bg-hv","grey");
-        checkboxOption.setAttribute("data-checked","1");
-
-        checkmark.addEventListener("mouseover",function(){
-            publicEvents.checkbox_hover(span);
-        });
-
-        checkmark.addEventListener("mouseout",function(){
-            publicEvents.checkbox_hoverOut(span);
-        });
-
-        checkmark.addEventListener("click",function(){
-            publicEvents.checkbox_click(checkboxOption);
-        });
-
-        span.setAttribute("data-restrictions","selection");
-        p.setAttribute("data-restrictions","selection");
-        checkmark.setAttribute("data-restrictions","selection");
-
-        checkboxOption.className = 'checkbox-one';
-        checkboxOption.setAttribute('data-e-type','checkbox-one');
-
-        checkboxOption.setAttribute("data-bg","black");
-        span.style.backgroundColor = "black";
-
-        p.innerText = "Media Storage Search";
-
-        checkboxOption.appendChild(span);
-        checkboxOption.appendChild(p);
-        checkboxOption.appendChild(checkmark);
-
-        // end checkbox -----
-
-        searchInput.addEventListener('keydown',function(e){
-            if(e.keyCode == 13){
-                if(stateOf.checkbox(checkboxOption) == 1){
-                    Globals.pageHandler.mediaManager.searchUserMedia("images",this.value);
-                }else{
-                    Globals.pageHandler.thirdPartyMediaManager.resetImages('webpageBuilder');
-                    Globals.pageHandler.thirdPartyMediaManager.searchGIFS(this.value,'','webpageBuilder');
-                    Globals.pageHandler.thirdPartyMediaManager.searchUnsplashPictures(this.value,'','webpageBuilder');
-                    Globals.pageHandler.thirdPartyMediaManager.searchPixelBayPictures(this.value,'','webpageBuilder');
+        var storageSpace = Globals.elements.new({
+            type: "span",
+            parent: Globals.window.body,
+            classes: [ "storageSpace" ],
+            text: `Media Storage Usage: ${Globals.pageHandler.storageUsed}/${Globals.pageHandler.storageLimit}`,
+            listeners: {
+                mouseover: function(e){
+                    storageSpace_showDetails(storageSpace,e);
+                },
+                mouseout: function(e){
+                    storageSpace_hideDetails(storageSpace,e);
                 }
             }
         });
 
-        var banner = document.createElement('div');
-        banner.className = 'banner';
-        banner.appendChild(searchInput);
-        banner.appendChild(checkboxOption);
-
-        var banner_p = document.createElement('p');
-        banner_p.innerText = 'Image Manager';
-
-        banner.appendChild(banner_p);
-
-        bgiManager.appendChild(banner);
-        bgiManager.appendChild(imagesbox);
-        bgiManager.appendChild(panelbar);
-        Globals.window.body.appendChild(bgiManager);
+        var bgiManager = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            id: "bg-image-manager",
+            listeners: {
+                mousedown: function(e){
+                    self.mousedown(e);
+                }
+            },
+            children: [
+                {
+                    type: "div",
+                    classes: [ "banner" ],
+                    children: [
+                        {
+                            type: "input",
+                            attributes: { type: "text", placeholder: "Enter keyword and press enter to search..." },
+                            listeners: {
+                                keydown: function(e){
+                                    if(e.keyCode == 13){
+                                        let checkboxOption = this.parentElement.getElementsByClassName("checkbox-one")[0];
+                                        if(stateOf.checkbox(checkboxOption) == 1){
+                                            Globals.pageHandler.mediaManager.searchUserMedia("images",this.value);
+                                        }else{
+                                            Globals.pageHandler.thirdPartyMediaManager.resetImages('webpageBuilder');
+                                            Globals.pageHandler.thirdPartyMediaManager.searchGIFS(this.value,'','webpageBuilder');
+                                            Globals.pageHandler.thirdPartyMediaManager.searchUnsplashPictures(this.value,'','webpageBuilder');
+                                            Globals.pageHandler.thirdPartyMediaManager.searchPixelBayPictures(this.value,'','webpageBuilder');
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            type: "div",
+                            classes: [ "checkbox-one" ],
+                            attributes: {
+                                "data-bg-hv": "grey",
+                                "data-checked": "1",
+                                'data-e-type': 'checkbox-one',
+                                "data-bg": "black"
+                            },
+                            children: [
+                                {
+                                    type: "span",
+                                    attributes: { "data-restrictions": "selection" },
+                                    style: { backgroundColor: "black" }
+                                },
+                                {
+                                    type: "p",
+                                    attributes: { "data-restrictions": "selection" },
+                                    text: "Media Storage Search",
+                                },
+                                {
+                                    type: "span",
+                                    classes: [ "checkmark" ],
+                                    attributes: { "data-restrictions": "selection" },
+                                    listeners: {
+                                        mouseover: function(){
+                                            let span = this.parentElement.getElementsByTagName("span")[0];
+                                            publicEvents.checkbox_hover(span);
+                                        },
+                                        mouseout: function(){
+                                            let span = this.parentElement.getElementsByTagName("span")[0];
+                                            publicEvents.checkbox_hoverOut(span);
+                                        },
+                                        click: function(){
+                                            let checkboxOption = this.parentElement;
+                                            publicEvents.checkbox_click(checkboxOption);
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            type: "p",
+                            text: "Image Manager",
+                        }
+                    ]
+                },
+                {
+                    type: "div",
+                    classes: [ "mediaManager_box" ],
+                    id: "bg-image-manager-images-box"
+                },
+                {
+                    type: "div",
+                    classes: [ "bg-image-manager_panelbar" ],
+                    children: [
+                        ...(() => {
+                            return ["../assets/images/giphylogo2.png", "../assets/images/pixelbaylogo.png", "../assets/images/unsplashlogo.jpg"].map((x,i) => {
+                                return {
+                                    type: "img",
+                                    attributes: { src: x }
+                                }
+                            });
+                        })(),
+                        {
+                            type: "button",
+                            text: "Upload Image",
+                            listeners: {
+                                click: function(){
+                                    let fileinput = this.parentElement.getElementsByTagName("input")[0];
+                                    fileinput.click();
+                                }
+                            }
+                        },
+                        {
+                            type: "input",
+                            attributes: { type: "file", accept: "image/png, image/jpeg, image/jpg" },
+                            style: {
+                                display: "none",
+                                opacity: "0",
+                                width: "0px",
+                                height: "0px"
+                            },
+                            listeners: {
+                                change: function(){
+                                    Globals.pageHandler.mediaManager.uploadMedia('Image', this.files[0]);
+                                }
+                            }
+                        }
+                    ]
+                },
+            ]
+        });
 
         Globals.pageHandler.mediaManager.showUserImages(forElement);
-
-        Globals.window.body.appendChild(storageSpace);
     }
 
     close(){

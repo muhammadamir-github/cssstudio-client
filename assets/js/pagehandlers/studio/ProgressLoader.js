@@ -1,16 +1,20 @@
+// Loader which is shown upon loading fonts while building a page.
+
 class ProgressLoader{
     constructor(){}
 
     show(){
+        var loaderbg = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "loader_bg" ],
+        });
 
-        var loaderbg = document.createElement('div');
-        loaderbg.className = 'loader_bg';
-
-        var loader = document.createElement('div');
-        loader.setAttribute('class','loader');
-
-        Globals.window.body.appendChild(loaderbg);
-        Globals.window.body.appendChild(loader);
+        var loader = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "loader" ],
+        });
 
         $('body').css({'pointer-events':'none'});
     }

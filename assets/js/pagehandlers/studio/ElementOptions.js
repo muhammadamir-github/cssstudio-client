@@ -1,41 +1,46 @@
+//
+
 class ElementOptions{
     constructor(){}
 
     editElement(e){
-        var input = document.createElement('textarea');
-        input.className = 'editField';
-        input.style.resize = 'none';
-
         var element = document.getElementsByClassName('selected')[0];
-        input.style.position = 'absolute';
-        input.style.left = '50%';
-        input.style.top = '50%';
-        input.style.transform = 'translate(-50%,-50%)';
-        input.style.fontSize = element.style.fontSize;
-        input.style.fontFamily = element.style.fontFamily;
-        input.value = element.value || element.innerText;
+        var input = Globals.elements.new({
+            type: "textarea",
+            parent: element,
+            classes: [ "editField" ],
+            attributes: { value: element.value || element.innerText },
+            text: element.value || element.innerText,
+            style: {
+                resize: "none",
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%,-50%)",
+                fontSize: element.style.fontSize,
+                fontFamily: element.style.fontFamily,
+                width: "100%",
+                maxHeight: "unset",
+                maxWidth: "unset",
+                minHeight: element.style.minHeight,
+                height: "100%",
+                paddingTop: element.style.paddingTop,
+                paddingRight: element.style.paddingRight,
+                paddingLeft: element.style.paddingLeft,
+                paddingBottom: element.style.paddingBottom
+            },
+            listeners: {
+                contextmenu: function(){
+                    newelement.innerText = this.value;
+                    this.remove();
+                }
+            }
+        });
 
         //input.style.left = element.style.left;
         //input.style.top = element.style.top;
-        input.style.width = '100%';
-        input.style.maxHeight = 'unset';
-        input.style.maxWidth = 'unset';
-        input.style.minHeight = element.style.minHeight;
         //input.style.minWidth = element.style.minWidth;
         //input.style.transform = element.style.transform;
-        input.style.height = '100%';
-        input.style.paddingTop = element.style.paddingTop;
-        input.style.paddingRight = element.style.paddingRight;
-        input.style.paddingLeft = element.style.paddingLeft;
-        input.style.paddingBottom = element.style.paddingBottom;
-
-        element.appendChild(input);
-        //element.innerText = '';
-
-        input.addEventListener('contextmenu',function(e){
-            newelement.innerText = this.value;
-            this.remove();
-        });
     }
 
     showControls(e){
@@ -144,14 +149,18 @@ class ElementOptions{
             event.target.parentElement.getElementsByClassName('wpb_e_special_option_tooltip')[0].innerText = 'Enable Full Screen Option';
         }else{
             if(event.target.classList.contains('fa-toggle-off')){
-                var fullscreenbutton = document.createElement('i');
-                fullscreenbutton.className = 'fas fa-expand';
-                fullscreenbutton.addEventListener("click",function(e){
-                    $(".selectedSpecialOptions").css({'display':'none'});
-                    publicEvents.enlargeImage(e,viewer_image.src);
+                var fullscreenbutton = Globals.elements.new({
+                    type: "i",
+                    parent: image_view,
+                    classes: [ "fas", "fa-expand" ],
+                    listeners: {
+                        click: function(e){
+                            $(".selectedSpecialOptions").css({'display':'none'});
+                            publicEvents.enlargeImage(e, viewer_image.src);
+                        }
+                    }
                 });
 
-                image_view.appendChild(fullscreenbutton);
                 event.target.className = 'fas fa-toggle-on';
                 event.target.parentElement.getElementsByClassName('wpb_e_special_option_tooltip')[0].innerText = 'Disable Full Screen Option';
             }
@@ -193,23 +202,15 @@ class ElementOptions{
             event.target.parentElement.getElementsByClassName('wpb_e_special_option_tooltip')[0].innerText = 'Enable Text';
         }else{
             if(event.target.classList.contains('fa-toggle-off')){
-                var p = document.createElement("p");
-                p.setAttribute("data-restrictions","selection");
-
-                if(elementType.includes("checkbox")){
-                    p.innerText = "Checkbox";
-
-                    span.style.marginRight = "10px";
-                    //input.style.marginRight = "10px";
-                }else{
-                    if(elementType.includes("toggle-switch")){
-                        p.innerText = "Toggle Switch";
-
-                        label.style.marginRight = "0px";
+                var p = Globals.elements.new({
+                    type: "p",
+                    parent: element,
+                    attributes: { "data-restrictions": "selection" },
+                    text: elementType.includes("checkbox") ? "Checkbox" : elementType.includes("toggle-switch") ? "Toggle Switch" : null,
+                    style: {
+                        marginRight: elementType.includes("checkbox") ? "10px" : elementType.includes("toggle-switch") ? "0px" : null
                     }
-                }
-
-                element.appendChild(p);
+                });
 
                 event.target.className = 'fas fa-toggle-on';
                 event.target.parentElement.getElementsByClassName('wpb_e_special_option_tooltip')[0].innerText = 'Disable Text';
