@@ -15,9 +15,21 @@ export default class Elements{
             self.updateHtml(element, options.html); // ""
             self.addChildren(element, options.children); // [{}]
 
-            if(options.prepend === true){ options.parent.prepend(element); }else{ options.parent.appendChild(element); }
+            if(options.prepend === true){
+                options.parent.prepend(element);
+            }else{
+                if(options.before === true){
+                    options.parent.parentElement.insertBefore(element, options.parent);
+                }else{
+                    options.parent.appendChild(element);
+                }
+            }
             return element;
         }
+    }
+
+    async newAsync(options){
+        return this.new(options);
     }
 
     addAttributes(element, attributes = {}){

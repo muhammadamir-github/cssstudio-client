@@ -5,7 +5,7 @@ class SupportHandler{
         this.data = data;
     }
 
-    setup(){
+    async setup(){
         const self = this;
 
         var heading = Globals.elements.new({
@@ -95,85 +95,21 @@ class SupportHandler{
             parent: Globals.window.body,
             classes: [ "ntkt" ],
             children: [
-                {
-                    type: "combobox",
-                    id: "categories",
-                    style: {
-                        left: "0px",
-                        top: "-50px"
-                    },
-                    children: [
-                        {
-                            type: "selected",
-                            children: [
-                                {
-                                    type: "a",
-                                    children: [
-                                        {
-                                            type: "span",
-                                            text: "Category",
 
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            type: "options",
-                            children: [
-                                {
-                                    type: "ul",
-                                    children: (() => {
-                                        return ["Account", "Billing", "Application/Software", "Performance Issue", "Suggestion", "Bug Report"].map(option => {
-                                            return {
-                                                type: "li",
-                                                children: [
-                                                    {
-                                                        type: "a",
-                                                        text: option,
-                                                        listeners: {
-                                                            click: function(){
-                                                                self.changeCategory(this.innerText);
-                                                            }
-                                                        },
-                                                        children: [
-                                                            {
-                                                                type: "span",
-                                                                text: option,
-                                                                classes: [ "value" ],
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            }
-                                        });
-                                    })(),
-                                }
-                            ]
-                        }
-                    ]
-                }
             ]
         });
 
-        var categories_selected = newticket.getElementsByTagName('selected')[0];
-        var categories_selected_a = categories_selected.getElementsByTagName('a')[0];
-        var categories_selected_a_span = categories_selected_a.getElementsByTagName('span')[0];
-
-        var categories_options = newticket.getElementsByTagName('options')[0];
-        var categories_options_ul = categories_options.getElementsByTagName('ul')[0];
-
-        categories_selected_a_span.addEventListener('click',function(e){
-            if(e.target == this){
-                if(categories_options.style.display == 'block'){
-                    categories_options.style.display = 'none';
-                    categories_options_ul.style.display = 'none';
-                    categories_selected_a_span.style.textAlign = '';
-                }else{
-                    categories_options.style.display = 'block';
-                    categories_options_ul.style.display = 'block';
-                    categories_selected_a_span.style.textAlign = 'left';
-                }
+        var combobox = await Globals.components.new({
+            name: "combobox",
+            parent: newticket,
+            data: {
+                id: "categories",
+                style: {
+                    left: "0px",
+                    top: "-50px"
+                },
+                text: "Category",
+                options: ["Account", "Billing", "Application/Software", "Performance Issue", "Suggestion", "Bug Report"]
             }
         });
 
@@ -293,11 +229,6 @@ class SupportHandler{
         },7500);
 
         document.getElementsByTagName('head')[0].innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/notice.css">';
-    }
-
-    changeCategory(text){
-        document.getElementById('categories').getElementsByTagName('selected')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = 'Category: '+text;
-        document.getElementById('categories').getElementsByTagName('options')[0]/*.getElementsByTagName('ul')[0]*/.style.display = 'none';
     }
 
     countWords(string) {

@@ -93,7 +93,7 @@ class StudioHandler{
                   type: "script",
                   parent: document.getElementsByTagName("head")[0],
                   attributes: {
-                      src: "../assets/js/studio/Animator.js"
+                      src: "../assets/js/pagehandlers/studio/Animator.js"
                   },
                   listeners: {
                       load: () => {

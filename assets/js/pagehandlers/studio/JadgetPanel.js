@@ -26,7 +26,7 @@ class JadgetPanel{
 
         var menuIcon_left = document.createElement('div');
         menuIcon_left.setAttribute('id','menuIcon-left');
-        
+
         menuIcon_right.addEventListener('click', function(){
             openMenubar();
         });
@@ -80,7 +80,7 @@ class JadgetPanel{
                 self.populateselection('true');
             },5000);
 
-        },2000);
+        },1);
 
     });
 
@@ -287,6 +287,6 @@ setEnv(element){
         basicSetup(element);
         $('.spinner').css('display','none');
         $('#panel').css({'opacity':'1','pointer-events':'unset'});
-    },5000);
+    },1);
 }
 }

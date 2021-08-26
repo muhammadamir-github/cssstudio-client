@@ -26,7 +26,7 @@ function advance(element,createnew){
                 backbutton.remove();
                 $('.info').remove();
 
-            },4000);
+            },1);
 
         });
 
@@ -43,7 +43,7 @@ function advance(element,createnew){
             panel.style.opacity = '1';
             panel.style.pointerEvents = 'unset';
 
-        },4000);
+        },1);
 
     }
 
@@ -78,7 +78,7 @@ function advance(element,createnew){
                 backbutton.remove();
                 $('.info').remove();
 
-            },4000);
+            },1);
 
         });
 
@@ -1966,7 +1966,7 @@ setTimeout(function(){
     panel.style.opacity = '1';
     panel.style.pointerEvents = 'unset';
 
-},4000);
+},1);
 
 }
 }

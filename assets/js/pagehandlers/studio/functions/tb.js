@@ -1,3 +1,5 @@
+// tb works as a middleware between function calls for doing something else if needed. this has to be removed.
+
 function tb(element,property,value){
 
     if(property == 'gff'){

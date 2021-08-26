@@ -5,6 +5,7 @@ import SideBar from './misc/SideBar.js';
 import NotificationHandler from './misc/Notification.js';
 import MembershipHandler from './misc/Membership.js';
 import Elements from './misc/Elements.js';
+import Components from './misc/Components.js';
 
 window.onload = () => {
     let pageName = new URL(window.location.href).pathname.split("/").filter(x => { return x.toString().trim() !== ""; }).pop();
@@ -15,6 +16,7 @@ window.onload = () => {
 
     Globals.api = new Api(Globals.api.hostname, Globals.api.port);
     Globals.elements = new Elements;
+    Globals.components = new Components;
     Globals.notificationHandler = new NotificationHandler;
     Globals.membershipHandler = new MembershipHandler;
     Globals.bootLoader = new BootLoader("../assets");
@@ -90,25 +92,20 @@ class BootLoader{
                             let src = files.paths[i].isURL === true ? files.paths[i].src : (pageName === "termsandconditions" ? "../"+self.dir : self.dir)+"/"+folder+"/"+files.paths[i].src;
 
                             if(type !== "icon"){
-                                var promiseResolve, promiseReject;
-
-                                file = Globals.elements.new({
-                                    type: elementTag,
-                                    parent: Globals.window.head,
-                                    attributes: {
-                                        type: encoding,
-                                        href: type === "css" ? src : null,
-                                        src: type === "css" ? null : src,
-                                        rel
-                                    },
-                                    listeners: {
-                                        load: () => { promiseResolve(); }
-                                    }
-                                });
-
                                 await new Promise((resolve, reject) => {
-                                    promiseResolve = resolve;
-                                    promiseReject = reject;
+                                    file = Globals.elements.new({
+                                        type: elementTag,
+                                        parent: Globals.window.head,
+                                        attributes: {
+                                            type: encoding,
+                                            href: type === "css" ? src : null,
+                                            src: type === "css" ? null : src,
+                                            rel
+                                        },
+                                        listeners: {
+                                            load: () => { resolve(); }
+                                        }
+                                    });
                                 });
                             }else{
                                 file = Globals.elements.new({
