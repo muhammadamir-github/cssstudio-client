@@ -4,8 +4,8 @@ class AnimatorTimelineController{
         this.model = new AnimatorTimelineModel(data);
     }
 
-    async init(options = {}){
-        await this.view.create({
+    init(options = {}){
+        this.view.create({
             parent: options.parent,
             before: options.before,
             prepend: options.prepend,

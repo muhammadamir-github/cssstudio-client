@@ -17,7 +17,7 @@ class Animator{
         $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'0.5','pointerEvents':'none'});
         $('.aTbutton').css({'pointer-events':'none'});
 
-        self.setupSlideOptions();
+        self.setupSlideOptions(elementType);
     }
 
     applyanimation(a,element){
@@ -201,9 +201,7 @@ class Animator{
                     text: "Percentage is when the slide is executed during the animation. Percentage can be from 0% to 100%. The animation starts from 0% and ends at 100%."
                 },
                 customValue: {
-                    call: "updateElement",
-                    key: "slidePercentage",
-                    valueSuffix: "%"
+                    call: "updateElement"
                 }
             },
             before: true, // Before animatorTimeline
@@ -225,8 +223,7 @@ class Animator{
                 text: "Opacity",
                 options: [],
                 customValue: {
-                    call: "dataAttributeBalancer",
-                    key: "slideOpacity"
+                    call: "dataAttributeBalancer"
                 }
             },
             before: true, // Before animatorTimeline
@@ -452,9 +449,9 @@ class Animator{
         animationSliders.appendChild(borderradiusboxdiv);
 
         let comboboxes = [
-            { id: "fontcolor", style: { left: "10px" }, text: "Font Color", idPrefix: "animatef", key: "animation-color", property: "font" },
-            { id: "bordercolor", style: { left: "200px" }, text: "Border Color", idPrefix: "animateb", key: "animation-borderColor", property: "background" },
-            { id: "backgroundcolor", style: { left: "390px" }, text: "Background Color", idPrefix: "animatebg", key: "animation-backgroundColor", property: "border" }
+            { id: "fontcolor", style: { left: "10px" }, text: "Font Color", idPrefix: "animatef", },
+            { id: "bordercolor", style: { left: "200px" }, text: "Border Color", idPrefix: "animateb", },
+            { id: "backgroundcolor", style: { left: "390px" }, text: "Background Color", idPrefix: "animatebg",}
         ];
 
         for (let x of comboboxes){
@@ -470,9 +467,7 @@ class Animator{
                     text: x.text,
                     options: [],
                     colorPicker: {
-                        idPrefix: x.idPrefix,
-                        key: x.key,
-                        property: x.property
+                        idPrefix: x.idPrefix
                     }
                 }
             });
@@ -597,8 +592,6 @@ class Animator{
                     },
                     customValue: {
                         call: "updateElement",
-                        key: "animatedr",
-                        valueSuffix: "s",
                         style: { width: "40%" }
                     },
                     options: [],
@@ -614,8 +607,6 @@ class Animator{
                     },
                     customValue: {
                         call: "updateElement",
-                        key: "animated",
-                        valueSuffix: "s",
                         style: { width: "40%" }
                     },
                     options: [],
@@ -630,9 +621,8 @@ class Animator{
                         transform: "translate(-50%)"
                     },
                     customValue: {
+                        placeholder: "9999 for infinite",
                         call: "updateElement",
-                        key: "animatei",
-                        valueSuffix: "",
                         style: { width: "40%" }
                     },
                     options: [],
@@ -646,7 +636,7 @@ class Animator{
                         marginTop: "250px",
                         transform: "translate(-50%)"
                     },
-                    options: ["Linear", "Ease", "Ease-In", "Ease-Out", "Ease-In-Out",],
+                    options: ["Linear", "Ease", "Ease-In", "Ease-Out", "Ease-In-Out"],
                 }
             ];
 
@@ -654,12 +644,14 @@ class Animator{
                 await Globals.components.new({
                     name: "combobox",
                     parent: settings_div,
+                    elementType: x.elementType,
                     data: {
                         id:x.id,
                         width: "200px",
                         style: x.style,
-                        text:x.text,
-                        options: x.options
+                        text: x.text,
+                        options: x.options,
+                        customValue: x.customValue
                     }
                 });
             }

@@ -27,11 +27,7 @@ export default class Elements{
             return element;
         }
     }
-
-    async newAsync(options){
-        return this.new(options);
-    }
-
+    
     addAttributes(element, attributes = {}){
         if(typeof attributes === "object" && attributes){
             for(var i=0; i<Object.keys(attributes).length; i++){

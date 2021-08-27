@@ -3,7 +3,7 @@ class AnimatorTimelineView{
         this._element = null;
     }
 
-    async create(options = {}){
+    create(options = {}){
         const self = this;
         const data = options.data;
         const parent = options.parent;
@@ -169,7 +169,7 @@ class AnimatorTimelineView{
             }
         });
 
-        self._element = await Globals.elements.newAsync({
+        self._element = Globals.elements.new({
             type: "div",
             parent,
             id: "aT",

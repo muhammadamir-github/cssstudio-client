@@ -1,6 +1,51 @@
 class ComboboxView{
     constructor(){
         this._element = null;
+        this.textKeyMap = {
+            "Font Size": { key: "fontSize", valueSuffix: "px", keyValueSuffix: "px" },
+            "Height": { key: "height", valueSuffix: "px", keyValueSuffix: "px" },
+            "Width": { key: "width", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Border Size": { key: "border", valueSuffix: "px", keyValueSuffix: "px solid black" },
+            "Border Radius": { key: "borderRadius", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Border Style": { key: "borderStyle", valueSuffix: "", keyValueSuffix: "" },
+            "Text Align": { key: "textAlign", valueSuffix: "", keyValueSuffix: "" },
+            "Margin Top": { key: "marginTop", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Margin Left": { key: "marginLeft", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Margin Right": { key: "marginRight", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Margin Bottom": { key: "marginBottom", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Padding Top": { key: "paddingTop", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Padding Left": { key: "paddingLeft", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Padding Right": { key: "paddingRight", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Padding Bottom": { key: "paddingBottom", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Letter Space": { key: "letterSpacing", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Word Space": { key: "wordSpacing", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Outline Width": { key: "outlineWidth", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Box Shadow": { key: "boxShadow", valueSuffix: "", keyValueSuffix: "" },
+            "Text Shadow": { key: "textShadow", valueSuffix: "", keyValueSuffix: "" },
+            "Text Decoration": { key: "textDecoration", valueSuffix: "", keyValueSuffix: "" },
+            "Text Decoration Style": { key: "textDecorationStyle", valueSuffix: "", keyValueSuffix: "" },
+            "Font Style": { key: "fontStyle", valueSuffix: "", keyValueSuffix: "" },
+            "Font Stretch": { key: "fontStretch", valueSuffix: "", keyValueSuffix: "" },
+            "Font Variant": { key: "fontVariant", valueSuffix: "", keyValueSuffix: "" },
+            "Font Stretch": { key: "fontStretch", valueSuffix: "", keyValueSuffix: "" },
+            "Font Weight": { key: "fontWeight", valueSuffix: "", keyValueSuffix: "" },
+            "Display": { key: "display", valueSuffix: "", keyValueSuffix: "" },
+            "White Space": { key: "whiteSpace", valueSuffix: "", keyValueSuffix: "" },
+            "Outline Style": { key: "outlineStyle", valueSuffix: "", keyValueSuffix: "" },
+            "Font Color": { key: "color", valueSuffix: "", keyValueSuffix: "" },
+            "Outline Color": { key: "outlineColor", valueSuffix: "", keyValueSuffix: "" },
+            "Background Color": { key: "backgroundColor", valueSuffix: "", keyValueSuffix: "" },
+            "Border Color": { key: "borderColor", valueSuffix: "", keyValueSuffix: "" },
+            "Box Shadow": { key: "boxshadowColor", valueSuffix: "", keyValueSuffix: "" },
+            "Text Shadow": { key: "textShadowColor", valueSuffix: "", keyValueSuffix: "" },
+            "Text Decoration Color": { key: "textDecorationColor", valueSuffix: "", keyValueSuffix: "" },
+            "Duration": { key: "animatedr", valueSuffix: "s", keyValueSuffix: "s" },
+            "Delay": { key: "animated", valueSuffix: "s", keyValueSuffix: "s" },
+            "Iteration": { key: "animatei", valueSuffix: "", keyValueSuffix: "" },
+            "Percentage": { key: "slidePercentage", valueSuffix: "%", keyValueSuffix: "%" },
+            "Opacity": { key: "slideOpacity", valueSuffix: "", keyValueSuffix: "" }
+        };
+
         this.colorPicker = {
             isdragging: false,
             applyTo: null
@@ -9,13 +54,13 @@ class ComboboxView{
         this.data = {};
     }
 
-    async create(options = {}){
+    create(options = {}){
         const self = this;
         const parent = options.parent;
-        const element = options.elementType;
+        const elementType = options.elementType;
         const data = options.data;
 
-        self.data = data;
+        self.data = {...data, elementType};
 
         const structure = {
             type: "combobox",
@@ -37,7 +82,9 @@ class ComboboxView{
                                     text: data.text,
                                     style: data.fontSize ? { fontSize: data.fontSize } : null,
                                     listeners: {
-                                        click: self.toggle,
+                                        click: function(e){
+                                            self.toggle(e, self);
+                                        },
                                     }
                                 }
                             ]
@@ -45,7 +92,11 @@ class ComboboxView{
                         ...(() => {
                             return typeof data.customValue === "object" && data.customValue !== null ? [{
                                 type: "input",
-                                classes: [ "custom" ],
+                                attributes: {
+                                    placeholder: data.customValue.placeholder ? data.customValue.placeholder : "",
+                                    value: data.customValue.value ? data.customValue.value : ""
+                                },
+                                classes: data.customValue.classes ? data.customValue.classes : [ "custom" ],
                                 style: data.customValue.style ? data.customValue.style : null,
                                 listeners: {
                                     keyup: function(e){ self.customValueChange(e, self); },
@@ -75,6 +126,7 @@ class ComboboxView{
                                     type: "div",
                                     classes: [ "colorpicker" ],
                                     id: `${data.colorPicker.idPrefix}cp`,
+                                    style: data.colorPicker.style ? data.colorPicker.style : null,
                                     children: [
                                         {
                                             type: "canvas",
@@ -111,7 +163,7 @@ class ComboboxView{
                                             id: `${data.colorPicker.idPrefix}cprgba`,
                                             listeners: {
                                                 input: function(){
-                                                    textToColorPickerColor(this, data.colorPicker.key, data.elementType);
+                                                    self.textToColorPickerColor(this);
                                                 }
                                             }
                                         },
@@ -121,7 +173,7 @@ class ComboboxView{
                                             id: `${data.colorPicker.idPrefix}cphex`,
                                             listeners: {
                                                 input: function(){
-                                                    textToColorPickerColor(this, data.colorPicker.key, data.elementType);
+                                                    self.textToColorPickerColor(this);
                                                 }
                                             }
                                         }
@@ -138,60 +190,76 @@ class ComboboxView{
                         })(),
                     ]
                 },
-                {
-                    type: "options",
-                    children: [
-                        {
-                            type: "ul",
-                            children: (() => {
-                                return data.options.map((option, i) => {
-                                    return {
-                                        type: "li",
-                                        children: [
-                                            {
-                                                type: "a",
-                                                text: option,
-                                                classes: i === data.options.length-1 ? [ "lastoption" ] : null,
-                                                listeners: {
-                                                    click: function(){
-                                                        self.changeValue(this.innerText);
-                                                    }
-                                                },
+                ...(() => {
+                    if(Array.isArray(data.options) && data.options.length > 0){
+                        return [{
+                            type: "options",
+                            children: [
+                                {
+                                    type: "ul",
+                                    children: (() => {
+                                        return data.options.map((option, i) => {
+                                            return {
+                                                type: "li",
                                                 children: [
                                                     {
-                                                        type: "span",
+                                                        type: "a",
                                                         text: option,
-                                                        classes: [ "value" ],
+                                                        classes: i === data.options.length-1 ? [ "lastoption" ] : null,
+                                                        listeners: {
+                                                            click: function(){
+                                                                self.changeValue(this.innerText);
+                                                            }
+                                                        },
+                                                        children: [
+                                                            {
+                                                                type: "span",
+                                                                text: option,
+                                                                classes: [ "value" ],
+                                                            }
+                                                        ]
                                                     }
                                                 ]
                                             }
-                                        ]
-                                    }
-                                });
-                            })(),
-                        }
-                    ]
-                }
+                                        });
+                                    })(),
+                                }
+                            ]
+                        }];
+                    }else{ return []; }
+                })(),
             ]
         };
 
-        self._element = await Globals.elements.newAsync(structure);
+        self._element = Globals.elements.new(structure);
 
         if(typeof data.colorPicker === "object" && data.colorPicker !== null){
-            self.setupColorPicker(`preview${element}`);
+            setTimeout(() => {
+                // This timeout is required due to element being created dynamically.
+                self.setupColorPicker(elementType == "selected" ? elementType : `preview${elementType}`);
+            }, 250);
         }
     }
 
     customValueChange(e, self){
         let selected_a_span = e.target.parentElement.getElementsByTagName("a")[0].getElementsByTagName("span")[0];
 
+        let key = self.textKeyMap[self.data.text].key;
+        let valueSuffix = self.textKeyMap[self.data.text].valueSuffix;
+        let keyValueSuffix = self.textKeyMap[self.data.text].keyValueSuffix;
+
         if(self.data.customValue.call === "updateElement"){
-            selected_a_span.innerText = `${self.data.text}: ${e.target.value}${self.data.customValue.valueSuffix}`;
-            updateElement(self.data.elementType, self.data.customValue.key, e.target.value+self.data.customValue.valueSuffix);
+            selected_a_span.innerText = `${self.data.text}: ${e.target.value}${valueSuffix}`;
+            updateElement(self.data.elementType, key, e.target.value+valueSuffix);
         }else{
             if(self.data.customValue.call === "dataAttributeBalancer"){
                 selected_a_span.innerText = `${self.data.text}: ${e.target.value}`;
-                self.dataAttributeBalancer(self.data.customValue.key, e.target.value);
+                self.dataAttributeBalancer(key, e.target.value);
+            }else{
+                if(self.data.customValue.call === "updatePageElement"){
+                    selected_a_span.innerText = `${self.data.text}: ${e.target.value}${valueSuffix}`;
+                    document.getElementsByClassName('selected')[0].style[key] = `${e.target.value}${keyValueSuffix}`;
+                }
             }
         }
     }
@@ -200,34 +268,48 @@ class ComboboxView{
         this._element.getElementsByTagName('selected')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = `${this.data.text}: ${value}`;
         this._element.getElementsByTagName('options')[0]/*.getElementsByTagName('ul')[0]*/.style.display = 'none';
 
-        if(this.data.id === "timing"){
-            updateElement(this.data.elementType, 'atiming', value);
-            //tb(element, 'animatet', value); tb calls updateElement
+        if(this.colorPicker.applyTo && this.colorPicker.applyTo.classList.contains("selected")){
+            if(this.data.id === "googlefonts"){
+                this.colorPicker.applyTo.style.fontFamily = value;
+            }
+
+            combobox.classList.remove('selectedCombobox');
+        }else{
+            if(this.data.id === "timing"){
+                updateElement(this.data.elementType, 'atiming', value);
+                //tb(element, 'animatet', value); tb calls updateElement
+            }
+
+            if(this.data.id === "googlefonts"){
+                tb(this.data.elementType, 'gff', value);
+            }
+
+            if(this.data.id === "endx" || this.data.id === "endy"){
+                tb(this.data.elementType,'bgge'+this.data.id.replace("end", ""), value);
+            }
         }
     }
 
-    toggle(e){
-        if(e.target == this){
-            let options = this.parentElement.parentElement.parentElement.getElementsByTagName("options");
-            let customValue = this.parentElement.parentElement.getElementsByClassName("custom");
-            let combobox = this.parentElement.parentElement.parentElement;
-            let colordisplay = this.parentElement.parentElement.getElementsByTagName("colordisplay");
-            let selected_a_span = this;
+    toggle(e, self){
+        if(e.target.tagName == "SPAN"){
+            let options = e.target.parentElement.parentElement.parentElement.getElementsByTagName("options");
+            let customValue = e.target.parentElement.parentElement.getElementsByClassName("custom");
+            let combobox = e.target.parentElement.parentElement.parentElement;
+            let colordisplay = e.target.parentElement.parentElement.getElementsByTagName("colordisplay");
+            let selected_a_span = e.target;
 
             if(options[0]){
                 options = options[0];
-                let options_ul = options.getElementsByTagName("ul")[0];
+                let options_ul = options.getElementsByTagName("ul");
 
                 if(options_ul[0]){
                     options_ul = options_ul[0];
                     if(options.style.display == 'block'){
                         options.style.display = 'none';
                         options_ul.style.display = 'none';
-                        selected_a_span.style.textAlign = '';
                     }else{
                         options.style.display = 'block';
                         options_ul.style.display = 'block';
-                        selected_a_span.style.textAlign = 'left';
                     }
                 }
             }
@@ -236,7 +318,7 @@ class ComboboxView{
                 customValue = customValue[0];
                 if(customValue.style.display == 'block'){
                     customValue.style.display = 'none';
-                    selected_a_span.style.textAlign = '';
+                    selected_a_span.style.textAlign = 'unset';
                 }else{
                     customValue.style.display = 'block';
                     selected_a_span.style.textAlign = 'left';
@@ -247,11 +329,15 @@ class ComboboxView{
                 colordisplay = colordisplay[0];
                 if(colordisplay.style.display == 'block'){
                     colordisplay.style.display = 'none';
-                    combobox.style.textAlign = '';
+                    combobox.style.textAlign = 'unset';
                 }else{
                     colordisplay.style.display = 'block';
                     combobox.style.textAlign = 'left';
                 }
+            }
+
+            if(self.colorPicker.applyTo && self.colorPicker.applyTo.classList.contains("selected")){
+                combobox.classList.add('selectedCombobox');
             }
         }
     }
@@ -360,10 +446,10 @@ class ComboboxView{
     setupColorPicker(forid){
         const self = this;
 
-        if(forid == '.selected'){
-            self.applyto = document.getElementsByClassName('selected')[0];
+        if(forid == "selected"){
+            self.colorPicker.applyto = document.getElementsByClassName('selected')[0];
         }else{
-            self.applyto = document.getElementById(forid);
+            self.colorPicker.applyto = document.getElementById(forid);
         }
 
         self.updateStrip(null, self);
@@ -396,16 +482,21 @@ class ComboboxView{
     }
 
     color(e){
+        // update color from mouse
         const self = this;
 
-        let boxid = `${this.data.colorPicker.idPrefix}cpb`;
+        let key = self.textKeyMap[self.data.text].key;
+
+        let boxid = `${self.data.colorPicker.idPrefix}cpb`;
+        let stripid = `${self.data.colorPicker.idPrefix}cps`;
+
         let box = document.getElementById(boxid);
         let box2d = box.getContext('2d');
 
-        let displayinvoker = `${this.data.colorPicker.idPrefix}cd`;
+        let displayinvoker = `${self.data.colorPicker.idPrefix}cd`;
         let display = document.getElementById(displayinvoker);
-        let rgbainput = document.getElementById(`${this.data.colorPicker.idPrefix}cprgba`);
-        let hexinput = document.getElementById(`${this.data.colorPicker.idPrefix}cphex`);
+        let rgbainput = document.getElementById(`${self.data.colorPicker.idPrefix}cprgba`);
+        let hexinput = document.getElementById(`${self.data.colorPicker.idPrefix}cphex`);
 
         let xaxis = e.offsetX;
         let yaxis = e.offsetY;
@@ -417,63 +508,103 @@ class ComboboxView{
         if(boxid.includes('animate') || stripid.includes('animate')){
             self.dataAttributeBalancer('slide'+displayinvoker, rgba);
         }else{
-            if(property == 'background'){
-                self.applyto.style.backgroundColor = rgba;
+            if(key == 'backgroundColor'){
+                self.colorPicker.applyto.style.backgroundColor = rgba;
             }
 
-            if(property == 'font'){
-                self.applyto.style.color = rgba;
+            if(key == 'color'){
+                self.colorPicker.applyto.style.color = rgba;
             }
 
-            if(property == 'border'){
-                if(self.applyto.style.borderColor != ''){
-                    self.applyto.style.bordercolor = '';
-                    self.applyto.style.borderColor = rgba;
+            if(key == 'borderColor'){
+                if(self.colorPicker.applyto.style.borderColor != ''){
+                    self.colorPicker.applyto.style.bordercolor = '';
+                    self.colorPicker.applyto.style.borderColor = rgba;
                 }else{
-                    if(self.applyto.style.borderBottomColor != ''){
-                        self.applyto.style.borderBottomColor = rgba;
+                    if(self.colorPicker.applyto.style.borderBottomColor != ''){
+                        self.colorPicker.applyto.style.borderBottomColor = rgba;
                     }else{
-                        self.applyto.style.bordercolor = '';
-                        self.applyto.style.borderColor = rgba;
+                        self.colorPicker.applyto.style.bordercolor = '';
+                        self.colorPicker.applyto.style.borderColor = rgba;
                     }
                 }
             }
 
-            if(property == 'textdecorationcolor'){
-                self.applyto.style.textDecorationColor = rgba;
+            if(key == 'textDecorationColor'){
+                self.colorPicker.applyto.style.textDecorationColor = rgba;
             }
 
-            if(property == 'boxshadowcolor'){
-                var currentboxshadow = self.applyto.style.boxShadow;
+            if(key == 'boxShadow'){
+                var currentboxshadow = self.colorPicker.applyto.style.boxShadow;
 
                 if(currentboxshadow.includes('rgb')){
-                    var newboxshadow = self.applyto.style.boxShadow.split(')')[1];
-                    self.applyto.style.boxShadow = rgba + newboxshadow;
+                    var newboxshadow = self.colorPicker.applyto.style.boxShadow.split(')')[1];
+                    self.colorPicker.applyto.style.boxShadow = rgba + newboxshadow;
                 }else{
-                    var newboxshadow = self.applyto.style.boxShadow;
-                    self.applyto.style.boxShadow = rgba + newboxshadow;
+                    var newboxshadow = self.colorPicker.applyto.style.boxShadow;
+                    self.colorPicker.applyto.style.boxShadow = rgba + newboxshadow;
                 }
             }
 
-            if(property == 'textshadowcolor'){
-                var currenttextshadow = self.applyto.style.textShadow;
+            if(key == 'textShadow'){
+                var currenttextshadow = self.colorPicker.applyto.style.textShadow;
 
                 if(currenttextshadow.includes('rgb')){
-                    var newtextshadow = self.applyto.style.textShadow.split(')')[1];
-                    self.applyto.style.textShadow = rgba + newtextshadow;
+                    var newtextshadow = self.colorPicker.applyto.style.textShadow.split(')')[1];
+                    self.colorPicker.applyto.style.textShadow = rgba + newtextshadow;
                 }else{
-                    var newtextshadow = self.applyto.style.textShadow;
-                    self.applyto.style.textShadow = rgba + newtextshadow;
+                    var newtextshadow = self.colorPicker.applyto.style.textShadow;
+                    self.colorPicker.applyto.style.textShadow = rgba + newtextshadow;
                 }
             }
 
-            if(property == 'outlinecolor'){
-                self.applyto.style.outlineColor = rgba;
+            if(key == 'outlineColor'){
+                self.colorPicker.applyto.style.outlineColor = rgba;
             }
         }
 
         display.style.backgroundColor = rgba;
         rgbainput.value = 'Color Rgba: ' + rgba;
         hexinput.value = 'Color Hex: ' + rgb2hex(rgba);
+    }
+
+    textToColorPickerColor(e){
+        // update color from input
+        const self = this;
+
+        let key = self.textKeyMap[self.data.text].key;
+
+        var colorpicker_box = e.parentElement.getElementsByClassName('colorpickerbox')[0];
+        var colordisplay = e.parentElement.parentElement.getElementsByTagName('colordisplay')[0];
+
+        var color;
+        var text = e.value;
+        if(text.includes('Color Rgba:') || text.includes('Color Hex:')){
+            color = text.split(':')[1];
+        }else{
+            if(text.includes('(') || text.includes(')') || text.includes('rgba')){
+                color = 'rgba('+text.split('(')[1];
+            }
+
+            if(text.includes('#')){
+                color = text;
+            }
+        }
+
+        colordisplay.style.backgroundColor = color;
+
+        if(text.includes('Color Rgba:') || text.includes('(') || text.includes(')') || text.includes('rgba')){
+            e.value = 'Color Rgba: rgba('+text.split('(')[1];
+        }else{
+            if(text.includes('#')){
+                e.value = 'Color Hex: #'+text.split('#')[1];
+            }
+        }
+
+        if(key.includes('animation') || key.includes('backgroundGradient')){
+
+        }else{
+            self.colorPicker.applyTo.style[key] = color;
+        }
     }
 }

@@ -4,8 +4,9 @@ class ComboboxController{
         this.model = new ComboboxModel(data);
     }
 
-    async init(options = {}){
-        await this.view.create({
+    init(options = {}){
+        this.view.create({
+            elementType: options.elementType,
             parent: options.parent,
             before: options.before,
             prepend: options.prepend,

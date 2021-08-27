@@ -12,9 +12,11 @@ export default class Components{
             }
 
             let controllerClass = self.loaded.find(x => (x.name === options.name)).controller;
-            let instance = new controllerClass(options.data);
+            let instance = new controllerClass(options.data); // Data related to component should be passed here
 
             await instance.init({
+                // Data not related to component should be passed here
+                elementType: options.elementType,
                 parent: options.parent,
                 before: options.before,
                 prepend: options.prepend
