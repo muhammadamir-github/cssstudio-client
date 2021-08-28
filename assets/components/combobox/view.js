@@ -5,7 +5,7 @@ class ComboboxView{
             "Font Size": { key: "fontSize", valueSuffix: "px", keyValueSuffix: "px" },
             "Height": { key: "height", valueSuffix: "px", keyValueSuffix: "px" },
             "Width": { key: "width", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
-            "Border Size": { key: "border", valueSuffix: "px", keyValueSuffix: "px solid black" },
+            "Border Size": { key: "borderSize", valueSuffix: "px", keyValueSuffix: "px solid black" },
             "Border Radius": { key: "borderRadius", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
             "Border Style": { key: "borderStyle", valueSuffix: "", keyValueSuffix: "" },
             "Text Align": { key: "textAlign", valueSuffix: "", keyValueSuffix: "" },
@@ -36,14 +36,15 @@ class ComboboxView{
             "Outline Color": { key: "outlineColor", valueSuffix: "", keyValueSuffix: "" },
             "Background Color": { key: "backgroundColor", valueSuffix: "", keyValueSuffix: "" },
             "Border Color": { key: "borderColor", valueSuffix: "", keyValueSuffix: "" },
-            "Box Shadow": { key: "boxshadowColor", valueSuffix: "", keyValueSuffix: "" },
-            "Text Shadow": { key: "textShadowColor", valueSuffix: "", keyValueSuffix: "" },
+            "Box Shadow": { key: "boxShadowColor", valueSuffix: "", keyValueSuffix: "" },
             "Text Decoration Color": { key: "textDecorationColor", valueSuffix: "", keyValueSuffix: "" },
             "Duration": { key: "animatedr", valueSuffix: "s", keyValueSuffix: "s" },
             "Delay": { key: "animated", valueSuffix: "s", keyValueSuffix: "s" },
             "Iteration": { key: "animatei", valueSuffix: "", keyValueSuffix: "" },
             "Percentage": { key: "slidePercentage", valueSuffix: "%", keyValueSuffix: "%" },
-            "Opacity": { key: "slideOpacity", valueSuffix: "", keyValueSuffix: "" }
+            "Opacity": { key: "slideOpacity", valueSuffix: "", keyValueSuffix: "" },
+            "Color 1": { key: "backgroundGradient1", valueSuffix: "", keyValueSuffix: "" },
+            "Color 2": { key: "backgroundGradient2", valueSuffix: "", keyValueSuffix: "" }
         };
 
         this.colorPicker = {
@@ -268,24 +269,28 @@ class ComboboxView{
         this._element.getElementsByTagName('selected')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = `${this.data.text}: ${value}`;
         this._element.getElementsByTagName('options')[0]/*.getElementsByTagName('ul')[0]*/.style.display = 'none';
 
-        if(this.colorPicker.applyTo && this.colorPicker.applyTo.classList.contains("selected")){
+        let applyTo = document.getElementById(`preview${this.data.elementType}`) || document.getElementsByClassName(`selected`)[0];
+        if(applyTo && applyTo.classList.contains("selected")){
             if(this.data.id === "googlefonts"){
-                this.colorPicker.applyTo.style.fontFamily = value;
+                applyTo.style.fontFamily = value;
             }
 
-            combobox.classList.remove('selectedCombobox');
+            this._element.classList.remove('selectedCombobox');
         }else{
             if(this.data.id === "timing"){
                 updateElement(this.data.elementType, 'atiming', value);
                 //tb(element, 'animatet', value); tb calls updateElement
-            }
-
-            if(this.data.id === "googlefonts"){
-                tb(this.data.elementType, 'gff', value);
-            }
-
-            if(this.data.id === "endx" || this.data.id === "endy"){
-                tb(this.data.elementType,'bgge'+this.data.id.replace("end", ""), value);
+            }else{
+                if(this.data.id === "googlefonts"){
+                    updateElement(this.data.elementType, 'googlefonts', value);
+                }else{
+                    if(this.data.id === "endx" || this.data.id === "endy"){
+                        tb(this.data.elementType,'bgge'+this.data.id.replace("end", ""), value);
+                    }else{
+                        let key = this.textKeyMap[this.data.text].key;
+                        updateElement(this.data.elementType, key, value);
+                    }
+                }
             }
         }
     }
@@ -293,7 +298,7 @@ class ComboboxView{
     toggle(e, self){
         if(e.target.tagName == "SPAN"){
             let options = e.target.parentElement.parentElement.parentElement.getElementsByTagName("options");
-            let customValue = e.target.parentElement.parentElement.getElementsByClassName("custom");
+            let customValue = e.target.parentElement.parentElement.getElementsByClassName("custom")[0] || e.target.parentElement.parentElement.getElementsByClassName("customlarge")[0];
             let combobox = e.target.parentElement.parentElement.parentElement;
             let colordisplay = e.target.parentElement.parentElement.getElementsByTagName("colordisplay");
             let selected_a_span = e.target;
@@ -314,8 +319,7 @@ class ComboboxView{
                 }
             }
 
-            if(customValue[0]){
-                customValue = customValue[0];
+            if(customValue){
                 if(customValue.style.display == 'block'){
                     customValue.style.display = 'none';
                     selected_a_span.style.textAlign = 'unset';

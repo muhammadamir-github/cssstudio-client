@@ -72,55 +72,43 @@ class UserMediaManager{
         }
     }
 
-    showImageInfo(e,target){
-
+    showImageInfo(e, target){
         var filename = $(target).attr('data-title');
         var size = $(target).attr('data-size');
         var title = $(target).attr('data-image-title');
         var des = $(target).attr('data-description');
 
-        if(title == "null" || title == null){
-            title = "";
-        }
+        if(title == "null" || title == null){ title = ""; }
+        if(des == "null" || des == null){ des = ""; }
 
-        if(des == "null" || des == null){
-            des = "";
-        }
-
-        var div = document.createElement('div');
-        div.className = 'mediaInfo';
-        div.id = target.id+'-meta';
-
-        div.addEventListener('mouseover',function(){
-            this.remove();
+        let div = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            style: {
+                left: e.clientX + 'px',
+                top: (e.clientY + window.scrollY) + 'px'
+            },
+            classes: [ "mediaInfo" ],
+            id: target.id+'-meta',
+            listeners: {
+                mouseover: function(){
+                    this.remove();
+                }
+            },
+            children: (() => {
+                return [
+                    "Title: "+title,
+                    des.length > 150 ? 'Description: '+des.substring(0,150)+"..." : 'Description: '+des,
+                    "File Name: "+filename,
+                    'Size: '+Globals.pageHandler.calculator.formatBytes(size),
+                ].map(x => {
+                    return {
+                        type: "p",
+                        text: x,
+                    }
+                })
+            })(),
         });
-
-        var p = document.createElement('p');
-        p.innerText = "File Name: "+filename;
-
-        var p2 = document.createElement('p');
-        p2.innerText = 'Size: '+Globals.pageHandler.calculator.formatBytes(size);
-
-        var p3 = document.createElement('p');
-        p3.innerText = "Title: "+title;
-
-        var p4 = document.createElement('p');
-
-        if(des.length > 150){
-            p4.innerText = 'Description: '+des.substring(0,150)+"...";
-        }else{
-            p4.innerText = 'Description: '+des;
-        }
-
-        div.appendChild(p3);
-        div.appendChild(p4);
-        div.appendChild(p);
-        div.appendChild(p2);
-
-        div.style.left = e.clientX + 'px';
-        div.style.top = (e.clientY + window.scrollY) + 'px';
-
-        Globals.window.body.appendChild(div);
     }
 
     hideImageInfo(target){
@@ -411,103 +399,77 @@ class UserMediaManager{
         const user_images = self.user_images;
 
         $("#bg-image-manager-images-box").empty();
+        for(var i=0; i<user_images.length; i++){
+            let div = Globals.elements.new({
+                type: "div",
+                parent: document.getElementById("bg-image-manager-images-box"),
+                listeners: {
+                    click: document.getElementsByClassName('selElForImgPik')[0] ? function(){
+                        let image = this.getElementsByTagName("img")[0];
 
-        for(var i = 0; i < user_images.length; i++){
-
-            var image = document.createElement('img');
-            image.src = 'http://localhost:8000/api/assets/'+user_images[i].path;
-            image.setAttribute("data-title",user_images[i].name);
-            image.setAttribute("data-size",user_images[i].size);
-            image.setAttribute("data-image-title",user_images[i].title);
-            image.setAttribute("data-description",user_images[i].description);
-            image.setAttribute("data-m-id",user_images[i].id);
-
-            image.id = randomize.elementId(5);
-
-            var div = document.createElement('div');
-
-            var span = document.createElement('span');
-
-            if(user_images[i].title == null || user_images[i].title == ""){
-                if(user_images[i].name.length > 15){
-                    span.innerText = user_images[i].name.substring(0,15)+"...";
-                }else{
-                    span.innerText = user_images[i].name;
-                }
-            }else{
-                if(user_images[i].title !== null && user_images[i].title !== ""){
-                    if(user_images[i].title.length > 15){
-                        span.innerText = user_images[i].title.substring(0,15)+"...";
-                    }else{
-                        span.innerText = user_images[i].title;
-                    }
-                }
-            }
-
-            (function(span,image){
-                span.addEventListener('mouseover',function(e){
-                    self.showImageInfo(e,image);
-                });
-
-                span.addEventListener('mouseout',function(){
-                    self.hideImageInfo(image);
-                });
-            })(span,image);
-
-            var editicon = document.createElement('i');
-            editicon.className = 'fas fa-pen';
-
-            (function(image,editicon,i){
-                editicon.addEventListener('click',function(){
-                    mediaEditor.open("image",image);
-                });
-            })(image,editicon,i);
-
-            var deleteicon = document.createElement('i');
-            deleteicon.className = 'fas fa-trash';
-
-            (function(user_images,deleteicon,i){
-                deleteicon.addEventListener('click',function(){
-                    self.deleteMedia(user_images[i].id,'Image');
-                });
-            })(user_images,deleteicon,i);
-
-            div.appendChild(image);
-            div.appendChild(span);
-            div.appendChild(deleteicon);
-            div.appendChild(editicon);
-
-            if(document.getElementsByClassName('selElForImgPik')[0]){
-                (function(div,image){
-                    div.addEventListener('click',function(){
                         if(document.getElementsByClassName('selElForImgPik')[0]){
-                            document.getElementsByClassName('selElForImgPik')[0].setAttribute('src',image.src);
+                            document.getElementsByClassName('selElForImgPik')[0].setAttribute('src', 'http://localhost:8000/api/assets/'+image.src);
                             if(document.getElementsByClassName('selElForImgPik_invoker')[0]){
-                                document.getElementsByClassName('selElForImgPik_invoker')[0].setAttribute('src',image.src);
+                                document.getElementsByClassName('selElForImgPik_invoker')[0].setAttribute('src', 'http://localhost:8000/api/assets/'+image.src);
                             }
                         }
-                    });
-                })(div,image);
-            }else{
-                if($(document.getElementsByClassName("selected")[0]).attr("data-e-type") == 'video'){
-                    (function(div,image){
-                        div.addEventListener('click',function(){
-                            document.getElementsByClassName('selected')[0].setAttribute('poster',image.src);
-                        });
-                    })(div,image);
-                }else{
-                    (function(div,image){
-                        div.addEventListener('click',function(){
-                            document.getElementsByClassName('selected')[0].src = image.src;
-                        });
-                    })(div,image);
-                }
-            }
-
-            document.getElementById("bg-image-manager-images-box").appendChild(div);
-
+                    } : $(document.getElementsByClassName("selected")[0]).attr("data-e-type") == 'video' ? function(e){
+                        let image = this.getElementsByTagName("img")[0];
+                        document.getElementsByClassName('selected')[0].setAttribute('poster', 'http://localhost:8000/api/assets/'+image.src);
+                    } : function(){
+                        let image = this.getElementsByTagName("img")[0];
+                        document.getElementsByClassName('selected')[0].src = 'http://localhost:8000/api/assets/'+image.src;
+                    }
+                },
+                children: [
+                    {
+                        type: "img",
+                        id: randomize.elementId(5),
+                        attributes: {
+                            src: 'http://localhost:8000/api/assets/'+user_images[i].path,
+                            "data-title": user_images[i].name,
+                            "data-size": user_images[i].size,
+                            "data-image-title": user_images[i].title,
+                            "data-description": user_images[i].description,
+                            "data-m-id": user_images[i].id,
+                        }
+                    },
+                    {
+                        type: "span",
+                        text: user_images[i].title ? (user_images[i].title.length > 15 ? user_images[i].title.substring(0,15)+"..." : user_images[i].title) : user_images[i].name ? (user_images[i].name.length > 15 ? user_images[i].name.substring(0,15)+"..." : user_images[i].name) : "",
+                        listeners: {
+                            mouseover: function(e){
+                                let image = this.parentElement.getElementsByTagName("img")[0];
+                                self.showImageInfo(e, image);
+                            },
+                            mouseout: function(){
+                                let image = this.parentElement.getElementsByTagName("img")[0];
+                                self.hideImageInfo(image);
+                            }
+                        }
+                    },
+                    {
+                        type: "i",
+                        classes: [ "fas", "fa-trash" ],
+                        listeners: {
+                            click: function(){
+                                self.deleteMedia(user_images[i].id, 'Image');
+                            }
+                        }
+                    },
+                    {
+                        type: "i",
+                        classes: [ "fas", "fa-pen" ],
+                        listeners: {
+                            click: function(){
+                                let image = this.parentElement.getElementsByTagName("img")[0];
+                                mediaEditor.open("image", image);
+                            }
+                        }
+                    },
+                ]
+            });
         }
-
     }
 
     showUserVideos(forElement){
@@ -515,94 +477,21 @@ class UserMediaManager{
         const user_videos = self.user_videos;
 
         $("#videoManager-videos-box").empty();
-
         if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video' || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-player') || $(document.getElementsByClassName('selected')[0]).attr('data-e-type').includes('video-playlist')){
-
-            for(var i = 0; i < user_videos.length; i++){
-
+            for(var i=0; i<user_videos.length; i++){
                 var title = user_videos[i].title;
                 var description = user_videos[i].description;
 
-                if(title == null){
-                    title == "";
-                }
+                if(title == null){ title == ""; }
+                if(description == null){ description == ""; }
 
-                if(description == null){
-                    description == "";
-                }
+                let div = Globals.elements.new({
+                    type: "div",
+                    parent: document.getElementById("videoManager-videos-box"),
+                    listeners: {
+                        click: document.getElementsByClassName('selElForVidPik')[0] ? function(){
+                            let image = this.getElementsByTagName("img")[0];
 
-                var image = document.createElement('img');
-                image.src = 'http://localhost:8000/api/assets/'+user_videos[i].thumbnail;
-                image.setAttribute("data-title",user_videos[i].name);
-                image.setAttribute("data-size",user_videos[i].size);
-                image.setAttribute("data-video-url",user_videos[i].path);
-                image.setAttribute("data-video-title",title);
-                image.setAttribute("data-video-des",description);
-                image.setAttribute("data-m-id",user_videos[i].id);
-                image.setAttribute("data-video-len",user_videos[i].length);
-                //image.setAttribute("data-video-thumbnail",response.items[i].snippet.thumbnails.high.url);
-                //image.setAttribute("alt","");
-
-                image.id = randomize.elementId(5);
-
-                image.addEventListener('click',VideoManager.changeVideo);
-
-                var div = document.createElement('div');
-
-                var span = document.createElement('span');
-
-                if(title == null || title == ""){
-                    if(user_videos[i].name.length > 15){
-                        span.innerText = user_videos[i].name.substring(0,15)+"...";
-                    }else{
-                        span.innerText = user_videos[i].name;
-                    }
-                }else{
-                    if(title !== null && title !== ""){
-                        if(title.length > 15){
-                            span.innerText = title.substring(0,15)+"...";
-                        }else{
-                            span.innerText = title;
-                        }
-                    }
-                }
-
-                (function(span,image){
-                    span.addEventListener('mouseover',function(e){
-                        VideoManager.showVideoInfo(e,image);
-                    });
-
-                    span.addEventListener('mouseout',function(){
-                        VideoManager.hideVideoInfo(image);
-                    });
-                })(span,image);
-
-                var editicon = document.createElement('i');
-                editicon.className = 'fas fa-pen';
-
-                (function(image,editicon,i){
-                    editicon.addEventListener('click',function(){
-                        mediaEditor.open("video",image);
-                    });
-                })(image,editicon,i);
-
-                var deleteicon = document.createElement('i');
-                deleteicon.className = 'fas fa-trash';
-
-                (function(user_videos,deleteicon,i){
-                    deleteicon.addEventListener('click',function(){
-                        self.deleteMedia(user_videos[i].id,'Video');
-                    });
-                })(user_videos,deleteicon,i);
-
-                div.appendChild(image);
-                div.appendChild(span);
-                div.appendChild(editicon);
-                div.appendChild(deleteicon);
-
-                if(document.getElementsByClassName('selElForVidPik')[0]){
-                    (function(div,image,forElement){
-                        div.addEventListener('click',function(){
                             if(document.getElementsByClassName('selElForVidPik')[0]){
                                 document.getElementsByClassName('selElForVidPik')[0].setAttribute("data-vid-url",'http://localhost:8000/api/assets/'+$(image).attr('data-video-url'));
                                 document.getElementsByClassName('selElForVidPik')[0].getElementsByTagName("img")[0].src = image.src;
@@ -614,53 +503,92 @@ class UserMediaManager{
                                     document.getElementsByClassName('selElForVidPik_invoker')[0].parentElement.parentElement.getElementsByTagName("td")[1].innerText = image.getAttribute("data-video-title");
                                 }
                             }
-                        });
-                    })(div,image,forElement);
-                }else{
-                    if($(document.getElementsByClassName("selected")[0]).attr("data-e-type").includes('video-player')){
-                        (function(div,image){
-                            div.addEventListener('click',function(){
-                                document.getElementsByClassName('selected')[0].getElementsByTagName("video")[0].src = 'http://localhost:8000/api/assets/'+$(image).attr('data-video-url');
-                                document.getElementsByClassName('selected')[0].getElementsByClassName("video-player-thumb")[0].setAttribute("src",image.src);
+                        } : $(document.getElementsByClassName("selected")[0]).attr("data-e-type").includes('video-player') ? function(e){
+                            let image = this.getElementsByTagName("img")[0];
 
-                                document.getElementsByClassName('selected')[0].getElementsByClassName("video-info")[0].getElementsByClassName("heading")[0].innerText = image.getAttribute("data-video-title");
-                                document.getElementsByClassName('selected')[0].getElementsByClassName("video-info")[0].getElementsByClassName("description")[0].innerText = image.getAttribute("data-video-des");
+                            document.getElementsByClassName('selected')[0].getElementsByTagName("video")[0].src = 'http://localhost:8000/api/assets/'+$(image).attr('data-video-url');
+                            document.getElementsByClassName('selected')[0].getElementsByClassName("video-player-thumb")[0].setAttribute("src",image.src);
 
-                                document.getElementsByClassName('selected')[0].setAttribute("data-title",image.getAttribute("data-video-title"));
-                                document.getElementsByClassName('selected')[0].setAttribute("data-description",image.getAttribute("data-video-des"));
+                            document.getElementsByClassName('selected')[0].getElementsByClassName("video-info")[0].getElementsByClassName("heading")[0].innerText = image.getAttribute("data-video-title");
+                            document.getElementsByClassName('selected')[0].getElementsByClassName("video-info")[0].getElementsByClassName("description")[0].innerText = image.getAttribute("data-video-des");
 
-                                document.getElementsByClassName('selected')[0].getElementsByTagName("video")[0].setAttribute("data-len",image.getAttribute("data-video-len"));
+                            document.getElementsByClassName('selected')[0].setAttribute("data-title",image.getAttribute("data-video-title"));
+                            document.getElementsByClassName('selected')[0].setAttribute("data-description",image.getAttribute("data-video-des"));
 
-                                if(document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0]){
-                                    document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].innerText = image.getAttribute("data-video-title");
+                            document.getElementsByClassName('selected')[0].getElementsByTagName("video")[0].setAttribute("data-len",image.getAttribute("data-video-len"));
 
-                                    if(image.getAttribute("data-video-title").length >= 10){
-                                        document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].style.fontSize = "35px";
-                                    }else{
-                                        if(image.getAttribute("data-video-title").length < 10){
-                                            document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].style.fontSize = "50px";
-                                        }
+                            if(document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0]){
+                                document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].innerText = image.getAttribute("data-video-title");
+
+                                if(image.getAttribute("data-video-title").length >= 10){
+                                    document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].style.fontSize = "35px";
+                                }else{
+                                    if(image.getAttribute("data-video-title").length < 10){
+                                        document.getElementsByClassName('selected')[0].getElementsByClassName("video-cover")[0].getElementsByTagName("p")[0].style.fontSize = "50px";
                                     }
                                 }
+                            }
+                        } : function(){
+                            let image = this.getElementsByTagName("img")[0];
 
-                            });
-                        })(div,image);
-                    }else{
-                        (function(div,image){
-                            div.addEventListener('click',function(){
-                                document.getElementsByClassName('selected')[0].src = 'http://localhost:8000/api/assets/'+$(image).attr('data-video-url');
-                                document.getElementsByClassName('selected')[0].setAttribute("poster",image.src);
-                            });
-                        })(div,image);
-                    }
-                }
-
-                document.getElementById("videoManager-videos-box").appendChild(div);
-
+                            document.getElementsByClassName('selected')[0].src = 'http://localhost:8000/api/assets/'+$(image).attr('data-video-url');
+                            document.getElementsByClassName('selected')[0].setAttribute("poster",image.src);
+                        }
+                    },
+                    children: [
+                        {
+                            type: "img",
+                            id: randomize.elementId(5),
+                            listeners: {
+                                click: VideoManager.changeVideo,
+                            },
+                            attributes: {
+                                src: 'http://localhost:8000/api/assets/'+user_videos[i].thumbnail,
+                                "data-title": user_videos[i].name,
+                                "data-size": user_videos[i].size,
+                                "data-video-url": user_videos[i].path,
+                                "data-video-title": title,
+                                "data-video-des": description,
+                                "data-video-len": user_videos[i].length,
+                                "data-m-id": user_videos[i].id,
+                            }
+                        },
+                        {
+                            type: "span",
+                            text: title ? (title.length > 15 ? title.substring(0,15)+"..." : title) : user_videos[i].name ? (user_videos[i].name.length > 15 ? user_videos[i].name.substring(0,15)+"..." : user_videos[i].name) : "",
+                            listeners: {
+                                mouseover: function(e){
+                                    let image = this.parentElement.getElementsByTagName("img")[0];
+                                    VideoManager.showVideoInfo(e, image);
+                                },
+                                mouseout: function(){
+                                    let image = this.parentElement.getElementsByTagName("img")[0];
+                                    VideoManager.hideVideoInfo(image);
+                                }
+                            }
+                        },
+                        {
+                            type: "i",
+                            classes: [ "fas", "fa-trash" ],
+                            listeners: {
+                                click: function(){
+                                    self.deleteMedia(user_videos[i].id, 'Video');
+                                }
+                            }
+                        },
+                        {
+                            type: "i",
+                            classes: [ "fas", "fa-pen" ],
+                            listeners: {
+                                click: function(){
+                                    let image = this.parentElement.getElementsByTagName("img")[0];
+                                    mediaEditor.open("video", image);
+                                }
+                            }
+                        },
+                    ]
+                });
             }
-
         }
-
     }
-
 }

@@ -90,97 +90,19 @@ class FontsManager{
         elmnt.style.cursor = 'default';
     }
 
-    addFontComboBox(){
-        var comboboxOptions = ["Sans", "Sans-Serif", "Helvectia", "Monospace", "Cursive", "Fantasy"];
-
-        var combobox = Globals.elements.new({
-            type: "combobox",
+    async addFontComboBox(){
+        let combobox = await Globals.components.new({
+            name: "combobox",
             parent: document.getElementsByClassName('fontManager')[0],
-            id: "wpb_fontFamily",
-            style: { marginTop: "50px" },
-            listeners: {
-                mousedown: function(e){
-                    Globals.pageHandler.fontmanager.mousedown(e);
-                }
-            },
-            children: [
-                {
-                    type: "selected",
-                    children: [
-                        {
-                            type: "a",
-                            children: [
-                                {
-                                    type: "span",
-                                    text: "Font Family",
-                                    listeners: {
-                                        click: function(e){
-                                            if(e.target == this){
-                                                let combobox_options = this.parentElement.parentElement.parentElement.getElementsByTagName("options")[0];
-                                                let combobox_options_ul = combobox_options.getElementsByTagName("ul")[0];
-
-                                                if(combobox_options.style.display == 'block'){
-                                                    combobox_options.style.display = 'none';
-                                                    combobox_options_ul.style.display = 'none';
-
-                                                    this.style.textAlign = '';
-                                                    combobox.classList.remove('selectedCombobox');
-                                                }else{
-                                                    combobox_options.style.display = 'block';
-                                                    combobox_options_ul.style.display = 'block';
-
-                                                    this.style.textAlign = 'left';
-                                                    combobox.classList.add('selectedCombobox');
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    ]
+            elementType: "selected",
+            data: {
+                id: "wpb_fontFamily",
+                style: {
+                    marginTop: "50px",
                 },
-                {
-                    type: "options",
-                    children: [
-                        {
-                            type: "ul",
-                            children: (() => {
-                                return comboboxOptions.map((x,i) => {
-                                    return {
-                                        type: "li",
-                                        listeners: {
-                                            click: function(){
-                                                let combobox_selected_a_span = this.parentElement.parentElement.parentElement.getElementsByTagName("selected")[0].getElementsByTagName("span")[0];
-                                                let combobox_options = this.parentElement.parentElement;
-
-                                                document.getElementsByClassName('selected')[0].style.fontFamily = this.getElementsByTagName('a')[0].innerText;
-                                                combobox_selected_a_span.innerText = 'Font Family' + ': ' + this.getElementsByTagName('a')[0].innerText;
-                                                combobox_options.style.display = 'none';
-                                            }
-                                        },
-                                        children: [
-                                            {
-                                                type: "a",
-                                                text: x,
-                                                style: { fontFamily: x },
-                                                classes: i == comboboxOptions.length-1 ? [ "lastoption" ] : null,
-                                                children: [
-                                                    {
-                                                        type: "span",
-                                                        text: x,
-                                                        classes: [ "value" ]
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                })
-                            })(),
-                        }
-                    ]
-                },
-            ]
+                text: "Font Family",
+                options: ["Sans", "Sans-Serif", "Helvectia", "Monospace", "Cursive", "Fantasy"]
+            }
         });
     }
 }

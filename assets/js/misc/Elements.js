@@ -27,7 +27,7 @@ export default class Elements{
             return element;
         }
     }
-    
+
     addAttributes(element, attributes = {}){
         if(typeof attributes === "object" && attributes){
             for(var i=0; i<Object.keys(attributes).length; i++){

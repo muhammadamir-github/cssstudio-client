@@ -5,170 +5,51 @@ class WebPageBuilderTools{
 
     load(){
         const self = this;
-        var toolsdiv = document.createElement('div');
-        toolsdiv.setAttribute('class','wpb_tools');
 
-        var addelement_div = document.createElement('div');
-        var addelement = document.createElement('i');
-        var addelement_tooltip = document.createElement('span');
-        addelement.setAttribute('class','fas fa-plus');
-        addelement_div.setAttribute('class','wpb_tool_ae');
-        addelement_tooltip.setAttribute('class','wpb_tools_tooltip');
-        addelement_tooltip.innerText = 'Add Elements';
-        addelement_div.addEventListener('click',function(){
-            self.toolClicked('add-element');
+        let toolsdiv = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "wpb_tools" ],
+            children: (() => {
+                return [
+                    { name: "add-element", text: "Add Elements", class: "wpb_tool_ae", icon: "fas fa-plus", isInitiallyUnavailable: false, },
+                    { name: "remove-element", text: "Remove Elements", class: "wpb_tool_re", icon: "fas fa-trash", isInitiallyUnavailable: true, },
+                    { name: "duplicate-element", text: "Duplicate Elements", class: "wpb_tool_de", icon: "fas fa-clone", isInitiallyUnavailable: true, },
+                    { name: "style-element", text: "Style Elements", class: "wpb_tool_se", icon: "fas fa-paint-brush", isInitiallyUnavailable: true, },
+                    { name: "change-font", text: "Change Font", class: "wpb_tool_cf", icon: "fas fa-font", isInitiallyUnavailable: true, },
+                    { name: "background-image", text: "Image Manager", class: "wpb_tool_bgi", icon: "fas fa-image", isInitiallyUnavailable: true, },
+                    { name: "video-manager", text: "Video Manager", class: "wpb_tool_vmi", icon: "fas fa-video", isInitiallyUnavailable: true, },
+                    { name: "resize-page", text: "Resize Page", class: "wpb_tool_rp", icon: "fas fa-arrows-alt-v", isInitiallyUnavailable: false, },
+                    { name: "toggle-gridlines", text: "Show GridLines", class: "wpb_tool_tgl", icon: "fas fa-th-large", isInitiallyUnavailable: false, },
+                    { name: "settings", text: "Settings", class: "wpb_tool_s", icon: "fas fa-cog", isInitiallyUnavailable: false, },
+                ].map((x,i) => {
+                    return {
+                        type: "div",
+                        classes: [ x.class ],
+                        style: x.isInitiallyUnavailable ? {
+                            opacity: "0.4",
+                            pointerEvents: "none"
+                        } : null,
+                        listeners: {
+                            click: function(){
+                                self.toolClicked(x.name);
+                            }
+                        },
+                        children: [
+                            {
+                                type: "i",
+                                classes: x.icon.split(" "),
+                            },
+                            {
+                                type: "span",
+                                classes: [ "wpb_tools_tooltip" ],
+                                text: x.text,
+                            }
+                        ]
+                    }
+                });
+            })(),
         });
-
-        var styleelement_div = document.createElement('div');
-        var styleelement = document.createElement('i');
-        var styleelement_tooltip = document.createElement('span');
-        styleelement.setAttribute('class','fas fa-paint-brush');
-        styleelement_div.setAttribute('class','wpb_tool_se');
-        styleelement_tooltip.setAttribute('class','wpb_tools_tooltip');
-        styleelement_tooltip.innerText = 'Style Element';
-        styleelement_div.style.opacity = '0.4';
-        styleelement_div.style.pointerEvents = 'none';
-        styleelement_div.addEventListener('click',function(){
-            self.toolClicked('style-element');
-        });
-
-        var resizesite_div = document.createElement('div');
-        var resizesite = document.createElement('i');
-        var resizesite_tooltip = document.createElement('span');
-        resizesite.setAttribute('class','fas fa-arrows-alt-v');
-        resizesite_div.setAttribute('class','wpb_tool_rp');
-        resizesite_tooltip.setAttribute('class','wpb_tools_tooltip');
-        resizesite_tooltip.innerText = 'Resize Page';
-        resizesite_div.addEventListener('click',function(){
-            self.toolClicked('resize-page');
-        });
-
-        var settings_div = document.createElement('div');
-        var settings = document.createElement('i');
-        var settings_tooltip = document.createElement('span');
-        settings.setAttribute('class','fas fa-cog');
-        settings_div.setAttribute('class','wpb_tool_s');
-        settings_tooltip.setAttribute('class','wpb_tools_tooltip');
-        settings_tooltip.innerText = 'Settings';
-
-        var removeelement_div = document.createElement('div');
-        var removeelement = document.createElement('i');
-        var removeelement_tooltip = document.createElement('span');
-        removeelement.setAttribute('class','fas fa-trash');
-        removeelement_div.setAttribute('class','wpb_tool_re');
-        removeelement_div.style.opacity = '0.4';
-        removeelement_div.style.pointerEvents = 'none';
-        removeelement_tooltip.setAttribute('class','wpb_tools_tooltip');
-        removeelement_tooltip.innerText = 'Remove Element';
-        removeelement_div.addEventListener('click',function(){
-            self.toolClicked('remove-element');
-        });
-
-        var duplicateelement_div = document.createElement('div');
-        var duplicateelement = document.createElement('i');
-        var duplicateelement_tooltip = document.createElement('span');
-        duplicateelement.setAttribute('class','fas fa-clone');
-        duplicateelement_div.setAttribute('class','wpb_tool_de');
-        duplicateelement_div.style.opacity = '0.4';
-        duplicateelement_div.style.pointerEvents = 'none';
-        duplicateelement_tooltip.setAttribute('class','wpb_tools_tooltip');
-        duplicateelement_tooltip.innerText = 'Duplicate Element';
-        duplicateelement_div.addEventListener('click',function(){
-            self.toolClicked('duplicate-element');
-        });
-
-        var changefont_div = document.createElement('div');
-        var changefont = document.createElement('i');
-        var changefont_tooltip = document.createElement('span');
-        changefont.setAttribute('class','fas fa-font');
-        changefont_div.setAttribute('class','wpb_tool_cf');
-        changefont_div.style.opacity = '0.4';
-        changefont_div.style.pointerEvents = 'none';
-        changefont_tooltip.setAttribute('class','wpb_tools_tooltip');
-        changefont_tooltip.innerText = 'Change Font';
-        changefont_div.addEventListener('click',function(){
-            self.toolClicked('change-font');
-        });
-
-        var backgroundimage_div = document.createElement('div');
-        var backgroundimage = document.createElement('i');
-        var backgroundimage_tooltip = document.createElement('span');
-        backgroundimage.setAttribute('class','fas fa-image');
-        backgroundimage_div.setAttribute('class','wpb_tool_bgi');
-        backgroundimage_div.style.opacity = '0.4';
-        backgroundimage_div.style.pointerEvents = 'none';
-        backgroundimage_tooltip.setAttribute('class','wpb_tools_tooltip');
-        backgroundimage_tooltip.innerText = 'Image Manager';
-        backgroundimage_div.addEventListener('click',function(){
-            self.toolClicked('background-image');
-        });
-
-        var gridlines_div = document.createElement('div');
-        var gridlines = document.createElement('i');
-        var gridlines_tooltip = document.createElement('span');
-        gridlines.setAttribute('class','fas fa-th-large');
-        gridlines_div.setAttribute('class','wpb_tool_tgl');
-        gridlines_tooltip.setAttribute('class','wpb_tools_tooltip');
-        gridlines_tooltip.innerText = 'Show GridLines';
-        gridlines_div.addEventListener('click',function(){
-            self.toolClicked('toggle-gridlines');
-        });
-
-        var videomanager_div = document.createElement('div');
-        var videomanager = document.createElement('i');
-        var videomanager_tooltip = document.createElement('span');
-        videomanager.setAttribute('class','fas fa-video');
-        videomanager_div.setAttribute('class','wpb_tool_vmi');
-        videomanager_div.style.opacity = '0.4';
-        videomanager_div.style.pointerEvents = 'none';
-        videomanager_tooltip.setAttribute('class','wpb_tools_tooltip');
-        videomanager_tooltip.innerText = 'Video Manager';
-        videomanager_div.addEventListener('click',function(){
-            self.toolClicked('video-manager');
-        });
-
-        styleelement_div.appendChild(styleelement);
-        styleelement_div.appendChild(styleelement_tooltip);
-
-        addelement_div.appendChild(addelement);
-        addelement_div.appendChild(addelement_tooltip);
-
-        resizesite_div.appendChild(resizesite);
-        resizesite_div.appendChild(resizesite_tooltip);
-
-        settings_div.appendChild(settings);
-        settings_div.appendChild(settings_tooltip);
-
-        removeelement_div.appendChild(removeelement);
-        removeelement_div.appendChild(removeelement_tooltip);
-
-        duplicateelement_div.appendChild(duplicateelement);
-        duplicateelement_div.appendChild(duplicateelement_tooltip);
-
-        changefont_div.appendChild(changefont);
-        changefont_div.appendChild(changefont_tooltip);
-
-        backgroundimage_div.appendChild(backgroundimage);
-        backgroundimage_div.appendChild(backgroundimage_tooltip);
-
-        gridlines_div.appendChild(gridlines);
-        gridlines_div.appendChild(gridlines_tooltip);
-
-        videomanager_div.appendChild(videomanager);
-        videomanager_div.appendChild(videomanager_tooltip);
-
-        toolsdiv.appendChild(addelement_div);
-        toolsdiv.appendChild(removeelement_div);
-        toolsdiv.appendChild(duplicateelement_div);
-        toolsdiv.appendChild(styleelement_div);
-        toolsdiv.appendChild(changefont_div);
-        toolsdiv.appendChild(backgroundimage_div);
-        toolsdiv.appendChild(videomanager_div);
-        toolsdiv.appendChild(resizesite_div);
-        toolsdiv.appendChild(gridlines_div);
-        toolsdiv.appendChild(settings_div);
-
-        Globals.window.body.appendChild(toolsdiv);
     }
 
     toolClicked(toolName){
@@ -176,114 +57,151 @@ class WebPageBuilderTools{
         if(toolName == 'resize-page'){
             var previewsite = document.getElementsByClassName('previewsite')[0];
 
-            var resizers = document.createElement('div');
-            resizers.className = 'resizers';
-
-            var bottomresizer = document.createElement('div');
-            bottomresizer.className = 'bottom-resizer';
-
-            bottomresizer.addEventListener('mousedown',function(e){
-                Globals.pageHandler.site.resize(e);
-            });
-
-            bottomresizer.addEventListener('mouseup',function(e){
-                Globals.pageHandler.site.stopResizeDrag(e);
-            });
-
-            resizers.appendChild(bottomresizer);
-            previewsite.appendChild(resizers);
+            let resizers = Globals.elements.new({
+                type: "div",
+                parent: previewsite,
+                classes: [ "resizers" ],
+                children: [
+                    {
+                        type: "div",
+                        classes: [ "bottom-resizer" ],
+                        listeners: {
+                            mousedown: function(e){
+                                Globals.pageHandler.site.resize(e);
+                            },
+                            mouseup: function(e){
+                                Globals.pageHandler.site.stopResizeDrag(e);
+                            }
+                        }
+                    }
+                ]
+            })
 
             this.updateToolButton(toolName);
         }else{
             if(toolName == 'add-element'){
-
                 self.total_elements_selected_to_add = 0;
 
-                var elementmanager = document.createElement('div');
-                elementmanager.setAttribute('id','element-manager');
+                let elementmanager = Globals.elements.new({
+                    type: "div",
+                    parent: Globals.window.body,
+                    id: "element-manager",
+                    children: [
+                        {
+                            type: "p",
+                            classes: [ "heading" ],
+                            text: "Add Elements",
+                        },
+                        {
+                            type: "div",
+                            id: "em-sidebar",
+                            children: [
+                                {
+                                    type: "ul",
+                                    children: [
+                                        ...(() => {
+                                            return [
+                                                {
+                                                    text: "Create New",
+                                                    classes: [ "selected_li" ],
+                                                    listeners: {
+                                                        click: function(){
+                                                            let section1 = document.getElementById("wpb_ae_createnewelement");
+                                                            let section2 = document.getElementById("wpb_ae_addfromstorage");
+                                                            let section3 = document.getElementById("wpb_ae_readymadeelements");
 
-                var heading = document.createElement('p');
-                heading.className = 'heading';
-                heading.innerText = 'Add Elements';
+                                                            section1.style.display = 'inline-block';
+                                                            section2.style.display = 'none';
+                                                            section3.style.display = 'none';
 
-                var em_sidebar = document.createElement('div');
-                em_sidebar.setAttribute('id','em-sidebar');
+                                                            [...this.parentElement.getElementsByTagName("li")].forEach(x => {
+                                                                x.classList.remove("selected_li");
+                                                            });
 
-                var em_sidebar_ul = document.createElement('ul');
+                                                            this.classList.add('selected_li');
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    text: "Add From Storage",
+                                                    classes: [],
+                                                    listeners: {
+                                                        click: function(){
+                                                            let section1 = document.getElementById("wpb_ae_createnewelement");
+                                                            let section2 = document.getElementById("wpb_ae_addfromstorage");
+                                                            let section3 = document.getElementById("wpb_ae_readymadeelements");
 
-                var em_sidebar_ul_li_createnew = document.createElement('li');
-                em_sidebar_ul_li_createnew.innerText = 'Create New';
-                em_sidebar_ul_li_createnew.className = 'selected_li';
+                                                            section2.style.display = 'inline-block';
+                                                            section1.style.display = 'none';
+                                                            section3.style.display = 'none';
 
-                var em_sidebar_ul_li_pickfromstorage = document.createElement('li');
-                em_sidebar_ul_li_pickfromstorage.innerText = 'Add From Storage';
+                                                            [...this.parentElement.getElementsByTagName("li")].forEach(x => {
+                                                                x.classList.remove("selected_li");
+                                                            });
 
-                var em_sidebar_ul_li_readymadeelements = document.createElement('li');
-                em_sidebar_ul_li_readymadeelements.innerText = 'Ready Made Elements';
+                                                            this.classList.add('selected_li');
+                                                        }
+                                                    }
+                                                },
+                                                {
+                                                    text: "Ready Made Elements",
+                                                    classes: [],
+                                                    listeners: {
+                                                        click: function(){
+                                                            let section1 = document.getElementById("wpb_ae_createnewelement");
+                                                            let section2 = document.getElementById("wpb_ae_addfromstorage");
+                                                            let section3 = document.getElementById("wpb_ae_readymadeelements");
 
-                em_sidebar_ul.appendChild(em_sidebar_ul_li_createnew);
-                em_sidebar_ul.appendChild(em_sidebar_ul_li_pickfromstorage);
-                em_sidebar_ul.appendChild(em_sidebar_ul_li_readymadeelements);
+                                                            section2.style.display = 'none';
+                                                            section1.style.display = 'none';
+                                                            section3.style.display = 'inline-block';
 
-                em_sidebar.appendChild(em_sidebar_ul);
+                                                            [...this.parentElement.getElementsByTagName("li")].forEach(x => {
+                                                                x.classList.remove("selected_li");
+                                                            });
 
-                var sidebar_button_add_elements = document.createElement('button');
-                sidebar_button_add_elements.innerText = 'Add Selected Elements';
-                sidebar_button_add_elements.addEventListener('click',function(){
-                    Globals.pageHandler.site.addElements();
+                                                            this.classList.add('selected_li');
+                                                        }
+                                                    }
+                                                }
+                                            ].map((x, i) => {
+                                                return {
+                                                    type: 'li',
+                                                    text: x.text,
+                                                    classes: x.classes,
+                                                    listeners: x.listeners,
+                                                }
+                                            })
+                                        })(),
+                                        {
+                                            type: "button",
+                                            text: "Add Selected Elements",
+                                            listeners: {
+                                                click: function(){
+                                                    Globals.pageHandler.site.addElements();
+                                                }
+                                            }
+                                        },
+                                        ...(() => {
+                                            return [
+                                                { id: "wpb_ae_createnewelement", style: {}, },
+                                                { id: "wpb_ae_addfromstorage", style: { display: "none" }, },
+                                                { id: "wpb_ae_readymadeelements", style: { display: "none" }, }
+                                            ].map((x, i) => {
+                                                return {
+                                                    type: 'div',
+                                                    id: x.id,
+                                                    classes: [ "section" ],
+                                                    style: x.style,
+                                                }
+                                            })
+                                        })(),
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 });
-
-                em_sidebar.appendChild(sidebar_button_add_elements);
-
-                elementmanager.appendChild(heading);
-                elementmanager.appendChild(em_sidebar);
-
-                var section1 = document.createElement('div');
-                section1.className = 'section';
-                section1.id = 'wpb_ae_createnewelement';
-
-                var section2 = document.createElement('div');
-                section2.className = 'section';
-                section2.id = 'wpb_ae_addfromstorage';
-                section2.style.display = 'none';
-
-                var section3 = document.createElement('div');
-                section3.className = 'section';
-                section3.id = 'wpb_ae_readymadeelements';
-                section3.style.display = 'none';
-
-                em_sidebar_ul_li_createnew.addEventListener('click',function(){
-                    section1.style.display = 'inline-block';
-                    section2.style.display = 'none';
-                    section3.style.display = 'none';
-                    this.className = 'selected_li';
-                    em_sidebar_ul_li_pickfromstorage.className = '';
-                    em_sidebar_ul_li_readymadeelements.className = '';
-                });
-
-                em_sidebar_ul_li_pickfromstorage.addEventListener('click',function(){
-                    section2.style.display = 'inline-block';
-                    section1.style.display = 'none';
-                    section3.style.display = 'none';
-                    this.className = 'selected_li';
-                    em_sidebar_ul_li_createnew.className = '';
-                    em_sidebar_ul_li_readymadeelements.className = '';
-                });
-
-                em_sidebar_ul_li_readymadeelements.addEventListener('click',function(){
-                    section2.style.display = 'none';
-                    section1.style.display = 'none';
-                    section3.style.display = 'inline-block';
-                    this.className = 'selected_li';
-                    em_sidebar_ul_li_createnew.className = '';
-                    em_sidebar_ul_li_pickfromstorage.className = '';
-                });
-
-                elementmanager.appendChild(section1);
-                elementmanager.appendChild(section2);
-                elementmanager.appendChild(section3);
-
-                Globals.window.body.appendChild(elementmanager);
 
                 Globals.pageHandler.userInterface.Add_CreateNewElement_Preview('button');
                 Globals.pageHandler.userInterface.Add_CreateNewElement_Preview('div');
@@ -345,7 +263,6 @@ class WebPageBuilderTools{
 
 
                 this.updateToolButton(toolName);
-                //$('.previewsite').find('*').not('.resizers, .bottom-resizer').css({'opacity':'0.3','pointer-events':'none'});
             }else{
                 if(toolName == 'style-element'){
                     Globals.pageHandler.styler.open();

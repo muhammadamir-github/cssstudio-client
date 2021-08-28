@@ -3,20 +3,21 @@ function saveTextAsFile(){
     var textFileAsBlob = new Blob([text], {type:'text/plain'});
     var fileName = 'Css Stylesheet';
 
-    var downloadLink = document.createElement("a");
-    downloadLink.download = fileName;
-    downloadLink.innerHTML = "Download File";
-    if (window.webkitURL != null)
-    {
-        downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
-    }
-    else
-    {
-        downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
-        downloadLink.onclick = destroyClickedElement;
-        downloadLink.style.display = "none";
-        document.body.appendChild(downloadLink);
-    }
+    let downloadLink = Globals.elements.new({
+        type: "a",
+        parent: Globals.window.body,
+        attributes: {
+            download: fileName,
+            href: window.webkitURL != null ? window.webkitURL.createObjectURL(textFileAsBlob) : window.URL.createObjectURL(textFileAsBlob),
+        },
+        html: "Download File",
+        style: {
+            display: "none"
+        },
+        listeners: window.webkitURL == null ? {
+            click: destroyClickedElement
+        } : null,
+    })
 
     downloadLink.click();
 }

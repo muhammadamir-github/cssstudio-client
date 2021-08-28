@@ -32,146 +32,128 @@ class Animator{
 
     readymadeanimations(element){
         const self = this;
-        var animationsstyle = document.createElement('style');
 
-        var readymadeanimations_div = document.createElement('div');
-        readymadeanimations_div.setAttribute('id','rmadiv');
-        readymadeanimations_div.style.opacity = '0.3';
-        readymadeanimations_div.style.pointerEvents = 'none';
-
-        var readymadeanimations_div_banner = document.createElement('banner');
-        var readymadeanimations_div_banner_text = document.createElement('h5');
-        readymadeanimations_div_banner_text.innerText = 'Ready Made Animations';
-        readymadeanimations_div_banner.appendChild(readymadeanimations_div_banner_text);
-        readymadeanimations_div.appendChild(readymadeanimations_div_banner);
-
-        var animationcontainer = document.createElement('div');
-        animationcontainer.setAttribute('id','rmadiv_acontainer');
-
-        readymadeanimations_div.appendChild(animationcontainer);
-
-        $('#animate').append(readymadeanimations_div);
-
-        var noanimation = document.createElement('animationPreview');
-        noanimation.setAttribute('id','noa');
-        noanimation.style.backgroundSize = 'contain';
-        noanimation.style.backgroundImage = 'url(none.png)';
-        noanimation.style.backgroundRepeat = 'no-repeat';
-        noanimation.style.border = '0px';
-        noanimation.addEventListener('click',function(){
-            var previewelement = document.getElementById('preview'+element);
-
-            previewelement.style.animationDelay = '';
-            previewelement.style.animationTimingFunction = '';
-            previewelement.style.animationIterationCount = '';
-            previewelement.style.animationName = '';
-            previewelement.style.animationDuration = '';
-
-            $('animationPreview').css('border','');
-            noanimation.style.border = '1px solid green';
+        let animationsStyle = Globals.elements.new({
+            type: 'style',
+            parent: Globals.window.body,
+            text: Globals.pageHandler.data.plan == 'Gold' || Globals.pageHandler.data.plan == 'Diamond' ? (() => {
+                return Globals.pageHandler.animations.map(x => {
+                    return '\n' + x.css + '\n';
+                }).flat().join("");
+            })() : null,
         });
-        animationcontainer.append(noanimation);
 
-        if(Globals.pageHandler.data.plan !== 'Free'){
-            if(Globals.pageHandler.data.plan == 'Gold' || Globals.pageHandler.data.plan == 'Diamond'){
-
-                for(var i = 1; i < Globals.pageHandler.animations.length; i++){
-                    animationsstyle.innerText += '\n' + Globals.pageHandler.animations[i].css + '\n';
-                    var animation = document.createElement('animationPreview');
-                    animation.setAttribute('id','a'+Globals.pageHandler.animations[i].name);
-
-                    var previewbutton = document.createElement('button');
-                    previewbutton.setAttribute('id','previewbutton');
-                    previewbutton.setAttribute('class','apelement');
-
-                    if(element == 'input'){
-                        previewbutton.innerText = document.getElementById('previewbox').getElementsByTagName(element)[0].value;
-                    }else{
-
-                        if(element == 'paragraph'){
-                            previewbutton.innerText = document.getElementById('previewbox').getElementsByTagName('p')[0].innerText;
+        let readyMadeAnimationsDiv = Globals.elements.new({
+            type: 'div',
+            parent: document.getElementById("animate"),
+            id: "rmadiv",
+            style: {
+                opacity: Globals.pageHandler.data.plan == 'Gold' || Globals.pageHandler.data.plan == 'Diamond' ? "1" : "0.3",
+                pointerEvents: Globals.pageHandler.data.plan == 'Gold' || Globals.pageHandler.data.plan == 'Diamond' ? "unset" : "none"
+            },
+            children: [
+                {
+                    type: "banner",
+                    children: [
+                        {
+                            type: "h5",
+                            text: Globals.pageHandler.data.plan == 'Gold' || Globals.pageHandler.data.plan == 'Diamond' ? `${Globals.pageHandler.animations.length} Ready Made Animations` : "Ready Made Animations"
                         }
+                    ]
+                },
+                {
+                    type: "div",
+                    id: "rmadiv_acontainer",
+                    children: [
+                        {
+                            type: "animationPreview",
+                            id: "noa",
+                            style: {
+                                backgroundSize: "contain",
+                                backgroundImage: "url(none.png)",
+                                backgroundRepeat: "no-repeat",
+                                border: "0px",
+                            },
+                            listeners: {
+                                click: function(){
+                                    var previewelement = document.getElementById('preview'+element);
 
-                        if(element == 'image' || element == 'video'){
-                            previewbutton.innerText = element;
-                        }
+                                    previewelement.style.animationDelay = '';
+                                    previewelement.style.animationTimingFunction = '';
+                                    previewelement.style.animationIterationCount = '';
+                                    previewelement.style.animationName = '';
+                                    previewelement.style.animationDuration = '';
 
-                        if(element == 'heading'){
-                            previewbutton.innerText = document.getElementById('previewbox').getElementsByTagName('h3')[0].innerText;
-                        }
+                                    $('animationPreview').css('border','');
+                                    this.style.border = '1px solid green';
+                                }
+                            }
+                        },
+                        ...(() => {
+                            return Globals.pageHandler.data.plan == 'Gold' || Globals.pageHandler.data.plan == 'Diamond' ? Globals.pageHandler.animations.map((x, i) => {
+                                let text = "Button";
 
-                    }
+                                let duration = Math.floor((Math.random() * 3) + 1);
+                                if(x.name.includes('FADE')){ duration = '3s'; }
+                                if(x.name.includes('BOUNCE')){ duration = '1s'; }
+                                if(x.name.includes('FLIP')){ duration = '2s'; }
+                                if(x.name.includes('ROTATE')){ duration = '3s'; }
+                                if(x.name.includes('SLIDE')){ duration = '3s'; }
+                                if(x.name.includes('ZOOM')){ duration = '2s'; }
+                                if(x.name.includes('ROLL')){ duration = '2s'; }
 
+                                if(element == 'input'){
+                                    text = document.getElementById('previewbox').getElementsByTagName(element)[0].value;
+                                }else{
+                                    if(element == 'paragraph'){
+                                        text = document.getElementById('previewbox').getElementsByTagName('p')[0].innerText;
+                                    }
 
-                    previewbutton.style.fontSize = '8px';
-                    previewbutton.style.width = '50px';
-                    previewbutton.style.height = '20px';
-                    previewbutton.style.position = 'relative';
-                    previewbutton.style.transform = 'translate(0)';
-                    previewbutton.style.left = '25px';
-                    previewbutton.style.top = '40px';
-                    previewbutton.style.marginTop = '0px';
+                                    if(element == 'image' || element == 'video'){ text = element; }
+                                    if(element == 'heading'){
+                                        text = document.getElementById('previewbox').getElementsByTagName('h3')[0].innerText;
+                                    }
+                                }
 
-                    previewbutton.style.animationName = Globals.pageHandler.animations[i].name;
-                    previewbutton.style.animationDuration = Math.floor((Math.random() * 3) + 1);
+                                return {
+                                    type: "animationPreview",
+                                    id: `a${x.name}`,
+                                    children: [
+                                        {
+                                            type: "button",
+                                            id: "previewbutton",
+                                            classes: [ "apelement" ],
+                                            text: text,
+                                            style: {
+                                                fontSize: "8px",
+                                                width: "50px",
+                                                height: "20px",
+                                                position: "relative",
+                                                transform: "translate(0)",
+                                                left: "25px",
+                                                top: "40px",
+                                                marginTop: "0px",
+                                                animationName: x.name,
+                                                animationDuration: duration,
+                                                animationDelay: Math.floor((Math.random() * 8) + 3) + 's',
+                                                animationTimingFunction: "linear",
+                                                animationIterationCount: "Infinite",
+                                            }
+                                        }
+                                    ]
+                                }
+                            }) : [];
+                        })(),
+                    ]
+                },
+            ]
+        });
 
-                    if(Globals.pageHandler.animations[i].name.includes('FADE')){
-                        previewbutton.style.animationDuration = '3s';
-                    }
-
-                    if(Globals.pageHandler.animations[i].name.includes('BOUNCE')){
-                        previewbutton.style.animationDuration = '1s';
-                    }
-
-                    if(Globals.pageHandler.animations[i].name.includes('FLIP')){
-                        previewbutton.style.animationDuration = '2s';
-                    }
-
-                    if(Globals.pageHandler.animations[i].name.includes('ROTATE')){
-                        previewbutton.style.animationDuration = '3s';
-                    }
-
-                    if(Globals.pageHandler.animations[i].name.includes('SLIDE')){
-                        previewbutton.style.animationDuration = '3s';
-                    }
-
-                    if(Globals.pageHandler.animations[i].name.includes('ZOOM')){
-                        previewbutton.style.animationDuration = '2s';
-                    }
-
-                    if(Globals.pageHandler.animations[i].name.includes('ROLL')){
-                        previewbutton.style.animationDuration = '2s';
-                    }
-
-                    previewbutton.style.animationDelay = Math.floor((Math.random() * 8) + 3) + 's';
-                    previewbutton.style.animationTimingFunction = 'linear';
-                    previewbutton.style.animationIterationCount = 'Infinite';
-
-                    animation.appendChild(previewbutton);
-
-                    /*if(i == 8 || i == 12 || i == 18 || i == 28 || i == 31){
-                        //animation.style.border = '1px solid #0066ff';
-
-                        var newlabel = document.createElement('span');
-                        newlabel.setAttribute('class','alabel_new');
-                        newlabel.innerText = 'New';
-                        animation.append(newlabel);
-
-                        animation.classList.add('newanimation');
-                    }*/
-
-                    animationcontainer.append(animation);
-                    self.applyanimation(Globals.pageHandler.animations[i].name,element);
-            }
-
-            readymadeanimations_div_banner_text.innerText = Globals.pageHandler.animations.length + ' Ready Made Animations';
-            readymadeanimations_div.style.opacity = '1';
-            readymadeanimations_div.style.pointerEvents = 'unset';
+        let animationPreviews = readyMadeAnimationsDiv.getElementsByTagName("animationPreview");
+        for(var i=0; i<animationPreviews.length; i++){
+            if(i === 0){ continue; }
+            self.applyanimation(animationPreviews[i].style.animationName, animationPreviews[i]);
         }
-    }
-
-    document.getElementsByTagName('body')[0].appendChild(animationsstyle);
-
     }
 
     async setupSlideOptions(element){
@@ -478,107 +460,64 @@ class Animator{
 
     async animate(element,createnew){
         const self = this;
-        if(createnew == 'false'){
 
-            document.getElementsByClassName('spinner')[0].style.display = 'block';
-            var panel = document.getElementById('panel');
-            panel.style.opacity = '0.3';
-            panel.style.pointerEvents = 'none';
+        let panel = document.getElementById('panel');
+        let backButton = Globals.elements.new({
+            type: "button",
+            parent: document.getElementById("buttons"),
+            classes: [ "barbutton", "backButton" ],
+            text: "Go Back",
+            style: {
+                marginLeft: "10px",
+            },
+            listeners: {
+                click: function(){
+                    var spinner = document.getElementsByClassName('spinner')[0];
+                    spinner.style.display = 'block';
 
-            var info = document.createElement('p');
-            info.setAttribute('class','info');
-            info.innerText = 'Animations might appear irresponsive in the preview box due to different positioning.'
+                    var panel = document.getElementById('panel');
+                    panel.style.opacity = '0.3';
+                    panel.style.pointerEvents = 'none';
 
-            var backbutton = document.createElement('button');
-            backbutton.setAttribute('class','barbutton');
-            backbutton.innerText = 'Go Back';
-            backbutton.style.marginLeft = '10px';
-            backbutton.addEventListener('click',function(){
-
-                var spinner = document.getElementsByClassName('spinner')[0];
-                spinner.style.display = 'block';
-
-                var panel = document.getElementById('panel');
-                panel.style.opacity = '0.3';
-                panel.style.pointerEvents = 'none';
-
-                var animatediv = document.getElementById('animate');
-
-                setTimeout(function(){
-
-                    spinner.style.display = 'none';
-                    panel.style.opacity = '1';
-                    panel.style.pointerEvents = 'unset';
-                    animatediv.style.display = 'none';
-                    backbutton.remove();
-                    $('.info').remove();
-
-                },1);
-
-            });
-
-            setTimeout(function(){
-
-                $('#buttons').append(backbutton);
-                $('#previewbox').append(info);
-                document.getElementsByClassName('spinner')[0].style.display = 'none';
-                document.getElementById('animate').style.display = 'block';
-                panel.style.opacity = '1';
-                panel.style.pointerEvents = 'unset';
-
-            },1);
-
-        }
+                    var animatediv = document.getElementById('animate');
+                    setTimeout(function(){
+                        spinner.style.display = 'none';
+                        panel.style.opacity = '1';
+                        panel.style.pointerEvents = 'unset';
+                        animatediv.style.display = 'none';
+                        backButton.remove();
+                        $('.info').remove();
+                    },1);
+                }
+            }
+        });
 
         if(createnew == 'true'){
-
-            var info = document.createElement('p');
-            info.setAttribute('class','info');
-            info.innerText = 'Animations might appear irresponsive in the preview box due to different positioning.'
-
-            var animatediv = document.createElement('div');
-            animatediv.setAttribute('id','animate');
-
-            var backbutton = document.createElement('button');
-            backbutton.setAttribute('class','barbutton');
-            backbutton.innerText = 'Go Back';
-            backbutton.style.marginLeft = '10px';
-            backbutton.addEventListener('click',function(){
-
-                var spinner = document.getElementsByClassName('spinner')[0];
-                spinner.style.display = 'block';
-
-                var panel = document.getElementById('panel');
-                panel.style.opacity = '0.3';
-                panel.style.pointerEvents = 'none';
-
-                var animatediv = document.getElementById('animate');
-
-                setTimeout(function(){
-
-                    spinner.style.display = 'none';
-                    panel.style.opacity = '1';
-                    panel.style.pointerEvents = 'unset';
-                    animatediv.style.display = 'none';
-                    backbutton.remove();
-                    $('.info').remove();
-
-                },1);
-
+            var animatediv = Globals.elements.new({
+                type: "div",
+                parent: panel,
+                id: "animate",
             });
 
-            //---------------- Settings ----------------------
-
-            var settings_div = document.createElement('div');
-            settings_div.setAttribute('id','settingsdiv');
-
-            settings_div.style.zIndex = '3';
-
-            var settings_div_banner = document.createElement('banner');
-            var settings_div_banner_text = document.createElement('h5');
-            settings_div_banner_text.innerText = 'Settings';
-            settings_div_banner.appendChild(settings_div_banner_text);
-            settings_div.appendChild(settings_div_banner);
+            var settings_div = Globals.elements.new({
+                type: "div",
+                parent: animatediv,
+                id: "settingsdiv",
+                style: {
+                    zIndex: "3",
+                },
+                children: [
+                    {
+                        type: "banner",
+                        children: [
+                            {
+                                type: "h5",
+                                text: "Settings"
+                            }
+                        ]
+                    }
+                ]
+            });
 
             let comboboxes = [
                 {
@@ -655,29 +594,29 @@ class Animator{
                     }
                 });
             }
+        }
 
-            animatediv.appendChild(settings_div);
+        document.getElementsByClassName('spinner')[0].style.display = 'block';
+        panel.style.opacity = '0.3';
+        panel.style.pointerEvents = 'none';
 
-            //----------------Fade in timming------------------
+        setTimeout(function(){
+            let info = Globals.elements.new({
+                type: "p",
+                parent: document.getElementById("previewbox"),
+                classes: [ "info" ],
+                text: "Animations might appear irresponsive in the preview box due to different positioning."
+            });
 
-            document.getElementsByClassName('spinner')[0].style.display = 'block';
-            var panel = document.getElementById('panel');
-            panel.style.opacity = '0.3';
-            panel.style.pointerEvents = 'none';
+            document.getElementsByClassName('spinner')[0].style.display = 'none';
+            document.getElementById('animate').style.display = 'block';
+            panel.style.opacity = '1';
+            panel.style.pointerEvents = 'unset';
 
-            setTimeout(function(){
-
-                $('#buttons').append(backbutton);
-                $('#panel').append(animatediv);
-                $('#previewbox').append(info);
-                document.getElementsByClassName('spinner')[0].style.display = 'none';
-                panel.style.opacity = '1';
-                panel.style.pointerEvents = 'unset';
+            if(createnew == 'true'){
                 self.readymadeanimations(element);
                 self.setup(element);
-
-            },1);
-
-        }
+            }
+        },1);
     }
 }

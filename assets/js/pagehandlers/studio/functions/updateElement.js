@@ -93,7 +93,7 @@ function updateElement(elementtype,attr,value){
         atimingcombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
     }
 
-    if(attr == 'fontsize'){
+    if(attr == 'fontSize'){
         var fontsizecombobox_options = document.getElementById('fontsize').getElementsByTagName( 'options' )[0];
 
         element.style.fontSize = value;
@@ -118,7 +118,7 @@ if(attr == 'googlefonts'){
     googlefontscombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 }
 
-if(attr == 'fontfamily'){
+if(attr == 'fontFamily'){
     var fontfamilycombobox_options = document.getElementById('fontfamily').getElementsByTagName( 'options' )[0];
 
     element.style.fontFamily = value;
@@ -126,7 +126,7 @@ if(attr == 'fontfamily'){
     fontfamilycombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 }
 
-if(attr == 'fontweight'){
+if(attr == 'fontWeight'){
     var fontweightcombobox_options = document.getElementById('fontweight').getElementsByTagName( 'options' )[0];
 
     element.style.fontWeight = value;
@@ -134,7 +134,7 @@ if(attr == 'fontweight'){
     fontweightcombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 }
 
-if(attr == 'fontstyle'){
+if(attr == 'fontStyle'){
     var fontstylecombobox_options = document.getElementById('fontstyle').getElementsByTagName( 'options' )[0];
 
     element.style.fontStyle = value;
@@ -142,7 +142,7 @@ if(attr == 'fontstyle'){
     fontstylecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 }
 
-if(attr == 'fontvariant'){
+if(attr == 'fontVariant'){
     var fontvariantcombobox_options = document.getElementById('fontvariant').getElementsByTagName( 'options' )[0];
 
     element.style.fontVariant = value;
@@ -150,7 +150,7 @@ if(attr == 'fontvariant'){
     fontvariantcombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 }
 
-if(attr == 'fontstretch'){
+if(attr == 'fontStretch'){
     var fontstretchcombobox_options = document.getElementById('fontstretch').getElementsByTagName( 'options' )[0];
 
     element.style.fontStretch = value;
@@ -158,7 +158,7 @@ if(attr == 'fontstretch'){
     fontstretchcombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 }
 
-if(attr == 'textalign'){
+if(attr == 'textAlign'){
     var textaligncombobox_options = document.getElementById('textalign').getElementsByTagName( 'options' )[0];
 
     element.style.textAlign = value;
@@ -166,7 +166,7 @@ if(attr == 'textalign'){
     textaligncombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 }
 
-if(attr == 'textdecoration'){
+if(attr == 'textDecoration'){
     var textdecorationcombobox_options = document.getElementById('textdecoration').getElementsByTagName( 'options' )[0];
     var textdecorationcombobox_selected = document.getElementById('textdecoration').getElementsByTagName( 'selected' )[0];
 
@@ -181,7 +181,7 @@ if(attr == 'textdecoration'){
     textdecorationcombobox_selected.getElementsByTagName('a')[0].getElementsByTagName('span')[0].style.width = '';
 }
 
-if(attr == 'textdecorationstyle'){
+if(attr == 'textDecorationStyle'){
     var textdecorationstylecombobox_options = document.getElementById('textdecorationstyle').getElementsByTagName( 'options' )[0];
 
     element.style.textDecorationStyle = value;
@@ -189,7 +189,7 @@ if(attr == 'textdecorationstyle'){
     textdecorationstylecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 }
 
-if(attr == 'borderradius'){
+if(attr == 'borderRadius'){
     var borderradiuscombobox_options = document.getElementById('borderradius').getElementsByTagName( 'options' )[0];
 
     element.style.borderRadius = value;
@@ -205,7 +205,7 @@ if(attr == 'bordersize'){
     bordersizecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 }
 
-if(attr == 'borderstyle'){
+if(attr == 'borderStyle'){
     var borderstylecombobox_options = document.getElementById('borderstyle').getElementsByTagName( 'options' )[0];
 
     element.style.borderStyle = value;
@@ -213,7 +213,7 @@ if(attr == 'borderstyle'){
     borderstylecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 }
 
-if(attr == 'boxshadow'){
+if(attr == 'boxShadow'){
     var boxshadowcombobox_options = document.getElementById('boxshadow').getElementsByTagName( 'options' )[0];
     element.style.boxShadow = value;
 
@@ -234,7 +234,7 @@ if(attr == 'opacity'){
 
 }
 
-if(attr == 'whitespace'){
+if(attr == 'whiteSpace'){
     var whitespacecombobox_options = document.getElementById('whitespace').getElementsByTagName( 'options' )[0];
 
     element.style.whiteSpace = value;
@@ -243,16 +243,16 @@ if(attr == 'whitespace'){
 
 }
 
-if(attr == 'textshadow'){
+if(attr == 'textShadow'){
     var textshadowcombobox_options = document.getElementById('boxshadow').getElementsByTagName( 'options' )[0];
     element.style.textShadow = value;
 }
 
-if(attr == 'outlinewidth'){
+if(attr == 'outlineWidth'){
     element.style.outlineWidth = value;
 }
 
-if(attr == 'outlinestyle'){
+if(attr == 'outlineStyle'){
     var outlinestylecombobox_options = document.getElementById('outlinestyle').getElementsByTagName( 'options' )[0];
 
     element.style.outlineStyle = value;
@@ -260,39 +260,39 @@ if(attr == 'outlinestyle'){
     outlinestylecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
 }
 
-if(attr == 'margintop'){
+if(attr == 'marginTop'){
     element.style.marginTop = value;
 }
 
-if(attr == 'marginleft'){
+if(attr == 'marginLeft'){
     element.style.marginLeft = value;
 }
 
-if(attr == 'marginbottom'){
+if(attr == 'marginBottom'){
     element.style.marginBottom = value;
 }
 
-if(attr == 'marginright'){
+if(attr == 'marginRight'){
     element.style.marginRight = value;
 }
 
-if(attr == 'paddingtop'){
+if(attr == 'paddingTop'){
     element.style.paddingTop = value;
 }
 
-if(attr == 'paddingleft'){
+if(attr == 'paddingLeft'){
     element.style.paddingLeft = value;
 }
 
-if(attr == 'paddingbottom'){
+if(attr == 'paddingBottom'){
     element.style.paddingBottom = value;
 }
 
-if(attr == 'paddingright'){
+if(attr == 'paddingRight'){
     element.style.paddingRight = value;
 }
 
-if(attr == 'letterspace'){
+if(attr == 'letterSpacing'){
     element.style.letterSpacing = value;
 }
 

@@ -1,105 +1,124 @@
-async function finishWork(element){
+ async function finishWork(element){
     var panel = document.getElementById('panel');
 
-    var finishdiv = document.createElement('div')
-    finishdiv.setAttribute('id','finish');
+    let children = [
+        ...(() => {
+            return [
+                {
+                    text: "Save to storage",
+                    id: "savebutton",
+                    click: function(){
+                        let finishdiv_textarea_element = document.getElementById("textareaE");
+                        let finishdiv_textarea_animation = document.getElementById("textareaA");
+                        let eName = document.getElementById("elementName");
+                        let aName = document.getElementById("animationName");
 
-    var finishdiv_textarea_element = document.createElement('textarea');
-    var finishdiv_textarea_animation = document.createElement('textarea');
-    finishdiv_textarea_element.setAttribute('id','textareaE');
-    finishdiv_textarea_animation.setAttribute('id','textareaA');
+                        if(finishdiv_textarea_element.value !== '' && finishdiv_textarea_animation.value !== ''){
+                            if(aName.value == '' && eName.value == null){
+                                Globals.notificationHandler.new('Error, please enter animation and element names.');
+                                return;
+                            }
 
-    finishdiv_textarea_element.setAttribute('readonly','');
-    finishdiv_textarea_animation.setAttribute('readonly','');
+                            if(eName.value == '' || eName.value == null){
+                                Globals.notificationHandler.new('Error, please enter element name.');
+                                return;
+                            }
 
-    var textarea_element_p = document.createElement('p');
-    textarea_element_p.innerText = 'Style CSS:';
-    textarea_element_p.setAttribute('id','eH');
+                            if(aName.value == '' || aName.value == null){
+                                Globals.notificationHandler.new('Error, please enter animation name.');
+                                return;
+                            }
 
-    var textarea_animation_p = document.createElement('p');
-    textarea_animation_p.innerText = 'Animation CSS:';
-    textarea_animation_p.setAttribute('id','aH')
+                            if(aName.value !== '' || eName.value == ''){
+                                saveToStorage(element);
+                            }
+                        }
 
-    var savebutton = document.createElement('button');
-    var downloadtextfilebutton = document.createElement('button');
-    var cancelbutton = document.createElement('button');
-    savebutton.innerText = 'Save to storage';
-    downloadtextfilebutton.innerText = 'Download Stylesheet (.txt)';
-    cancelbutton.innerText = 'Cancel';
-    savebutton.setAttribute('id','savebutton');
-    downloadtextfilebutton.setAttribute('id','dltextbutton');
-    cancelbutton.setAttribute('id','cancelbutton');
+                        if(finishdiv_textarea_element.value !== '' && finishdiv_textarea_animation.value == ''){
+                            if(eName.value !== ''){
+                                saveToStorage(element);
+                            }else{
+                                Globals.notificationHandler.new('Error, please enter element name.');
+                            }
+                        }
 
-    var eName = document.createElement('input');
-    var aName = document.createElement('input');
-    eName.setAttribute('id','elementName');
-    eName.setAttribute('placeholder','Element Name');
-    aName.setAttribute('id','animationName');
-    aName.setAttribute('placeholder','Animation Name');
+                        if(finishdiv_textarea_animation.value !== '' && finishdiv_textarea_element.value == ''){
+                            if(aName.value !== ''){
+                                saveToStorage(element);
+                            }else{
+                                Globals.notificationHandler.new('Error, please enter animation name.');
+                            }
+                        }
+                    }
+                },
+                {
+                    text: "Download Stylesheet (.txt)",
+                    id: "dltextbutton",
+                    click: saveTextAsFile,
+                },
+                {
+                    text: "Cancel",
+                    id: "cancelbutton",
+                    click: function(){
+                        $("#finish").remove();
+                        $("#panel").find("*").not('#finish, #textareaE, #textareaA, #eH, #aH, #savebutton, #dltextbutton, #cancelbutton').css({'opacity':'1','pointer-events':'unset'});
+                    }
+                },
+            ].map((x, i) => {
+                return {
+                    type: "button",
+                    text: x.text,
+                    id: x.id,
+                    listeners: {
+                        click: x.click,
+                    },
+                }
+            });
+        })(),
+        ...(() => {
+            return [
+                { id: "elementName", placeholder: "Element Name" },
+                { id: "animationName", placeholder: "Animation Name" }
+            ].map((x, i) => {
+                return {
+                    type: "input",
+                    id: x.id,
+                    attributes: {
+                        placeholder: x.placeholder,
+                    }
+                }
+            });
+        })(),
+        ...(() => {
+            return [
+                { id: "textareaE", readonly: true, text: "Style CSS:", textId: "eH" },
+                { id: "textareaA", readonly: true, text: "Animation CSS:", textId: "aH" }
+            ].map((x, i) => {
+                return [
+                    {
+                        type: "p",
+                        text: x.text,
+                        id: x.textId,
+                    },
+                    {
+                        type: "textarea",
+                        id: x.id,
+                        attributes: {
+                            readonly: x.readonly,
+                        }
+                    }
+                ]
+            }).flat();
+        })(),
+    ];
 
-    downloadtextfilebutton.addEventListener('click',function(){
-        saveTextAsFile();
+    let finishdiv = Globals.elements.new({
+        type: "div",
+        parent: panel,
+        id: "finish",
+        children,
     });
 
-    cancelbutton.addEventListener('click',function(){
-        $("#finish").remove();
-        $("#panel").find("*").not('#finish, #textareaE, #textareaA, #eH, #aH, #savebutton, #dltextbutton, #cancelbutton').css({'opacity':'1','pointer-events':'unset'});
-    });
-
-    savebutton.addEventListener('click',function(){
-
-        if(finishdiv_textarea_element.value !== '' && finishdiv_textarea_animation.value !== ''){
-            if(aName.value == '' && eName.value == null){
-                Globals.notificationHandler.new('Error, please enter animation and element names.');
-                return;
-            }
-
-            if(eName.value == '' || eName.value == null){
-                Globals.notificationHandler.new('Error, please enter element name.');
-                return;
-            }
-
-            if(aName.value == '' || aName.value == null){
-                Globals.notificationHandler.new('Error, please enter animation name.');
-                return;
-            }
-
-            if(aName.value !== '' || eName.value == ''){
-                saveToStorage(element);
-            }
-        }
-
-        if(finishdiv_textarea_element.value !== '' && finishdiv_textarea_animation.value == ''){
-            if(eName.value !== ''){
-                saveToStorage(element);
-            }else{
-                Globals.notificationHandler.new('Error, please enter element name.');
-            }
-        }
-
-        if(finishdiv_textarea_animation.value !== '' && finishdiv_textarea_element.value == ''){
-            if(aName.value !== ''){
-                saveToStorage(element);
-            }else{
-                Globals.notificationHandler.new('Error, please enter animation name.');
-            }
-        }
-
-    });
-
-    finishdiv.appendChild(savebutton);
-    finishdiv.appendChild(downloadtextfilebutton);
-    finishdiv.appendChild(cancelbutton);
-
-    finishdiv.appendChild(eName);
-    finishdiv.appendChild(aName);
-
-    finishdiv.appendChild(textarea_element_p);
-    finishdiv.appendChild(finishdiv_textarea_element);
-    finishdiv.appendChild(textarea_animation_p);
-    finishdiv.appendChild(finishdiv_textarea_animation);
-
-    panel.appendChild(finishdiv);
     $("#panel").find("*").not('#finish, #textareaE, #textareaA, #eH, #aH, #savebutton, #dltextbutton, #cancelbutton, #animationName, #elementName').css({'opacity':'0.5','pointer-events':'none'});
 
     //--------------------------------
@@ -208,32 +227,22 @@ async function finishWork(element){
     var ffinfo = [''];
 
     if(ff !== 'sans' && ff !== 'sans-serif' && ff !== 'helvectia' && ff !== 'monospace' && ff !== 'cursive' && ff !== 'fantasy'){
-
-        //console.log('started finding font.');
         for(var i=0; i < Globals.pageHandler.WebFonts.length; i++){
-
             var newfontfamiliy = Globals.pageHandler.WebFonts[i].family.replace(/ /g,"_");
             if(ff.length > newfontfamiliy.length){
                 if(ff.includes(newfontfamiliy)){
-                    //console.log('found font');
                     ffinfo =  Globals.pageHandler.WebFonts[i].family + ' : ' + JSON.stringify(Globals.pageHandler.WebFonts[i].files);
                     break;
-                }else{
-                    //console.log(newfontfamiliy + ' didnt include ff = ' + ff);
                 }
             }
 
             if(ff.length < newfontfamiliy.length){
                 if(newfontfamiliy.includes(ff)){
-                    //console.log('found font');
                     ffinfo =  Globals.pageHandler.WebFonts[i].family + ' : ' + JSON.stringify(Globals.pageHandler.WebFonts[i].files);
                     break;
-                }else{
-                    //console.log(newfontfamiliy + ' didnt include ff = ' + ff);
                 }
             }
         }
-
     }
 
     combined_array = combined_array.filter(function(str) {
@@ -244,15 +253,10 @@ async function finishWork(element){
         return el.trim();
     });
 
-
-
     if(animationcss !== ''){
         document.getElementById('textareaE').value = '.' + element + ' { ' + '\n' + '\n' + combined_array.join(';\n') + '\n' + '}' + "\n \n \n \n Google fonts used: \n \n" + ffinfo;
         document.getElementById('textareaA').value = animationcss;
     }else{
         document.getElementById('textareaE').value = '.' + element + ' { ' + '\n' + '\n' + combined_array.join(';\n') + '\n' + '}' + "\n \n \n \n Google fonts used: \n \n" + ffinfo;
     }
-
-    //console.log(combined_array);
-
 }

@@ -47,7 +47,7 @@ function setupSteps(element){
                     }
                 },
             ].map((x, i) => {
-                if(x.forAll === true || (Array.isArray(x.disallowedMemberships) && !x.disallowedMemberships.contains(Globals.pageHandler.data.plan))){
+                if(x.forAll === true || (Array.isArray(x.disallowedMemberships) && !x.disallowedMemberships.includes(Globals.pageHandler.data.plan))){
                     return {
                         type: "button",
                         text: x.name,

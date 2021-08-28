@@ -6,24 +6,22 @@ async function loadGoogleFonts(response,element,mode){
         name: "combobox",
         parent: mode == 'elementCreator' ? document.getElementById('googlefontssdiv') : document.getElementsByClassName('fontManager')[0],
         elementType: mode == "elementCreator" ? element : "selected",
-        style: mode == "elementCreator" ? {
-            left: '50%',
-            top: '50%',
-            marginTop: '25px',
-            marginLeft: '0px',
-            transform: 'translate(-50%,-50%)'
-        } : null,
         data: {
             id: "googlefonts",
             text: "Google Fonts",
+            style: mode == "elementCreator" ? {
+                left: '50%',
+                top: '50%',
+                marginTop: '25px',
+                marginLeft: '0px',
+                transform: 'translate(-50%,-50%)'
+            } : null,
             options: (() => {
-                let array = fonts.map(font => {
+                return fonts.map(font => {
                     return font.variants.map(variant => {
                         return (font.family + ' ' + variant).replace(/ /g,"_")
                     })
-                });
-
-                return array.join();
+                }).flat();
             })(),
         }
     });

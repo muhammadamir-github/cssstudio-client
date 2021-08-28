@@ -176,7 +176,7 @@ class MiniStyler{
                     value: comboboxTitle == 'Box Shadow' || comboboxTitle == 'Text Shadow' ? "0px 0px 0px" : null,
                     call: "updatePageElement"
                 } : null,
-                colorpicker: addColorPicker === 1 ? {
+                colorPicker: addColorPicker === 1 ? {
                     idPrefix: Globals.pageHandler.randomize.elementId(10),
                     style: comboboxTitle == 'Box Shadow' || comboboxTitle == 'Text Shadow' ? {
                         left: "0px",
