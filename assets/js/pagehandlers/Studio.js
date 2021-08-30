@@ -41,7 +41,6 @@ class StudioHandler{
         this.userInterface = new UserInterface;
         this.progressLoader = new ProgressLoader;
         this.elementPanel = new JadgetPanel;
-        this.validate = new Validator;
         this.elementDuplicator = new Duplicator;
         this.checkElement = new ElementPresenceChecker;
         this.elementStyles = new ElementStyleChanger;

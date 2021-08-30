@@ -1,12 +1,13 @@
 class AnimatorTimelineView{
-    constructor(){
+    constructor(controller){
+        this.controller = controller;
         this._element = null;
     }
 
     create(options = {}){
         const self = this;
-        const data = options.data;
-        const parent = options.parent;
+        const { data, parent, prepend, before, elementType } = options;
+
         let children = [];
 
         [
@@ -27,7 +28,7 @@ class AnimatorTimelineView{
             },
             {
                 name: "Play",
-                callback: function(){ self.animationActions("play", '', data.elementType); },
+                callback: function(){ self.animationActions("play", '', elementType); },
                 style: { backgroundColor: "#88cc00", left: "55px" },
                 icon: "fas fa-play",
             }
@@ -64,7 +65,7 @@ class AnimatorTimelineView{
                     },
                     listeners: {
                         click: function(){
-                            self.animationActions('switch-readymade', '', data.elementType);
+                            self.animationActions('switch-readymade', '', elementType);
                             document.getElementsByClassName('newanimationbtn')[0].style.display = 'block';
                         }
                     },
@@ -97,8 +98,8 @@ class AnimatorTimelineView{
                     click: function(){
                         $('.slideSelected').removeClass('slideSelected');
                         this.classList.add('slideSelected');
-                        self.animationActions('options-enable','',data.elementType);
-                        self.updateSlideOptions(data.elementType);
+                        self.animationActions('options-enable','', elementType);
+                        self.updateSlideOptions(elementType);
                     }
                 },
                 children: [
@@ -163,7 +164,7 @@ class AnimatorTimelineView{
             text: "Create New Animation",
             listeners: {
                 click: function(){
-                    self.animationActions('switch-custom', '', data.elementType);
+                    self.animationActions('switch-custom', '', elementType);
                     this.style.display = 'none';
                 }
             }
@@ -174,8 +175,8 @@ class AnimatorTimelineView{
             parent,
             id: "aT",
             children,
-            before: options.before,
-            prepend: options.prepend
+            before: before,
+            prepend: prepend
         });
     }
 

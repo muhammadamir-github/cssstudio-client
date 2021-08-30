@@ -1,7 +1,7 @@
-class AnimatorTimelineController{
+class SliderController{
     constructor(data){
-        this.view = new AnimatorTimelineView(this);
-        this.model = new AnimatorTimelineModel(data, this);
+        this.view = new SliderView(this);
+        this.model = new SliderModel(data, this);
     }
 
     _init(options = {}){

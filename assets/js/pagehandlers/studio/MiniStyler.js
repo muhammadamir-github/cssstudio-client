@@ -15,62 +15,72 @@ class MiniStyler{
 
     open(){
         const self = this;
-        var stylerDiv = document.createElement('div');
-        stylerDiv.className = 'miniStyler';
-        stylerDiv.addEventListener('mousedown',function(e){
-            self.mousedown(e);
-        });
 
-        var box = document.createElement('div');
-        box.className = 'miniStyler_box';
-
-        var banner = document.createElement('div');
-        banner.className = 'banner';
-
-        var banner_p = document.createElement('p');
-        banner_p.innerText = 'Mini Styler';
-
-        var stylerSettings = document.createElement('div');
-        stylerSettings.className = 'settings';
-
-        var unitLabel = document.createElement('p');
-        unitLabel.innerText = 'Unit: ';
-
-        var unitInput = document.createElement('input');
-        unitInput.type = 'text';
-        unitInput.placeholder = '%% or px';
-        unitInput.maxLength = '2';
-
-        unitInput.addEventListener('input',function(){
-            if(unitInput.value.length == 2){
-                if(unitInput.value == 'px'){
-                    self.loadComboboxes('px');
-                }else{
-                    if(unitInput.value == '%%'){
-                        self.loadComboboxes('%');
-                    }else{
-                        notification('Error, '+unitInput.value+' unit not supported');
-                    }
+        let stylerDiv = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "miniStyler" ],
+            listeners: {
+                mousedown: function(e){
+                    self.mousedown(e);
                 }
-            }
+            },
+            children: [
+                {
+                    type: "div",
+                    classes: [ "spinner" ]
+                },
+                {
+                    type: "div",
+                    classes: [ "banner" ],
+                    children: [
+                        {
+                            type: "p",
+                            text: "Mini Styler"
+                        }
+                    ]
+                },
+                {
+                    type: "div",
+                    classes: [ "miniStyler_box" ],
+                },
+                {
+                    type: "div",
+                    classes: [ "settings" ],
+                    children: [
+                        {
+                            type: "p",
+                            text: "Unit: ",
+                        },
+                        {
+                            type: "input",
+                            attributes: {
+                                type: "text",
+                                placeholder: "%% or px",
+                                maxLength: "2",
+                            },
+                            listeners: {
+                                input: function(){
+                                    if(this.value.length == 2){
+                                        if(this.value == 'px'){
+                                            self.loadComboboxes('px');
+                                        }else{
+                                            if(this.value == '%%'){
+                                                self.loadComboboxes('%');
+                                            }else{
+                                                Globals.notificationHandler.new('Error, '+this.value+' unit not supported');
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                    ]
+                }
+            ]
         });
-
-        var stylerSpinner = document.createElement('div');
-        stylerSpinner.className = 'spinner';
-
-        banner.appendChild(banner_p);
-
-        stylerSettings.appendChild(unitLabel);
-        stylerSettings.appendChild(unitInput);
-
-        stylerDiv.appendChild(stylerSpinner);
-        stylerDiv.appendChild(banner);
-        stylerDiv.appendChild(box);
-        stylerDiv.appendChild(stylerSettings);
-        Globals.window.body.appendChild(stylerDiv);
 
         this.loadComboboxes('default');
-
     }
 
     async loadComboboxes(unit){

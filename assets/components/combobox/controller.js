@@ -1,16 +1,17 @@
 class ComboboxController{
     constructor(data){
-        this.view = new ComboboxView;
-        this.model = new ComboboxModel(data);
+        this.view = new ComboboxView(this);
+        this.model = new ComboboxModel(data, this);
     }
 
-    init(options = {}){
+    _init(options = {}){
         this.view.create({
-            elementType: options.elementType,
-            parent: options.parent,
-            before: options.before,
-            prepend: options.prepend,
+            ...options,
             data: this.model.state
         });
+    }
+
+    _getModelState(){
+        return this.model.state;
     }
 }

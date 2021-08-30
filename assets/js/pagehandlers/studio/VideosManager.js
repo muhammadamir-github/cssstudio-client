@@ -27,7 +27,7 @@ class VideosManager{
                     storageSpace_showDetails(storageSpace,e);
                 },
                 mouseout: function(e){
-                    storageSpace_hideDetails(storageSpace,e);
+                    $(".storageSpace_details").remove();
                 }
             }
         });

@@ -470,12 +470,12 @@ select option{
 }
 
 #advance,#animate{
-	width: 100%;
-    height: 100%;
+    width: 100%;
+    height: calc(100% - 50px);
     position: absolute;
     background: #1a1a1a;
-    margin-top: 50px;
     z-index: 2;
+    margin-top: 50px;
 }
 
 #finish{
@@ -567,7 +567,6 @@ select option{
 	text-align: center;
     max-width: 1415px;
     max-height: 730px;
-    overflow: hidden;
 }
 
 #panel:hover{
@@ -1323,7 +1322,7 @@ z-index: 4;
     background: white;
     height: 111px;
     display: inline-block;
-    bottom: 51px;
+    bottom: 1px;
     left: 0px;
     overflow-x: scroll;
     white-space: nowrap;
@@ -2821,6 +2820,11 @@ combobox{
   border-radius: 5px;
 }
 
+combobox options{
+    max-width: 100%;
+    position: relative;
+}
+
 .miniStyler combobox,
 .fontManager combobox{
 	margin-top: 0px;
@@ -2863,12 +2867,14 @@ combobox options ul{
     list-style: none;
     padding: 0px 0px;
     position: absolute;
-    min-width: 170px;
-    top: 45px;
+    width: 100%;
     border: 1px solid #d7d7d7;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     z-index: 3;
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 combobox selected span.value, combobox options span.value{
@@ -2883,13 +2889,20 @@ combobox options ul li a{
     font-size: 13px;
     padding: 10px;
     transition: background 0.3s , color 0.1s ease-in-out;
+    background: white;
 }
+
+combobox options ul li a.combobox-selected{
+    color: white;
+    background: #1a1a1a;
+}
+
+combobox options ul li a.combobox-selected:hover{}
 
 combobox options ul li a:hover{
   background: #1a1a1a;
   color:white;
 }
-
 
 .colorpicker {
   position: absolute;

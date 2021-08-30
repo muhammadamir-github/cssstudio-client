@@ -7,14 +7,12 @@ export default class Components{
     async new(options = {}){
         const self = this;
         if(options.name && options.parent){
-            if(self.isLoaded(options.name) === false){
-                await self.load(options.name);
-            }
+            if(await self.isLoaded(options.name) === false){ await self.load(options.name); }
 
             let controllerClass = self.loaded.find(x => (x.name === options.name)).controller;
             let instance = new controllerClass(options.data); // Data related to component should be passed here
 
-            await instance.init({
+            await instance._init({
                 // Data not related to component should be passed here
                 elementType: options.elementType,
                 parent: options.parent,
@@ -26,7 +24,7 @@ export default class Components{
         }
     }
 
-    isLoaded(name){
+    async isLoaded(name){
         return this.loaded.find(x => (x.name === name)) ? true : false;
     }
 
@@ -40,18 +38,18 @@ export default class Components{
         if(allFilesInDir && Array.isArray(allFilesInDir)){
             allFilesInDir = allFilesInDir.map(x => { return x.split("=")[1].replaceAll(/\\/g,"\\\\", '').replaceAll('"', ''); });
 
-            for(var x=0; x<allFilesInDir.length; x++){
+            for (let f of allFilesInDir){
                 await new Promise((resolve, reject) => {
                     let file = Globals.elements.new({
                         type: "script",
                         parent: Globals.window.head,
                         attributes: {
                             type: "text/javascript",
-                            src: `${self.dir}/${name}/${allFilesInDir[x]}`
+                            src: `${self.dir}/${name}/${f}`
                         },
                         listeners: {
                             load: function(){
-                                if(allFilesInDir[x].includes("controller.js")){
+                                if(f.includes("controller.js")){
                                     let className = name.split("-").map(x => (x.charAt(0).toUpperCase() + x.slice(1))).join("").toString();
 
                                     self.loaded.push({

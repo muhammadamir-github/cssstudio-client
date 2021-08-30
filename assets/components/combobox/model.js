@@ -1,5 +1,12 @@
 class ComboboxModel{
-    constructor(data){
-        this.state = data;
+    constructor(data, controller){
+        this.state = {
+            ...data,
+            selected: null,
+            value: null,
+            color: null,
+        };
+        
+        this.controller = controller;
     }
 }

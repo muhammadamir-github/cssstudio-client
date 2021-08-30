@@ -9,9 +9,7 @@ class Animator{
         self.elements.animatorTimeline = await Globals.components.new({
             name: "animator-timeline",
             parent: document.getElementById("animate"),
-            data: {
-                elementType,
-            }
+            elementType,
         });
 
         $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'0.5','pointerEvents':'none'});
@@ -159,10 +157,16 @@ class Animator{
     async setupSlideOptions(element){
         const self = this;
 
-        var animationSliders = document.createElement('div');
-        animationSliders.setAttribute('id','animationSliderBox');
-        animationSliders.style.opacity = '0.5';
-        animationSliders.style.pointerEvents = 'none';
+        let animationSliders = Globals.elements.new({
+            type: "div",
+            parent: document.getElementById("aT"),
+            id: "animationSliderBox",
+            style: {
+                opacity: "0.5",
+                pointerEvents: "none"
+            },
+            before: true,
+        });
 
         var percentage = await Globals.components.new({
             name: "combobox",
@@ -211,224 +215,39 @@ class Animator{
             before: true, // Before animatorTimeline
         });
 
-        //-------End Opacity--------
+        let sliders = [
+            { id: "slideScaleX", text: "Scale x-axis", min: 1, max: 10, step: 0.1, value: 1 },
+            { id: "slideScaleY", text: "Scale y-axis", min: 1, max: 10, step: 0.1, value: 1 },
+            { id: "slideRotate", text: "Rotate", min: 1, max: 360, step: 1, value: 1 },
+            { id: "slideSkewX", text: "Skew x-axis", min: 1, max: 10, step: 0.1, value: 1 },
+            { id: "slideSkewY", text: "Skew y-axis", min: 1, max: 10, step: 0.1, value: 1 },
+            { id: "slideFontSize", text: "Font Size", min: 1, max: 100, step: 1, value: 1 },
+            { id: "slideFontWeight", text: "Font Weight", min: 0, max: 1, step: 1, value: 0 },
+            { id: "slideBorderSize", text: "Border Size", min: 1, max: 100, step: 1, value: 1 },
+            { id: "slideBorderRadius", text: "Border Radius", min: 1, max: 100, step: 1, value: 1 },
+        ];
 
-        //----------Scale-----------
+        for (let slider of sliders){
+            let box = await Globals.elements.new({
+                type: "div",
+                parent: animationSliders,
+                classes: [ "animationSliderDiv" ],
+            });
 
-        var scaleboxdiv_x = document.createElement('div');
-        var scaleboxdiv_x_p = document.createElement('p');
-        scaleboxdiv_x_p.innerText = 'Scale X-axis';
-        scaleboxdiv_x.appendChild(scaleboxdiv_x_p);
-        scaleboxdiv_x.setAttribute('class','animationSliderDiv');
-
-        var scaleboxdiv_y = document.createElement('div');
-        var scaleboxdiv_y_p = document.createElement('p');
-        scaleboxdiv_y_p.innerText = 'Scale Y-axis';
-        scaleboxdiv_y.appendChild(scaleboxdiv_y_p);
-        scaleboxdiv_y.setAttribute('class','animationSliderDiv');
-
-        var scale_slider_y = document.createElement('input');
-        scale_slider_y.setAttribute('type','range');
-        scale_slider_y.setAttribute('class','slider');
-        scale_slider_y.setAttribute('min','1');
-        scale_slider_y.setAttribute('max','10');
-        scale_slider_y.setAttribute('step','0.1');
-        scale_slider_y.setAttribute('value','1');
-        scale_slider_y.setAttribute('id','slideScaleY');
-        scaleboxdiv_y.appendChild(scale_slider_y);
-
-        var scale_slider_x = document.createElement('input');
-        scale_slider_x.setAttribute('type','range');
-        scale_slider_x.setAttribute('class','slider');
-        scale_slider_x.setAttribute('min','1');
-        scale_slider_x.setAttribute('max','10');
-        scale_slider_x.setAttribute('step','0.1');
-        scale_slider_x.setAttribute('value','1');
-        scale_slider_x.setAttribute('id','slideScaleX');
-        scaleboxdiv_x.appendChild(scale_slider_x);
-
-        scale_slider_x.addEventListener('input',function(){
-            self.dataAttributeBalancer('slideScaleX',this.value);
-        });
-
-        scale_slider_y.addEventListener('input',function(){
-            self.dataAttributeBalancer('slideScaleY',this.value);
-        });
-
-        //--------End Scale---------
-
-        //----------Rotate-----------
-
-        var rotateboxdiv_x = document.createElement('div');
-        var rotateboxdiv_x_p = document.createElement('p');
-        rotateboxdiv_x_p.innerText = 'Rotate';
-        rotateboxdiv_x.appendChild(rotateboxdiv_x_p);
-        rotateboxdiv_x.setAttribute('class','animationSliderDiv');
-
-        var rotate_slider_x = document.createElement('input');
-        rotate_slider_x.setAttribute('type','range');
-        rotate_slider_x.setAttribute('class','slider');
-        rotate_slider_x.setAttribute('min','1');
-        rotate_slider_x.setAttribute('max','360');
-        rotate_slider_x.setAttribute('step','1');
-        rotate_slider_x.setAttribute('value','1');
-        rotate_slider_x.setAttribute('id','slideRotate');
-        rotateboxdiv_x.appendChild(rotate_slider_x);
-
-        rotate_slider_x.addEventListener('input',function(){
-            self.dataAttributeBalancer('slideRotate',this.value);
-        });
-
-        //--------End Rotate---------
-
-        //----------Skew-----------
-
-        var skewboxdiv_x = document.createElement('div');
-        var skewboxdiv_x_p = document.createElement('p');
-        skewboxdiv_x_p.innerText = 'Skew X-axis';
-        skewboxdiv_x.appendChild(skewboxdiv_x_p);
-        skewboxdiv_x.setAttribute('class','animationSliderDiv');
-
-        var skewboxdiv_y = document.createElement('div');
-        var skewboxdiv_y_p = document.createElement('p');
-        skewboxdiv_y_p.innerText = 'Skew Y-axis';
-        skewboxdiv_y.appendChild(skewboxdiv_y_p);
-        skewboxdiv_y.setAttribute('class','animationSliderDiv');
-
-        var skew_slider_y = document.createElement('input');
-        skew_slider_y.setAttribute('type','range');
-        skew_slider_y.setAttribute('class','slider');
-        skew_slider_y.setAttribute('min','1');
-        skew_slider_y.setAttribute('max','10');
-        skew_slider_y.setAttribute('step','0.1');
-        skew_slider_y.setAttribute('value','1');
-        skew_slider_y.setAttribute('id','slideSkewY');
-        skewboxdiv_y.appendChild(skew_slider_y);
-
-        var skew_slider_x = document.createElement('input');
-        skew_slider_x.setAttribute('type','range');
-        skew_slider_x.setAttribute('class','slider');
-        skew_slider_x.setAttribute('min','1');
-        skew_slider_x.setAttribute('max','10');
-        skew_slider_x.setAttribute('step','0.1');
-        skew_slider_x.setAttribute('value','1');
-        skew_slider_x.setAttribute('id','slideSkewX');
-        skewboxdiv_x.appendChild(skew_slider_x);
-
-        skew_slider_x.addEventListener('input',function(){
-            self.dataAttributeBalancer('slideSkewX',this.value);
-        });
-
-        skew_slider_y.addEventListener('input',function(){
-            self.dataAttributeBalancer('slideSkewY',this.value);
-        });
-
-        //--------End Skew---------
-
-        //----------Font-----------
-
-        var fontsizeboxdiv = document.createElement('div');
-        var fontsizeboxdiv_p = document.createElement('p');
-        fontsizeboxdiv_p.innerText = 'Font Size';
-        fontsizeboxdiv.appendChild(fontsizeboxdiv_p);
-        fontsizeboxdiv.setAttribute('class','animationSliderDiv');
-
-        var fontsize_slider = document.createElement('input');
-        fontsize_slider.setAttribute('type','range');
-        fontsize_slider.setAttribute('class','slider');
-        fontsize_slider.setAttribute('min','1');
-        fontsize_slider.setAttribute('max','100');
-        fontsize_slider.setAttribute('step','1');
-        fontsize_slider.setAttribute('value','1');
-        fontsize_slider.setAttribute('id','slideFontSize');
-        fontsizeboxdiv.appendChild(fontsize_slider);
-
-        var fontweightboxdiv = document.createElement('div');
-        var fontweightboxdiv_p = document.createElement('p');
-        fontweightboxdiv_p.innerText = 'Font Weight';
-        fontweightboxdiv.appendChild(fontweightboxdiv_p);
-        fontweightboxdiv.setAttribute('class','animationSliderDiv');
-
-        var fontweight_slider = document.createElement('input');
-        fontweight_slider.setAttribute('type','range');
-        fontweight_slider.setAttribute('class','slider');
-        fontweight_slider.setAttribute('min','0');
-        fontweight_slider.setAttribute('max','1');
-        fontweight_slider.setAttribute('step','1');
-        fontweight_slider.setAttribute('value','0');
-        fontweight_slider.setAttribute('id','slideFontWeight');
-        fontweightboxdiv.appendChild(fontweight_slider);
-
-        fontsize_slider.addEventListener('input',function(){
-            self.dataAttributeBalancer('slideFontSize',this.value);
-        });
-
-        fontweight_slider.addEventListener('input',function(){
-            var v = '';
-            if(this.value == '0'){
-                v = 'normal';
-            }
-            if(this.value == '1'){
-                v = 'bold';
-            }
-            self.dataAttributeBalancer('slideFontWeight',v);
-        });
-
-        //---------End Font----------
-
-        //----------Border-----------
-
-        var bordersizeboxdiv = document.createElement('div');
-        var bordersizeboxdiv_p = document.createElement('p');
-        bordersizeboxdiv_p.innerText = 'Border Size';
-        bordersizeboxdiv.appendChild(bordersizeboxdiv_p);
-        bordersizeboxdiv.setAttribute('class','animationSliderDiv');
-
-        var bordersize_slider = document.createElement('input');
-        bordersize_slider.setAttribute('type','range');
-        bordersize_slider.setAttribute('class','slider');
-        bordersize_slider.setAttribute('min','1');
-        bordersize_slider.setAttribute('max','100');
-        bordersize_slider.setAttribute('step','1');
-        bordersize_slider.setAttribute('value','1');
-        bordersize_slider.setAttribute('id','slideBorderSize');
-        bordersizeboxdiv.appendChild(bordersize_slider);
-
-        var borderradiusboxdiv = document.createElement('div');
-        var borderradiusboxdiv_p = document.createElement('p');
-        borderradiusboxdiv_p.innerText = 'Border Radius';
-        borderradiusboxdiv.appendChild(borderradiusboxdiv_p);
-        borderradiusboxdiv.setAttribute('class','animationSliderDiv');
-
-        var borderradius_slider = document.createElement('input');
-        borderradius_slider.setAttribute('type','range');
-        borderradius_slider.setAttribute('class','slider');
-        borderradius_slider.setAttribute('min','1');
-        borderradius_slider.setAttribute('max','100');
-        borderradius_slider.setAttribute('step','1');
-        borderradius_slider.setAttribute('value','1');
-        borderradius_slider.setAttribute('id','slideBorderRadius');
-        borderradiusboxdiv.appendChild(borderradius_slider);
-
-        bordersize_slider.addEventListener('input',function(){
-            self.dataAttributeBalancer('slideBorderSize',this.value);
-        });
-
-        borderradius_slider.addEventListener('input',function(){
-            self.dataAttributeBalancer('slideBorderRadius',this.value);
-        });
-
-        //---------End Border----------
-
-        animationSliders.appendChild(scaleboxdiv_x);
-        animationSliders.appendChild(scaleboxdiv_y);
-        animationSliders.appendChild(rotateboxdiv_x);
-        animationSliders.appendChild(skewboxdiv_x);
-        animationSliders.appendChild(skewboxdiv_y);
-        animationSliders.appendChild(fontsizeboxdiv);
-        animationSliders.appendChild(fontweightboxdiv);
-        animationSliders.appendChild(bordersizeboxdiv);
-        animationSliders.appendChild(borderradiusboxdiv);
+            await Globals.components.new({
+                name: "slider",
+                elementType: element,
+                parent: box,
+                data: {
+                    id: slider.id,
+                    text: slider.text,
+                    min: slider.min,
+                    max: slider.max,
+                    step: slider.step,
+                    value: slider.value
+                }
+            });
+        }
 
         let comboboxes = [
             { id: "fontcolor", style: { left: "10px" }, text: "Font Color", idPrefix: "animatef", },
@@ -454,8 +273,6 @@ class Animator{
                 }
             });
         }
-
-        $(animationSliders).insertBefore("#aT");
     }
 
     async animate(element,createnew){

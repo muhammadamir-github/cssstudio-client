@@ -4,67 +4,70 @@ class UserInterface{
     }
 
     greetUser(){
-        var question = document.createElement('p');
-        var button1 = document.createElement('button');
-        var button2 = document.createElement('button');
-
-        button1.setAttribute('class','cneelementbtn');
-        button2.setAttribute('class','cnpagebtn');
-        question.setAttribute('class','wtcquestion');
-
-        button1.innerText = 'New Element';
-        button2.innerText = 'New Page';
-        question.innerText = 'What do you want to create today?';
-
-        button1.addEventListener('click',function(){
-            question.remove();
-            button2.remove();
-            this.remove();
-
-            Globals.pageHandler.progressLoader.show();
-
-            setTimeout(function(){
-                Globals.pageHandler.progressLoader.hide();
-
-                Globals.pageHandler.elementPanel.start();
-
-            },1);
-
+        let question = Globals.elements.new({
+            type: "p",
+            parent: Globals.window.body,
+            classes: [ "wtcquestion" ],
+            text: "What do you want to create today?",
         });
 
-        button2.addEventListener('click',function(){
-            question.remove();
-            button1.remove();
-            this.remove();
+        let button1 = Globals.elements.new({
+            type: "button",
+            parent: Globals.window.body,
+            classes: [ "cneelementbtn" ],
+            text: "New Element",
+            listeners: {
+                click: function(){
+                    let button2 = document.getElementsByClassName("cnpagebtn")[0];
+                    question.remove();
+                    button2.remove();
+                    this.remove();
 
-            document.getElementsByTagName('billy')[0].remove();
-            document.getElementsByTagName('callbilly')[0].remove();
-
-            var elementPosition = document.createElement('span');
-            elementPosition.className = 'elPos';
-            elementPosition.innerText = '0%';
-
-            var pageCenterPosition = document.createElement('span');
-            pageCenterPosition.className = 'pcPos';
-            pageCenterPosition.innerText = '';
-
-            Globals.window.body.appendChild(elementPosition);
-            Globals.window.body.appendChild(pageCenterPosition);
-
-            Globals.pageHandler.progressLoader.show();
-
-            setTimeout(function(){
-                Globals.pageHandler.progressLoader.hide();
-
-                Globals.pageHandler.pagebuilder.start();
-
-            },1);
-
+                    Globals.pageHandler.progressLoader.show();
+                    setTimeout(function(){
+                        Globals.pageHandler.progressLoader.hide();
+                        Globals.pageHandler.elementPanel.start();
+                    }, 1);
+                }
+            }
         });
 
-        Globals.window.body.appendChild(question);
-        Globals.window.body.appendChild(button1);
-        Globals.window.body.appendChild(button2);
+        let button2 = Globals.elements.new({
+            type: "button",
+            parent: Globals.window.body,
+            classes: [ "cnpagebtn" ],
+            text: "New Page",
+            listeners: {
+                click: function(){
+                    question.remove();
+                    button1.remove();
+                    this.remove();
+
+                    document.getElementsByTagName('billy')[0].remove();
+                    document.getElementsByTagName('callbilly')[0].remove();
+
+                    let elementPosition = Globals.elements.new({
+                        type: "span",
+                        parent: Globals.window.body,
+                        classes: [ "elPos" ],
+                        text: "0%"
+                    });
+
+                    let pageCenterPosition = Globals.elements.new({
+                        type: "span",
+                        parent: Globals.window.body,
+                        classes: [ "pcPos" ],
+                        text: ""
+                    });
+
+                    Globals.pageHandler.progressLoader.show();
+                    setTimeout(function(){
+                        Globals.pageHandler.progressLoader.hide();
+                        Globals.pageHandler.pagebuilder.start();
+                    }, 1);
+                }
+            }
+        });
     }
 
     selectNewElementToCreate(e){
@@ -107,16 +110,18 @@ class UserInterface{
     }
 
     Add_ReadyMadeElement_Preview_Type_Heading(text){
-        var heading = document.createElement('span');
-        heading.className = 'elementTypeHeading';
-        heading.innerText = text;
-        document.getElementById('wpb_ae_readymadeelements').appendChild(heading);
+        let heading = Globals.elements.new({
+            type: "span",
+            parent: document.getElementById('wpb_ae_readymadeelements'),
+            classes: [ "elementTypeHeading" ],
+            text: text,
+        });
     }
 
     Add_ReadyMadeElement_Preview(type){
         const self = this;
-        var boxtype, elementinnertext, labelinnertext, element, elementclass;
-        var box;
+        let boxtype, elementinnertext, labelinnertext, element, elementclass;
+        let box;
 
         if(type == 'topnavbar'){
             boxtype = 'horizontal-long';
@@ -267,183 +272,187 @@ class UserInterface{
             }
         }
 
-
-        //--------------------
-
-        box = document.createElement('div');
-        if(boxtype == 'horizontal-long'){
-            box.className = 'horizontal-long-box';
-        }else{
-            if(boxtype == 'half-width-cube'){
-                box.className = 'half-width-cube-box';
-            }else{
-                if(boxtype == 'full-width-cube'){
-                    box.className = 'full-width-cube-box';
+        box = Globals.elements.new({
+            type: "div",
+            parent: document.getElementById('wpb_ae_readymadeelements'),
+            classes: boxtype == 'horizontal-long' ? [ "horizontal-long-box" ] : boxtype == 'half-width-cube' ? [ "half-width-cube-box" ] : boxtype == 'full-width-cube' ? [ "full-width-cube-box" ] : null,
+            listeners: {
+                click: function(){
+                    self.selectNewReadyMadeElement(this);
                 }
-            }
-        }
-
-        box.addEventListener('click',function(){
-            self.selectNewReadyMadeElement(this);
+            },
+            children: [
+                {
+                    type: "span",
+                    text: labelinnertext,
+                }
+            ]
         });
-
-        var label = document.createElement('span');
-        label.innerText = labelinnertext;
-        box.appendChild(label);
-
-        //box.appendChild(element);
-
-        document.getElementById('wpb_ae_readymadeelements').appendChild(box);
     }
 
     Add_CreateNewElement_Preview(type){
         const self = this;
-        var elementinnertext, labelinnertext, element;
 
-        if(type == 'image'){
-            element = document.createElement('img');
-            labelinnertext = 'Image';
-        }else{
-            if(type == 'youtubevideo' || type == 'video'){
-                element = document.createElement('video');
-                element.setAttribute('controls','');
-                if(type == 'youtubevideo'){labelinnertext = 'Video';}else{if(type == 'video'){labelinnertext = 'Video';}};
-            }else{
-                if(type == 'paragraph'){
-                    labelinnertext = 'Paragraph';
-                    element = document.createElement('p');
-                    elementinnertext = ' Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean iaculis lacinia ex at porta. Duis in metus ac lectus cursus scelerisque. Nam interdum velit ut felis condimentum malesuada.';
-                }else{
-                    if(type == 'heading'){
-                        element = document.createElement('h3');
-                        elementinnertext = ' Heading';
-                        labelinnertext = 'Heading';
-                    }else{
-                        if(type == 'button'){
-                            element = document.createElement('button');
-                            elementinnertext = ' Button';
-                            labelinnertext = 'Button';
-                        }else{
-                            if(type == 'textinput'){
-                                element = document.createElement('input');
-                                elementinnertext = ' Text Input';
-                                labelinnertext = 'Text Input';
-                            }else{
-                                if(type == 'div'){
-                                    element = document.createElement('div');
-                                    elementinnertext = ' Div';
-                                    labelinnertext = 'Div';
-                                }else{
-                                    if(type == 'textarea'){
-                                        element = document.createElement('textarea');
-                                        elementinnertext = ' TextArea';
-                                        labelinnertext = 'TextArea';
-                                    }else{
-                                        if(type == 'icon'){
-                                            element = document.createElement('i');
-                                            element.className = 'fab fa-font-awesome';
-                                            element.style.padding = '10px';
-                                            element.style.color = 'black';
-                                            element.style.fontSize = '35px';
-                                            element.style.left = '50%';
-                                            element.style.top = '60%';
-                                            element.style.position = 'absolute';
-                                            element.style.transform = 'translate(-50%,-60%)';
-                                            labelinnertext = 'Icon';
-                                        }else{
-                                            if(type == "checkbox"){
-                                                element = document.createElement('input');
-                                                element.type = "checkbox";
-                                                element.setAttribute("checked","checked");
-                                                element.style.left = '50%';
-                                                element.style.top = '60%';
-                                                element.style.position = 'absolute';
-                                                element.style.transform = 'translate(-50%,-60%)';
-                                                labelinnertext = 'Checkbox';
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+        let elements = {
+            "image": {
+                type: "img",
+            },
+            "youtubevideo": {
+                type: "video",
+                attributes: {
+                    controls: false,
+                },
+            },
+            "video": {
+                type: "video",
+                attributes: {
+                    controls: false,
+                },
+            },
+            "paragraph": {
+                type: "p",
+                text: " Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean iaculis lacinia ex at porta. Duis in metus ac lectus cursus scelerisque. Nam interdum velit ut felis condimentum malesuada.",
+            },
+            "heading": {
+                type: "h3",
+                text: " Heading",
+            },
+            "button": {
+                type: "button",
+                text: " Button",
+            },
+            "textinput": {
+                type: "input",
+                text: " Text Input",
+                attributes: {
+                    value: " Text Input",
+                },
+            },
+            "div": {
+                type: "div",
+                text: " Div",
+            },
+            "textarea": {
+                type: "textarea",
+                text: " TextArea",
+                attributes: {
+                    value: " TextArea",
+                },
+            },
+            "icon": {
+                type: "i",
+                classes: [ "fab", "fa-font-awesome" ],
+                style: {
+                    padding: "10px",
+                    color: "black",
+                    fontSize: "35px",
+                    left: "50%",
+                    top: "60%",
+                    position: "absolute",
+                    transform: "translate(-50%,-60%)"
                 }
-            }
-        }
-
-        if(elementinnertext !== null){
-            if(type == 'textinput' || type == 'textarea'){
-                element.value = elementinnertext;
-            }else{
-                if(type == 'video' || type == 'image' || type == 'icon'){
-
-                }else{
-                    element.innerText = elementinnertext;
+            },
+            "checkbox": {
+                type: "input",
+                attributes: {
+                    type: "checkbox",
+                    checked: "checked",
+                },
+                style: {
+                    left: "50%",
+                    top: "60%",
+                    position: "absolute",
+                    transform: "translate(-50%,-60%)%",
                 }
-            }
-        }
+            },
+        };
 
-        var box = document.createElement('div');
-        box.className = 'wpb_ae_element_preview';
+        let labels = {
+            "image": "Image",
+            "youtubevideo": "Video",
+            "video": "Video",
+            "paragraph": "Paragraph",
+            "heading": "Heading",
+            "button": "Button",
+            "textinput": "Text Input",
+            "div": "Div",
+            "textarea": "TextArea",
+            "icon": "Icon",
+            "checkbox": "Checkbox"
+        };
 
-        box.addEventListener('click',function(){
-            self.selectNewElementToCreate(this);
+        let box = Globals.elements.new({
+            type: "div",
+            parent: document.getElementById('wpb_ae_createnewelement'),
+            classes: [ "wpb_ae_element_preview" ],
+            listeners: {
+                click: function(){
+                    self.selectNewElementToCreate(this);
+                }
+            },
+            children: [
+                {
+                    type: "span",
+                    text: labels[type],
+                    children: [
+                        ...(() => {
+                            return type == 'youtubevideo' ? [{
+                                type: "img",
+                                classes: [ "ytLogo" ],
+                                attributes: {
+                                    src: "../assets/images/yt_logo_rgb_dark.png"
+                                },
+                                prepend: true,
+                            }] : [];
+                        })(),
+                    ]
+                },
+                elements[type],
+            ]
         });
-
-        var label = document.createElement('span');
-        label.innerText = labelinnertext;
-
-        if(type == 'youtubevideo'){
-            var ytLogo = document.createElement("img");
-            ytLogo.src = "../assets/images/yt_logo_rgb_dark.png";
-            ytLogo.className = "ytLogo";
-
-            $(label).prepend(ytLogo);
-        }
-
-        box.appendChild(label);
-
-        box.appendChild(element);
-        document.getElementById('wpb_ae_createnewelement').appendChild(box);
     }
 
     displayKeyGuide(){
-        var hint_arrows = document.createElement('div');
-        hint_arrows.className = 'hint_element_move';
+        let hint_arrows = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "hint_element_move" ],
+            children: [
+                ...(() => {
+                    return [
+                        { class: "fas fa-arrow-right" },
+                        { class: "fas fa-arrow-left" },
+                        { class: "fas fa-arrow-up" },
+                        { class: "fas fa-arrow-down" }
+                    ].map(x => {
+                        return {
+                            type: "i",
+                            classes: x.class.split(" "),
+                        }
+                    });
+                })(),
+                {
+                    type: "p",
+                    text: "Press Arrow Keys Or Drag Element To Move It"
+                }
+            ]
+        });
 
-        var hint_leftarrow_i = document.createElement('i');
-        var hint_rightarrow_i = document.createElement('i');
-        hint_rightarrow_i.className = 'fas fa-arrow-right';
-        hint_leftarrow_i.className = 'fas fa-arrow-left';
-
-        var hint_toparrow_i = document.createElement('i');
-        var hint_bottomarrow_i = document.createElement('i');
-        hint_toparrow_i.className = 'fas fa-arrow-up';
-        hint_bottomarrow_i.className = 'fas fa-arrow-down';
-
-        var hint_arrows_p = document.createElement('p');
-        hint_arrows_p.innerText = 'Press Arrow Keys Or Drag Element To Move It';
-
-        hint_arrows.appendChild(hint_leftarrow_i);
-        hint_arrows.appendChild(hint_rightarrow_i);
-        hint_arrows.appendChild(hint_toparrow_i);
-        hint_arrows.appendChild(hint_bottomarrow_i);
-        hint_arrows.appendChild(hint_arrows_p);
-
-        var hint_escapekey = document.createElement('div');
-        hint_escapekey.className = 'hint_element_exit';
-
-        var hint_esc_spanIcon = document.createElement('span');
-        hint_esc_spanIcon.innerText = 'ESC';
-
-        var hint_esc_p = document.createElement('p');
-        hint_esc_p.innerText = 'Press Escape Key To Disselect Element';
-
-        hint_escapekey.appendChild(hint_esc_spanIcon);
-        hint_escapekey.appendChild(hint_esc_p);
-
-        Globals.window.body.appendChild(hint_arrows);
-        Globals.window.body.appendChild(hint_escapekey);
+        let hint_escapekey = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "hint_element_exit" ],
+            children: [
+                {
+                    type: "span",
+                    text: "ESC",
+                },
+                {
+                    type: "p",
+                    text: "Press Escape Key To Disselect The Element"
+                }
+            ]
+        });
     }
 
     hideCenterLines(axis){
@@ -475,11 +484,11 @@ class UserInterface{
     displayElementSpecialOptions(elementType){
         var element = document.getElementsByClassName('selected')[0];
 
-        var specialOptions_div = document.createElement('div');
-        specialOptions_div.className = 'selectedSpecialOptions';
-        Globals.window.body.appendChild(specialOptions_div);
-
-        //specialOptions_div.style.minHeight = element.style.height || element.style.minHeight;
+        let specialOptions_div = Globals.elements.new({
+            type: "div",
+            parent: Globals.window.body,
+            classes: [ "selectedSpecialOptions" ],
+        });
 
         if(elementType == 'video-overlay' || elementType == 'video'){
             //var videoPlayerId = document.getElementsByClassName('selected')[0].id;
@@ -610,138 +619,68 @@ class UserInterface{
     createDisplayElementSpecialOptionsOption(icon,type,text){
         var specialOptions_div = document.getElementsByClassName('selectedSpecialOptions')[0];
 
-        var optionDiv = document.createElement('div');
-        optionDiv.setAttribute('class','wpb_e_special_option');
-
-        var option = document.createElement('i');
-        option.className = icon;
-
-        var option_tooltip = document.createElement('span');
-        option_tooltip.setAttribute('class','wpb_e_special_option_tooltip');
-        option_tooltip.innerText = text;
-
-        if(type == 'editElement'){
-            option.addEventListener('click',function(){
+        let listeners = {
+            "editElement": function(){
                 if(document.getElementsByClassName('elementEditor')[0]){
                     Globals.pageHandler.elementEditor.close();
                 }else{
                     Globals.pageHandler.elementEditor.show();
                 }
-            });
-        }
-
-        if(type == 'showControls'){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.showControls);
-        }
-
-        if(type == 'resizeElement'){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.optionClicked);
-        }
-
-        if(type == 'fullWidth' || type == 'fullHeight'){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.optionClicked);
-        }
-
-        if(type == 'changeIcon'){
-            option.addEventListener('click',Globals.pageHandler.fontAwesomeSelector.show);
-        }
-
-        if(type == 'switchImageShape'){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.switchImageShape);
-        }
-
-        if(type == 'switchThumbnailsPosition'){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.switchThumbnailsPosition);
-        }
-
-        if(type == 'toggleFullScreeOption'){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.toggleFullScreeOption);
-        }
-
-        if(type == "switchImgViewer2Location"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.switchImgViewer2Location);
-        }
-
-        if(type == "switchImgViewer2BtnLocation"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.switchImgViewer2BtnLocation);
-        }
-
-        if(type == "switchCheckboxShape"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.switchCheckboxShape);
-        }
-
-        if(type == "switchMultiCheckboxShape"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.switchMultiCheckboxShape);
-        }
-
-        if(type == "switchMultiCheckboxCheckMarkShape"){
-            option.addEventListener("click",Globals.pageHandler.elementSpecialOptionsHandler.switchMultiCheckboxCheckMarkShape);
-        }
-
-        if(type == "toggleCheckboxAndToggleSwitchText"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.toggleCheckboxAndToggleSwitchText);
-        }
-
-        if(type == "toggleMultiCheckboxText"){
-            option.addEventListener("click",Globals.pageHandler.elementSpecialOptionsHandler.toggleMultiCheckboxText);
-        }
-
-        if(type == "switchTextbox2TextLocation"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.switchTextbox2TextLocation);
-        }
-
-        if(type == "toggleTextboxBorder"){
-            option.addEventListener("click",Globals.pageHandler.elementSpecialOptionsHandler.toggleTextboxBorder);
-        }
-
-        if(type == "toggleTextboxIcon"){
-            option.addEventListener("click",Globals.pageHandler.elementSpecialOptionsHandler.toggleTextboxIcon);
-        }
-
-        if(type == "toggleTextboxCharacterLimitText"){
-            option.addEventListener("click",Globals.pageHandler.elementSpecialOptionsHandler.toggleTextboxCharacterLimitText);
-        }
-
-        if(type == "toggleVideoPlayer2FrwdBwdOption"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.toggleVideoPlayer2FrwdBwdOption);
-        }
-
-        if(type == "toggleVideoPlayer2FullScreenOption"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.toggleVideoPlayer2FullScreenOption);
-        }
-
-        if(type == "toggleVideoPlayer1FullScreenOption"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.toggleVideoPlayer1FullScreenOption);
-        }
-
-        if(type == "toggleVideoPlayer2NightModeOption"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.toggleVideoPlayer2NightModeOption);
-        }
-
-        if(type == "toggleVideoPlayerInfo"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.toggleVideoPlayerInfo);
-        }
-
-        if(type == "switchImgViewer1InfoStyle"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.switchImgViewer1InfoStyle);
-        }
-
-        if(type == "switchVideoPlaylistListLocation"){
-            option.addEventListener('click',Globals.pageHandler.elementSpecialOptionsHandler.switchVideoPlaylistListLocation);
-        }
-
-        if(type == "showStyles"){
-            option.addEventListener('click',function(){
+            },
+            "showControls": Globals.pageHandler.elementSpecialOptionsHandler.showControls,
+            "resizeElement": Globals.pageHandler.elementSpecialOptionsHandler.optionClicked,
+            "fullWidth": Globals.pageHandler.elementSpecialOptionsHandler.optionClicked,
+            "fullHeight": Globals.pageHandler.elementSpecialOptionsHandler.optionClicked,
+            "changeIcon": Globals.pageHandler.fontAwesomeSelector.show,
+            "switchImageShape": Globals.pageHandler.elementSpecialOptionsHandler.switchImageShape,
+            "switchThumbnailsPosition": Globals.pageHandler.elementSpecialOptionsHandler.switchThumbnailsPosition,
+            "toggleFullScreeOption": Globals.pageHandler.elementSpecialOptionsHandler.toggleFullScreeOption,
+            "switchImgViewer2Location": Globals.pageHandler.elementSpecialOptionsHandler.switchImgViewer2Location,
+            "switchImgViewer2BtnLocation": Globals.pageHandler.elementSpecialOptionsHandler.switchImgViewer2BtnLocation,
+            "switchCheckboxShape": Globals.pageHandler.elementSpecialOptionsHandler.switchCheckboxShape,
+            "switchMultiCheckboxShape": Globals.pageHandler.elementSpecialOptionsHandler.switchMultiCheckboxShape,
+            "switchMultiCheckboxCheckMarkShape": Globals.pageHandler.elementSpecialOptionsHandler.switchMultiCheckboxCheckMarkShape,
+            "toggleCheckboxAndToggleSwitchText": Globals.pageHandler.elementSpecialOptionsHandler.toggleCheckboxAndToggleSwitchText,
+            "toggleMultiCheckboxText": Globals.pageHandler.elementSpecialOptionsHandler.toggleMultiCheckboxText,
+            "switchTextbox2TextLocation": Globals.pageHandler.elementSpecialOptionsHandler.switchTextbox2TextLocation,
+            "toggleTextboxBorder": Globals.pageHandler.elementSpecialOptionsHandler.toggleTextboxBorder,
+            "toggleTextboxIcon": Globals.pageHandler.elementSpecialOptionsHandler.toggleTextboxIcon,
+            "toggleTextboxCharacterLimitText": Globals.pageHandler.elementSpecialOptionsHandler.toggleTextboxCharacterLimitText,
+            "toggleVideoPlayer2FrwdBwdOption": Globals.pageHandler.elementSpecialOptionsHandler.toggleVideoPlayer2FrwdBwdOption,
+            "toggleVideoPlayer2FullScreenOption": Globals.pageHandler.elementSpecialOptionsHandler.toggleVideoPlayer2FullScreenOption,
+            "toggleVideoPlayer1FullScreenOption": Globals.pageHandler.elementSpecialOptionsHandler.toggleVideoPlayer1FullScreenOption,
+            "toggleVideoPlayer2NightModeOption": Globals.pageHandler.elementSpecialOptionsHandler.toggleVideoPlayer2NightModeOption,
+            "toggleVideoPlayerInfo": Globals.pageHandler.elementSpecialOptionsHandler.toggleVideoPlayerInfo,
+            "switchImgViewer1InfoStyle": Globals.pageHandler.elementSpecialOptionsHandler.switchImgViewer1InfoStyle,
+            "switchVideoPlaylistListLocation": Globals.pageHandler.elementSpecialOptionsHandler.switchVideoPlaylistListLocation,
+            "showStyles": function(){
                 if(document.getElementsByTagName('styles')[0]){
                     Globals.pageHandler.elementStyles.close();
                 }else{
                     Globals.pageHandler.elementStyles.show();
                 }
-            });
-        }
+            },
+        };
 
-        optionDiv.appendChild(option);
-        optionDiv.appendChild(option_tooltip);
-        specialOptions_div.appendChild(optionDiv);
+        let optionDiv = Globals.elements.new({
+            type: "div",
+            parent: specialOptions_div,
+            classes: [ "wpb_e_special_option" ],
+            children: [
+                {
+                    type: "i",
+                    classes: [ ...icon.split(" ") ],
+                    listeners: {
+                        click: listeners[type],
+                    },
+                },
+                {
+                    type: "span",
+                    classes: [ "wpb_e_special_option_tooltip" ],
+                    text,
+
+                }
+            ],
+        });
     }
 }

@@ -1,3 +1,5 @@
+// This entire module needs to be rewritten along with SitePreview.js.
+
 class ElementsEditor{
     constructor(){
         this.ImgGallery1And2_ImgRowEndNumbers = [3,6,9,12,15,18,21,24,27,30,33,36,39,42,45,48,51,54,57,60,63,66,69,72,75,78,81,84,87,90];
@@ -1428,11 +1430,11 @@ if(onlyNumericals == 1){
         if(e.keyCode == 13){
             self.updateAttribute(attrToUpdate,e);
         }else{
-            if(validate.isNumber(e) == false){
+            if(isNumber(e) == false){
                 e.preventDefault();
                 return false;
             }else{
-                if(validate.isNumber(e) == true){
+                if(isNumber(e) == true){
                     return true;
                 }
             }
@@ -1769,4 +1771,13 @@ shiftImgSlider1Images(slideOne,slideTwo){
 
 }
 
+}
+
+function isNumber(evt){
+    var charCode = (evt.which) ? evt.which : evt.keyCode
+    if(charCode > 31 && (charCode < 48 || charCode > 57)){
+        return false;
+    }
+
+    return true;
 }
