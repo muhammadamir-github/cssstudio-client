@@ -1,5 +1,9 @@
 <div align="center">
-    <p style='font-size: 35px; font-weight: bold; margin-bottom: 30px;'>CSS Studio - Web Client</p>
+    <h1 style='font-weight: bold; margin-bottom: 30px;'>CSS Studio - Web Client</h1>
     <img src="./other/logo/icon2.png" alt="alternate text">
-    <p style="margin-top: 30px;">CSS Studio is an HTML element and drag & drop Web Page Creator (under-development).</p>
+    <p style="margin-top: 30px;">
+    CSS Studio is an HTML element and drag & drop Web Page Creator (under-development).
+    <br>
+    To use the current version, clone 'main' branch and host it locally using apache. You will also need to host <a href="https://github.com/muhammadamir-github/cssstudio-api">CSS Studio API</a>.
+    </p>
 </div>
