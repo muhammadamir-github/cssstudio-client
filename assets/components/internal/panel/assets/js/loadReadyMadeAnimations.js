@@ -1,4 +1,4 @@
-function loadReadyMadeAnimations(element){
+function loadReadyMadeAnimations(elementType){
     let animationsStyle = Globals.elements.new({
         type: 'style',
         parent: Globals.window.body,
@@ -42,7 +42,7 @@ function loadReadyMadeAnimations(element){
                         },
                         listeners: {
                             click: function(){
-                                var previewelement = document.getElementById('preview'+element);
+                                var previewelement = document.getElementById('preview'+elementType);
 
                                 previewelement.style.animationDelay = '';
                                 previewelement.style.animationTimingFunction = '';
@@ -68,15 +68,15 @@ function loadReadyMadeAnimations(element){
                             if(x.name.includes('ZOOM')){ duration = '2s'; }
                             if(x.name.includes('ROLL')){ duration = '2s'; }
 
-                            if(element == 'input'){
-                                text = document.getElementById('previewbox').getElementsByTagName(element)[0].value;
+                            if(elementType == 'input'){
+                                text = document.getElementById('previewbox').getElementsByTagName(elementType)[0].value;
                             }else{
-                                if(element == 'paragraph'){
+                                if(elementType == 'paragraph'){
                                     text = document.getElementById('previewbox').getElementsByTagName('p')[0].innerText;
                                 }
 
-                                if(element == 'image' || element == 'video'){ text = element; }
-                                if(element == 'heading'){
+                                if(elementType == 'image' || elementType == 'video'){ text = elementType; }
+                                if(elementType == 'heading'){
                                     text = document.getElementById('previewbox').getElementsByTagName('h3')[0].innerText;
                                 }
                             }
@@ -115,17 +115,16 @@ function loadReadyMadeAnimations(element){
         ]
     });
 
-    let animationPreviews = readyMadeAnimationsDiv.getElementsByTagName("animationPreview");
+    let animationPreviews = readyMadeAnimationsDiv.getElementsByClassName("apelement");
     for(var i=0; i<animationPreviews.length; i++){
         if(i === 0){ continue; }
-        self.applyAnimation(animationPreviews[i].style.animationName, animationPreviews[i]);
+        self.applyAnimation(animationPreviews[i].style.animationName, animationPreviews[i].parentElement, elementType);
     }
 }
 
-function applyAnimation(a,element){
-    var animation = document.getElementById('a'+a);
-    animation.addEventListener('click', function(){
-        $('#preview'+element).css('animation-name', a);
+function applyAnimation(animationName, animationPreview, elementType){
+    animationPreview.addEventListener('click', function(){
+        $('#preview'+elementType).css('animation-name', animationName);
         $('animationPreview').css('border','');
         $('#noa').css('border','0px');
         this.style.border = '1px solid green';

@@ -171,7 +171,7 @@ class StudioHandler{
             parent: Globals.window.body,
             html: '<tongue>Hey , how can i help you today?</tongue><orders><type data-panel-trigger="suggestion"><p>I would like to have a suggestion.</p><div class="billyspinner"></div></type><order class="suggestion"><p>Background Color</p></order><order class="suggestion"><p>Font Color</p></order></orders>'
         });*/
-        
+
         self.getAnimations();
     }
 
@@ -189,7 +189,7 @@ class StudioHandler{
     }
 
     async getAnimations(){
-        const response = await Globals.api.request({ route: "me/fetch/readymateanimations", method: "get" });
+        const response = await Globals.api.request({ route: "readyMadeAnimations", method: "get" });
         if(response.success === true){
             this.animations = response.data.success;
         }else{

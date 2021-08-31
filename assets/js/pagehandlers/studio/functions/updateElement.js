@@ -62,7 +62,9 @@ function updateElement(elementtype,attr,value){
             element.style.animationTimingFunction = value;
             $('.apelement').css('animation-timing-function',value)
 
-            if(document.getElementById('rmadiv').style.opacity == '0.3'){}
+            if(document.getElementById('rmadiv').style.opacity == '0.3'){
+
+            }
             else{
                 $('#rmadiv').css({'pointer-events':'none','opacity':'0.5'});
             }

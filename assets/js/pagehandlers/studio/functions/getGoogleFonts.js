@@ -1,5 +1,5 @@
 async function getGoogleFonts(element,mode){
-    const response = await Globals.api.request({ route: `google/fonts`, method: "get" });
+    const response = await Globals.api.request({ route: `googleFonts`, method: "get" });
     if(response.success === true){
         loadGoogleFonts(response.data,element,mode);
     }

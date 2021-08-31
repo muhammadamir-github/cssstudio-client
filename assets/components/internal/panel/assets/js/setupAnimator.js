@@ -152,7 +152,7 @@ async function setupAnimator(elementType, fromSratch = false){
         panel.style.pointerEvents = 'unset';
 
         if(fromSratch === true){
-            loadReadyMadeAnimations();
+            loadReadyMadeAnimations(elementType);
 
             let animatorTimeline = await Globals.components.new({
                 name: "internal-animator-timeline",
