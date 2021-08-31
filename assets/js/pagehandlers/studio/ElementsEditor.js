@@ -63,7 +63,7 @@ class ElementsEditor{
         if(elementType == "checkbox-multi-one" || elementType == "checkbox-multi-two"){
             self.addTextBox('Text','Enter your text here...',element.getElementsByTagName("p")[0].innerText,'Enter the text you want to display in the box.');
 
-            var t1_id = Globals.pageHandler.randomize.elementId(10);
+            var t1_id = Globals.pageHandler.Globals.randomizer.id(10);
             self.addTable('Manage Checkboxes',t1_id,'checkbox-multi');
 
             var checkboxes = element.getElementsByClassName('checkbox');
@@ -108,7 +108,7 @@ class ElementsEditor{
         if(elementType.includes("dropdown-list")){
             self.addTextBox("Text","Enter your text here...",element.getElementsByClassName("selected_option")[0].getElementsByTagName("span")[0].innerText.split(":")[0],"Enter the text you want to display on the drop down list.");
 
-            var t1_id = Globals.pageHandler.randomize.elementId(10);
+            var t1_id = Globals.pageHandler.Globals.randomizer.id(10);
             self.addTable('Manage Options',t1_id,'dropdown-list');
 
             var options = element.getElementsByClassName('options')[0].getElementsByTagName("ul")[0].getElementsByTagName("li");
@@ -120,7 +120,7 @@ class ElementsEditor{
         }
 
         if(elementType == 'navbar'){
-            var t1_id = Globals.pageHandler.randomize.elementId(10);
+            var t1_id = Globals.pageHandler.Globals.randomizer.id(10);
             self.addTable('Manage Links',t1_id,'navbar');
 
             var lis = element.getElementsByTagName('a');
@@ -133,7 +133,7 @@ class ElementsEditor{
         }
 
         if(elementType.includes('gallery')){
-            var t1_id = Globals.pageHandler.randomize.elementId(10);
+            var t1_id = Globals.pageHandler.Globals.randomizer.id(10);
             self.addTable('Manage Images',t1_id,'gallery');
 
             var imgs = element.getElementsByTagName('img');
@@ -147,7 +147,7 @@ class ElementsEditor{
         }
 
         if(elementType.includes('slider')){
-            var t1_id = Globals.pageHandler.randomize.elementId(10);
+            var t1_id = Globals.pageHandler.Globals.randomizer.id(10);
             self.addTable('Manage Images',t1_id,'slider');
 
             var imgs = element.getElementsByTagName('img');
@@ -161,7 +161,7 @@ class ElementsEditor{
         }
 
         if(elementType.includes('viewer')){
-            var t1_id = Globals.pageHandler.randomize.elementId(10);
+            var t1_id = Globals.pageHandler.Globals.randomizer.id(10);
             self.addTable('Manage Images',t1_id,'viewer');
 
             var imgs = element.getElementsByClassName('image-viewer-thumbnails')[0].getElementsByTagName('img');
@@ -179,7 +179,7 @@ class ElementsEditor{
                 self.addTextBox('Title','Enter your playlist title here...',element.getElementsByClassName("video-playlist-info")[0].getElementsByClassName("heading")[0].innerText,'Enter the title you want to display on the playlist.');
                 self.addTextBox('Description','Enter your playlist description here...',element.getElementsByClassName("video-playlist-info")[0].getElementsByClassName("description")[0].innerText,'Enter the description you want to display on the playlist.');
 
-                var t1_id = Globals.pageHandler.randomize.elementId(10);
+                var t1_id = Globals.pageHandler.Globals.randomizer.id(10);
                 self.addTable('Manage Videos',t1_id,'video-playlist');
 
                 var listitems = element.getElementsByClassName('playlist-list')[0].getElementsByClassName("playlist-list-item");
@@ -694,7 +694,7 @@ class ElementsEditor{
                                             var newImgSlide = document.createElement("div");
                                             newImgSlide.className = "imgSlide";
 
-                                            elementToAffect.id = "image-"+Globals.pageHandler.randomize.elementId(25);
+                                            elementToAffect.id = "image-"+Globals.pageHandler.Globals.randomizer.id(25);
                                             elementToAffect.setAttribute("data-no",Number(allImages[allImages.length-1].getAttribute("data-no"))+1);
                                             elementToAffect.style.left = (Number(elementToAffect.style.left.replace("px","")) + 30) + "px";
 
@@ -718,7 +718,7 @@ class ElementsEditor{
                                                 var allImagesOfLastSlide = lastSlide.getElementsByTagName("img");
                                                 var lastImage = allImagesOfLastSlide[allImagesOfLastSlide.length-1];
 
-                                                elementToAffect.id = "image-"+Globals.pageHandler.randomize.elementId(25);
+                                                elementToAffect.id = "image-"+Globals.pageHandler.Globals.randomizer.id(25);
                                                 elementToAffect.setAttribute("data-no",Number(lastImage.getAttribute("data-no"))+1);
                                                 elementToAffect.style.left = (Number(lastImage.style.left.replace("px","")) + 15) + "px";
 
@@ -730,7 +730,7 @@ class ElementsEditor{
                                                 var newImgSlide = document.createElement("div");
                                                 newImgSlide.className = "imgSlide active";
 
-                                                elementToAffect.id = "image-"+Globals.pageHandler.randomize.elementId(25);
+                                                elementToAffect.id = "image-"+Globals.pageHandler.Globals.randomizer.id(25);
 
                                                 if(allImages.length == 0){
                                                     elementToAffect.setAttribute("data-no",1);
@@ -768,7 +768,7 @@ class ElementsEditor{
                                                 elementToAffect.style.marginRight = "15px";
                                             }
 
-                                            elementToAffect.id = "image-"+Globals.pageHandler.randomize.elementId(25);
+                                            elementToAffect.id = "image-"+Globals.pageHandler.Globals.randomizer.id(25);
                                             elementToAffect.setAttribute("data-no",newImageNumber);
 
                                             element.appendChild(elementToAffect);
@@ -785,7 +785,7 @@ class ElementsEditor{
                                                     elementToAffect.style.marginRight = "15px";
                                                 }
 
-                                                elementToAffect.id = "image-"+Globals.pageHandler.randomize.elementId(25);
+                                                elementToAffect.id = "image-"+Globals.pageHandler.Globals.randomizer.id(25);
                                                 elementToAffect.setAttribute("data-no",newImageNumber);
 
                                                 element.appendChild(elementToAffect);

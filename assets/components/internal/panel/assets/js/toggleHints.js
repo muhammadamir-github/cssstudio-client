@@ -1,4 +1,4 @@
-function hints(action,shape){
+function toggleHints(action, shape){
     if(shape == 'triangle' || shape == 'trapezoid'){
         if(action == 'show'){
             $('#bordercolor').find('hintlabel').remove();

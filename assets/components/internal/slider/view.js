@@ -1,4 +1,4 @@
-class SliderView{
+class InternalSliderView{
     constructor(controller){
         this.controller = controller;
         this._element = null;
@@ -26,13 +26,16 @@ class SliderView{
 
     create(options = {}){
         const self = this;
-        const { data, parent, prepend, before, elementType } = options;
+        const { data, parent, prepend, before, elementType, component_id } = options;
 
         self._element = Globals.elements.new({
             type: "div",
             parent,
             id: data.id ? data.id : null,
             style: data.style ? data.style : null,
+            attributes: {
+                "data-component-id": component_id,
+            },
             children: [
                 {
                     type: "p",

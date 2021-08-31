@@ -1,5 +1,11 @@
+let Globals = null;
+
 export default class Elements{
-    constructor(){}
+    constructor(){
+        this.created = [];
+
+        Globals = window.globals;
+    }
 
     new(options = {}){
         const self = this;
@@ -24,6 +30,16 @@ export default class Elements{
                     options.parent.appendChild(element);
                 }
             }
+
+            let element_id = Globals.randomizer.id(100);
+            element.setAttribute("data-element-id", element_id);
+
+            self.created.push({
+                element_id,
+                type: options.type,
+                element
+            });
+
             return element;
         }
     }

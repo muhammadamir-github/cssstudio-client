@@ -4,21 +4,23 @@ import Api from './misc/Api.js';
 import SideBar from './misc/SideBar.js';
 import NotificationHandler from './misc/Notification.js';
 import MembershipHandler from './misc/Membership.js';
+import Randomizer from './misc/Randomizer.js';
 import Elements from './misc/Elements.js';
 import Components from './misc/Components.js';
 
 window.onload = () => {
-    let pageName = new URL(window.location.href).pathname.split("/").filter(x => { return x.toString().trim() !== ""; }).pop();
     window.globals = Globals;
+    let pageName = new URL(window.location.href).pathname.split("/").filter(x => { return x.toString().trim() !== ""; }).pop();
 
     Globals.window.body = document.getElementsByTagName("body")[0];
     Globals.window.head = document.getElementsByTagName("head")[0];
 
     Globals.api = new Api(Globals.api.hostname, Globals.api.port);
-    Globals.elements = new Elements;
-    Globals.components = new Components;
+    Globals.randomizer = new Randomizer;
     Globals.notificationHandler = new NotificationHandler;
     Globals.membershipHandler = new MembershipHandler;
+    Globals.elements = new Elements;
+    Globals.components = new Components;
     Globals.bootLoader = new BootLoader("../assets");
     Globals.bootLoader.load(pageName);
 };
@@ -137,7 +139,7 @@ class BootLoader{
     async setupPage(pageName){
         const self = this;
         const page = self.pages.find(x => (x.name === pageName));
-        if(page){
+        /*if(page){
             if(page.name == "adminpanel" || page.name == "home.html"){
                 Globals.pageHandler = page.name == "adminpanel" ? new AdminPanelLoginHandler : new AdminPanelHandler;
                 Globals.pageHandler.setup();
@@ -150,12 +152,8 @@ class BootLoader{
                     Globals.pageHandler = page.dataRoute === false ? new StaticPageHandler : pageName === "profile" ? new ProfileHandler(data.success) : pageName === "billing" ? new BillingHandler(data.success) : pageName === "notifications" ? new NotificationsHandler(data.success) : pageName === "storage" ? new StorageHandler(data.success) : pageName === "support" ? new SupportHandler(data.success) : pageName === "studio" ? new StudioHandler(data.success) : pageName === "blog" ? new BlogHandler(data.success) : pageName === "login" ? new LoginHandler(data.success) : null;
 
                     if(isMember === true && Globals.pageHandler){
-                        Globals.paypalHandler = pageName === "profile" ? new PaypalHandler(data.success) : null;
-
-                        if(page.hasSidebar === true){ Globals.sideBar = new SideBar(pageName); }
+                        //if(page.hasSidebar === true){ Globals.sideBar = new SideBar(pageName); }
                         Globals.pageHandler.setup();
-                    }else{
-                        Globals.pageHandler.planExpired();
                     }
 
                     self.loader.hide();
@@ -165,6 +163,10 @@ class BootLoader{
                     }
                 }
             }
-        }
+        }*/
+
+        Globals.pageHandler = new StudioHandler({});
+        Globals.pageHandler.setup();
+        self.loader.hide();
     }
 }

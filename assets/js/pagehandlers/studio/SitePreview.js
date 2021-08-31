@@ -462,7 +462,7 @@ class SitePreview{
                                         }
 
                                         img.style.position = "absolute";
-                                        img.id = "image-"+Globals.pageHandler.randomize.elementId(25);
+                                        img.id = "image-"+Globals.pageHandler.Globals.randomizer.id(25);
                                         img.setAttribute("data-no",totalImgAdded);
                                         slide.appendChild(img);
 
@@ -495,7 +495,7 @@ class SitePreview{
                             }
 
                             img.style.position = "absolute";
-                            img.id = "image-"+Globals.pageHandler.randomize.elementId(25);
+                            img.id = "image-"+Globals.pageHandler.Globals.randomizer.id(25);
                             img.setAttribute("data-no",i);
                             element_readymade.appendChild(img);
 
@@ -2035,7 +2035,7 @@ for(var i=0; i<newelements.length; i++){
         divOverlay.style.height = '350px';
         divOverlay.setAttribute('data-e-type','video-overlay');
 
-        var random = Globals.pageHandler.randomize.elementId(25);
+        var random = Globals.pageHandler.Globals.randomizer.id(25);
 
         divOverlay.id = random;
         element.id = random+'videoPlayer';

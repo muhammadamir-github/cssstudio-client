@@ -173,7 +173,7 @@ class ElementStyleChanger{
 				var stylePreview = Globals.elements.new({
 					type: "stylePreview",
 					parent: previews,
-					id: `style-${randomize.elementId(50)}`,
+					id: `style-${Globals.randomizer.id(50)}`,
 					style,
 					listeners: {
 						click: function(e){

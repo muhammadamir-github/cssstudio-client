@@ -7,10 +7,10 @@ const global_requiredFiles = {
         { type: "icon", src: "icon2.png", isURL: false, isRaw: false, }
     ],
     css: [
+        { type: "css", src: "MediaQueries.css", isURL: false, isRaw: false, },
         { type: "css", src: "misc/Loader.css", isURL: false, isRaw: false, },
         { type: "css", src: "misc/Notice.css", isURL: false, isRaw: false, },
         { type: "css", src: "misc/Notification.css", isURL: false, isRaw: false, },
-        { type: "css", src: "MediaQueries.css", isURL: false, isRaw: false, },
         { type: "css", src: "thirdparty/fontawesome.all.css", isURL: false, isRaw: false, }
     ],
     js: [
@@ -31,6 +31,9 @@ export default {
     pageHandler: null,
     paypalHandler: null,
     notificationHandler: null,
+    elements: null,
+    components: null,
+    randomizer: null,
     api: {
         hostname: "http://localhost",
         port: "8000"
@@ -106,7 +109,7 @@ export default {
                 { type: "js", src: "misc/Draggable.js", isURL: false, isRaw: false, },
                 { type: "js", src: "misc/PublicEventHandler.js", isURL: false, isRaw: false, },
                 { type: "js", src: "thirdparty/resumable.js", isURL: false, isRaw: false, },
-                { type: "js", src: "pagehandlers/studio/*", isURL: false, isRaw: false, ignore: ["pagehandlers/studio/Animator.js"], },
+                //{ type: "js", src: "pagehandlers/studio/*", isURL: false, isRaw: false, ignore: ["pagehandlers/studio/Animator.js"], },
                 { type: "js", src: "pagehandlers/studio/functions/*", isURL: false, isRaw: false, ignore: [], },
                 { type: "js", src: "pagehandlers/Studio.js", isURL: false, isRaw: false, },
             ],

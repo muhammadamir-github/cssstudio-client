@@ -38,35 +38,130 @@ class StudioHandler{
         this.ea = [];
         this.shuffledanimations = shuffleArray(this.animations);
         this.WebFonts = [];
-        this.userInterface = new UserInterface;
-        this.progressLoader = new ProgressLoader;
-        this.elementPanel = new JadgetPanel;
-        this.elementDuplicator = new Duplicator;
-        this.checkElement = new ElementPresenceChecker;
-        this.elementStyles = new ElementStyleChanger;
-        this.fontAwesomeSelector = new FontAwesomeIcons;
-        this.mediaEditor = new UserMediaEditor;
-        this.mediaManager = new UserMediaManager;
-        this.elementEditor = new ElementsEditor;
-        this.elementSpecialOptionsHandler = new ElementOptions;
-        this.randomize = new Randomizer;
-        this.calculator = new MathCalculator;
-        this.backgroundImageManager = new BackgroundIManager;
-        this.VideoManager = new VideosManager;
-        this.styler = new MiniStyler;
-        this.fontmanager = new FontsManager;
-        this.tools = new WebPageBuilderTools;
-        this.site = new SitePreview;
-        this.pagebuilder = new WebPageBuilder;
-        this.thirdPartyMediaManager = new ThirdPartyMediaManager;
-        this.Animator = null;
-        this.BillyAssistant = new BillyTheAssistant;
-        this.draggable = new PreviewSiteDraggable;
+        this.userInterface = null;
+        this.progressLoader = null;
+        this.elementDuplicator = null;
+        this.checkElement = null;
+        this.elementStyles = null;
+        this.fontAwesomeSelector = null;
+        this.mediaEditor = null;
+        this.mediaManager = null;
+        this.elementEditor = null;
+        this.elementSpecialOptionsHandler = null;
+        this.calculator = null;
+        this.backgroundImageManager = null;
+        this.VideoManager = null;
+        this.styler = null;
+        this.fontmanager = null;
+        this.tools = null;
+        this.site = null;
+        this.pagebuilder = null;
+        this.thirdPartyMediaManager = null;
+        this.BillyAssistant = null;
+        this.draggable = null;
     }
 
     setup(){
         const self = this;
-        var callbilly = Globals.elements.new({
+        $("body").on("contextmenu",function(e){
+            return false;
+        });
+
+        let question = Globals.elements.new({
+            type: "p",
+            parent: Globals.window.body,
+            classes: [ "wtcquestion" ],
+            text: "What do you want to create today?",
+        });
+
+        let button1 = Globals.elements.new({
+            type: "button",
+            parent: Globals.window.body,
+            classes: [ "cneelementbtn" ],
+            text: "New Element",
+            listeners: {
+                click: async function(){
+                    self.setupForElement();
+
+                    let button2 = document.getElementsByClassName("cnpagebtn")[0];
+                    question.remove();
+                    button2 ? button2.remove() : false;
+                    this.remove();
+
+                    await Globals.components.new({
+                        name: "internal-panel",
+                        parent: Globals.window.body,
+                        data: {
+                            id: "panel",
+                        }
+                    });
+                }
+            }
+        });
+
+        /*let button2 = Globals.elements.new({
+            type: "button",
+            parent: Globals.window.body,
+            classes: [ "cnpagebtn" ],
+            text: "New Page",
+            listeners: {
+                click: function(){
+                    self.setupForWebPage();
+
+                    question.remove();
+                    button1.remove();
+                    this.remove();
+                    document.getElementsByTagName('billy')[0].remove();
+                    document.getElementsByTagName('callbilly')[0].remove();
+
+                    let elementPosition = Globals.elements.new({
+                        type: "span",
+                        parent: Globals.window.body,
+                        classes: [ "elPos" ],
+                        text: "0%"
+                    });
+
+                    let pageCenterPosition = Globals.elements.new({
+                        type: "span",
+                        parent: Globals.window.body,
+                        classes: [ "pcPos" ],
+                        text: ""
+                    });
+
+                    Globals.pageHandler.pagebuilder.start();
+                }
+            }
+        });*/
+    }
+
+    setupForWebPage(){
+        self.userInterface = new UserInterface;
+        self.progressLoader = new ProgressLoader;
+        self.elementDuplicator = new Duplicator;
+        self.checkElement = new ElementPresenceChecker;
+        self.elementStyles = new ElementStyleChanger;
+        self.fontAwesomeSelector = new FontAwesomeIcons;
+        self.mediaEditor = new UserMediaEditor;
+        self.mediaManager = new UserMediaManager;
+        self.elementEditor = new ElementsEditor;
+        self.elementSpecialOptionsHandler = new ElementOptions;
+        self.calculator = new MathCalculator;
+        self.backgroundImageManager = new BackgroundIManager;
+        self.VideoManager = new VideosManager;
+        self.styler = new MiniStyler;
+        self.fontmanager = new FontsManager;
+        self.tools = new WebPageBuilderTools;
+        self.site = new SitePreview;
+        self.pagebuilder = new WebPageBuilder;
+        self.thirdPartyMediaManager = new ThirdPartyMediaManager;
+        self.BillyAssistant = new BillyTheAssistant;
+        self.draggable = new PreviewSiteDraggable;
+    }
+
+    setupForElement(){
+        const self = this;
+
+        /*var callbilly = Globals.elements.new({
             type: "callbilly",
             parent: Globals.window.body
         });
@@ -75,68 +170,22 @@ class StudioHandler{
             type: "billy",
             parent: Globals.window.body,
             html: '<tongue>Hey , how can i help you today?</tongue><orders><type data-panel-trigger="suggestion"><p>I would like to have a suggestion.</p><div class="billyspinner"></div></type><order class="suggestion"><p>Background Color</p></order><order class="suggestion"><p>Font Color</p></order></orders>'
-        });
-
-        var notesdiv = Globals.elements.new({
-            type: "div",
-            parent: Globals.window.body,
-            html: '<h6>We are sorry if you are facing any ux/ui problems.The software does not supports all small screen sizes.</h6><button id="ntsbtn">Okay</button>',
-            id: "notes"
-        });
-
-        let plan = self.data.plan;
-
-        if(plan !== 'Free'){
-          if(plan == 'Gold' || plan == 'Diamond' || plan == 'Silver'){
-              var script1 = Globals.elements.new({
-                  type: "script",
-                  parent: document.getElementsByTagName("head")[0],
-                  attributes: {
-                      src: "../assets/js/pagehandlers/studio/Animator.js"
-                  },
-                  listeners: {
-                      load: () => {
-                          self.Animator = new Animator;
-                      }
-                  }
-              });
-          }
-        }
-
-        $("body").on("contextmenu",function(e){
-            return false;
-        });
-
-        self.userInterface.greetUser();
-
-        var notesbtn = document.getElementById('ntsbtn');
-        /*notesbtn.addListeners({
-            click: () => {
-                Globals.elements.getElementById('notes').remove();
-            }
         });*/
-        notesbtn.addEventListener("click", function(){
-            document.getElementById('notes').remove();
-        })
-
-        if(plan !== 'Free'){
-          if(plan == 'Gold' || plan == 'Diamond'){
-              self.getAnimations();
-          }
-        }
+        
+        self.getAnimations();
     }
 
     planExpired(){
         const self = this;
-      document.getElementsByTagName('loader')[0].remove();
-      var exatExpiry = moment(self.data.expires_at.substring(0,10)).format("dddd, MMMM Do YYYY");
-      Globals.membershipHandler.notice('plan-expired',exatExpiry);
+        document.getElementsByTagName('loader')[0].remove();
+        var exatExpiry = moment(self.data.expires_at.substring(0,10)).format("dddd, MMMM Do YYYY");
+        Globals.membershipHandler.notice('plan-expired',exatExpiry);
 
-      setTimeout(function(){
-        window.location.href = '../profile/';
-      },7500);
+        setTimeout(function(){
+            window.location.href = '../profile/';
+        },7500);
 
-      document.getElementsByTagName('head')[0].innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/notice.css">';
+        document.getElementsByTagName('head')[0].innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/notice.css">';
     }
 
     async getAnimations(){

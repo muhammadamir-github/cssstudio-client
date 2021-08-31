@@ -22,11 +22,11 @@ class ProfileHandler{
                             style: { color: "#e67300" },
                             listeners: {
                                 click: function(){
-                                    self.switchProfileTab(this);
+                                    //self.switchProfileTab(this);
                                 }
                             }
                         },
-                        {
+                        /*{
                             type: "li",
                             text: "History",
                             listeners: {
@@ -34,13 +34,13 @@ class ProfileHandler{
                                     self.switchProfileTab(this);
                                 }
                             }
-                        }
+                        }*/
                     ]
                 }
             ]
         });
 
-        if(window.location.href.includes('p=')){
+        /*if(window.location.href.includes('p=')){
             if(window.location.href.includes('pi=')){
                 if(window.location.href.includes('pi2=')){
                     var pi = self.getParameter("pi");
@@ -68,7 +68,7 @@ class ProfileHandler{
                     }
                 }
             }
-        }
+        }*/
 
         String.prototype.capitalize = function(){
             return this.charAt(0).toUpperCase() + this.slice(1);
@@ -120,7 +120,7 @@ class ProfileHandler{
                                 }
                             ]
                         },
-                        {
+                        /*{
                             type: "button",
                             id: "upgbtn",
                             text: "Upgrade Account",
@@ -143,7 +143,7 @@ class ProfileHandler{
                                     },450);
                                 }
                             }
-                        }
+                        }*/
                     ]
                 },
                 {
@@ -218,7 +218,7 @@ class ProfileHandler{
             ]
         });
 
-        var history = Globals.elements.new({
+        /*var history = Globals.elements.new({
             type: "div",
             parent: Globals.window.body,
             id: "ptHistory",
@@ -361,17 +361,17 @@ class ProfileHandler{
                     ]
                 }
             ]
-        });
+        });*/
 
         var basic = general.getElementsByTagName('profileBox')[0];
 
-        if(moment(self.data.expires_at).isBefore(moment())){
+        /*if(moment(self.data.expires_at).isBefore(moment())){
             Globals.membershipHandler.notice('plan-expired', exat);
-        }
+        }*/
 
         self.ip();
 
-        var upgradeplan = Globals.elements.new({
+        /*var upgradeplan = Globals.elements.new({
             type: "div",
             parent: Globals.window.body,
             id: "upgp",
@@ -396,12 +396,12 @@ class ProfileHandler{
                     }
                 }
             ]
-        });
+        });*/
 
         Globals.paypalHandler.setup(self.data);
     }
 
-    planExpired(){
+    /*planExpired(){
         const self = this;
         var exatExpiry = moment(self.data.expires_at.substring(0,10)).format("dddd, MMMM Do YYYY");
         Globals.membershipHandler.notice('plan-expired',exatExpiry);
@@ -451,7 +451,7 @@ class ProfileHandler{
         var url_string = window.location.href;
         var url = new URL(url_string);
         return url.searchParams.get(p);
-    }
+    }*/
 
     async update(){
         var textinputs = document.getElementsByTagName('textinput');
@@ -522,7 +522,7 @@ class ProfileHandler{
         window.location.href = '../home/';
     }
 
-    switchProfileTab(e){
+    /*switchProfileTab(e){
         var tabName = e.innerText;
         var tabs = document.getElementById('profileTabs').getElementsByTagName('ul')[0].getElementsByTagName('li');
 
@@ -544,5 +544,5 @@ class ProfileHandler{
         }
 
         e.style.color = '#e67300';
-    }
+    }*/
 }

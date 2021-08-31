@@ -2,74 +2,7 @@ class UserInterface{
     constructor(){
         this.total_elements_selected_to_add = 0;
     }
-
-    greetUser(){
-        let question = Globals.elements.new({
-            type: "p",
-            parent: Globals.window.body,
-            classes: [ "wtcquestion" ],
-            text: "What do you want to create today?",
-        });
-
-        let button1 = Globals.elements.new({
-            type: "button",
-            parent: Globals.window.body,
-            classes: [ "cneelementbtn" ],
-            text: "New Element",
-            listeners: {
-                click: function(){
-                    let button2 = document.getElementsByClassName("cnpagebtn")[0];
-                    question.remove();
-                    button2.remove();
-                    this.remove();
-
-                    Globals.pageHandler.progressLoader.show();
-                    setTimeout(function(){
-                        Globals.pageHandler.progressLoader.hide();
-                        Globals.pageHandler.elementPanel.start();
-                    }, 1);
-                }
-            }
-        });
-
-        let button2 = Globals.elements.new({
-            type: "button",
-            parent: Globals.window.body,
-            classes: [ "cnpagebtn" ],
-            text: "New Page",
-            listeners: {
-                click: function(){
-                    question.remove();
-                    button1.remove();
-                    this.remove();
-
-                    document.getElementsByTagName('billy')[0].remove();
-                    document.getElementsByTagName('callbilly')[0].remove();
-
-                    let elementPosition = Globals.elements.new({
-                        type: "span",
-                        parent: Globals.window.body,
-                        classes: [ "elPos" ],
-                        text: "0%"
-                    });
-
-                    let pageCenterPosition = Globals.elements.new({
-                        type: "span",
-                        parent: Globals.window.body,
-                        classes: [ "pcPos" ],
-                        text: ""
-                    });
-
-                    Globals.pageHandler.progressLoader.show();
-                    setTimeout(function(){
-                        Globals.pageHandler.progressLoader.hide();
-                        Globals.pageHandler.pagebuilder.start();
-                    }, 1);
-                }
-            }
-        });
-    }
-
+    
     selectNewElementToCreate(e){
         const self = this;
         if(e.className !== 'selected_element'){

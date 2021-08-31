@@ -100,7 +100,7 @@ class SupportHandler{
         });
 
         var combobox = await Globals.components.new({
-            name: "combobox",
+            name: "internal-combobox",
             parent: newticket,
             data: {
                 id: "categories",

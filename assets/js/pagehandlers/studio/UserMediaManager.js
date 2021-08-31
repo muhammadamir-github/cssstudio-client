@@ -424,7 +424,7 @@ class UserMediaManager{
                 children: [
                     {
                         type: "img",
-                        id: randomize.elementId(5),
+                        id: Globals.randomizer.id(5),
                         attributes: {
                             src: 'http://localhost:8000/api/assets/'+user_images[i].path,
                             "data-title": user_images[i].name,
@@ -538,7 +538,7 @@ class UserMediaManager{
                     children: [
                         {
                             type: "img",
-                            id: randomize.elementId(5),
+                            id: Globals.randomizer.id(5),
                             listeners: {
                                 click: VideoManager.changeVideo,
                             },

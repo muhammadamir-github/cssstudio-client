@@ -38,8 +38,6 @@ class FontsManager{
             ]
         });
 
-        Globals.pageHandler.progressLoader.show();
-
         this.addFontComboBox();
         getGoogleFonts(document.getElementsByClassName('selected')[0],'webpageBuilder');
     }
@@ -92,7 +90,7 @@ class FontsManager{
 
     async addFontComboBox(){
         let combobox = await Globals.components.new({
-            name: "combobox",
+            name: "internal-combobox",
             parent: document.getElementsByClassName('fontManager')[0],
             elementType: "selected",
             data: {

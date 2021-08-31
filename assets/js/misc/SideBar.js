@@ -5,28 +5,28 @@ export default class SideBar{
         const self = this;
         self.pageName = pageName;
         self.sections = [
-            {
+            /*{
                 name: "Account",
                 options: [
                     { name: "Profile", icon: "fas fa-user-circle", href: "../profile/" },
-                    { name: "Billing", icon: "fas fa-credit-card", href: "../billing/" },
-                    { name: "Notifications", icon: "fas fa-bell", href: "../notifications/" }
+                    //{ name: "Billing", icon: "fas fa-credit-card", href: "../billing/" },
+                    //{ name: "Notifications", icon: "fas fa-bell", href: "../notifications/" }
                 ]
-            },
-            {
+            },*/
+            /*{
                 name: "Manage",
                 options: [
                     { name: "Studio", icon: "fas fa-tools", href: "../studio/" },
                     { name: "Storage", icon: "fas fa-archive", href: "../storage/" },
-                    { name: "Support", icon: "fas fa-life-ring", href: "../support/" }
+                    //{ name: "Support", icon: "fas fa-life-ring", href: "../support/" }
                 ]
-            },
-            {
+            },*/
+            /*{
                 name: null,
                 options: [
                     { name: "Logout", icon: "fas fa-sign-out-alt", href: null }
                 ]
-            }
+            }*/
         ];
 
         self.element = Globals.elements.new({
@@ -88,6 +88,8 @@ export default class SideBar{
                 });
             }
         }
+
+        self.close();
     }
 
     toggle(){

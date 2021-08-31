@@ -1,8 +1,8 @@
-class ComboboxView{
+class InternalComboboxView{
     constructor(controller){
         this.controller = controller;
         this._element = null;
-        this.textKeyMap = {
+        this.textKeyMap = { // Style properties to update according to combobox text.
             "Font Size": { key: "fontSize", valueSuffix: "px", keyValueSuffix: "px" },
             "Height": { key: "height", valueSuffix: "px", keyValueSuffix: "px" },
             "Width": { key: "width", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
@@ -59,7 +59,7 @@ class ComboboxView{
 
     create(options = {}){
         const self = this;
-        const { data, parent, prepend, before, elementType } = options;
+        const { data, parent, prepend, before, elementType, component_id } = options;
 
         self.initialData = {...data, elementType};
 
@@ -70,6 +70,9 @@ class ComboboxView{
             style: data.style,
             before: before,
             prepend: prepend,
+            attributes: {
+                "data-component-id": component_id,
+            },
             children: [
                 {
                     type: "selected",
@@ -100,7 +103,7 @@ class ComboboxView{
                                 classes: data.customValue.classes ? data.customValue.classes : [ "custom" ],
                                 style: data.customValue.style ? data.customValue.style : null,
                                 listeners: {
-                                    keyup: function(e){ self.customValueChange(e, self); },
+                                    keyup: function(e){ self.customValueChange(this.value, this, self); },
                                 }
                             }] : [];
                         })(),
@@ -209,33 +212,37 @@ class ComboboxView{
                                                     {
                                                         type: "a",
                                                         text: option,
-                                                        classes: i === data.options.length-1 ? [ "lastoption" ] : null,
+                                                        attributes: {
+                                                            "data-combobox-option-value": option
+                                                        },
+                                                        classes: [
+                                                            ...(() => { return i === data.options.length-1 ? ["lastoption"] : []; })(),
+                                                        ],
                                                         listeners: {
                                                             click: function(){
-                                                                self.changeValue(this);
+                                                                self.changeValue(this, option);
                                                             },
                                                             mouseover: function(){
                                                                 let applyTo = document.getElementById(`preview${elementType}`) || document.getElementsByClassName(`selected`)[0];
-                                                                let key = self.textKeyMap[data.text].key;
 
-                                                                applyTo.setAttribute(`data-style-temp-${key}`, applyTo.style[key]);
-                                                                applyTo.style[key] = option;
+                                                                if(self.textKeyMap[data.text]){
+                                                                    let key = self.textKeyMap[data.text].key;
+
+                                                                    applyTo.setAttribute(`data-style-temp-${key}`, applyTo.style[key]);
+                                                                    applyTo.style[key] = option;
+                                                                }
                                                             },
                                                             mouseout: function(){
                                                                 let applyTo = document.getElementById(`preview${elementType}`) || document.getElementsByClassName(`selected`)[0];
-                                                                let key = self.textKeyMap[data.text].key;
 
-                                                                applyTo.style[key]  = applyTo.getAttribute(`data-style-temp-${key}`);
-                                                                applyTo.setAttribute(`data-style-temp-${key}`, "");
+                                                                if(self.textKeyMap[data.text]){
+                                                                    let key = self.textKeyMap[data.text].key;
+
+                                                                    applyTo.style[key]  = applyTo.getAttribute(`data-style-temp-${key}`);
+                                                                    applyTo.setAttribute(`data-style-temp-${key}`, "");
+                                                                }
                                                             },
                                                         },
-                                                        children: [
-                                                            {
-                                                                type: "span",
-                                                                text: option,
-                                                                classes: [ "value" ],
-                                                            }
-                                                        ]
                                                     }
                                                 ]
                                             }
@@ -255,66 +262,86 @@ class ComboboxView{
             setTimeout(() => {
                 // This timeout is required due to element being created dynamically.
                 self.setupColorPicker(elementType == "selected" ? elementType : `preview${elementType}`);
+
+                if(data.color){
+                    let inputElement = data.color.startsWith("#") ? document.getElementById(`${data.colorPicker.idPrefix}cphex`) : document.getElementById(`${data.colorPicker.idPrefix}cprgba`);
+                    if(inputElement){ inputElement.value = data.color; self.textToColorPickerColor(inputElement); }
+                }
             }, 250);
+        }
+
+        if(Array.isArray(data.options)){
+            if(data.selected){
+                let optionElement = [...self._element.getElementsByTagName("a")].find(x => (x.getAttribute("data-combobox-option-value") === data.selected));
+                if(optionElement){ self.changeValue(optionElement, data.selected); }
+            }
+        }
+
+        if(typeof data.customValue === "object" && data.customValue !== null){
+            if(data.value){
+                let valueSuffix = self.textKeyMap[self.initialData.text].valueSuffix;
+                let keyValueSuffix = self.textKeyMap[self.initialData.text].keyValueSuffix;
+
+                let inputElement = self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0];
+                if(inputElement){ self.customValueChange(data.value.replaceAll(keyValueSuffix, "").replaceAll(valueSuffix, ""), inputElement, self); }
+            }
         }
     }
 
-    customValueChange(e, self){
-        let selected_a_span = e.target.parentElement.getElementsByTagName("a")[0].getElementsByTagName("span")[0];
+    customValueChange(value, inputElement, self){
+        self.controller._updateModelState({ value });
+        let selected_a_span = inputElement.parentElement.getElementsByTagName("a")[0].getElementsByTagName("span")[0];
 
         let key = self.textKeyMap[self.initialData.text].key;
         let valueSuffix = self.textKeyMap[self.initialData.text].valueSuffix;
         let keyValueSuffix = self.textKeyMap[self.initialData.text].keyValueSuffix;
 
         if(self.initialData.customValue.call === "updateElement"){
-            selected_a_span.innerText = `${self.initialData.text}: ${e.target.value}${valueSuffix}`;
-            updateElement(self.initialData.elementType, key, e.target.value+valueSuffix);
+            selected_a_span.innerText = `${self.initialData.text}: ${value}${valueSuffix}`;
+            updateElement(self.initialData.elementType, key, value+valueSuffix);
         }else{
             if(self.initialData.customValue.call === "dataAttributeBalancer"){
-                selected_a_span.innerText = `${self.initialData.text}: ${e.target.value}`;
-                dataAttributeBalancer(key, e.target.value);
+                selected_a_span.innerText = `${self.initialData.text}: ${value}`;
+                dataAttributeBalancer(key, value);
             }else{
                 if(self.initialData.customValue.call === "updatePageElement"){
-                    selected_a_span.innerText = `${self.initialData.text}: ${e.target.value}${valueSuffix}`;
-                    document.getElementsByClassName('selected')[0].style[key] = `${e.target.value}${keyValueSuffix}`;
+                    selected_a_span.innerText = `${self.initialData.text}: ${value}${valueSuffix}`;
+                    document.getElementsByClassName('selected')[0].style[key] = `${value}${keyValueSuffix}`;
                 }
             }
         }
     }
 
-    changeValue(optionElement){
-        let value = optionElement.innerText;
+    changeValue(optionElement, value){
+        this.controller._updateModelState({ selected: value });
 
         this._element.getElementsByTagName('selected')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = `${this.initialData.text}: ${value}`;
         $(this._element).find(".combobox-selected").removeClass("combobox-selected");
         optionElement.classList.add("combobox-selected");
 
-        this.toggle(this);
+        this.toggle(this, "hide");
 
         let applyTo = document.getElementById(`preview${this.initialData.elementType}`) || document.getElementsByClassName(`selected`)[0];
-        let key = this.textKeyMap[this.initialData.text].key;
 
-        if(key && applyTo.hasAttribute(`data-style-temp-${key}`)){
-            applyTo.setAttribute(`data-style-temp-${key}`, value);
-        }
+        if(this.textKeyMap[this.initialData.text]){
+            let key = this.textKeyMap[this.initialData.text].key;
 
-        if(applyTo && applyTo.classList.contains("selected")){
-            if(this.initialData.id === "googlefonts"){
-                applyTo.style.fontFamily = value;
+            if(key && applyTo.hasAttribute(`data-style-temp-${key}`)){
+                applyTo.setAttribute(`data-style-temp-${key}`, value);
             }
 
-            this._element.classList.remove('selectedCombobox');
-        }else{
-            if(this.initialData.id === "timing"){
-                updateElement(this.initialData.elementType, 'atiming', value);
-            }else{
+            if(applyTo && applyTo.classList.contains("selected")){
                 if(this.initialData.id === "googlefonts"){
+                    applyTo.style.fontFamily = value;
+                }
 
-                    updateElement(this.initialData.elementType, 'googlefonts', value);
+                this._element.classList.remove('selectedCombobox');
+            }else{
+                if(this.initialData.id === "timing"){
+                    updateElement(this.initialData.elementType, 'atiming', value);
                 }else{
-                    if(this.initialData.id === "endx" || this.initialData.id === "endy"){
-                        if(this.initialData.id === "endy"){ document.getElementById('bggeyvalue').innerText = value; }
-                        if(this.initialData.id === "endx"){ document.getElementById('bggexvalue').innerText = value; }
+                    if(this.initialData.id === "googlefonts"){
+                        updateElement(this.initialData.elementType, 'googlefonts', value);
                     }else{
                         updateElement(this.initialData.elementType, key, value);
                     }
@@ -323,7 +350,7 @@ class ComboboxView{
         }
     }
 
-    toggle(self){
+    toggle(self, specficAction = null){
         let options = self._element.getElementsByTagName("options");
         let customValue = self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0];
         let combobox = self._element;
@@ -336,7 +363,7 @@ class ComboboxView{
 
             if(options_ul[0]){
                 options_ul = options_ul[0];
-                if(options.style.display == 'block'){
+                if((specficAction === null && options.style.display == 'block') || specficAction === "hide"){
                     options.style.display = 'none';
                     options_ul.style.display = 'none';
                 }else{
@@ -347,7 +374,7 @@ class ComboboxView{
         }
 
         if(customValue){
-            if(customValue.style.display == 'block'){
+            if((specficAction === null && customValue.style.display == 'block') || specficAction === "hide"){
                 customValue.style.display = 'none';
                 selected_a_span.style.textAlign = 'unset';
             }else{
@@ -358,7 +385,7 @@ class ComboboxView{
 
         if(colordisplay[0]){
             colordisplay = colordisplay[0];
-            if(colordisplay.style.display == 'block'){
+            if((specficAction === null && colordisplay.style.display == 'block') || specficAction === "hide"){
                 colordisplay.style.display = 'none';
                 combobox.style.textAlign = 'unset';
             }else{
@@ -367,7 +394,7 @@ class ComboboxView{
             }
         }
 
-        if(self.colorPicker.applyTo && self.colorPicker.applyTo.classList.contains("selected")){
+        if((specficAction === null || specficAction === "hide") && self.colorPicker.applyTo && self.colorPicker.applyTo.classList.contains("selected")){
             combobox.classList.add('selectedCombobox');
         }
     }
@@ -416,9 +443,9 @@ class ComboboxView{
         const self = this;
 
         if(forid == "selected"){
-            self.colorPicker.applyto = document.getElementsByClassName('selected')[0];
+            self.colorPicker.applyTo = document.getElementsByClassName('selected')[0] || document.getElementById(forid);
         }else{
-            self.colorPicker.applyto = document.getElementById(forid);
+            self.colorPicker.applyTo = document.getElementById(forid);
         }
 
         self.updateStrip(null, self);
@@ -478,63 +505,65 @@ class ComboboxView{
             dataAttributeBalancer('slide'+displayinvoker, rgba);
         }else{
             if(key == 'backgroundColor'){
-                self.colorPicker.applyto.style.backgroundColor = rgba;
+                self.colorPicker.applyTo.style.backgroundColor = rgba;
             }
 
             if(key == 'color'){
-                self.colorPicker.applyto.style.color = rgba;
+                self.colorPicker.applyTo.style.color = rgba;
             }
 
             if(key == 'borderColor'){
-                if(self.colorPicker.applyto.style.borderColor != ''){
-                    self.colorPicker.applyto.style.bordercolor = '';
-                    self.colorPicker.applyto.style.borderColor = rgba;
+                if(self.colorPicker.applyTo.style.borderColor != ''){
+                    self.colorPicker.applyTo.style.bordercolor = '';
+                    self.colorPicker.applyTo.style.borderColor = rgba;
                 }else{
-                    if(self.colorPicker.applyto.style.borderBottomColor != ''){
-                        self.colorPicker.applyto.style.borderBottomColor = rgba;
+                    if(self.colorPicker.applyTo.style.borderBottomColor != ''){
+                        self.colorPicker.applyTo.style.borderBottomColor = rgba;
                     }else{
-                        self.colorPicker.applyto.style.bordercolor = '';
-                        self.colorPicker.applyto.style.borderColor = rgba;
+                        self.colorPicker.applyTo.style.bordercolor = '';
+                        self.colorPicker.applyTo.style.borderColor = rgba;
                     }
                 }
             }
 
             if(key == 'textDecorationColor'){
-                self.colorPicker.applyto.style.textDecorationColor = rgba;
+                self.colorPicker.applyTo.style.textDecorationColor = rgba;
             }
 
             if(key == 'boxShadow'){
-                var currentboxshadow = self.colorPicker.applyto.style.boxShadow;
+                var currentboxshadow = self.colorPicker.applyTo.style.boxShadow;
 
                 if(currentboxshadow.includes('rgb')){
-                    var newboxshadow = self.colorPicker.applyto.style.boxShadow.split(')')[1];
-                    self.colorPicker.applyto.style.boxShadow = rgba + newboxshadow;
+                    var newboxshadow = self.colorPicker.applyTo.style.boxShadow.split(')')[1];
+                    self.colorPicker.applyTo.style.boxShadow = rgba + newboxshadow;
                 }else{
-                    var newboxshadow = self.colorPicker.applyto.style.boxShadow;
-                    self.colorPicker.applyto.style.boxShadow = rgba + newboxshadow;
+                    var newboxshadow = self.colorPicker.applyTo.style.boxShadow;
+                    self.colorPicker.applyTo.style.boxShadow = rgba + newboxshadow;
                 }
             }
 
             if(key == 'textShadow'){
-                var currenttextshadow = self.colorPicker.applyto.style.textShadow;
+                var currenttextshadow = self.colorPicker.applyTo.style.textShadow;
 
                 if(currenttextshadow.includes('rgb')){
-                    var newtextshadow = self.colorPicker.applyto.style.textShadow.split(')')[1];
-                    self.colorPicker.applyto.style.textShadow = rgba + newtextshadow;
+                    var newtextshadow = self.colorPicker.applyTo.style.textShadow.split(')')[1];
+                    self.colorPicker.applyTo.style.textShadow = rgba + newtextshadow;
                 }else{
-                    var newtextshadow = self.colorPicker.applyto.style.textShadow;
-                    self.colorPicker.applyto.style.textShadow = rgba + newtextshadow;
+                    var newtextshadow = self.colorPicker.applyTo.style.textShadow;
+                    self.colorPicker.applyTo.style.textShadow = rgba + newtextshadow;
                 }
             }
 
             if(key == 'outlineColor'){
-                self.colorPicker.applyto.style.outlineColor = rgba;
+                self.colorPicker.applyTo.style.outlineColor = rgba;
             }
         }
 
         display.style.backgroundColor = rgba;
         rgbainput.value = 'Color Rgba: ' + rgba;
         hexinput.value = 'Color Hex: ' + self.rgb2hex(rgba);
+
+        self.controller._updateModelState({ color: rgba });
     }
 
     textToColorPickerColor(e){
@@ -575,6 +604,8 @@ class ComboboxView{
         }else{
             self.colorPicker.applyTo.style[key] = color;
         }
+
+        self.controller._updateModelState({ color });
     }
 
     rgb2hex(rgb){

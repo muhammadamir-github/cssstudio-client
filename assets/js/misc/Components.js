@@ -2,6 +2,7 @@ export default class Components{
     constructor(){
         this.dir = "../assets/components"; // Dir path of components relative to the file loading this components.js.
         this.loaded = [];
+        this.created = [];
     }
 
     async new(options = {}){
@@ -12,12 +13,20 @@ export default class Components{
             let controllerClass = self.loaded.find(x => (x.name === options.name)).controller;
             let instance = new controllerClass(options.data); // Data related to component should be passed here
 
+            let component_id = Globals.randomizer.id(100);
             await instance._init({
                 // Data not related to component should be passed here
                 elementType: options.elementType,
                 parent: options.parent,
                 before: options.before,
-                prepend: options.prepend
+                prepend: options.prepend,
+                component_id,
+            });
+
+            self.created.push({
+                component_id,
+                name: options.name,
+                controller: instance
             });
 
             return instance.view._element;
@@ -30,22 +39,48 @@ export default class Components{
 
     async load(name){
         const self = this;
-        const response = await fetch(`${self.dir}/${name}/`, { headers: { 'Content-Type': 'text/html;charset=UTF-8' }, }).then(response => { return response.text(); });
 
+        let dirs = [
+            name.startsWith("internal-") ? `${self.dir}/internal/${name.replace("internal-", "")}/` : `${self.dir}/${name}/`,
+            name.startsWith("internal-") ? `${self.dir}/internal/${name.replace("internal-", "")}/assets/js/` : `${self.dir}/${name}/assets/js/`,
+            name.startsWith("internal-") ? `${self.dir}/internal/${name.replace("internal-", "")}/assets/css/` : `${self.dir}/${name}/assets/css/`,
+        ];
+
+        let files = [];
         const jsRegex = /href="([^"]*.js")/g;
-        var allFilesInDir = response.match(jsRegex);
+        const cssRegex = /href="([^"]*.css")/g;
 
-        if(allFilesInDir && Array.isArray(allFilesInDir)){
-            allFilesInDir = allFilesInDir.map(x => { return x.split("=")[1].replaceAll(/\\/g,"\\\\", '').replaceAll('"', ''); });
+        for (let dir of dirs){
+            const res = await fetch(dir, { mode: 'no-cors', headers: { 'Content-Type': 'text/html;charset=UTF-8' }, }).then(response => {
+                if(response.ok){
+                    return response.text();
+                }
 
-            for (let f of allFilesInDir){
+                return null;
+            });
+
+            if(res){
+                let currentDirFiles = res.match(jsRegex).concat(res.match(cssRegex)).filter(x => (x ? true : false));
+
+                if(currentDirFiles && Array.isArray(currentDirFiles)){
+                    currentDirFiles = currentDirFiles.map(x => { return x.split("=")[1].replaceAll(/\\/g,"\\\\", '').replaceAll('"', ''); });
+                }
+
+                for (let file of currentDirFiles){
+                    files.push(`${dir}${file}`);
+                }
+            }
+        }
+
+        if(files && Array.isArray(files)){
+            for (let f of files){
                 await new Promise((resolve, reject) => {
                     let file = Globals.elements.new({
                         type: "script",
                         parent: Globals.window.head,
                         attributes: {
                             type: "text/javascript",
-                            src: `${self.dir}/${name}/${f}`
+                            src: f
                         },
                         listeners: {
                             load: function(){

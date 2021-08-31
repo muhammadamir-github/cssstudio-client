@@ -17,7 +17,7 @@ class Duplicator{
         copy.addEventListener('contextmenu',Globals.pageHandler.site.elementClicked);
 
         if(etype == 'video-overlay'){
-            var random = randomize.elementId(25);
+            var random = Globals.randomizer.id(25);
 
             copy.id = random;
             copy.getElementsByTagName('iframe')[0].id = random+'videoPlayer';

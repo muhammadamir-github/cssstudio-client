@@ -171,7 +171,7 @@ class MiniStyler{
 
     async addComboBox(comboboxTitle,comboboxId,addCustomEdit,addColorPicker,unit,comboboxOptions){
         let combobox = await Globals.components.new({
-            name: "combobox",
+            name: "internal-combobox",
             parent: document.getElementsByClassName('miniStyler_box')[0],
             elementType: "selected",
             data: {
@@ -187,7 +187,7 @@ class MiniStyler{
                     call: "updatePageElement"
                 } : null,
                 colorPicker: addColorPicker === 1 ? {
-                    idPrefix: Globals.pageHandler.randomize.elementId(10),
+                    idPrefix: Globals.pageHandler.Globals.randomizer.id(10),
                     style: comboboxTitle == 'Box Shadow' || comboboxTitle == 'Text Shadow' ? {
                         left: "0px",
                         right: "unset"

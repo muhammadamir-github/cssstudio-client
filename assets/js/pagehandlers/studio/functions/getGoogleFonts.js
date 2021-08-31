@@ -10,7 +10,7 @@ async function loadGoogleFonts(response,element,mode){
 
     var fonts = JSON.parse(response).items;
     let combobox = await Globals.components.new({
-        name: "combobox",
+        name: "internal-combobox",
         parent: mode == 'elementCreator' ? document.getElementById('googlefontssdiv') : document.getElementsByClassName('fontManager')[0],
         elementType: mode == "elementCreator" ? element : "selected",
         data: {
@@ -35,6 +35,5 @@ async function loadGoogleFonts(response,element,mode){
 
     if(mode == 'webpageBuilder'){
         document.getElementsByClassName('fontManager')[0].style.display = 'inline-block';
-        Globals.pageHandler.progressLoader.hide();
     }
 }

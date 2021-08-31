@@ -6,8 +6,6 @@ class WebPageBuilder{
     start(){
         Globals.pageHandler.mediaManager.refreshMedia();
 
-        Globals.sideBar.close();
-
         var previewsite = Globals.elements.new({
             type: "div",
             parent: Globals.window.body,

@@ -1,4 +1,4 @@
- async function finishWork(element){
+ async function finishWork(elementType){
     var panel = document.getElementById('panel');
 
     let children = [
@@ -30,13 +30,13 @@
                             }
 
                             if(aName.value !== '' || eName.value == ''){
-                                saveToStorage(element);
+                                saveToStorage(elementType);
                             }
                         }
 
                         if(finishdiv_textarea_element.value !== '' && finishdiv_textarea_animation.value == ''){
                             if(eName.value !== ''){
-                                saveToStorage(element);
+                                saveToStorage(elementType);
                             }else{
                                 Globals.notificationHandler.new('Error, please enter element name.');
                             }
@@ -44,7 +44,7 @@
 
                         if(finishdiv_textarea_animation.value !== '' && finishdiv_textarea_element.value == ''){
                             if(aName.value !== ''){
-                                saveToStorage(element);
+                                saveToStorage(elementType);
                             }else{
                                 Globals.notificationHandler.new('Error, please enter animation name.');
                             }
@@ -136,9 +136,9 @@
         video:{default:'padding: 10px;width: 250px;height: 200px;min-width: 250px;min-height: 200px;outline: none;background-color: white;display: block;position: absolute;transform: translate(-50%,-50%);left: 50%;top: 50%;border: 0.5px solid black;margin-top: 25px;overflow: hidden;'},
     }
 
-    var e = document.getElementById('preview'+element);
+    var e = document.getElementById('preview'+elementType);
     var css = $(e).attr('style');
-    var defaultcss = styles[element].default;
+    var defaultcss = styles[elementType].default;
     var animationcss = '';
 
     if(css.includes('background-color')){
@@ -254,115 +254,9 @@
     });
 
     if(animationcss !== ''){
-        document.getElementById('textareaE').value = '.' + element + ' { ' + '\n' + '\n' + combined_array.join(';\n') + '\n' + '}' + "\n \n \n \n Google fonts used: \n \n" + ffinfo;
+        document.getElementById('textareaE').value = '.' + elementType + ' { ' + '\n' + '\n' + combined_array.join(';\n') + '\n' + '}' + "\n \n \n \n Google fonts used: \n \n" + ffinfo;
         document.getElementById('textareaA').value = animationcss;
     }else{
-        document.getElementById('textareaE').value = '.' + element + ' { ' + '\n' + '\n' + combined_array.join(';\n') + '\n' + '}' + "\n \n \n \n Google fonts used: \n \n" + ffinfo;
-    }
-}
-
-function saveTextAsFile(){
-    var text = document.getElementById("textareaE").value + '\n' + '\n' + document.getElementById("textareaA").value;
-    var textFileAsBlob = new Blob([text], {type:'text/plain'});
-    var fileName = 'Css Stylesheet';
-
-    let downloadLink = Globals.elements.new({
-        type: "a",
-        parent: Globals.window.body,
-        attributes: {
-            download: fileName,
-            href: window.webkitURL != null ? window.webkitURL.createObjectURL(textFileAsBlob) : window.URL.createObjectURL(textFileAsBlob),
-        },
-        html: "Download File",
-        style: {
-            display: "none"
-        },
-        listeners: window.webkitURL == null ? {
-            click: function(){
-                this.remove();
-            }
-        } : null,
-    })
-
-    downloadLink.click();
-}
-
-async function saveToStorage(elementtype){
-    var token = localStorage.getItem('auth');
-    var animationCSS = document.getElementById('textareaA').value;
-    var elementCSS = document.getElementById('textareaE').value;
-    var elementName = document.getElementById('elementName').value;
-    var animationName = document.getElementById('animationName').value;
-
-    if(animationCSS != ''){
-
-        if(animationCSS.includes('preview')){
-            animationCSS = animationCSS.replace('preview', animationName);
-        }else{
-            animationCSS = animationCSS.split("\n").slice(1).join("\n");
-            animationCSS = '@keyframes '+ animationName + ' { \n' + animationCSS;
-        }
-        document.getElementById('textareaA').value = animationCSS;
-
-        if(elementCSS.includes('animation-name')){
-            elementCSS = elementCSS.replace(/^.*animation-name:.*$/mg, "animation-name: "+animationName+";");
-        }else{
-            elementCSS = elementCSS.replace('preview', animationName);
-        }
-        document.getElementById('textareaE').value = elementCSS;
-
-        const response = await Globals.api.request({ route: `me/animation/add`, method: "post", data:{'name':animationName,'css':animationCSS} });
-        if(response.success === true){
-            if(response.data.message == 'animation saved to your account.'){
-                Globals.notificationHandler.new(response.data.message);
-            }
-
-            if(response.data.message == 'an error occured.'){
-                Globals.notificationHandler.new('an error occured, please try again.');
-            }
-
-            if(response.data.message == 'Error, You have reached your daily quota for saving animations.'){
-                Globals.notificationHandler.new('Error, you have reached your daily animation creation quota, wait until it resets in 24 hours.');
-            }
-
-            if(response.data.message == 'User md doesn\'t exist, please contact support.'){
-                Globals.notificationHandler.new('There is a problem with your account, please contact support.');
-            }
-
-            if(response.data.message == 'Storage is full.'){
-                Globals.notificationHandler.new('Error, there is no space left in your storage, please make some space and retry.');
-            }
-
-            $("#finish").remove();
-            $("#panel").find("*").not('#finish, #textareaE, #textareaA, #eH, #aH, #savebutton, #dltextbutton, #cancelbutton').css({'opacity':'1','pointer-events':'unset'});
-        }
-    }
-
-    if(elementCSS != ''){
-        elementCSS = elementCSS.split("\n").slice(1).join("\n");
-        elementCSS = '.'+ elementName + ' { \n' + elementCSS;
-        document.getElementById('textareaE').value = elementCSS;
-
-        const response = await Globals.api.request({ route: `me/element/add`, method: "post", data:{'name':elementName,'css':elementCSS,'type':elementtype} });
-        if(response.success === true){
-            if(response.data.message == 'element saved to your account.'){
-                Globals.notificationHandler.new(response.data.message);
-            }
-
-            if(response.data.message == 'an error occured.'){
-                Globals.notificationHandler.new('an error occured, please try again.');
-            }
-
-            if(response.data.message == 'User md doesn\'t exist, please contact support.'){
-                Globals.notificationHandler.new('There is a problem with your account, please contact support.');
-            }
-
-            if(response.data.message == 'Storage is full.'){
-                Globals.notificationHandler.new('Error, there is no space left in your storage, please make some space and retry.');
-            }
-
-            $("#finish").remove();
-            $("#panel").find("*").not('#finish, #textareaE, #textareaA, #eH, #aH, #savebutton, #dltextbutton, #cancelbutton, #animationName, #elementName').css({'opacity':'1','pointer-events':'unset'});
-        }
+        document.getElementById('textareaE').value = '.' + elementType + ' { ' + '\n' + '\n' + combined_array.join(';\n') + '\n' + '}' + "\n \n \n \n Google fonts used: \n \n" + ffinfo;
     }
 }

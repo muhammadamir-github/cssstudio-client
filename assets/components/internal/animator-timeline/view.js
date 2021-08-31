@@ -1,4 +1,4 @@
-class AnimatorTimelineView{
+class InternalAnimatorTimelineView{
     constructor(controller){
         this.controller = controller;
         this._element = null;
@@ -6,7 +6,7 @@ class AnimatorTimelineView{
 
     create(options = {}){
         const self = this;
-        const { data, parent, prepend, before, elementType } = options;
+        const { data, parent, prepend, before, elementType, component_id } = options;
 
         let children = [];
 
@@ -54,38 +54,34 @@ class AnimatorTimelineView{
             });
         });
 
-        if(Globals.pageHandler.data.plan !== 'Free'){
-            if(Globals.pageHandler.data.plan == 'Gold' || Globals.pageHandler.data.plan == 'Diamond'){
-                children.push({
+        children.push({
+            type: "span",
+            classes: [ "aTbutton" ],
+            style: {
+                backgroundColor: "#463496",
+                left: "80px"
+            },
+            listeners: {
+                click: function(){
+                    self.animationActions('switch-readymade', '', elementType);
+                    document.getElementsByClassName('newanimationbtn')[0].style.display = 'block';
+                }
+            },
+            children: [
+                {
+                    type: "i",
+                    classes: [ "fas", "fa-toggle-on" ]
+                },
+                {
                     type: "span",
-                    classes: [ "aTbutton" ],
+                    classes: [ "tooltip" ],
                     style: {
-                        backgroundColor: "#463496",
-                        left: "80px"
+                        width: "200px"
                     },
-                    listeners: {
-                        click: function(){
-                            self.animationActions('switch-readymade', '', elementType);
-                            document.getElementsByClassName('newanimationbtn')[0].style.display = 'block';
-                        }
-                    },
-                    children: [
-                        {
-                            type: "i",
-                            classes: [ "fas", "fa-toggle-on" ]
-                        },
-                        {
-                            type: "span",
-                            classes: [ "tooltip" ],
-                            style: {
-                                width: "200px"
-                            },
-                            text: "Switch to ready made animations.",
-                        },
-                    ]
-                });
-            }
-        }
+                    text: "Switch to ready made animations.",
+                },
+            ]
+        });
 
         for(var i=1; i<4; i++){
             children.push({
@@ -176,8 +172,16 @@ class AnimatorTimelineView{
             id: "aT",
             children,
             before: before,
-            prepend: prepend
+            prepend: prepend,
+            attributes: {
+                "data-component-id": component_id,
+            },
         });
+
+        setupSlideStyler();
+
+        $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'0.5', 'pointerEvents':'none'});
+        $('.aTbutton').css({'pointer-events':'none'});
     }
 
     animationActions(action, n, element){

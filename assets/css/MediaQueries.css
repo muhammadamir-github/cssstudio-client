@@ -10,6 +10,7 @@
     height: 2000px;
     margin-top: 130vh;
     max-height: 1830px;
+    overflow: hidden !important;
 }
 
 #previewbox{
@@ -144,7 +145,7 @@
     overflow: scroll;
 }
 
-#advance_div1 div:nth-child(1) , #advance_div1 div:nth-child(2) , 
+#advance_div1 div:nth-child(1) , #advance_div1 div:nth-child(2) ,
 #advance_div1 div:nth-child(3){
     left: 0px;
     margin-left: 0px;
@@ -215,7 +216,7 @@
 
 }
 
- 
+
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1136px){
 
@@ -228,6 +229,7 @@
 	height: 95%;
 	min-height: fit-content;
 	max-height: 980px;
+    overflow: hidden !important;
 }
 
 #previewbox{
@@ -436,7 +438,7 @@
 
 }
 
- 
+
 /* Desktops and laptops ----------- */
 @media only screen and (min-width : 1224px) and (max-width : 1700px) {
 
@@ -503,11 +505,11 @@
 }
 
 /*color pickers for background gradient div*/
-#bggc1cp, #bggc2cp{ 
+#bggc1cp, #bggc2cp{
     margin-left: -60px;
 }
 
-#outlinediv combobox selected a, #bggradientdiv combobox selected a, #letterspacediv combobox selected a, 
+#outlinediv combobox selected a, #bggradientdiv combobox selected a, #letterspacediv combobox selected a,
 #fontcombinationsdiv combobox selected a{
     width: 80%;
 }
@@ -525,12 +527,12 @@
 }
 
 }
- 
+
 /* Large screens ----------- */
 @media only screen and (min-width : 1824px) {
 
 }
- 
+
 /* iPhone 5 (portrait &amp; landscape)----------- */
 @media only screen and (min-device-width : 320px) and (max-device-width : 568px) {
 
