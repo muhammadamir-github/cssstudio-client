@@ -22,7 +22,7 @@ export default class Api{
         const tokenToUse = options.route.startsWith("admin") ? self.adminToken : self.token;
 
         let toReturn = { success: false, data: null };
-        if(!tokenToUse && options.route !== "login" && options.route !== "admin/login"){ return toReturn; }
+        //if(!tokenToUse && options.route !== "login" && options.route !== "admin/login"){ return toReturn; }
 
         await $.ajax({
             url: self.hostname+":"+self.port+"/api/"+options.route,

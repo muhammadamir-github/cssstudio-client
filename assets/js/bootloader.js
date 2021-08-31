@@ -3,7 +3,6 @@ import Loader from './misc/Loader.js';
 import Api from './misc/Api.js';
 import SideBar from './misc/SideBar.js';
 import NotificationHandler from './misc/Notification.js';
-import MembershipHandler from './misc/Membership.js';
 import Randomizer from './misc/Randomizer.js';
 import Elements from './misc/Elements.js';
 import Components from './misc/Components.js';
@@ -18,7 +17,6 @@ window.onload = () => {
     Globals.api = new Api(Globals.api.hostname, Globals.api.port);
     Globals.randomizer = new Randomizer;
     Globals.notificationHandler = new NotificationHandler;
-    Globals.membershipHandler = new MembershipHandler;
     Globals.elements = new Elements;
     Globals.components = new Components;
     Globals.bootLoader = new BootLoader("../assets");

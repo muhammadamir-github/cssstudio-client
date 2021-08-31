@@ -74,27 +74,6 @@ export default {
             ],
         },
         {
-            pageName: "support",
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "pages/Style.css", isURL: false, isRaw: false, },
-                { type: "css", src: ".tkts{position:relative;left:50%;transform:translate(-50%);border:1px solid #f1f1f1;width:70%;height:300px;outline:0;margin-top:50px;display:inline-block;overflow-x:hidden;overflow-y:scroll;padding-bottom:30px;transition:opacity .3s ease-in-out}.ntkt{position:relative;left:50%;transform:translate(-50%);border:1px solid #f1f1f1;width:70%;max-height:300px;outline:0;margin-top:25px;display:inline-block;overflow:hidden;min-height:fit-content;padding-bottom:50px;transition:opacity .3s ease-in-out}.ntkt button{right:10px;top:20px;position:absolute;width:150px;height:40px;outline:0;border:none;background:#1a1a1a;color:#fff;border-radius:5px;font-family:sans-serif;font-size:11px;cursor:pointer}.ntkt button i{margin-left:5px;font-size:11px}.tkts table tbody tr:hover{opacity:.5;cursor:pointer}", isURL: false, isRaw: true, },
-                ...global_requiredFiles.js,
-                { type: "js", src: "pagehandlers/Support.js", isURL: false, isRaw: false, }
-            ],
-        },
-        {
-            pageName: "billing",
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "pages/Style.css", isURL: false, isRaw: false, },
-                ...global_requiredFiles.js,
-                { type: "js", src: "pagehandlers/Billing.js", isURL: false, isRaw: false, }
-            ],
-        },
-        {
             pageName: "studio",
             paths: [
                 ...global_requiredFiles.icon,
@@ -125,83 +104,6 @@ export default {
                 ...global_requiredFiles.js,
                 { type: "js", src: "pagehandlers/Login.js", isURL: false, isRaw: false, },
                 { type: "js", src: "pagehandlers/Static.js", isURL: false, isRaw: false, }
-            ],
-        },
-        {
-            pageName: "termsandconditions",
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "misc/TopNavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "misc/BottomNavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "pages/TermsAndConditions.css", isURL: false, isRaw: false, },
-                ...global_requiredFiles.js,
-                { type: "js", src: "pagehandlers/Static.js", isURL: false, isRaw: false, }
-            ],
-        },
-        {
-            pageName: "home",
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "misc/TopNavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "misc/BottomNavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "pages/Home.css", isURL: false, isRaw: false, },
-                { type: "css", src: ".pageheading{color: black; font-family: ProximaNovaBold; }", isURL: false, isRaw: true, },
-                { type: "js", src: "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", isURL: true, isRaw: false, },
-                ...global_requiredFiles.js,
-                { type: "js", src: "pagehandlers/Static.js", isURL: false, isRaw: false, }
-            ],
-        },
-        {
-            pageName: "features",
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "misc/TopNavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "misc/BottomNavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "pages/Features.css", isURL: false, isRaw: false, },
-                ...global_requiredFiles.js,
-                { type: "js", src: "pagehandlers/Static.js", isURL: false, isRaw: false, }
-            ],
-        },
-        {
-            pageName: "blog",
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "misc/TopNavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "misc/BottomNavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "pages/Blog.css", isURL: false, isRaw: false, },
-                ...global_requiredFiles.js,
-                { type: "js", src: "pagehandlers/Static.js", isURL: false, isRaw: false, },
-                { type: "js", src: "pagehandlers/Blog.js", isURL: false, isRaw: false, }
-            ],
-        },
-        {
-            pageName: "adminpanel",
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "pages/AdminPanelLogin.css", isURL: false, isRaw: false, },
-                { type: "js", src: "thirdparty/jquery.min.js", isURL: false, isRaw: false, },
-                { type: "js", src: "thirdparty/moment.min.js", isURL: false, isRaw: false, },
-                { type: "js", src: "pagehandlers/AdminPanelLogin.js", isURL: false, isRaw: false, }
-            ],
-        },
-        {
-            pageName: "home.html", // adminpanel/home.html
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "misc/TopNavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "pages/AdminPanel.css", isURL: false, isRaw: false, },
-                { type: "css", src: ".pageheading{ color: black; font-family: ProximaNovaBold; }", isURL: false, isRaw: true, },
-                { type: "js", src: "thirdparty/jquery.min.js", isURL: false, isRaw: false, },
-                { type: "js", src: "thirdparty/moment.min.js", isURL: false, isRaw: false, },
-                { type: "js", src: "thirdparty/chart.bundle.js", isURL: false, isRaw: false, },
-                { type: "js", src: "pagehandlers/adminpanel/*", isURL: false, isRaw: false, ignore: [], },
-                { type: "js", src: "pagehandlers/AdminPanel.js", isURL: false, isRaw: false, }
             ],
         },
     ],
