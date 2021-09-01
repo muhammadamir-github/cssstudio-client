@@ -83,15 +83,6 @@ function updateElement(elementtype,attr,value){
             fontsizecombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
         }
 
-        if(attr == 'googlefonts'){
-            var googlefontscombobox_options = document.getElementById('googlefonts').getElementsByTagName( 'options' )[0];
-
-            var newvalue = value.replace(/ /g,"_");
-            element.style.fontFamily = newvalue;
-            googlefontscombobox_options.style.display = 'none';
-            googlefontscombobox_options.getElementsByTagName( 'ul' )[0].style.display = 'none';
-        }
-
         if(attr == 'fontFamily'){
             var fontfamilycombobox_options = document.getElementById('fontfamily').getElementsByTagName( 'options' )[0];
 

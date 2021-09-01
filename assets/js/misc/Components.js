@@ -60,7 +60,7 @@ export default class Components{
             });
 
             if(res){
-                let currentDirFiles = res.match(jsRegex).concat(res.match(cssRegex)).filter(x => (x ? true : false));
+                let currentDirFiles = [...(() => { let js = res.match(jsRegex); return js ? js : []; })(), ].concat([...(() => { let css = res.match(cssRegex); return css ? css : []; })(), ]).filter(x => (x ? true : false));
 
                 if(currentDirFiles && Array.isArray(currentDirFiles)){
                     currentDirFiles = currentDirFiles.map(x => { return x.split("=")[1].replaceAll(/\\/g,"\\\\", '').replaceAll('"', ''); });
@@ -76,11 +76,13 @@ export default class Components{
             for (let f of files){
                 await new Promise((resolve, reject) => {
                     let file = Globals.elements.new({
-                        type: "script",
+                        type: f.endsWith(".js") ? "script" : "link",
                         parent: Globals.window.head,
                         attributes: {
-                            type: "text/javascript",
-                            src: f
+                            type: f.endsWith(".js") ? "text/javascript" : "text/css",
+                            src: f.endsWith(".js") ? f : null,
+                            rel: f.endsWith(".css") ? "stylesheet" : null,
+                            href: f.endsWith(".css") ? f : null,
                         },
                         listeners: {
                             load: function(){

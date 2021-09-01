@@ -215,7 +215,7 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
                             var file = this.files[0];
                             var reader = new FileReader();
                             reader.onload = function () {
-                                $('#preview'+element).css({"background-image":"url(" + reader.result + ")","background-size":"cover"});
+                                $('#preview'+elementType).css({"background-image":"url(" + reader.result + ")","background-size":"cover"});
                             }
                             reader.readAsDataURL(file);
                         }
@@ -529,7 +529,7 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
                 id: "outlinestyle",
                 style: {
                     left: "50%",
-                    zIndex: "1",
+                    zIndex: "3",
                     transform: "translate(-50%)"
                 },
                 text: "Outline Style",
@@ -545,7 +545,7 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
                 id: "outlinewidth",
                 style: {
                     left: "50%",
-                    zIndex: "1",
+                    zIndex: "2",
                     transform: "translate(-50%)"
                 },
                 text: "Outline Width",
@@ -563,7 +563,7 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
                 id: "outlinecolor",
                 style: {
                     left: "50%",
-                    zIndex: "0",
+                    zIndex: "1",
                     transform: "translate(-50%)"
                 },
                 text: "Outline Color",
@@ -595,6 +595,5 @@ function applyBackgroundGradient(elementId){
     let color1 = document.getElementById('bggc1cd').style.backgroundColor;
     let color2 = document.getElementById('bggc2cd').style.backgroundColor;
 
-    console.log(`linear-gradient(${direction},${color1},${color2}`);
     document.getElementById(elementId).style.background = `linear-gradient(${direction},${color1},${color2}`;
 }

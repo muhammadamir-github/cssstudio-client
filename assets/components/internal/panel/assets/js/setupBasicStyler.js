@@ -12,7 +12,7 @@ async function setupBasicStyler(elementType){
                     type: "input",
                     classes: [ "input" ],
                     attributes: {
-                        placeholder: "Enter "+element+" source here"
+                        placeholder: "Enter "+elementType+" source here"
                     },
                     listeners: {
                         keyup: function(){
@@ -53,9 +53,9 @@ async function setupBasicStyler(elementType){
                             var ele = document.getElementById('preview'+elementType);
                             if(this.value == ''){
                                 if(elementType == 'input'){
-                                    ele.value = 'Preview '+element;
+                                    ele.value = 'Preview '+elementType;
                                 }else{
-                                    ele.innerText = 'Preview '+element;
+                                    ele.innerText = 'Preview '+elementType;
                                 }
                             }else{
                                 if(elementType == 'input'){

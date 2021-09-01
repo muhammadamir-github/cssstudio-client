@@ -1,7 +1,7 @@
 function saveTextAsFile(){
     var text = document.getElementById("textareaE").value + '\n' + '\n' + document.getElementById("textareaA").value;
-    var textFileAsBlob = new Blob([text], {type:'text/plain'});
-    var fileName = 'Css Stylesheet';
+    var textFileAsBlob = new Blob([text], {type: 'text/css; charset=utf-8'});
+    var fileName = 'CSSStudio Element';
 
     let downloadLink = Globals.elements.new({
         type: "a",

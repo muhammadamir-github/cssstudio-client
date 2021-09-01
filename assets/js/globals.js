@@ -84,6 +84,7 @@ export default {
                 { type: "css", src: "misc/Fonts.css", isURL: false, isRaw: false, },
                 //{ type: "js", src: "https://www.youtube.com/iframe_api", isURL: true, isRaw: false, },
                 ...global_requiredFiles.js,
+                { type: "js", src: "thirdparty/beautify-css.js", isURL: false, isRaw: false, },
                 //{ type: "js", src: "misc/Billy.js", isURL: false, isRaw: false, },
                 //{ type: "js", src: "misc/Draggable.js", isURL: false, isRaw: false, },
                 //{ type: "js", src: "misc/PublicEventHandler.js", isURL: false, isRaw: false, },

@@ -46,15 +46,14 @@ class InternalSliderView{
                     classes: [ "slider" ],
                     attributes: {
                         type: "range",
-                        min: data.min ? data.min : 0,
-                        max: data.max ? data.max : 0,
-                        step: data.step ? data.step : 0,
-                        value: data.value ? data.value : 0,
+                        min: data.min !== undefined && data.min !== null ? data.min : 1,
+                        max: data.max !== undefined && data.max !== null ? data.max : 1,
+                        step: data.step !== undefined && data.step !== null ? data.step : 1,
                     },
                     listeners: {
                         input: data.id && data.id.startsWith("slide") ? function(){
                             let value = this.value;
-                            if(data.id === "slideFontWeight"){ value = value == "0" ? "normal" : "bold"; }
+                            if(data.id === "slideFontWeight"){ value = value == 0 ? "normal" : "bold"; }
 
                             dataAttributeBalancer(self.idKeyMap[data.id].key, value);
                         } : function(){
@@ -66,5 +65,9 @@ class InternalSliderView{
             before: before,
             prepend: prepend
         });
+
+        for (let input of self._element.getElementsByTagName("input")){
+            input.value = data.value !== undefined && data.value !== null ? data.value : 0;
+        }
     }
 }

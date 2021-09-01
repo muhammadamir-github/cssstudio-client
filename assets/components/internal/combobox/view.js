@@ -322,30 +322,25 @@ class InternalComboboxView{
         this.toggle(this, "hide");
 
         let applyTo = document.getElementById(`preview${this.initialData.elementType}`) || document.getElementsByClassName(`selected`)[0];
+        let key = this.textKeyMap[this.initialData.text].key;
 
         if(this.initialData.id == "timing"){
             updateElement(this.initialData.elementType, 'atiming', value);
         }else{
-            if(this.initialData.id == "googlefonts"){
-                updateElement(this.initialData.elementType, 'googlefonts', value);
-            }else{
-                if(this.textKeyMap[this.initialData.text]){
-                    let key = this.textKeyMap[this.initialData.text].key;
-
-                    if(key && applyTo.hasAttribute(`data-style-temp-${key}`)){
-                        applyTo.setAttribute(`data-style-temp-${key}`, value);
-                    }
-
-                    if(applyTo && applyTo.classList.contains("selected")){
-                        if(this.initialData.id === "googlefonts"){
-                            applyTo.style.fontFamily = value;
-                        }
-
-                        this._element.classList.remove('selectedCombobox');
-                    }
-                }else{
-                    updateElement(this.initialData.elementType, key, value);
+            if(this.textKeyMap[this.initialData.text]){
+                if(key && applyTo.hasAttribute(`data-style-temp-${key}`)){
+                    applyTo.setAttribute(`data-style-temp-${key}`, value);
                 }
+
+                if(applyTo && applyTo.classList.contains("selected")){
+                    if(this.initialData.id === "googlefonts"){
+                        applyTo.style.fontFamily = value;
+                    }
+
+                    this._element.classList.remove('selectedCombobox');
+                }
+            }else{
+                updateElement(this.initialData.elementType, key, value);
             }
         }
     }

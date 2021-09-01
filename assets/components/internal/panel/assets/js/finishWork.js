@@ -4,7 +4,7 @@
     let children = [
         ...(() => {
             return [
-                {
+                /*{
                     text: "Save to storage",
                     id: "savebutton",
                     click: function(){
@@ -50,9 +50,9 @@
                             }
                         }
                     }
-                },
+                },*/
                 {
-                    text: "Download Stylesheet (.txt)",
+                    text: "Download Stylesheet (.css)",
                     id: "dltextbutton",
                     click: saveTextAsFile,
                 },
@@ -75,7 +75,7 @@
                 }
             });
         })(),
-        ...(() => {
+        /*...(() => {
             return [
                 { id: "elementName", placeholder: "Element Name" },
                 { id: "animationName", placeholder: "Animation Name" }
@@ -88,7 +88,7 @@
                     }
                 }
             });
-        })(),
+        })(),*/
         ...(() => {
             return [
                 { id: "textareaE", readonly: true, text: "Style CSS:", textId: "eH" },
@@ -121,86 +121,14 @@
 
     $("#panel").find("*").not('#finish, #textareaE, #textareaA, #eH, #aH, #savebutton, #dltextbutton, #cancelbutton, #animationName, #elementName').css({'opacity':'0.5','pointer-events':'none'});
 
-    //--------------------------------
-
-    var liner_reg = new RegExp("\\" + ';', "g");
-
-    var styles = {
-        button:{default:'padding-right: 10px; padding-left: 10px; width: 150px; height: 40px; border: 0.5px solid black; outline: none; background-color: white; display: block; position: absolute; transform: translate(-50%,-50%); left: 50%; top: 50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 25px;'},
-        div:{default:'padding: 10px;width: 200px;height: 200px;border: 0.5px solid black;outline: none;background-color: white;display: block;position: absolute;transform: translate(-50%,-50%);left: 50%;top: 50%;margin-top: 25px;overflow: hidden;'},
-        input:{default:'padding: 10px;width: 200px;height: 40px;border: 0.5px solid black;outline: none;background-color: white;display: block;position: absolute;transform: translate(-50%,-50%);left: 50%;top: 50%;padding-left: 10px;padding-right: 10px;margin-top: 25px;overflow: hidden;'},
-        paragraph:{default:'padding: 10px;width: 200px;height: 40px;outline: none;background-color: white;display: block; position: absolute;transform: translate(-50%,-50%);left: 50%;top: 50%;padding-left: 10px;padding-right: 10px;padding-bottom: 10px;font-family: sans-serif;margin-top: 25px;overflow: hidden;word-break: break-all;'},
-        heading:{default:'padding: 10px;width: 200px;height: 40px;outline: none;background-color: white;display: block;position: absolute;transform: translate(-50%,-50%);left: 50%;top: 50%;padding-left: 10px;padding-right: 10px;font-family: sans-serif;font-weight: bold;margin-top: 25px;overflow: hidden;word-break: break-all;'},
-        textarea:{default:'padding: 10px;width: 200px;height: 40px;outline: none;background-color: white;display: block;position: absolute;transform: translate(-50%,-50%);left: 50%;top: 50%;padding: 15px;font-family: sans-serif;font-weight: bold;border: 0.5px solid black;max-width: 150px;max-height: 80px;margin-top: 25px;overflow: hidden;'},
-        image:{default:'padding: 10px;width: 200px;height: 200px;min-width: 200px;min-height: 200px;outline: none;background-color: white;display: block;position: absolute;transform: translate(-50%,-50%); left: 50%;top: 50%;border: 0.5px solid black;margin-top: 25px;overflow: hidden;'},
-        video:{default:'padding: 10px;width: 250px;height: 200px;min-width: 250px;min-height: 200px;outline: none;background-color: white;display: block;position: absolute;transform: translate(-50%,-50%);left: 50%;top: 50%;border: 0.5px solid black;margin-top: 25px;overflow: hidden;'},
-    }
-
     var e = document.getElementById('preview'+elementType);
-    var css = $(e).attr('style');
-    var defaultcss = styles[elementType].default;
+    var css = getStyle(e);
     var animationcss = '';
 
-    if(css.includes('background-color')){
-        defaultcss = defaultcss.replace('background-color: white;','');
-    }
-
-    if(css.includes('padding-right')){
-        defaultcss = defaultcss.replace('padding-right: 10px;','');
-    }
-
-    if(css.includes('padding-left')){
-        defaultcss = defaultcss.replace('padding-left: 10px;','');
-    }
-
-    if(css.includes('padding-bottom')){
-        defaultcss = defaultcss.replace('padding-bottom: 10px;','');
-    }
-
-    if(css.includes('padding:')){
-        defaultcss = defaultcss.replace('padding: 10px;','');
-    }
-
-    if(css.includes('border')){
-        defaultcss = defaultcss.replace('border: 0.5px solid black;','');
-    }
-
-    if(css.includes('outline')){
-        defaultcss = defaultcss.replace('outline: none;','');
-    }
-
-    if(css.includes('display')){
-        defaultcss = defaultcss.replace('display: block;','');
-    }
-
-    if(css.includes('transform')){
-        defaultcss = defaultcss.replace('transform: translate(-50%,-50%);','');
-    }
-
-    if(css.includes('transform')){
-        defaultcss = defaultcss.replace('transform: translate(-50%,-50%);','');
-    }
-
-    if(css.includes('whitespace')){
-        defaultcss = defaultcss.replace('whitespace: nowrap;','');
-    }
-
-    if(css.includes('margin-top')){
-        defaultcss = defaultcss.replace('margin-top: 25px;','');
-    }
-
-    if(css.includes('font-family')){
-        defaultcss = defaultcss.replace('font-family: sans-serif;','');
-    }
-
-    if(css.includes('font-weight')){
-        defaultcss = defaultcss.replace('font-weight: bold;','');
-    }
-
     if(css.includes('animation-name')){
-        const response = await Globals.api.request({ route: `me/animations/${e.style.animationName}`, method: "get" });
+        const response = await Globals.api.request({ route: `animation/${e.style.animationName}`, method: "get" });
         if(response.success === true){
-            document.getElementById('textareaA').value = response.success.css;
+            document.getElementById('textareaA').value = response.data.css;
         }
     }else{
         if(css.includes('animation:')){
@@ -212,51 +140,114 @@
                 animationcss = animationcss.split('{').join('{\n');
                 animationcss = animationcss.split('}').join('}\n');
                 animationcss = animationcss.split(';').join(';\n');
-                //animationcss = animationcss.split('@-webkit-keyframes preview{').join('\n \n@-webkit-keyframes preview{\n \n');
                 animationcss = animationcss.split('@keyframes preview{').join('\n \n@keyframes preview{\n \n');
             }
         }
     }
 
-    var css_array = css.split(';');
-    var default_array = defaultcss.split(';');
-
-    var combined_array = css_array.concat(default_array);
-
     var ff = e.style.fontFamily;
-    var ffinfo = [''];
+    var ffinfo = "none";
 
-    if(ff !== 'sans' && ff !== 'sans-serif' && ff !== 'helvectia' && ff !== 'monospace' && ff !== 'cursive' && ff !== 'fantasy'){
+    if(ff !== 'sans' && ff !== 'sans-serif' && ff !== 'helvectia' && ff !== 'monospace' && ff !== 'cursive' && ff !== 'fantasy' && ff !== 'arial'){
         for(var i=0; i < Globals.pageHandler.WebFonts.length; i++){
             var newfontfamiliy = Globals.pageHandler.WebFonts[i].family.replace(/ /g,"_");
             if(ff.length > newfontfamiliy.length){
                 if(ff.includes(newfontfamiliy)){
-                    ffinfo =  Globals.pageHandler.WebFonts[i].family + ' : ' + JSON.stringify(Globals.pageHandler.WebFonts[i].files);
+                    ffinfo = Globals.pageHandler.WebFonts[i].family + ' : ' + JSON.stringify(Globals.pageHandler.WebFonts[i].files);
                     break;
                 }
             }
 
             if(ff.length < newfontfamiliy.length){
                 if(newfontfamiliy.includes(ff)){
-                    ffinfo =  Globals.pageHandler.WebFonts[i].family + ' : ' + JSON.stringify(Globals.pageHandler.WebFonts[i].files);
+                    ffinfo = Globals.pageHandler.WebFonts[i].family + ' : ' + JSON.stringify(Globals.pageHandler.WebFonts[i].files);
                     break;
                 }
             }
         }
     }
 
-    combined_array = combined_array.filter(function(str) {
-        return /\S/.test(str);
-    });
-
-    combined_array = combined_array.map(function (el) {
-        return el.trim();
-    });
-
     if(animationcss !== ''){
-        document.getElementById('textareaE').value = '.' + elementType + ' { ' + '\n' + '\n' + combined_array.join(';\n') + '\n' + '}' + "\n \n \n \n Google fonts used: \n \n" + ffinfo;
-        document.getElementById('textareaA').value = animationcss;
+        document.getElementById('textareaE').value = css_beautify('.' + elementType + css + "\n \nGoogle Fonts: \n \n"+ffinfo);
+        document.getElementById('textareaA').value = css_beautify(animationcss);
     }else{
-        document.getElementById('textareaE').value = '.' + elementType + ' { ' + '\n' + '\n' + combined_array.join(';\n') + '\n' + '}' + "\n \n \n \n Google fonts used: \n \n" + ffinfo;
+        document.getElementById('textareaE').value = css_beautify('.' + elementType + css + "\n \nGoogle Fonts: \n \n"+ffinfo);
     }
+}
+
+function getStyle(node){
+    let style = "";
+    let computedStyle = window.getComputedStyle(node);
+    let propertiesToInclude = [
+        "fontSize",
+        "height",
+        "width",
+        "borderSize",
+        "borderRadius",
+        "borderStyle",
+        "textAlign",
+        "marginTop",
+        "marginLeft",
+        "marginRight",
+        "marginBottom",
+        "paddingTop",
+        "paddingLeft",
+        "paddingRight",
+        "paddingBottom",
+        "letterSpacing",
+        "wordSpacing",
+        "outlineWidth",
+        "boxShadow",
+        "textShadow",
+        "textDecoration",
+        "textDecorationStyle",
+        "fontStyle",
+        "fontStretch",
+        "fontVariant",
+        "fontStretch",
+        "fontWeight",
+        "display",
+        "whiteSpace",
+        "outlineStyle",
+        "color",
+        "outlineColor",
+        "backgroundColor",
+        "borderColor",
+        "textDecorationColor",
+        "background",
+        "transform",
+        "opacity",
+        "fontFamily",
+        "position",
+        "pointerEvents",
+        "top",
+        "left",
+        "overflow",
+        "textOverflow"
+    ];
+
+    for(var i=0; i<propertiesToInclude.length; i++){
+        let propertyName = propertiesToInclude[i].replace(/[A-Z][a-z]*/g, str => '-' + str.toLowerCase() + '-').replace('--', '-').replace(/(^-)|(-$)/g, ''); // replaces uppercase letters to lowercase letters with prefixed hyphen & removes hyphens at the beginning and the end
+        let value = computedStyle.getPropertyValue(propertyName);
+
+        if(value){
+            style += propertyName + ':' + computedStyle.getPropertyValue(propertyName)+';'+(i === propertiesToInclude.length-1 ? "" : "\n");
+        }
+    }
+
+    if(computedStyle.getPropertyValue("animation-name") && computedStyle.getPropertyValue("animation-name") !== "none" && computedStyle.getPropertyValue("animation-name") !== "preview"){
+        style += "\n animation-name" + ':' + computedStyle.getPropertyValue("animation-name")+';';
+        style += "\n animation-duration" + ':' + computedStyle.getPropertyValue("animation-duration")+';';
+        style += "\n animation-delay" + ':' + computedStyle.getPropertyValue("animation-delay")+';';
+        style += "\n animation-iteration-count" + ':' + computedStyle.getPropertyValue("animation-iteration-count")+';';
+        style += "\n animation-timing-function" + ':' + computedStyle.getPropertyValue("animation-timing-function")+';';
+    }else{
+        if(computedStyle.getPropertyValue("animation")){
+            style += "\n animation" + ':' + computedStyle.getPropertyValue("animation")+';';
+        }else{
+            style += "\n";
+        }
+    }
+
+    return css_beautify(`{\n ${style} \n}`);
 }

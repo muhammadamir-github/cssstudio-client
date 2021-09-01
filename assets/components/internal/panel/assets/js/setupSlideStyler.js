@@ -60,15 +60,15 @@ async function setupSlideStyler(element){
     });
 
     let sliders = [
-        { id: "slideScaleX", text: "Scale x-axis", min: 1, max: 10, step: 0.1, value: 1 },
-        { id: "slideScaleY", text: "Scale y-axis", min: 1, max: 10, step: 0.1, value: 1 },
-        { id: "slideRotate", text: "Rotate", min: 1, max: 360, step: 1, value: 1 },
-        { id: "slideSkewX", text: "Skew x-axis", min: 1, max: 10, step: 0.1, value: 1 },
-        { id: "slideSkewY", text: "Skew y-axis", min: 1, max: 10, step: 0.1, value: 1 },
-        { id: "slideFontSize", text: "Font Size", min: 1, max: 100, step: 1, value: 1 },
+        { id: "slideScaleX", text: "Scale x-axis", min: 0, max: 10, step: 0.1, value: 0 },
+        { id: "slideScaleY", text: "Scale y-axis", min: 0, max: 10, step: 0.1, value: 0 },
+        { id: "slideRotate", text: "Rotate", min: 0, max: 360, step: 1, value: 0 },
+        { id: "slideSkewX", text: "Skew x-axis", min: 0, max: 10, step: 0.1, value: 0 },
+        { id: "slideSkewY", text: "Skew y-axis", min: 0, max: 10, step: 0.1, value: 0 },
+        { id: "slideFontSize", text: "Font Size", min: 0, max: 100, step: 1, value: 0 },
         { id: "slideFontWeight", text: "Font Weight", min: 0, max: 1, step: 1, value: 0 },
-        { id: "slideBorderSize", text: "Border Size", min: 1, max: 100, step: 1, value: 1 },
-        { id: "slideBorderRadius", text: "Border Radius", min: 1, max: 100, step: 1, value: 1 },
+        { id: "slideBorderSize", text: "Border Size", min: 0, max: 100, step: 1, value: 0},
+        { id: "slideBorderRadius", text: "Border Radius", min: 0, max: 100, step: 1, value: 0 },
     ];
 
     for (let slider of sliders){
@@ -95,8 +95,8 @@ async function setupSlideStyler(element){
 
     let comboboxes = [
         { id: "fontcolor", style: { left: "10px" }, text: "Font Color", idPrefix: "animatef", },
-        { id: "bordercolor", style: { left: "200px" }, text: "Border Color", idPrefix: "animateb", },
-        { id: "backgroundcolor", style: { left: "390px" }, text: "Background Color", idPrefix: "animatebg",}
+        { id: "bordercolor", style: { left: "250px" }, text: "Border Color", idPrefix: "animateb", },
+        { id: "backgroundcolor", style: { left: "490px" }, text: "Background Color", idPrefix: "animatebg",}
     ];
 
     for (let x of comboboxes){

@@ -1,0 +1,1230 @@
+shapechangediv ul::-webkit-scrollbar{
+    width: 2px;
+    background-color: #F5F5F5;
+}
+
+shapechangediv ul::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+shapechangediv ul::-webkit-scrollbar-thumb{
+    background-color: #000000;
+}
+
+select{
+	-o-appearance: none;
+	appearance: none;
+	-webkit-appearance: none;
+	-ms-appearance: none;
+	-moz-appearance: none;
+
+	display: block;
+	width: 200px;
+	height: 40px;
+	padding: 10px;
+	background-color: white;
+	outline: none;
+	border-radius: 5px;
+}
+
+select option{
+	width: 200px;
+	height: 50px;
+	padding: 10px;
+	background-color: white;
+	border-radius: 10px;
+}
+
+#background{
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	pointer-events: none;
+	background-color: rgba(100, 100, 100, 0.3);
+    opacity: 0.3;
+	display: none;
+	position: fixed;
+}
+
+#jadget{
+	display: block;
+	text-align: center;
+	transition: border 0.5s , border-style 0.5s ease-in-out
+}
+
+#jadget:hover{
+	border: 1px solid black;
+	border-style: dashed;
+}
+
+#notes{
+    position: fixed;
+    top: 0px;
+    height: 50px;
+    width: 100%;
+    text-align: center;
+    background: darkred;
+    font-size: 22px;
+    font-family: sans-serif;
+    color: white;
+    display: block;
+    z-index: 3;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#notes:hover{
+	opacity: 0.3;
+}
+
+#notes h6{
+    position: relative;
+    margin-top: 14px;
+    display: inline-block;
+}
+
+#notes button{
+	display: inline-block;
+    position: relative;
+    background: white;
+    outline: none;
+    border: 1px solid black;
+    width: 60px;
+    height: 30px;
+    box-shadow: 0px 0px 5px 2px darkred;
+    cursor: pointer;
+}
+
+#advance,#animate{
+    width: 100%;
+    height: calc(100% - 50px);
+    position: absolute;
+    background: #1a1a1a;
+    z-index: 2;
+    margin-top: 50px;
+}
+
+#finish{
+	width: 50%;
+    height: 50%;
+    position: absolute;
+    background: #1a1a1a;
+    margin-top: 50px;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding: 10px;
+    overflow-y: scroll;
+}
+
+#finish textarea{
+    width: 90%;
+    height: 300px;
+    position: relative;
+    display: block;
+    resize: none;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    left: 50%;
+    transform: translate(-50%);
+    font-size: 15px;
+    font-style: italic;
+    font-family: monospace;
+    outline: none;
+}
+
+#finish p{
+	color: white;
+    font-size: 25px;
+    text-align: left;
+    left: 50%;
+    position: relative;
+    transform: translate(-50%);
+    font-style: italic;
+    font-family: monospace;
+    margin-left: 10px;
+}
+
+#finish button{
+	/*width: 33%;*/
+    width: 50%;
+    position: relative;
+    float: left;
+    height: 40px;
+    margin-bottom: 20px;
+    display: inline-block;
+    background: white;
+    outline: none;
+    border: 1px solid black;
+    font-size: 15px;
+    text-align: left;
+    padding-left: 15px;
+    font-family: sans-serif;
+    cursor: pointer;
+}
+
+#finish input{
+	width: 40%;
+    height: 20px;
+    padding: 5px;
+    display: inline-block;
+    outline: none;
+    border: 1px solid black;
+    font-family: sans-serif;
+    font-size: 13px;
+    margin-right: 10px;
+    position: relative;
+}
+
+#panel{
+	z-index: 2;
+	margin-left: auto;
+	margin-right: auto;
+	width: 75%;
+	height: 75%;
+	border: 1px solid black;
+	position: absolute;
+	display: block;
+	background-color: white;
+	left: 50%;
+	transform: translate(-50%,-15%);
+	top: 15%;
+	transition: box-shadow 0.3s , border-radius 0.3s, opacity 1s ease-in-out;
+	text-align: center;
+    max-width: 1415px;
+    max-height: 730px;
+}
+
+#panel:hover{
+	/*box-shadow: 0px 0px 5px;
+	border-top-right-radius: 20px;
+	border-bottom-right-radius: 20px;*/
+}
+
+#circle{
+	border-radius: 100%;
+	border: 1px solid black;
+	width: 70%;
+	height: 70%;
+	position: relative;
+	display: inline-block;
+	transition: transform 0.5s ease-in-out;
+	z-index: 1;
+}
+
+#square{
+	border: 1px solid black;
+	width: 150px;
+	height: 150px;
+	margin: 20px;
+	position: relative;
+	display: inline-block;
+	transition: transform 0.5s ease-in-out;
+	z-index: 1;
+}
+
+#rectangle{
+	border: 1px solid black;
+	width: 250px;
+	height: 100px;
+	margin: 20px;
+	position: relative;
+	display: inline-block;
+	transition: transform 0.5s ease-in-out;
+	z-index: 1;
+}
+
+#circle:hover , #rectangle:hover , #square:hover{
+	transform: scale(1.1);
+}
+
+.blueprint{
+	width: 100px;
+	position: relative;
+	height: 100px;
+	max-width: 100px;
+	max-height: 100px;
+	background-color: rgba(0,0,0,0.1);
+	display: inline-block;
+	margin-top: 30px;
+	opacity: 0;
+	transition: opacity 0.2s , border 0.2s ease-in-out;
+	overflow: hidden;
+	object-fit: scale-down;
+}
+
+.blueprint:hover{
+	opacity: 1;
+	border: 2px solid #0069ff;
+}
+
+#menuBar{
+
+margin-top: -1px;
+position: absolute;
+float: right;
+height: 100%;
+width: 0px;
+max-width: 100%;
+box-shadow: 0px 0px 1px;
+background-color: #1a1a1a;
+transition: width 1s ease-in-out;
+text-align: center;
+z-index: 4;
+
+}
+
+#menuIcon-right{
+	border: solid black;
+	width: 5px;
+	height: 5px;
+    border-width: 0 5px 5px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    position: absolute;
+    left: 15px;
+    top: 17px;
+    z-index: 4;
+}
+
+#menuIcon-left{
+	border: solid white;
+	width: 0px;
+	height: 0px;
+    border-width: 0 5px 5px 0;
+    display: inline-block;
+    padding: 3px;
+    transform: rotate(135deg);
+    -webkit-transform: rotate(135deg);
+    position: absolute;
+    left: 15px;
+    top: 17px;
+    opacity: 0;
+    z-index: 4;
+}
+
+#searchjadgets{
+	width: 90%;
+	float: right;
+	position: relative;
+	display: none;
+	background-color: white;
+	outline: none;
+	border: none;
+	height: 10px;
+	font-family: sans-serif;
+	color: black;
+	padding: 10px;
+	top: 10px;
+	margin-right: 10px;
+	border-radius: 5px;
+	margin-bottom: 50px;
+}
+
+#createJadget{
+	width: 95%;
+	height: 90%;
+	position: absolute;
+	display: block;
+	bottom: 15px;
+	left: 15px;
+	margin-right: 10px;
+	margin-top: 10px;
+	transition: border 0.5s , border-style 0.5s ease-in-out;
+	cursor: pointer;
+}
+
+#createJadget:hover{
+	border: 1px solid white;
+	border-style: dashed;
+}
+
+#createJadget:hover #createJadgettext{
+	display: block;
+}
+
+#createJadgettext{
+	font-family: sans-serif;
+	font-size: 15px;
+	text-align: center;
+	color: white;
+	left: 50%;
+	top: 50%;
+	position: absolute;
+	display: none;
+	transform: translate(-50%,-50%);
+}
+
+#day_jadget_date {
+	font-family: sans-serif;
+	font-size: 20px;
+	position: relative;
+	display: block;
+	margin-bottom: 5px;
+	margin-top: 0px;
+}
+
+#day_jadget_day{
+	font-family: sans-serif;
+	font-size: 20px;
+	position: relative;
+	display: block;
+	margin-bottom: 5px;
+	margin-top: 10px;
+}
+
+.jadgetsearch{
+	width: 80%;
+	height: 50px;
+	background-color: white;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 10px;
+}
+
+.jadgetsearch_name{
+	font-family: sans-serif;
+	font-size: 12px;
+	color: black;
+}
+
+.line{
+	width: 100%;
+    height: 1px;
+    display: block;
+    position: relative;
+    background-color: black;
+    top: 50px;
+}
+
+#buttons{
+	width: 100%;
+	height: 50px;
+	top: 0px;
+	position: absolute;
+	border: 1px solid black;
+	display: block;
+}
+
+.barbutton{
+	width: 150px;
+	height: 75%;
+	background-color: white;
+	border: 1px solid #e6e6e6;
+	transition: border 0.5s , border-radius 0.5s ease-in-out;
+	position: relative;
+	margin-top: 5px;
+	outline: none;
+	float: left;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+.spinner{
+
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    position: fixed;
+    z-index: 2;
+    color: white;
+    -webkit-animation: spin 1s linear infinite;
+    border-left: 2px solid #f2f2f2;
+    border-right: 2px solid black;
+    border-bottom: 2px solid #f2f2f2;
+    border-top: 2px solid black;
+    animation: spin 1.3s linear infinite;
+    opacity: 1;
+    top: 13px;
+    right: 17px;
+    margin: auto;
+    display: none;
+
+}
+
+#previewbox{
+	top: 90px;
+	position: relative;
+	float: left;
+	margin-left: 40px;
+	border: 1px solid black;
+	width: 300px;
+	height: 350px;
+	z-index: 3;
+	border: 1px solid #e6e6e6;
+	transition: border 0.5s , border-radius 0.5s ease-in-out;
+	text-align: center;
+	overflow: hidden;
+	display: none;
+	background-color: white;
+}
+
+#bgimgbox{
+	position: relative;
+	display: inline-block;
+	border: 1px solid black;
+	width: 300px;
+	height: 130px;
+	z-index: 1;
+	border: 1px solid #e6e6e6;
+	text-align: center;
+	overflow: hidden;
+	background-color: white;
+	float: left;
+}
+
+#settingsdiv{
+	position: relative;
+	display: inline-block;
+	border: 1px solid black;
+	width: 300px;
+	z-index: 1;
+	border: 1px solid #e6e6e6;
+	text-align: center;
+	overflow: unset;
+	background-color: white;
+	float: left;
+	margin-top: 40px;
+    margin-left: 390px;
+    height: 350px;
+}
+
+#rmadiv{
+    position: relative;
+    display: inline-block;
+    width: 630px;
+    z-index: 1;
+    border: 1px solid #e6e6e6;
+    text-align: center;
+    overflow: unset;
+    background-color: white;
+    float: left;
+    margin-top: 40px;
+    margin-left: 40px;
+    height: 350px;
+    overflow: hidden;
+}
+
+#rmadiv_acontainer{
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow-y: scroll;
+	background-color: white;
+}
+
+#settingsdiv #timing options ul li a{
+	width: 200px;
+}
+
+.box{
+	position: relative;
+    display: inline-block;
+    width: 300px;
+    height: 130px;
+    z-index: 1;
+    border: 1px solid #e6e6e6;
+    transition: border 0.5s , border-radius 0.5s ease-in-out;
+    text-align: center;
+    background-color: white;
+    float: left;
+    overflow: unset;
+}
+
+#bggradientdiv{
+	width: 415px;
+    height: 200px;
+    margin-left: 40px;
+    margin-top: 40px;
+    z-index: 6;
+}
+
+#letterspacediv, #fontcombinationsdiv, #googlefontssdiv{
+	margin-top: 40px;
+    margin-left: 40px;
+    height: 200px;
+    z-index: 0;
+}
+
+#outlinediv{
+	width: 200px;
+    margin-top: 40px;
+    margin-left: 30px;
+    height: 200px;
+}
+
+#outlinediv combobox{
+	left: 50%;
+    transform: translate(-50%);
+}
+
+#outlinediv combobox options ul{
+	height: 100px;
+    overflow-y: scroll;
+}
+
+#outlinediv combobox:nth-child(1){
+	margin-top: 5px;
+}
+
+#outlinediv combobox:nth-child(2){
+	margin-top: 65px;
+}
+
+#outlinediv combobox:nth-child(3){
+	margin-top: 127px;
+}
+
+#outlinediv .colorpicker{
+	left: -330px;
+    top: -110px;
+}
+
+#fontcombinationsdiv combobox options ul li a, #googlefontssdiv combobox options ul li a{
+    font-size: 11px;
+}
+
+#letterspacediv combobox selected a, #fontcombinationsdiv combobox selected a, #googlefontssdiv combobox selected a{
+    width: 220px;
+}
+
+#advance_div1{
+
+    margin-top: 40px;
+    float: left;
+    margin-left: 385px;
+    padding: 20px;
+    width: 950px;
+    height: 312px;
+    display: inline-block;
+    position: relative;
+    background: white;
+    overflow: hidden;
+
+}
+
+#advance_div1 div:nth-child(1){
+    left: 0px;
+}
+
+#advance_div1 div:nth-child(2){
+    left: 20px;
+}
+
+#advance_div1 div:nth-child(3){
+    left: 40px;
+}
+
+#advance_div1 div:nth-child(4){
+    top: -150px;
+}
+
+.filebtn{
+    display: block;
+    position: relative;
+    width: 50%;
+    height: 40px;
+    border: 1px solid black;
+    outline: none;
+    font-family: sans-serif;
+    text-align: left;
+    padding: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: white;
+    transition: color 0.3s , background-color 0.5s ease-in-out;
+    left: 20%;
+    transform: translate(-20%);
+    cursor: pointer;
+    top: 20px;
+}
+
+.filebtn:hover{
+	color: white;
+	background-color: black;
+}
+
+.textchangediv, .sourcechangediv{
+	position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    min-height: fit-content;
+    display: none;
+    background: black;
+    color: white;
+    text-align: center;
+}
+
+.shapechangediv{
+	position: absolute;
+    top: 65px;
+    width: 80%;
+    min-height: fit-content;
+    display: none;
+    background: black;
+    color: white;
+    z-index: 1;
+    text-align: center;
+    transform: translate(-50%);
+    left: 50%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px grey;
+    opacity: 0;
+    background-color: white;
+    transition: opacity 1s ease-in-out;
+	overflow: hidden;
+}
+
+.shapechangediv ul{
+	list-style: none;
+    padding: 0px;
+    margin: 0px;
+	max-height: 200px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.shapechangediv ul li{
+    padding: 10px;
+    height: 25px;
+    color: black;
+    font-family: sans-serif;
+    font-size: 13px;
+    text-align: center;
+    padding-top: 9px;
+    padding-bottom: 0px;
+    cursor: pointer;
+    transition: transform 0.5s , color 0.3s , background-color 0.5s , border-radius 0.5s ease-in-out;
+}
+
+.shapechangediv ul li:hover{
+	background-color: #1a1a1a;
+	transform: scale(1.02);
+	color: white;
+	border-radius: 5px;
+}
+
+.shapechangediv ul li:last-child{
+	font-size: 10px;
+	color: darkred;
+	padding-bottom: 5px;
+}
+
+.shapechangediv ul li:last-child:hover{
+	background-color: white;
+	transform: scale(1);
+	color: darkred;
+	border-radius: 0px;
+}
+
+.textchangediv ul, .sourcechangediv ul, .pstick{
+	list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    display: inline-block;
+    right: 8px;
+    top: 12px;
+}
+
+.textchangediv li, .sourcechangediv li , .pstick li{
+	position:relative;
+	margin:0;
+	padding:3px;
+	color:white;
+	border-radius:4px;
+}
+
+.textchangediv li::after , .sourcechangediv li::after , .pstick li:after{
+    content: "";
+    position: absolute;
+    right:7px;
+    top:6px;
+    width:14px;
+    height:5px;
+    border-left:4px solid white;
+    border-bottom:4px solid white;
+    transform:rotate(-45deg);
+    cursor: pointer;
+}
+
+#rotatebox, #skewbox, #scalebox, #stepsdiv{
+	top: 90px;
+	position: relative;
+	display: inline-block;
+	float: left;
+	margin-left: 30px;
+	border: 1px solid black;
+	width: 300px;
+	height: 200px;
+	z-index: 0;
+	border: 1px solid #e6e6e6;
+	transition: border 0.5s , border-radius 0.5s ease-in-out;
+	text-align: center;
+	overflow: hidden;
+	display: none;
+	margin-top: 40px;
+}
+
+#skewbox{
+	margin-left: 70px;
+}
+
+#stepsdiv button{
+	width: 80%;
+	height: 20%;
+	position: relative;
+	margin-bottom: 3%;
+	display: block;
+	transform: translate(-50%);
+	left: 50%;
+	font-size: 13px;
+	font-family: sans-serif;
+	background-color: white;
+	outline: none;
+	border: none;
+	transition: color 0.3s , background-color 0.5s ,  border-radius 0.5s , transform 0.5s ease-in-out;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+#stepsdiv button:first-child:hover{
+	color: white;
+	background-color: black;
+	border-radius: 15px;
+	transform: scale(1.1);
+}
+
+#stepsdiv button:last-child:hover{
+	color: black;
+	background-color: #ffd24d;
+	border-radius: 15px;
+	transform: scale(1.1);
+}
+
+#stepsdiv button:nth-child(2):hover{
+	color: white;
+	background-color: #3175e2;
+	border-radius: 15px;
+	transform: scale(1.1);
+}
+
+#stepsdiv button:first-child{
+	margin-top: 32px;
+}
+
+
+#rotatebox div, #skewbox div, #scalebox div{
+	width: 100%;
+	min-height: fit-content;
+	max-height: fit-content;
+    display: block;
+    position: relative;
+    text-align: center;
+    top: 35px;
+}
+
+#rotatebox div p, #skewbox div p, #scalebox div p{
+	font-family: sans-serif;
+    font-size: 13px;
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+#selecttype{
+	position: absolute;
+	width: 0px;
+	height: 100%;
+	bottom: 0px;
+	display: block;
+	transition: width 1s ease-in-out;
+	background-color: #1a1a1a;
+	right: 0px;
+	text-align: center;
+	z-index: 4;
+}
+
+#selecttype button{
+	width: 80%;
+	height: 30px;
+	border: none;
+	outline: none;
+	margin-bottom: 10px;
+	position: relative;
+	display: block;
+	transform: translate(-50%);
+	left: 50%;
+	background-color: #262626;
+	color: #e6e6e6;
+	border: 0.5px solid #e6e6e6;
+	cursor: pointer;
+}
+
+#basicdiv{
+	top: 90px;
+	float: left;
+	margin-left: 60px;
+	position: relative;
+	display: inline-block;
+	border: 1px solid black;
+	width: 970px;
+	height: 350px;
+	z-index: 1;
+	border: 1px solid #e6e6e6;
+	transition: border 0.5s , border-radius 0.5s ease-in-out;
+	text-align: center;
+}
+
+.eb label{
+	position: relative;
+    float: right;
+    background: black;
+    width: 60px;
+    height: 20px;
+    color: white;
+    padding: 3px;
+    font-size: 17px;
+    border-radius: 50px;
+    cursor: pointer;
+    margin-right: 10px;
+    opacity: 0;
+    pointer-events: none;
+    font-size: 15px;
+    font-style: italic;
+    font-family: sans-serif;
+}
+
+.eb{
+	width: 100%;
+    position: relative;
+    height: 30px;
+    background: transparent;
+    margin-top: 53px;
+    display: block;
+    overflow: hidden;
+}
+
+.info{
+	position: absolute;
+    bottom: 0px;
+    font-size: 11px;
+    padding: 10px;
+    color: darkred;
+    background: transparent;
+    font-family: sans-serif;
+}
+
+#animationSliderBox{
+	display: inline-block;
+    width: 1080px;
+    height: 115px;
+    position: relative;
+    float: left;
+    margin-left: 280px;
+    background: white;
+    margin-top: 28px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+#animationSliderBox combobox{
+	margin-bottom: 20px;
+}
+
+.animationSliderDiv{
+    height: 50px;
+    display: inline-block;
+    min-width: fit-content;
+    max-width: 250px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.animationSliderDiv .slider{
+	width: 100px;
+    margin-left: 10px;
+}
+
+.animationSliderDiv p{
+	position: relative;
+    display: inline-block;
+    font-family: sans-serif;
+}
+
+#slidePercentage .tooltip{
+	width: 300px;
+    left: 240px;
+    top: 0px;
+    padding: 20px;
+    border: 1px solid black;
+    background: white;
+    color: black;
+    font-style: italic;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+#slidePercentage:hover .tooltip{
+	visibility: visible;
+	opacity: 1;
+}
+
+animationPreview{
+	display: inline-block;
+	width: 100px;
+	height: 100px;
+	border: 1px solid lightgrey;
+	position: relative;
+	float: left;
+	margin-top: 20px;
+	margin-left: 20px;
+	color: black;
+	background-size: contain;
+    background-repeat: no-repeat;
+    transition: border 0.3s ease-in-out;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+animationPreview:hover{
+	border: 1px solid orange;
+}
+
+animationPreview:last-child{
+	margin-bottom: 100px;
+}
+
+hintlabel{
+	font-size: 10px;
+    position: absolute;
+    top: -16px;
+    right: 12px;
+    display: block;
+    background: darkred;
+    color: white;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    width: 90px;
+    height: 20px;
+    font-family: sans-serif;
+    padding-left: 10px;
+    padding-top: 7px;
+}
+
+banner{
+	padding-left: 25px;
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    text-align: left;
+    position: relative;
+    display: block;
+    padding-right: 25px;
+    float: left;
+    background: #1a1a1a;
+    color: white;
+    max-width: -webkit-fill-available;
+}
+
+banner h5{
+	position: relative;
+    bottom: 12px;
+}
+
+#previewbutton{
+	padding-right: 10px;
+    padding-left: 10px;
+	width: 150px;
+	height: 40px;
+	border: 0.5px solid black;
+	outline: none;
+	background-color: white;
+	display: block;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	left: 50%;
+	top: 50%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin-top: 25px;
+}
+
+#previewdiv{
+	padding: 10px;
+	width: 200px;
+	height: 200px;
+	border: 0.5px solid black;
+	outline: none;
+	background-color: white;
+	display: block;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	left: 50%;
+	top: 50%;
+	margin-top: 25px;
+	overflow: hidden;
+}
+
+#previewinput{
+	padding: 10px;
+	width: 200px;
+	height: 40px;
+	border: 0.5px solid black;
+	outline: none;
+	background-color: white;
+	display: block;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	left: 50%;
+	top: 50%;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-top: 25px;
+	overflow: hidden;
+}
+
+#previewparagraph{
+	padding: 10px;
+	width: 200px;
+	height: 40px;
+	outline: none;
+	background-color: white;
+	display: block;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	left: 50%;
+	top: 50%;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	font-family: sans-serif;
+	margin-top: 25px;
+	overflow: hidden;
+	word-break: break-all;
+}
+
+#previewheading{
+	padding: 10px;
+	width: 200px;
+	height: 40px;
+	outline: none;
+	background-color: white;
+	display: block;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	left: 50%;
+	top: 50%;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-family: sans-serif;
+	font-weight: bold;
+	margin-top: 25px;
+	overflow: hidden;
+	word-break: break-all;
+}
+
+#previewtextarea{
+	padding: 10px;
+	width: 200px;
+	height: 40px;
+	outline: none;
+	background-color: white;
+	display: block;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	left: 50%;
+	top: 50%;
+	padding: 15px;
+	font-family: sans-serif;
+	font-weight: bold;
+	border: 0.5px solid black;
+	max-width: 150px;
+	max-height: 80px;
+	margin-top: 25px;
+	overflow: hidden;
+}
+
+#previewimage{
+	padding: 10px;
+	width: 200px;
+	height: 200px;
+	min-width: 200px;
+	min-height: 200px;
+	outline: none;
+	background-color: white;
+	display: block;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	left: 50%;
+	top: 50%;
+	border: 0.5px solid black;
+	margin-top: 25px;
+	overflow: hidden;
+}
+
+#previewvideo{
+	padding: 10px;
+	width: 250px;
+	height: 200px;
+	min-width: 250px;
+	min-height: 200px;
+	outline: none;
+	background-color: white;
+	display: block;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	left: 50%;
+	top: 50%;
+	border: 0.5px solid black;
+	margin-top: 25px;
+	overflow: hidden;
+}
+
+/*#previewaudio{
+	width: 150px;
+	height: 40px;
+	min-width: 150px;
+	min-height: 40px;
+	outline: none;
+	color: black;
+	background-color: white;
+	display: block;
+	position: absolute;
+	transform: translate(-50%,-50%);
+	left: 50%;
+	top: 50%;
+	border: 0.5px solid black;
+}*/
+
+.barbutton:hover, #basicdiv:hover, #rotatebox:hover, #scalebox:hover, #skewbox:hover{
+	border: 1px solid #a6a6a6;
+	border-radius: 5px;
+}
+
+#previewbox:hover{
+	border: 1px solid #a6a6a6;
+	border-radius: 5px;
+}
+
+#previewbox:hover .eb label{
+	opacity: 1;
+	pointer-events: unset;
+}
+
+@keyframes spin {
+
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+
+}

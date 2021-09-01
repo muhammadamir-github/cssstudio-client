@@ -1,0 +1,192 @@
+combobox ul::-webkit-scrollbar{
+    width: 4px;
+    background-color: #F5F5F5;
+}
+
+combobox ul::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+combobox ul::-webkit-scrollbar-thumb{
+    background-color: #000000;
+}
+
+combobox{
+    margin-top: 60px;
+    position:absolute;
+    z-index: 5;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+combobox options{
+    max-width: 100%;
+    position: relative;
+}
+combobox selected a{
+    background: white;
+    display: block;
+    padding-right: 20px;
+    border: 1px solid #d7d7d7;
+    width: 150px;
+    border-radius: 2px;
+    text-decoration: none;
+    color: black;
+    font-family: sans-serif;
+    font-size: 13px;
+    padding: 10px;
+}
+
+combobox selected a span{
+    cursor:pointer;
+    display:block;
+    padding:5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+combobox options ul{
+    background: #fff none repeat scroll 0 0;
+    display: none;
+    list-style: none;
+    padding: 0px 0px;
+    position: absolute;
+    width: 100%;
+    border: 1px solid #d7d7d7;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    z-index: 3;
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+combobox selected span.value, combobox options span.value{
+    display: none;
+}
+
+combobox options ul li a{
+    display: block;
+    text-decoration: none;
+    color: black;
+    font-family: sans-serif;
+    font-size: 13px;
+    padding: 10px;
+    transition: background 0.3s , color 0.1s ease-in-out;
+    background: white;
+}
+
+combobox options ul li a.combobox-selected{
+    color: white;
+    background: #1a1a1a;
+}
+
+combobox options ul li a.combobox-selected:hover{
+
+}
+
+combobox options ul li a:hover{
+    background: #1a1a1a;
+    color:white;
+}
+
+.colorpicker {
+    position: absolute;
+    left: 160px;
+    top: 60px;
+    background-color: #1a1a1a;
+    height: 245px;
+    width: 300px;
+    border: solid 2px #1a1a1a;
+    opacity: 1;
+    padding: 5px;
+    cursor: crosshair;
+    display: none;
+    border-radius: 5px;
+    z-index: 5;
+}
+
+.colorpicker input{
+    display: block;
+    position: relative;
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: grey;
+    transform: translate(-50%);
+    left: 50%;
+    height: 22px;
+    margin-bottom: 6px;
+}
+
+.colorpickerstrip{
+    height: 30px;
+    width: 300px;
+}
+
+.colorpickerbox{
+    height: 150px;
+    width: 300px;
+}
+
+colordisplay{
+    background: white;
+    display: block;
+    padding-right: 20px;
+    border: 1px solid black;
+    width: 20px;
+    border-radius: 2px;
+    padding: 10px;
+    height: 10px;
+    right: 20px;
+    top: 17.5px;
+    position: absolute;
+    outline: none;
+    cursor: pointer;
+}
+
+.lastoption{
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.custom{
+    background: white;
+    display: none;
+    padding-right: 20px;
+    border: 1px solid black;
+    width: 20px;
+    border-radius: 2px;
+    text-decoration: none;
+    color: black;
+    font-family: sans-serif;
+    font-size: 13px;
+    padding: 10px;
+    height: 10px;
+    right: 20px;
+    top: 17.5px;
+    position: absolute;
+    outline: none;
+}
+
+.customlarge{
+	background: white;
+    display: none;
+    padding-right: 20px;
+    border: 1px solid black;
+    width: 50%;
+    border-radius: 2px;
+    text-decoration: none;
+    color: black;
+    font-family: sans-serif;
+    font-size: 13px;
+    padding: 10px;
+    height: 10px;
+    left: 20px;
+    top: 17.5px;
+    position: absolute;
+    outline: none;
+}

@@ -89,7 +89,7 @@ async function setupScale(element){
             min: 1,
             max: 10,
             step: 0.1,
-            value: 1
+            value: 0
         }
     });
 
@@ -102,7 +102,7 @@ async function setupScale(element){
             min: 1,
             max: 10,
             step: 0.1,
-            value: 1
+            value: 0
         }
     });
 }
