@@ -14,6 +14,8 @@ window.onload = () => {
     Globals.window.body = document.getElementsByTagName("body")[0];
     Globals.window.head = document.getElementsByTagName("head")[0];
 
+    Globals.window.body.addEventListener("contextmenu", function(){ return false; });
+
     Globals.api = new Api(Globals.api.hostname, Globals.api.port);
     Globals.randomizer = new Randomizer;
     Globals.notificationHandler = new NotificationHandler;
@@ -164,7 +166,7 @@ class BootLoader{
         }*/
 
         Globals.pageHandler = new StudioHandler({});
-        Globals.pageHandler.setup();
+        await Globals.pageHandler.setup();
         self.loader.hide();
     }
 }

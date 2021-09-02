@@ -8,6 +8,7 @@ const global_requiredFiles = {
     ],
     css: [
         { type: "css", src: "MediaQueries.css", isURL: false, isRaw: false, },
+        { type: "css", src: "misc/Body.css", isURL: false, isRaw: false, },
         { type: "css", src: "misc/Loader.css", isURL: false, isRaw: false, },
         //{ type: "css", src: "misc/Notice.css", isURL: false, isRaw: false, },
         { type: "css", src: "misc/Notification.css", isURL: false, isRaw: false, },
@@ -34,6 +35,7 @@ export default {
     elements: null,
     components: null,
     randomizer: null,
+    colorPicker: null,
     api: {
         hostname: "http://localhost",
         port: "8000"
@@ -79,6 +81,7 @@ export default {
                 ...global_requiredFiles.icon,
                 ...global_requiredFiles.css,
                 { type: "css", src: "pages/Style.css", isURL: false, isRaw: false, },
+                { type: "css", src: "pages/Studio.css", isURL: false, isRaw: false, },
                 //{ type: "css", src: "misc/Billy.css", isURL: false, isRaw: false, },
                 //{ type: "css", src: "pages/PreviewSite.css", isURL: false, isRaw: false, },
                 { type: "css", src: "misc/Fonts.css", isURL: false, isRaw: false, },

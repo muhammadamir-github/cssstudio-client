@@ -11,6 +11,9 @@ class InternalGiphyPanelView{
         self._element = Globals.elements.new({
             type: "giphy",
             parent: parent,
+            attributes: {
+                "data-component-id": component_id,
+            },
             children: [
                 {
                     type: "i",
@@ -57,7 +60,9 @@ class InternalGiphyPanelView{
                         }
                     ]
                 },
-            ]
+            ],
+            before: before,
+            prepend: prepend
         });
     }
 

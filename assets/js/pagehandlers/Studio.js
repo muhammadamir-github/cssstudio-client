@@ -61,77 +61,73 @@ class StudioHandler{
         this.draggable = null;
     }
 
-    setup(){
+    async setup(){
         const self = this;
-        $("body").on("contextmenu",function(e){
-            return false;
-        });
 
-        let question = Globals.elements.new({
-            type: "p",
+        Globals.colorPicker = await Globals.components.new({ // Returns colorPicker's HTML element
+            name: "internal-color-picker",
             parent: Globals.window.body,
-            classes: [ "wtcquestion" ],
-            text: "What do you want to create today?",
-        });
+            data: {},
+        })
 
-        let button1 = Globals.elements.new({
-            type: "button",
+        Globals.colorPicker = await Globals.components.controller(Globals.colorPicker); // Get colorPicker's controller
+
+        let questionDiv = Globals.elements.new({
+            type: "div",
             parent: Globals.window.body,
-            classes: [ "cneelementbtn" ],
-            text: "New Element",
-            listeners: {
-                click: async function(){
-                    self.setupForElement();
-
-                    let button2 = document.getElementsByClassName("cnpagebtn")[0];
-                    question.remove();
-                    button2 ? button2.remove() : false;
-                    this.remove();
-
-                    await Globals.components.new({
-                        name: "internal-panel",
-                        parent: Globals.window.body,
-                        data: {
-                            id: "panel",
+            id: "initialization-options",
+            children: [
+                {
+                    type: "p",
+                    text: "What do you want to create today?",
+                },
+                {
+                    type: "button",
+                    text: "Element",
+                    listeners: {
+                        click: async function(){
+                            self.setupForElement();
+                            this.parentElement.remove();
+                            await Globals.components.new({
+                                name: "internal-panel",
+                                parent: Globals.window.body,
+                                data: {
+                                    id: "panel",
+                                }
+                            });
                         }
-                    });
-                }
-            }
+                    }
+                },
+                /*{
+                    type: "button",
+                    text: "Page",
+                    listeners: {
+                        click: function(){
+                            self.setupForWebPage();
+                            this.parentElement.remove();
+                            document.getElementsByTagName('billy')[0].remove();
+                            document.getElementsByTagName('callbilly')[0].remove();
+
+                            let elementPosition = Globals.elements.new({
+                                type: "span",
+                                parent: Globals.window.body,
+                                classes: [ "elPos" ],
+                                text: "0%"
+                            });
+
+                            let pageCenterPosition = Globals.elements.new({
+                                type: "span",
+                                parent: Globals.window.body,
+                                classes: [ "pcPos" ],
+                                text: ""
+                            });
+
+                            Globals.pageHandler.pagebuilder.start();
+                        }
+                    }
+                }*/
+            ]
         });
-
-        /*let button2 = Globals.elements.new({
-            type: "button",
-            parent: Globals.window.body,
-            classes: [ "cnpagebtn" ],
-            text: "New Page",
-            listeners: {
-                click: function(){
-                    self.setupForWebPage();
-
-                    question.remove();
-                    button1.remove();
-                    this.remove();
-                    document.getElementsByTagName('billy')[0].remove();
-                    document.getElementsByTagName('callbilly')[0].remove();
-
-                    let elementPosition = Globals.elements.new({
-                        type: "span",
-                        parent: Globals.window.body,
-                        classes: [ "elPos" ],
-                        text: "0%"
-                    });
-
-                    let pageCenterPosition = Globals.elements.new({
-                        type: "span",
-                        parent: Globals.window.body,
-                        classes: [ "pcPos" ],
-                        text: ""
-                    });
-
-                    Globals.pageHandler.pagebuilder.start();
-                }
-            }
-        });*/
     }
 
     setupForWebPage(){

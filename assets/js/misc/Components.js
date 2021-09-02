@@ -103,4 +103,22 @@ export default class Components{
             }
         }
     }
+
+    async controller(elementOrComponentId){
+        let toReturn = null;
+        if(typeof elementOrComponentId === "string"){
+            toReturn = this.created.find(x => (x.component_id === elementOrComponentId));
+        }else{
+            if(typeof elementOrComponentId === 'object' && elementOrComponentId.nodeType !== undefined){
+                // Is an html element
+                let componentId = elementOrComponentId.hasAttribute("data-component-id") ? elementOrComponentId.getAttribute("data-component-id") : null;
+                if(componentId && typeof componentId === "string"){
+                    toReturn = this.created.find(x => (x.component_id === componentId));
+                }
+            }
+        }
+
+        toReturn = toReturn && toReturn.controller ? toReturn.controller : null;
+        return toReturn;
+    }
 }

@@ -1,7 +1,7 @@
-class InternalPanelController{
+class InternalStylerController{
     constructor(data){
-        this.view = new InternalPanelView(this);
-        this.model = new InternalPanelModel(data, this);
+        this.view = new InternalStylerView(this);
+        this.model = new InternalStylerModel(data, this);
     }
 
     _init(options = {}){

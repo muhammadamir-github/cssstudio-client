@@ -1,3 +1,17 @@
+#panel{
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    position: relative;
+    display: flex;
+    background-color: white;
+    transition: box-shadow 0.3s , border-radius 0.3s, opacity 1s ease-in-out;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 5px;
+    flex-direction: column;
+}
+
 shapechangediv ul::-webkit-scrollbar{
     width: 2px;
     background-color: #F5F5F5;
@@ -175,31 +189,6 @@ select option{
     font-size: 13px;
     margin-right: 10px;
     position: relative;
-}
-
-#panel{
-	z-index: 2;
-	margin-left: auto;
-	margin-right: auto;
-	width: 75%;
-	height: 75%;
-	border: 1px solid black;
-	position: absolute;
-	display: block;
-	background-color: white;
-	left: 50%;
-	transform: translate(-50%,-15%);
-	top: 15%;
-	transition: box-shadow 0.3s , border-radius 0.3s, opacity 1s ease-in-out;
-	text-align: center;
-    max-width: 1415px;
-    max-height: 730px;
-}
-
-#panel:hover{
-	/*box-shadow: 0px 0px 5px;
-	border-top-right-radius: 20px;
-	border-bottom-right-radius: 20px;*/
 }
 
 #circle{
@@ -392,38 +381,6 @@ z-index: 4;
 	color: black;
 }
 
-.line{
-	width: 100%;
-    height: 1px;
-    display: block;
-    position: relative;
-    background-color: black;
-    top: 50px;
-}
-
-#buttons{
-	width: 100%;
-	height: 50px;
-	top: 0px;
-	position: absolute;
-	border: 1px solid black;
-	display: block;
-}
-
-.barbutton{
-	width: 150px;
-	height: 75%;
-	background-color: white;
-	border: 1px solid #e6e6e6;
-	transition: border 0.5s , border-radius 0.5s ease-in-out;
-	position: relative;
-	margin-top: 5px;
-	outline: none;
-	float: left;
-	margin-left: 10px;
-	cursor: pointer;
-}
-
 .spinner{
 
     border-radius: 50%;
@@ -444,23 +401,6 @@ z-index: 4;
     margin: auto;
     display: none;
 
-}
-
-#previewbox{
-	top: 90px;
-	position: relative;
-	float: left;
-	margin-left: 40px;
-	border: 1px solid black;
-	width: 300px;
-	height: 350px;
-	z-index: 3;
-	border: 1px solid #e6e6e6;
-	transition: border 0.5s , border-radius 0.5s ease-in-out;
-	text-align: center;
-	overflow: hidden;
-	display: none;
-	background-color: white;
 }
 
 #bgimgbox{
@@ -838,35 +778,6 @@ z-index: 4;
     margin-left: 5px;
 }
 
-#selecttype{
-	position: absolute;
-	width: 0px;
-	height: 100%;
-	bottom: 0px;
-	display: block;
-	transition: width 1s ease-in-out;
-	background-color: #1a1a1a;
-	right: 0px;
-	text-align: center;
-	z-index: 4;
-}
-
-#selecttype button{
-	width: 80%;
-	height: 30px;
-	border: none;
-	outline: none;
-	margin-bottom: 10px;
-	position: relative;
-	display: block;
-	transform: translate(-50%);
-	left: 50%;
-	background-color: #262626;
-	color: #e6e6e6;
-	border: 0.5px solid #e6e6e6;
-	cursor: pointer;
-}
-
 #basicdiv{
 	top: 90px;
 	float: left;
@@ -1041,185 +952,9 @@ banner h5{
     bottom: 12px;
 }
 
-#previewbutton{
-	padding-right: 10px;
-    padding-left: 10px;
-	width: 150px;
-	height: 40px;
-	border: 0.5px solid black;
-	outline: none;
-	background-color: white;
-	display: block;
-	position: absolute;
-	transform: translate(-50%,-50%);
-	left: 50%;
-	top: 50%;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	margin-top: 25px;
-}
-
-#previewdiv{
-	padding: 10px;
-	width: 200px;
-	height: 200px;
-	border: 0.5px solid black;
-	outline: none;
-	background-color: white;
-	display: block;
-	position: absolute;
-	transform: translate(-50%,-50%);
-	left: 50%;
-	top: 50%;
-	margin-top: 25px;
-	overflow: hidden;
-}
-
-#previewinput{
-	padding: 10px;
-	width: 200px;
-	height: 40px;
-	border: 0.5px solid black;
-	outline: none;
-	background-color: white;
-	display: block;
-	position: absolute;
-	transform: translate(-50%,-50%);
-	left: 50%;
-	top: 50%;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-top: 25px;
-	overflow: hidden;
-}
-
-#previewparagraph{
-	padding: 10px;
-	width: 200px;
-	height: 40px;
-	outline: none;
-	background-color: white;
-	display: block;
-	position: absolute;
-	transform: translate(-50%,-50%);
-	left: 50%;
-	top: 50%;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-bottom: 10px;
-	font-family: sans-serif;
-	margin-top: 25px;
-	overflow: hidden;
-	word-break: break-all;
-}
-
-#previewheading{
-	padding: 10px;
-	width: 200px;
-	height: 40px;
-	outline: none;
-	background-color: white;
-	display: block;
-	position: absolute;
-	transform: translate(-50%,-50%);
-	left: 50%;
-	top: 50%;
-	padding-left: 10px;
-	padding-right: 10px;
-	font-family: sans-serif;
-	font-weight: bold;
-	margin-top: 25px;
-	overflow: hidden;
-	word-break: break-all;
-}
-
-#previewtextarea{
-	padding: 10px;
-	width: 200px;
-	height: 40px;
-	outline: none;
-	background-color: white;
-	display: block;
-	position: absolute;
-	transform: translate(-50%,-50%);
-	left: 50%;
-	top: 50%;
-	padding: 15px;
-	font-family: sans-serif;
-	font-weight: bold;
-	border: 0.5px solid black;
-	max-width: 150px;
-	max-height: 80px;
-	margin-top: 25px;
-	overflow: hidden;
-}
-
-#previewimage{
-	padding: 10px;
-	width: 200px;
-	height: 200px;
-	min-width: 200px;
-	min-height: 200px;
-	outline: none;
-	background-color: white;
-	display: block;
-	position: absolute;
-	transform: translate(-50%,-50%);
-	left: 50%;
-	top: 50%;
-	border: 0.5px solid black;
-	margin-top: 25px;
-	overflow: hidden;
-}
-
-#previewvideo{
-	padding: 10px;
-	width: 250px;
-	height: 200px;
-	min-width: 250px;
-	min-height: 200px;
-	outline: none;
-	background-color: white;
-	display: block;
-	position: absolute;
-	transform: translate(-50%,-50%);
-	left: 50%;
-	top: 50%;
-	border: 0.5px solid black;
-	margin-top: 25px;
-	overflow: hidden;
-}
-
-/*#previewaudio{
-	width: 150px;
-	height: 40px;
-	min-width: 150px;
-	min-height: 40px;
-	outline: none;
-	color: black;
-	background-color: white;
-	display: block;
-	position: absolute;
-	transform: translate(-50%,-50%);
-	left: 50%;
-	top: 50%;
-	border: 0.5px solid black;
-}*/
-
-.barbutton:hover, #basicdiv:hover, #rotatebox:hover, #scalebox:hover, #skewbox:hover{
+#basicdiv:hover, #rotatebox:hover, #scalebox:hover, #skewbox:hover{
 	border: 1px solid #a6a6a6;
 	border-radius: 5px;
-}
-
-#previewbox:hover{
-	border: 1px solid #a6a6a6;
-	border-radius: 5px;
-}
-
-#previewbox:hover .eb label{
-	opacity: 1;
-	pointer-events: unset;
 }
 
 @keyframes spin {

@@ -2351,110 +2351,6 @@ styles previews stylepreview .checkbox span:after{
 
 /*-------------------------------------------------------------*/
 
-.miniStyler{
-	width: 790px;
-    max-width: 790px;
-    min-height: 35%;
-    background: #1a1a1a;
-    display: inline-block;
-    left: 50%;
-    top: 25%;
-    position: absolute;
-    transform: translate(-50%,-25%);
-    border-radius: 5px;
-    padding-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 20px;
-    /*overflow-x: hidden;
-    overflow-y: scroll;*/
-    overflow: hidden;
-    box-shadow: 0 0 10px grey;
-    z-index: 9;
-}
-
-.miniStyler .settings{
-    position: absolute;
-    display: inline-block;
-    bottom: 0px;
-    background: white;
-    width: 100%;
-    height: 40px;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border: none;
-    outline: none;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    left: 0px;
-    z-index: 6;
-}
-
-.miniStyler .banner{
-    position: absolute;
-    display: inline-block;
-    top: 0px;
-    background: white;
-    width: 100%;
-    height: 40px;
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border: none;
-    outline: none;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    left: 0px;
-    z-index: 6;
-}
-
-.miniStyler .settings p,
-.miniStyler .banner p{
-    margin: 0px;
-    margin-left: 15px;
-    font-family: ProximaNovaBold;
-    font-size: 23px;
-    top: 50%;
-    display: inline-block;
-    position: relative;
-    transform: translate(0,-50%);
-}
-
-.miniStyler .settings input{
-    display: inline-block;
-    position: relative;
-    width: 150px;
-    height: 25px;
-    outline: none;
-    border: 0.5px solid black;
-    border-radius: 5px;
-    top: 50%;
-    position: relative;
-    margin-left: 10px;
-    padding-left: 5px;
-    padding-right: 5px;
-    transform: translate(0,-50%);
-    font-size: 14px;
-}
-
-.miniStyler .spinner{
-    border-left: 2px solid #1a1a1a;
-    border-right: 2px solid transparent;
-    border-bottom: 2px solid #1a1a1a;
-    border-top: 2px solid transparent;
-    animation: spin 0.5s linear infinite;
-    top: 13px;
-    right: 15px;
-    z-index: 7;
-}
-
 .fontManager{
     width: 200px;
     min-height: 190px;
@@ -2634,7 +2530,6 @@ styles previews stylepreview .checkbox span:after{
     margin-right: 10px;
 }
 
-.miniStyler_box,
 .mediaManager_box{
     width: 95%;
     max-width: 95%;

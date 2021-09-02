@@ -4,7 +4,6 @@ class InternalComboboxModel{
             ...data,
             selected: data.selected ? data.selected : null,
             value: data.value ? data.value : null,
-            color: data.color ? data.color : null,
         };
 
         this.controller = controller;

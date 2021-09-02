@@ -1,7 +1,7 @@
-class InternalPanelController{
+class InternalColorPickerController{
     constructor(data){
-        this.view = new InternalPanelView(this);
-        this.model = new InternalPanelModel(data, this);
+        this.view = new InternalColorPickerView(this);
+        this.model = new InternalColorPickerModel(data, this);
     }
 
     _init(options = {}){

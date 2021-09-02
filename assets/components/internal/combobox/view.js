@@ -49,11 +49,6 @@ class InternalComboboxView{
             "Google Fonts": { key: "fontFamily", valueSuffix: "", keyValueSuffix: "" }
         };
 
-        this.colorPicker = {
-            isMouseDown: false,
-            applyTo: null
-        };
-
         this.initialData = {};
     }
 
@@ -90,104 +85,41 @@ class InternalComboboxView{
                                             self.toggle(self);
                                         },
                                     }
-                                }
+                                },
+                                ...(() => {
+                                    return typeof data.customValue === "object" && data.customValue !== null ? [{
+                                        type: "input",
+                                        attributes: {
+                                            placeholder: data.customValue.placeholder ? data.customValue.placeholder : "",
+                                            value: data.customValue.value ? data.customValue.value : ""
+                                        },
+                                        classes: data.customValue.classes ? data.customValue.classes : [ "custom" ],
+                                        style: data.customValue.style ? data.customValue.style : null,
+                                        listeners: {
+                                            keyup: function(e){ self.customValueChange(this.value, this, self); },
+                                        }
+                                    }] : [];
+                                })(),
+                                ...(() => {
+                                    return typeof data.colorPicker === "object" && data.colorPicker !== null ? [
+                                        {
+                                            type: "colordisplay",
+                                            style: { display: "none" },
+                                            listeners: {
+                                                click: function(){
+                                                    let applyTo = document.getElementById(`preview${elementType}`) || document.getElementsByClassName(`selected`)[0];
+
+                                                    if(self.textKeyMap[data.text]){
+                                                        let key = self.textKeyMap[data.text].key;
+                                                        Globals.colorPicker.toggle(applyTo, this, key);
+                                                    }
+                                                }
+                                            }
+                                        },
+                                    ] : [];
+                                })(),
                             ]
                         },
-                        ...(() => {
-                            return typeof data.customValue === "object" && data.customValue !== null ? [{
-                                type: "input",
-                                attributes: {
-                                    placeholder: data.customValue.placeholder ? data.customValue.placeholder : "",
-                                    value: data.customValue.value ? data.customValue.value : ""
-                                },
-                                classes: data.customValue.classes ? data.customValue.classes : [ "custom" ],
-                                style: data.customValue.style ? data.customValue.style : null,
-                                listeners: {
-                                    keyup: function(e){ self.customValueChange(this.value, this, self); },
-                                }
-                            }] : [];
-                        })(),
-                        ...(() => {
-                            return typeof data.colorPicker === "object" && data.colorPicker !== null ? [
-                                {
-                                    type: "colordisplay",
-                                    id: `${data.colorPicker.idPrefix}cd`,
-                                    style: { display: "none" },
-                                    listeners: {
-                                        click: function(){
-                                            var colorpicker = this.parentElement.getElementsByClassName("colorpicker")[0];
-
-                                            if(colorpicker.style.display == 'block'){
-                                                colorpicker.style.display = 'none';
-                                            }else{
-                                                colorpicker.style.display = 'block';
-                                            }
-                                        }
-                                    }
-                                },
-                                {
-                                    type: "div",
-                                    classes: [ "colorpicker" ],
-                                    id: `${data.colorPicker.idPrefix}cp`,
-                                    style: data.colorPicker.style ? data.colorPicker.style : null,
-                                    children: [
-                                        {
-                                            type: "canvas",
-                                            classes: [ "colorpickerbox" ],
-                                            id: `${data.colorPicker.idPrefix}cpb`,
-                                            listeners: {
-                                                mousedown: function(e){
-                                                    self.isMouseDown = true;
-                                                    self.color(e);
-                                                },
-                                                mouseup: function(e){
-                                                    if(self.isMouseDown){
-                                                        self.color(e);
-                                                    }
-
-                                                    self.isMouseDown = false;
-                                                },
-                                                mousemove: function(e){
-                                                    if(self.isMouseDown){
-                                                        self.color(e);
-                                                    }
-                                                },
-                                            }
-                                        },
-                                        {
-                                            type: "canvas",
-                                            classes: [ "colorpickerstrip" ],
-                                            id: `${data.colorPicker.idPrefix}cps`,
-                                            listeners: {
-                                                click: function(e){
-                                                    self.updateStrip(e, self);
-                                                }
-                                            }
-                                        },
-                                        {
-                                            type: "input",
-                                            attributes: { placeholder: "Color Rgba: " },
-                                            id: `${data.colorPicker.idPrefix}cprgba`,
-                                            listeners: {
-                                                input: function(){
-                                                    self.textToColorPickerColor(this);
-                                                }
-                                            }
-                                        },
-                                        {
-                                            type: "input",
-                                            attributes: { placeholder: "Color Hex: " },
-                                            id: `${data.colorPicker.idPrefix}cphex`,
-                                            listeners: {
-                                                input: function(){
-                                                    self.textToColorPickerColor(this);
-                                                }
-                                            }
-                                        }
-                                    ]
-                                }
-                            ] : [];
-                        })(),
                         ...(() => {
                             return typeof data.tooltip === "object" && data.tooltip !== null ? [{
                                 type: "span",
@@ -257,18 +189,6 @@ class InternalComboboxView{
         };
 
         self._element = Globals.elements.new(structure);
-
-        if(typeof data.colorPicker === "object" && data.colorPicker !== null){
-            setTimeout(() => {
-                // This timeout is required due to element being created dynamically.
-                self.setupColorPicker(elementType == "selected" ? elementType : `preview${elementType}`);
-
-                if(data.color){
-                    let inputElement = data.color.startsWith("#") ? document.getElementById(`${data.colorPicker.idPrefix}cphex`) : document.getElementById(`${data.colorPicker.idPrefix}cprgba`);
-                    if(inputElement){ inputElement.value = data.color; self.textToColorPickerColor(inputElement); }
-                }
-            }, 250);
-        }
 
         if(Array.isArray(data.options)){
             if(data.selected){
@@ -358,256 +278,39 @@ class InternalComboboxView{
 
             if(options_ul[0]){
                 options_ul = options_ul[0];
-                if((specficAction === null && options.style.display == 'block') || specficAction === "hide"){
+                if((specficAction === null && options.style.display == 'flex') || specficAction === "hide"){
                     options.style.display = 'none';
                     options_ul.style.display = 'none';
                 }else{
-                    options.style.display = 'block';
-                    options_ul.style.display = 'block';
+                    options.style.display = 'flex';
+                    options_ul.style.display = 'flex';
                 }
             }
         }
 
         if(customValue){
-            if((specficAction === null && customValue.style.display == 'block') || specficAction === "hide"){
+            if((specficAction === null && customValue.style.display == 'flex') || specficAction === "hide"){
                 customValue.style.display = 'none';
                 selected_a_span.style.textAlign = 'unset';
             }else{
-                customValue.style.display = 'block';
+                customValue.style.display = 'flex';
                 selected_a_span.style.textAlign = 'left';
             }
         }
 
         if(colordisplay[0]){
             colordisplay = colordisplay[0];
-            if((specficAction === null && colordisplay.style.display == 'block') || specficAction === "hide"){
+            if((specficAction === null && colordisplay.style.display == 'flex') || specficAction === "hide"){
                 colordisplay.style.display = 'none';
                 combobox.style.textAlign = 'unset';
             }else{
-                colordisplay.style.display = 'block';
+                colordisplay.style.display = 'flex';
                 combobox.style.textAlign = 'left';
             }
         }
 
-        if((specficAction === null || specficAction === "hide") && self.colorPicker.applyTo && self.colorPicker.applyTo.classList.contains("selected")){
+        if((specficAction === null || specficAction === "hide") && self.applyTo && self.applyTo.classList.contains("selected")){
             combobox.classList.add('selectedCombobox');
         }
-    }
-
-    updateStrip(e, self){
-        let strip = document.getElementById(`${self.initialData.colorPicker.idPrefix}cps`);
-        let strip2d = strip.getContext('2d');
-        let stripwidth = strip.width;
-        let stripheight = strip.height;
-        strip2d.rect(0, 0, stripwidth, stripheight);
-
-        let gradientone = strip2d.createLinearGradient(0, 0, stripwidth, 0);
-        gradientone.addColorStop(0, 'rgba(255, 0, 0, 1)');
-        gradientone.addColorStop(0.17, 'rgba(255, 255, 0, 1)');
-        gradientone.addColorStop(0.34, 'rgba(0, 255, 0, 1)');
-        gradientone.addColorStop(0.51, 'rgba(0, 255, 255, 1)');
-        gradientone.addColorStop(0.68, 'rgba(0, 0, 255, 1)');
-        gradientone.addColorStop(0.85, 'rgba(255, 0, 255, 1)');
-        gradientone.addColorStop(1, 'rgba(255, 0, 0, 1)');
-        strip2d.fillStyle = gradientone;
-        strip2d.fill();
-
-        let xaxis = e ? e.offsetX : 0;
-        let yaxis = e ? e.offsetY : 0;
-
-        let imagedata = strip2d.getImageData(xaxis, yaxis, 1, 1).data;
-        let rgba = 'rgba(' + imagedata[0] + ',' + imagedata[1] + ',' + imagedata[2] + ',1)';
-
-        self.fillGradient(rgba);
-    }
-
-    updateBox(){
-        const self = this;
-        let box = document.getElementById(`${this.initialData.colorPicker.idPrefix}cpb`);
-        var box2d = box.getContext('2d');
-        var boxwidth = box.width;
-        var boxheight = box.height;
-
-        var rgba = 'rgba(255,0,0,1)';
-
-        box2d.rect(0, 0, boxwidth, boxheight);
-        self.fillGradient(rgba);
-    }
-
-    setupColorPicker(forid){
-        const self = this;
-
-        if(forid == "selected"){
-            self.colorPicker.applyTo = document.getElementsByClassName('selected')[0] || document.getElementById(forid);
-        }else{
-            self.colorPicker.applyTo = document.getElementById(forid);
-        }
-
-        self.updateStrip(null, self);
-        self.updateBox();
-    }
-
-    fillGradient(rgba){
-        let box = document.getElementById(`${this.initialData.colorPicker.idPrefix}cpb`);
-        let box2d = box.getContext('2d');
-        let boxwidth = box.width;
-        let boxheight = box.height;
-
-        let strip = document.getElementById(`${this.initialData.colorPicker.idPrefix}cps`);
-        let strip2d = strip.getContext('2d');
-
-        box2d.fillStyle = rgba;
-        box2d.fillRect(0, 0, boxwidth, boxheight);
-
-        let gradientwhite = strip2d.createLinearGradient(0, 0, boxheight, 0);
-        gradientwhite.addColorStop(0, 'rgba(255,255,255,1)');
-        gradientwhite.addColorStop(1, 'rgba(255,255,255,0)');
-        box2d.fillStyle = gradientwhite;
-        box2d.fillRect(0, 0, boxwidth, boxheight);
-
-        let gradientblack = strip2d.createLinearGradient(0, 0, 0, boxheight);
-        gradientblack.addColorStop(0, 'rgba(0,0,0,0)');
-        gradientblack.addColorStop(1, 'rgba(0,0,0,1)');
-        box2d.fillStyle = gradientblack;
-        box2d.fillRect(0, 0, boxwidth, boxheight);
-    }
-
-    color(e){
-        // update color from mouse
-        const self = this;
-
-        let key = self.textKeyMap[self.initialData.text].key;
-
-        let boxid = `${self.initialData.colorPicker.idPrefix}cpb`;
-        let stripid = `${self.initialData.colorPicker.idPrefix}cps`;
-
-        let box = document.getElementById(boxid);
-        let box2d = box.getContext('2d');
-
-        let displayinvoker = `${self.initialData.colorPicker.idPrefix}cd`;
-        let display = document.getElementById(displayinvoker);
-        let rgbainput = document.getElementById(`${self.initialData.colorPicker.idPrefix}cprgba`);
-        let hexinput = document.getElementById(`${self.initialData.colorPicker.idPrefix}cphex`);
-
-        let xaxis = e.offsetX;
-        let yaxis = e.offsetY;
-
-        var imagedata = box2d.getImageData(xaxis, yaxis, 1, 1).data;
-        let rgba = 'rgba(' + imagedata[0] + ',' + imagedata[1] + ',' + imagedata[2] + ',1)';
-        var hexfromrgba = self.rgb2hex(rgba);
-
-        if(boxid.includes('animate') || stripid.includes('animate')){
-            dataAttributeBalancer('slide'+displayinvoker, rgba);
-        }else{
-            if(key == 'backgroundColor'){
-                self.colorPicker.applyTo.style.backgroundColor = rgba;
-            }
-
-            if(key == 'color'){
-                self.colorPicker.applyTo.style.color = rgba;
-            }
-
-            if(key == 'borderColor'){
-                if(self.colorPicker.applyTo.style.borderColor != ''){
-                    self.colorPicker.applyTo.style.bordercolor = '';
-                    self.colorPicker.applyTo.style.borderColor = rgba;
-                }else{
-                    if(self.colorPicker.applyTo.style.borderBottomColor != ''){
-                        self.colorPicker.applyTo.style.borderBottomColor = rgba;
-                    }else{
-                        self.colorPicker.applyTo.style.bordercolor = '';
-                        self.colorPicker.applyTo.style.borderColor = rgba;
-                    }
-                }
-            }
-
-            if(key == 'textDecorationColor'){
-                self.colorPicker.applyTo.style.textDecorationColor = rgba;
-            }
-
-            if(key == 'boxShadow'){
-                var currentboxshadow = self.colorPicker.applyTo.style.boxShadow;
-
-                if(currentboxshadow.includes('rgb')){
-                    var newboxshadow = self.colorPicker.applyTo.style.boxShadow.split(')')[1];
-                    self.colorPicker.applyTo.style.boxShadow = rgba + newboxshadow;
-                }else{
-                    var newboxshadow = self.colorPicker.applyTo.style.boxShadow;
-                    self.colorPicker.applyTo.style.boxShadow = rgba + newboxshadow;
-                }
-            }
-
-            if(key == 'textShadow'){
-                var currenttextshadow = self.colorPicker.applyTo.style.textShadow;
-
-                if(currenttextshadow.includes('rgb')){
-                    var newtextshadow = self.colorPicker.applyTo.style.textShadow.split(')')[1];
-                    self.colorPicker.applyTo.style.textShadow = rgba + newtextshadow;
-                }else{
-                    var newtextshadow = self.colorPicker.applyTo.style.textShadow;
-                    self.colorPicker.applyTo.style.textShadow = rgba + newtextshadow;
-                }
-            }
-
-            if(key == 'outlineColor'){
-                self.colorPicker.applyTo.style.outlineColor = rgba;
-            }
-        }
-
-        display.style.backgroundColor = rgba;
-        rgbainput.value = 'Color Rgba: ' + rgba;
-        hexinput.value = 'Color Hex: ' + self.rgb2hex(rgba);
-
-        self.controller._updateModelState({ color: rgba });
-    }
-
-    textToColorPickerColor(e){
-        // update color from input
-        const self = this;
-
-        let key = self.textKeyMap[self.initialData.text].key;
-
-        var colorpicker_box = e.parentElement.getElementsByClassName('colorpickerbox')[0];
-        var colordisplay = e.parentElement.parentElement.getElementsByTagName('colordisplay')[0];
-
-        var color;
-        var text = e.value;
-        if(text.includes('Color Rgba:') || text.includes('Color Hex:')){
-            color = text.split(':')[1];
-        }else{
-            if(text.includes('(') || text.includes(')') || text.includes('rgba')){
-                color = 'rgba('+text.split('(')[1];
-            }
-
-            if(text.includes('#')){
-                color = text;
-            }
-        }
-
-        colordisplay.style.backgroundColor = color;
-
-        if(text.includes('Color Rgba:') || text.includes('(') || text.includes(')') || text.includes('rgba')){
-            e.value = 'Color Rgba: rgba('+text.split('(')[1];
-        }else{
-            if(text.includes('#')){
-                e.value = 'Color Hex: #'+text.split('#')[1];
-            }
-        }
-
-        if(key.includes('animation') || key.includes('backgroundGradient')){
-
-        }else{
-            self.colorPicker.applyTo.style[key] = color;
-        }
-
-        self.controller._updateModelState({ color });
-    }
-
-    rgb2hex(rgb){
-        rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
-        return (rgb && rgb.length === 4) ? "#" +
-        ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-        ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-        ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
     }
 }

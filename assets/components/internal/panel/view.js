@@ -1,12 +1,29 @@
 class InternalPanelView{
     constructor(controller){
-        this.controller = controller;
-        this._element = null;
+        const self = this;
 
-        this.elementType = null; // Which type of element is being created.
+        self.controller = controller;
+        self._element = null;
+        self._elementSelectionSidebar = null;
+        self._navbar = null;
+        self._styler = null;
+
+        self.elementOptions = [
+            { name: "Button", tag: "button", },
+            { name: "Div", tag: "div", },
+            { name: "Paragraph", tag: "p", },
+            { name: "Heading", tag: "h3", },
+            { name: "Text Input", tag: "input", },
+            { name: "Textarea", tag: "textarea", },
+            { name: "Image", tag: "img", },
+            { name: "Video", tag: "video", },
+        ];
+        self.navbarOptions = [
+            { name: "New Element", callback: function(){ self._elementSelectionSidebar.toggle(); } },
+        ];
     }
 
-    create(options = {}){
+    async create(options = {}){
         const self = this;
         const { data, parent, prepend, before, elementType, component_id } = options;
 
@@ -15,6 +32,9 @@ class InternalPanelView{
             parent,
             id: data.id ? data.id : null,
             style: data.style ? data.style : null,
+            attributes: {
+                "data-component-id": component_id,
+            },
             listeners: {
                 click: function(event){
                     if(event.target.id == this.id || event.target.id == 'advance' || event.target.id == 'animate'){
@@ -25,147 +45,52 @@ class InternalPanelView{
                     }
                 }
             },
-            children: [
-                {
-                    type: "div",
-                    classes: [ "line" ],
-                },
-                {
-                    type: "div",
-                    id: "selecttype"
-                },
-                {
-                    type: "div",
-                    id: "buttons",
-                    children: [
-                        {
-                            type: "div",
-                            classes: [ "spinner" ],
-                        },
-                        {
-                            type: "button",
-                            classes: [ "barbutton" ],
-                            text: "Create new element",
-                            listeners: {
-                                click: function(){
-                                    var spinner = document.getElementsByClassName('spinner')[0];
-                                    var select = document.getElementById('selecttype');
-                                    spinner.style.display = 'block';
-
-                                    if(select.style.width !== "150px"){
-                                        self.populateOptions();
-                                        spinner.style.display = 'none';
-                                        select.style.width = '150px';
-                                    }else{
-                                        self.populateOptions(true);
-                                        spinner.style.display = 'none';
-                                        select.style.width = '0px';
-                                    }
-                                }
-                            }
-                        }
-                    ]
-                },
-                {
-                    type: "div",
-                    id: "previewbox"
-                }
-            ],
             before: before,
             prepend: prepend
         });
-    }
 
-    populateOptions(depopulate = false){
-        const self = this;
-
-        let options = [
-            { text: "Button", param: "button", },
-            { text: "Div", param: "div", },
-            { text: "Paragraph", param: "paragraph", },
-            { text: "Heading", param: "heading", },
-            { text: "Text Input", param: "input", },
-            { text: "Textarea", param: "textarea", },
-            { text: "Image", param: "image", },
-            { text: "Video", param: "video", },
-        ];
-
-        if(depopulate === true){
-            setTimeout(function(){
-                $('#selecttype').empty();
-            }, 500);
-        }else{
-            for (let option of options){
-                let isFirst = option.text === "Button";
-                Globals.elements.new({
-                    type: "button",
-                    parent: document.getElementById("selecttype"),
-                    text: option.text,
-                    style: {
-                        marginTop: isFirst ? "20px" : "10px",
-                    },
-                    listeners: {
-                        click: function(){
-                            self.newPreviewElement(option.param);
-                        }
-                    }
-                })
-            }
-        }
-    }
-
-    newPreviewElement(type){
-        const self = this;
-
-        var select = document.getElementById('selecttype');
-        select.style.width = '0px';
-
-        self.populateOptions(true);
-
-        let elements = {
-            "button": { type: "button", },
-            "div": { type: "div", },
-            "input": { type: "input", },
-            "paragraph": { type: "p", },
-            "heading": { type: "h3", },
-            "textarea": { type: "textarea", },
-            "image": { type: "img", },
-            "video": { type: "video", },
-        };
-
-        $('#previewbox').empty();
-        self.setEnvironment(type);
-        self.elementType = type;
-
-        let element = Globals.elements.new({
-            type: elements[type].type,
-            parent: document.getElementById("previewbox"),
-            text: `Preview ${type}`,
-            id: `preview${type}`,
-            attributes: type === "video" ? { controls: false } : null,
+        self._navbar = new InternalPanelNavbar({
+            options: self.navbarOptions
         });
+
+        self._elementSelectionSidebar = new InternalPanelElementSelectionSidebar({
+            options: self.elementOptions,
+            callback: self.newPreviewElement.bind(self),
+        });
+
+        self._elementPreviewer = new InternalPanelElementPreviewer({
+            options: self.elementOptions
+        });
+
+        self._styler = await Globals.components.new({ // Returns styler's HTML element
+            name: "internal-styler",
+            parent: Globals.window.body,
+            data: {
+                unit: "px",
+            },
+        });
+
+        self._styler = await Globals.components.controller(self._styler); // Get styler's controller
+    }
+
+    newPreviewElement(elementType){
+        const self = this;
+        self._elementPreviewer.reset(elementType);
+        self._navbar.reset();
     }
 
     setEnvironment(element){
         const self = this;
-        $('#previewbox').empty();
-        $('#basicdiv').remove();
-        $('#rotatebox').remove();
-        $('#skewbox').remove();
-        $('#scalebox').remove();
-        $('#stepsdiv').remove();
-        $('#advance').remove();
-        $('#animate').remove();
-        $('giphy').remove();
-        $('.backbutton').remove();
+        self._elementPreviewer.reset();
+        self.navbar.reset();
 
-        $('.spinner').css('display','block');
-        $('#panel').css({'opacity':'0.3','pointer-events':'none'});
-        setTimeout(function(){
-            setupBasicStyler(element);
-
-            $('.spinner').css('display','none');
-            $('#panel').css({'opacity':'1','pointer-events':'unset'});
-        },1);
+        //$('#basicdiv').remove();
+        //$('#rotatebox').remove();
+        //$('#skewbox').remove();
+        //$('#scalebox').remove();
+        //$('#stepsdiv').remove();
+        //$('#advance').remove();
+        //$('#animate').remove();
+        //$('giphy').remove();
     }
 }
