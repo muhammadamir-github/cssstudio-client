@@ -6,6 +6,8 @@ import NotificationHandler from './misc/Notification.js';
 import Randomizer from './misc/Randomizer.js';
 import Elements from './misc/Elements.js';
 import Components from './misc/Components.js';
+import DraggableFactory from './misc/DraggableFactory.js';
+import ResizeableFactory from './misc/ResizeableFactory.js';
 
 window.onload = () => {
     window.globals = Globals;
@@ -19,6 +21,8 @@ window.onload = () => {
     Globals.api = new Api(Globals.api.hostname, Globals.api.port);
     Globals.randomizer = new Randomizer;
     Globals.notificationHandler = new NotificationHandler;
+    Globals.draggableFactory = new DraggableFactory;
+    Globals.resizeableFactory = new ResizeableFactory;
     Globals.elements = new Elements;
     Globals.components = new Components;
     Globals.bootLoader = new BootLoader("../assets");

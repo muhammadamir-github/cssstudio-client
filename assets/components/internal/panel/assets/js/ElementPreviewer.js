@@ -3,8 +3,7 @@ class InternalPanelElementPreviewer{
         this.config = config;
         this.hidden = false;
         this._element = null;
-        this._previewElement = null;
-        this._previewElementType = null; // Which type of element is being created. = this.config.options.name
+        this._previewElements = [];
 
         this._build();
     }
@@ -37,16 +36,36 @@ class InternalPanelElementPreviewer{
             this._element.removeChild(this._element.firstChild);
         }
 
-        this._previewElement = Globals.elements.new({
+        let element = Globals.elements.new({
             type: this.config.options.find(x => (x.name === elementType)).tag,
-            parent: document.getElementById("element-previewer"),
+            parent: this._element,
             text: `Preview ${elementType}`,
-            id: `preview${elementType.toLowerCase()}`,
-            classes: [ "preview-element" ],
-            attributes: elementType === "video" ? { controls: false } : null,
+            listeners: {
+                click: function(e){
+                    e.preventDefault();
+                    this.classList.toggle("selected-element");
+                }
+            }
         });
 
-        this._previewElementType = elementType;
-        Globals.elementType = elementType;
+        let elementInfo = {
+            element,
+            _resizeDetails: {
+                mouse: {
+                    isDown: false,
+                    x: 0,
+                    y: 0,
+                },
+                height: element.getBoundingClientRect().height,
+                width: element.getBoundingClientRect().width,
+            }
+        };
+
+        Globals.resizeableFactory.new({
+            element,
+            detailsHolder: elementInfo._resizeDetails,
+        });
+
+        this._previewElements.push(elementInfo);
     }
 }

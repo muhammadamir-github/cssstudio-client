@@ -1,4 +1,4 @@
-async function setupNavigationOptions(elementType){
+async function setupNavigationOptions(){
     var stepsDiv = Globals.elements.new({
         type: "div",
         parent: document.getElementById("panel"),
@@ -15,9 +15,9 @@ async function setupNavigationOptions(elementType){
                     listeners: {
                         click: async function(){
                             if($('#advance').length > 0){
-                                await setupAdvancedStyler(elementType, false);
+                                await setupAdvancedStyler(false);
                             }else{
-                                await setupAdvancedStyler(elementType, true);
+                                await setupAdvancedStyler(true);
                             }
                         }
                     }
@@ -29,9 +29,9 @@ async function setupNavigationOptions(elementType){
                     listeners: {
                         click: async function(){
                             if($('#animate').length > 0){
-                                await setupAnimator(elementType, false);
+                                await setupAnimator(false);
                             }else{
-                                await setupAnimator(elementType, true);
+                                await setupAnimator(true);
                             }
                         }
                     }
@@ -42,7 +42,7 @@ async function setupNavigationOptions(elementType){
                     disallowedMemberships: null,
                     listeners: {
                         click: async function(){
-                            await finishWork(elementType);
+                            await finishWork();
                         }
                     }
                 },

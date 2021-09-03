@@ -7,7 +7,7 @@ export default class NotificationHandler{
             type: "notification",
             parent: Globals.window.body,
             style: {
-                border: condition === 1 ? "2px solid Green" : condition === 2 ? "2px solid Green" : condition === 3 ? "2px solid DarkRed" : null
+                border: "1px solid #d7d7d7",
             },
             listeners: {
                 click: function(){

@@ -1,4 +1,4 @@
-function loadReadyMadeAnimations(elementType){
+function loadReadyMadeAnimations(){
     let animationsStyle = Globals.elements.new({
         type: 'style',
         parent: Globals.window.body,
@@ -42,7 +42,7 @@ function loadReadyMadeAnimations(elementType){
                         },
                         listeners: {
                             click: function(){
-                                var previewelement = document.getElementById('preview'+elementType);
+                                var previewelement = document.getElementsByClassName("selected-element")[0];
 
                                 previewelement.style.animationDelay = '';
                                 previewelement.style.animationTimingFunction = '';
@@ -68,15 +68,15 @@ function loadReadyMadeAnimations(elementType){
                             if(x.name.includes('ZOOM')){ duration = '2s'; }
                             if(x.name.includes('ROLL')){ duration = '2s'; }
 
-                            if(elementType == 'input'){
-                                text = document.getElementById('previewbox').getElementsByTagName(elementType)[0].value;
+                            if(document.getElementsByClassName("selected-element")[0].tagName == 'input'){
+                                text = document.getElementsByClassName("selected-element")[0].value;
                             }else{
-                                if(elementType == 'paragraph'){
+                                if(document.getElementsByClassName("selected-element")[0].tagName == 'paragraph'){
                                     text = document.getElementById('previewbox').getElementsByTagName('p')[0].innerText;
                                 }
 
-                                if(elementType == 'image' || elementType == 'video'){ text = elementType; }
-                                if(elementType == 'heading'){
+                                if(document.getElementsByClassName("selected-element")[0].tagName == 'image' || document.getElementsByClassName("selected-element")[0].tagName == 'video'){ text = document.getElementsByClassName("selected-element")[0].tagName; }
+                                if(document.getElementsByClassName("selected-element")[0].tagName == 'heading'){
                                     text = document.getElementById('previewbox').getElementsByTagName('h3')[0].innerText;
                                 }
                             }
@@ -118,13 +118,13 @@ function loadReadyMadeAnimations(elementType){
     let animationPreviews = readyMadeAnimationsDiv.getElementsByClassName("apelement");
     for(var i=0; i<animationPreviews.length; i++){
         if(i === 0){ continue; }
-        self.applyAnimation(animationPreviews[i].style.animationName, animationPreviews[i].parentElement, elementType);
+        self.applyAnimation(animationPreviews[i].style.animationName, animationPreviews[i].parentElement);
     }
 }
 
-function applyAnimation(animationName, animationPreview, elementType){
+function applyAnimation(animationName, animationPreview){
     animationPreview.addEventListener('click', function(){
-        $('#preview'+elementType).css('animation-name', animationName);
+        $(document.getElementsByClassName("selected-element")[0]).css('animation-name', animationName);
         $('animationPreview').css('border','');
         $('#noa').css('border','0px');
         this.style.border = '1px solid green';

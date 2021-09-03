@@ -1,4 +1,4 @@
- async function finishWork(elementType){
+ async function finishWork(){
     var panel = document.getElementById('panel');
 
     let children = [
@@ -30,13 +30,13 @@
                             }
 
                             if(aName.value !== '' || eName.value == ''){
-                                saveToStorage(elementType);
+                                saveToStorage();
                             }
                         }
 
                         if(finishdiv_textarea_element.value !== '' && finishdiv_textarea_animation.value == ''){
                             if(eName.value !== ''){
-                                saveToStorage(elementType);
+                                saveToStorage();
                             }else{
                                 Globals.notificationHandler.new('Error, please enter element name.');
                             }
@@ -44,7 +44,7 @@
 
                         if(finishdiv_textarea_animation.value !== '' && finishdiv_textarea_element.value == ''){
                             if(aName.value !== ''){
-                                saveToStorage(elementType);
+                                saveToStorage();
                             }else{
                                 Globals.notificationHandler.new('Error, please enter animation name.');
                             }
@@ -121,7 +121,7 @@
 
     $("#panel").find("*").not('#finish, #textareaE, #textareaA, #eH, #aH, #savebutton, #dltextbutton, #cancelbutton, #animationName, #elementName').css({'opacity':'0.5','pointer-events':'none'});
 
-    var e = document.getElementById('preview'+elementType);
+    var e = document.getElementsByClassName("selected-element")[0];
     var css = getStyle(e);
     var animationcss = '';
 
@@ -168,10 +168,10 @@
     }
 
     if(animationcss !== ''){
-        document.getElementById('textareaE').value = css_beautify('.' + elementType + css + "\n \nGoogle Fonts: \n \n"+ffinfo);
+        document.getElementById('textareaE').value = css_beautify('.element' + css + "\n \nGoogle Fonts: \n \n"+ffinfo);
         document.getElementById('textareaA').value = css_beautify(animationcss);
     }else{
-        document.getElementById('textareaE').value = css_beautify('.' + elementType + css + "\n \nGoogle Fonts: \n \n"+ffinfo);
+        document.getElementById('textareaE').value = css_beautify('.element' + css + "\n \nGoogle Fonts: \n \n"+ffinfo);
     }
 }
 

@@ -17,12 +17,11 @@
     max-height: 700px;
 	width: 75%;
     height: 75%;
-    background: #1a1a1a;
-    display: flex;
-    left: 50%;
-    top: 50%;
+    background: white;
+    display: none;
+    left: 0%;
+    top: 0%;
     position: absolute;
-    transform: translate(-50%,-50%);
     border-radius: 5px;
     padding: 0;
     overflow: hidden;
@@ -70,6 +69,20 @@
     width: 100%;
 }
 
+#styler .banner i.fa-times{
+	cursor: pointer;
+    margin-left: auto;
+    font-size: 15px;
+    position: relative;
+    display: flex;
+	opacity: 0.1;
+	transition: opacity 0.2s ease-in-out;
+}
+
+#styler .banner i.fa-times:hover{
+	opacity: 1;
+}
+
 #styler #styler-settings input{
 	display: flex;
     width: 150px;
@@ -102,32 +115,18 @@
     overflow-x: hidden;
     overflow-y: scroll;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     padding: 0px;
     flex-wrap: wrap;
     flex: 1;
     padding-bottom: 30px;
     padding-top: 30px;
+	align-content: flex-start;
 }
 
 #styler #styler-container{
 	width: 100%;
     height: 100%;
     position: relative;
-}
-
-#styler #styler-container combobox .customlarge{
-	width: 40%;
-}
-
-#styler #styler-container combobox.selectedCombobox{
-	z-index: 5;
-}
-
-#styler #styler-container combobox .colorpicker{
-	left: unset;
-	right: 0px;
-    top: 70px;
-    z-index: 7;
 }

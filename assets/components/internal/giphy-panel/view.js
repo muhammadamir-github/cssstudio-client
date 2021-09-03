@@ -6,7 +6,7 @@ class InternalGiphyPanelView{
 
     create(options = {}){
         const self = this;
-        const { data, parent, prepend, before, elementType, component_id } = options;
+        const { data, parent, prepend, before, component_id } = options;
 
         self._element = Globals.elements.new({
             type: "giphy",
@@ -50,7 +50,7 @@ class InternalGiphyPanelView{
                         click: function(){
                             let giphysearchinput = this.parentElement.getElementsByTagName("input")[0];
                             self.resetImages('elementCreator');
-                            self.searchGIFS(giphysearchinput.value, elementType, 'elementCreator');
+                            self.searchGIFS(giphysearchinput.value, 'elementCreator');
                         }
                     },
                     children: [
@@ -66,22 +66,23 @@ class InternalGiphyPanelView{
         });
     }
 
-    async searchGIFS(query, elementType, mode){
+    async searchGIFS(query, mode){
         const self = this;
 
 		const response = await Globals.api.request({ route: `giphy/${query}`, method: "get" });
         if(response.success === true){
-			self.loadGIFS(JSON.parse(response.data).data, elementType, mode);
+			self.loadGIFS(JSON.parse(response.data).data, mode);
         }
     }
 
-    loadGIFS(data, elementType, mode){
+    loadGIFS(data, mode){
 		let div = null;
 		for(var i = 0; i < data.length; i++){
 			let listeners = {};
 
+            let applyTo = document.getElementsByClassName("selected-element")[0];
 			if(mode == 'webpageBuilder'){
-				if(document.getElementsByClassName('selected')[0].tagName == 'img' || document.getElementsByClassName('selected')[0].tagName == 'IMG' || document.getElementsByClassName('selElForImgPik')[0]){
+				if(applyTo.tagName == 'IMG' || document.getElementsByClassName('selElForImgPik')[0]){
 					if(document.getElementsByClassName('selElForImgPik')[0]){
 						listeners = {
 							click: function(){
@@ -94,31 +95,31 @@ class InternalGiphyPanelView{
 					}else{
 						listeners = {
 							click: function(){
-								document.getElementsByClassName('selected')[0].src = this.getElementsByTagName("img")[0].src;
+								applyTo.src = this.getElementsByTagName("img")[0].src;
 							}
 						};
 					}
 				}else{
-					if(document.getElementsByClassName('selected')[0].tagName == 'DIV' && $(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video-overlay'){
+					if(applyTo.tagName == 'DIV' && $(applyTo).attr('data-e-type') == 'video-overlay'){
 						listeners = {
 							click: function(){
-								document.getElementById(document.getElementsByClassName("selected")[0].id+'videoPlayer').setAttribute('poster',this.getElementsByTagName("img")[0].src);
+								document.getElementById(applyTo.id+'videoPlayer').setAttribute('poster',this.getElementsByTagName("img")[0].src);
 							}
 						};
 					}else{
-						if($(document.getElementsByClassName('selected')[0]).attr('data-e-type') == 'video'){
+						if($(applyTo).attr('data-e-type') == 'video'){
 							listeners = {
 								click: function(){
-									document.getElementsByClassName("selected")[0].setAttribute('poster',this.getElementsByTagName("img")[0].src);
+									applyTo.setAttribute('poster',this.getElementsByTagName("img")[0].src);
 								}
 							};
 						}else{
 							listeners = {
 								click: function(){
-									document.getElementsByClassName("selected")[0].style.background = "url("+this.getElementsByTagName("img")[0].src+")"
-									document.getElementsByClassName("selected")[0].style.backgroundRepeat = "no-repeat";
-									document.getElementsByClassName("selected")[0].style.backgroundPosition = "center";
-									document.getElementsByClassName("selected")[0].style.backgroundSize = "cover";
+									applyTo.style.background = "url("+this.getElementsByTagName("img")[0].src+")"
+									applyTo.style.backgroundRepeat = "no-repeat";
+									applyTo.style.backgroundPosition = "center";
+									applyTo.style.backgroundSize = "cover";
 								}
 							};
 						}

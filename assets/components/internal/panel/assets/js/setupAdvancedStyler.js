@@ -1,4 +1,4 @@
-async function setupAdvancedStyler(elementType, fromScratch = false){
+async function setupAdvancedStyler(fromScratch = false){
     let panel = document.getElementById('panel');
 
     let backButton = Globals.elements.new({
@@ -32,7 +32,7 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
     });
 
     if(fromScratch === true){
-        getGoogleFonts(elementType, 'elementCreator');
+        getGoogleFonts('elementCreator');
 
         var advancediv = Globals.elements.new({
             type: "div",
@@ -69,7 +69,7 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
                             type: "li",
                             listeners: {
                                 click: function(){
-                                    applyBackgroundGradient('preview'+elementType);
+                                    applyBackgroundGradient();
                                 }
                             }
                         }
@@ -104,7 +104,6 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
             let el = await Globals.components.new({
                 name: "internal-combobox",
                 parent: advancediv2,
-                elementType,
                 data: {
                     id: end.id,
                     style: end.style,
@@ -215,7 +214,7 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
                             var file = this.files[0];
                             var reader = new FileReader();
                             reader.onload = function () {
-                                $('#preview'+elementType).css({"background-image":"url(" + reader.result + ")","background-size":"cover"});
+                                $(document.getElementsByClassName("selected-element")[0]).css({"background-image":"url(" + reader.result + ")","background-size":"cover"});
                             }
                             reader.readAsDataURL(file);
                         }
@@ -227,7 +226,6 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
         var giphyPanel = Globals.components.new({
             name: "internal-giphy-panel",
             parent: Globals.window.body,
-            elementType,
         });
 
         var textShadowDiv = Globals.elements.new({
@@ -277,7 +275,6 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
             await Globals.components.new({
                 name: "internal-combobox",
                 parent: x.parent,
-                elementType,
                 data: {
                     id: x.id,
                     width: x.width,
@@ -355,7 +352,6 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
             await Globals.components.new({
                 name: "internal-combobox",
                 parent: marginDiv,
-                elementType,
                 data: {
                     id: margin.id,
                     style: margin.style,
@@ -428,7 +424,6 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
             await Globals.components.new({
                 name: "internal-combobox",
                 parent: paddingDiv,
-                elementType,
                 data: {
                     id: padding.id,
                     width: padding.width,
@@ -504,7 +499,6 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
         let letterspace = await Globals.components.new({
             name: "internal-combobox",
             parent: divs[0],
-            elementType,
             data: {
                 id: "letterspace",
                 style: {
@@ -524,7 +518,6 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
         let outlinestyle = await Globals.components.new({
             name: "internal-combobox",
             parent: divs[2],
-            elementType,
             data: {
                 id: "outlinestyle",
                 style: {
@@ -540,7 +533,6 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
         let outlinewidth = await Globals.components.new({
             name: "internal-combobox",
             parent: divs[2],
-            elementType,
             data: {
                 id: "outlinewidth",
                 style: {
@@ -558,7 +550,6 @@ async function setupAdvancedStyler(elementType, fromScratch = false){
         let outlinecolor = await Globals.components.new({
             name: "internal-combobox",
             parent: divs[2],
-            elementType,
             data: {
                 id: "outlinecolor",
                 style: {

@@ -5,22 +5,22 @@ class InternalComboboxView{
         this.textKeyMap = { // Style properties to update according to combobox text.
             "Font Size": { key: "fontSize", valueSuffix: "px", keyValueSuffix: "px" },
             "Height": { key: "height", valueSuffix: "px", keyValueSuffix: "px" },
-            "Width": { key: "width", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Width": { key: "width", valueSuffix: "px", keyValueSuffix: "px" },
             "Border Size": { key: "borderSize", valueSuffix: "px", keyValueSuffix: "px solid black" },
-            "Border Radius": { key: "borderRadius", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Border Radius": { key: "borderRadius", valueSuffix: "px", keyValueSuffix: "px" },
             "Border Style": { key: "borderStyle", valueSuffix: "", keyValueSuffix: "" },
             "Text Align": { key: "textAlign", valueSuffix: "", keyValueSuffix: "" },
-            "Margin Top": { key: "marginTop", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
-            "Margin Left": { key: "marginLeft", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
-            "Margin Right": { key: "marginRight", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
-            "Margin Bottom": { key: "marginBottom", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
-            "Padding Top": { key: "paddingTop", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
-            "Padding Left": { key: "paddingLeft", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
-            "Padding Right": { key: "paddingRight", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
-            "Padding Bottom": { key: "paddingBottom", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
-            "Letter Space": { key: "letterSpacing", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
-            "Word Space": { key: "wordSpacing", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
-            "Outline Width": { key: "outlineWidth", valueSuffix: /*unit*/"px", keyValueSuffix: /*unit*/"px" },
+            "Margin Top": { key: "marginTop", valueSuffix: "px", keyValueSuffix: "px" },
+            "Margin Left": { key: "marginLeft", valueSuffix: "px", keyValueSuffix: "px" },
+            "Margin Right": { key: "marginRight", valueSuffix: "px", keyValueSuffix: "px" },
+            "Margin Bottom": { key: "marginBottom", valueSuffix: "px", keyValueSuffix: "px" },
+            "Padding Top": { key: "paddingTop", valueSuffix: "px", keyValueSuffix: "px" },
+            "Padding Left": { key: "paddingLeft", valueSuffix: "px", keyValueSuffix: "px" },
+            "Padding Right": { key: "paddingRight", valueSuffix: "px", keyValueSuffix: "px" },
+            "Padding Bottom": { key: "paddingBottom", valueSuffix: "px", keyValueSuffix: "px" },
+            "Letter Space": { key: "letterSpacing", valueSuffix: "px", keyValueSuffix: "px" },
+            "Word Space": { key: "wordSpacing", valueSuffix: "px", keyValueSuffix: "px" },
+            "Outline Width": { key: "outlineWidth", valueSuffix: "px", keyValueSuffix: "px" },
             "Box Shadow": { key: "boxShadow", valueSuffix: "", keyValueSuffix: "" },
             "Text Shadow": { key: "textShadow", valueSuffix: "", keyValueSuffix: "" },
             "Text Decoration": { key: "textDecoration", valueSuffix: "", keyValueSuffix: "" },
@@ -54,9 +54,9 @@ class InternalComboboxView{
 
     create(options = {}){
         const self = this;
-        const { data, parent, prepend, before, elementType, component_id } = options;
+        const { data, parent, prepend, before, component_id } = options;
 
-        self.initialData = {...data, elementType};
+        self.initialData = {...data};
 
         const structure = {
             type: "combobox",
@@ -106,8 +106,8 @@ class InternalComboboxView{
                                             type: "colordisplay",
                                             style: { display: "none" },
                                             listeners: {
-                                                click: function(){
-                                                    let applyTo = document.getElementById(`preview${elementType}`) || document.getElementsByClassName(`selected`)[0];
+                                                click: function(e){
+                                                    let applyTo = document.getElementsByClassName("selected-element")[0];
 
                                                     if(self.textKeyMap[data.text]){
                                                         let key = self.textKeyMap[data.text].key;
@@ -155,7 +155,7 @@ class InternalComboboxView{
                                                                 self.changeValue(this, option);
                                                             },
                                                             mouseover: function(){
-                                                                let applyTo = document.getElementById(`preview${elementType}`) || document.getElementsByClassName(`selected`)[0];
+                                                                let applyTo = document.getElementsByClassName("selected-element")[0];
 
                                                                 if(self.textKeyMap[data.text]){
                                                                     let key = self.textKeyMap[data.text].key;
@@ -165,7 +165,7 @@ class InternalComboboxView{
                                                                 }
                                                             },
                                                             mouseout: function(){
-                                                                let applyTo = document.getElementById(`preview${elementType}`) || document.getElementsByClassName(`selected`)[0];
+                                                                let applyTo = document.getElementsByClassName("selected-element")[0];
 
                                                                 if(self.textKeyMap[data.text]){
                                                                     let key = self.textKeyMap[data.text].key;
@@ -190,6 +190,7 @@ class InternalComboboxView{
 
         self._element = Globals.elements.new(structure);
 
+        // Set provided value.
         if(Array.isArray(data.options)){
             if(data.selected){
                 let optionElement = [...self._element.getElementsByTagName("a")].find(x => (x.getAttribute("data-combobox-option-value") === data.selected));
@@ -202,6 +203,9 @@ class InternalComboboxView{
                 let valueSuffix = self.textKeyMap[self.initialData.text].valueSuffix;
                 let keyValueSuffix = self.textKeyMap[self.initialData.text].keyValueSuffix;
 
+                valueSuffix = self.initialData.unit ? valueSuffix.replaceAll("px", self.initialData.unit) : valueSuffix;
+                keyValueSuffix = self.initialData.unit ? keyValueSuffix.replaceAll("px", self.initialData.unit) : keyValueSuffix;
+
                 let inputElement = self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0];
                 if(inputElement){ self.customValueChange(data.value.replaceAll(keyValueSuffix, "").replaceAll(valueSuffix, ""), inputElement, self); }
             }
@@ -209,60 +213,95 @@ class InternalComboboxView{
     }
 
     customValueChange(value, inputElement, self){
-        self.controller._updateModelState({ value });
-        let selected_a_span = inputElement.parentElement.getElementsByTagName("a")[0].getElementsByTagName("span")[0];
+        if(value){
+            const data = self.controller._getModelState();
 
-        let key = self.textKeyMap[self.initialData.text].key;
-        let valueSuffix = self.textKeyMap[self.initialData.text].valueSuffix;
-        let keyValueSuffix = self.textKeyMap[self.initialData.text].keyValueSuffix;
+            self.controller._updateModelState({ value });
+            let selected_a_span = inputElement.parentElement.getElementsByTagName("span")[0];
 
-        if(self.initialData.customValue.call === "updateElement"){
-            selected_a_span.innerText = `${self.initialData.text}: ${value}${valueSuffix}`;
-            updateElement(self.initialData.elementType, key, value+valueSuffix);
-        }else{
-            if(self.initialData.customValue.call === "dataAttributeBalancer"){
-                selected_a_span.innerText = `${self.initialData.text}: ${value}`;
-                dataAttributeBalancer(key, value);
+            let key = self.textKeyMap[data.text].key;
+            let valueSuffix = self.textKeyMap[data.text].valueSuffix;
+            let keyValueSuffix = self.textKeyMap[data.text].keyValueSuffix;
+
+            valueSuffix = data.unit ? valueSuffix.replaceAll("px", data.unit) : valueSuffix;
+            keyValueSuffix = data.unit ? keyValueSuffix.replaceAll("px", data.unit) : keyValueSuffix;
+
+            value = value.replaceAll(data.unit, "").replaceAll(valueSuffix, "");
+
+            if(data.customValue.call === "updateElement"){
+                selected_a_span.innerText = `${data.text}: ${value}${valueSuffix}`;
+                updateElement(key, value+valueSuffix);
             }else{
-                if(self.initialData.customValue.call === "updatePageElement"){
-                    selected_a_span.innerText = `${self.initialData.text}: ${value}${valueSuffix}`;
-                    document.getElementsByClassName('selected')[0].style[key] = `${value}${keyValueSuffix}`;
+                if(data.customValue.call === "dataAttributeBalancer"){
+                    selected_a_span.innerText = `${data.text}: ${value}`;
+                    dataAttributeBalancer(key, value);
+                }else{
+                    if(data.customValue.call === "updatePageElement"){
+                        selected_a_span.innerText = `${data.text}: ${value}${valueSuffix}`;
+                        document.getElementsByClassName("selected-element")[0].style[key] = `${value}${keyValueSuffix}`;
+                    }
                 }
             }
+
+            inputElement.value = value; // Making sure the value is same if customValueChange(this function) was called not from an input keyup event.
         }
     }
 
     changeValue(optionElement, value){
+        const data = this.controller._getModelState();
         this.controller._updateModelState({ selected: value });
 
-        this._element.getElementsByTagName('selected')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = `${this.initialData.text}: ${value}`;
+        this._element.getElementsByTagName('selected')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = `${this.data.text}: ${value}`;
         $(this._element).find(".combobox-selected").removeClass("combobox-selected");
         optionElement.classList.add("combobox-selected");
 
         this.toggle(this, "hide");
 
-        let applyTo = document.getElementById(`preview${this.initialData.elementType}`) || document.getElementsByClassName(`selected`)[0];
-        let key = this.textKeyMap[this.initialData.text].key;
+        let applyTo = document.getElementsByClassName("selected-element")[0];
+        let key = this.textKeyMap[this.data.text].key;
 
-        if(this.initialData.id == "timing"){
-            updateElement(this.initialData.elementType, 'atiming', value);
+        if(this.data.id == "timing"){
+            updateElement('atiming', value);
         }else{
-            if(this.textKeyMap[this.initialData.text]){
+            if(this.textKeyMap[this.data.text]){
                 if(key && applyTo.hasAttribute(`data-style-temp-${key}`)){
                     applyTo.setAttribute(`data-style-temp-${key}`, value);
                 }
 
-                if(applyTo && applyTo.classList.contains("selected")){
-                    if(this.initialData.id === "googlefonts"){
+                if(applyTo && applyTo.classList.contains("selected-element")){
+                    if(this.data.id === "googlefonts"){
                         applyTo.style.fontFamily = value;
                     }
-
-                    this._element.classList.remove('selectedCombobox');
                 }
             }else{
-                updateElement(this.initialData.elementType, key, value);
+                updateElement(key, value);
             }
         }
+    }
+
+    async syncValue(){
+        const self = this;
+        const data = await self.controller._getModelState();
+
+        let applyTo = document.getElementsByClassName("selected-element")[0];
+        let key = self.textKeyMap[data.text].key;
+        let currentStyleValue = applyTo && key ? applyTo.style[key] : null;
+
+        if(currentStyleValue !== undefined && currentStyleValue !== null && Array.isArray(data.options) && data.options.length > 0 && data.options.map(x => (x.toLowerCase())).includes(currentStyleValue)){
+            let optionElements = self._element.getElementsByTagName("ul")[0].getElementsByTagName("a");
+            if(optionElements){
+                let optionElement = [...optionElements].find(x => (x.getAttribute("data-combobox-option-value").toString().toLowerCase() === currentStyleValue));
+                if(optionElement){
+                    await self.changeValue(optionElement, optionElement.getAttribute("data-combobox-option-value"));
+                }
+            }
+        }
+
+        if(currentStyleValue !== undefined && currentStyleValue !== null && currentStyleValue !== data.unit && typeof data.customValue === "object" && data.customValue !== null){
+            await self.customValueChange(currentStyleValue, self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0], self);
+        }
+
+        // color
     }
 
     toggle(self, specficAction = null){
@@ -307,10 +346,6 @@ class InternalComboboxView{
                 colordisplay.style.display = 'flex';
                 combobox.style.textAlign = 'left';
             }
-        }
-
-        if((specficAction === null || specficAction === "hide") && self.applyTo && self.applyTo.classList.contains("selected")){
-            combobox.classList.add('selectedCombobox');
         }
     }
 }

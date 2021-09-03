@@ -1,11 +1,11 @@
-async function setupBasicSliders(elementType){
-    await setupRotate(elementType);
-    await setupSkew(elementType);
-    await setupScale(elementType);
-    await setupNavigationOptions(elementType);
+async function setupBasicSliders(){
+    await setupRotate();
+    await setupSkew();
+    await setupScale();
+    await setupNavigationOptions();
 }
 
-async function setupSkew(element){
+async function setupSkew(){
     let skewBox = await Globals.elements.new({
         type: "div",
         parent: document.getElementById("panel"),
@@ -28,7 +28,6 @@ async function setupSkew(element){
 
     let sliderX = await Globals.components.new({
         name: "internal-slider",
-        elementType: element,
         parent: skewBox,
         data: {
             text: "Skew x-axis",
@@ -44,7 +43,6 @@ async function setupSkew(element){
 
     let sliderY = await Globals.components.new({
         name: "internal-slider",
-        elementType: element,
         parent: skewBox,
         data: {
             text: "Skew y-axis",
@@ -79,7 +77,6 @@ async function setupScale(element){
 
     let sliderX = await Globals.components.new({
         name: "internal-slider",
-        elementType: element,
         parent: scaleBox,
         data: {
             text: "Scale x-axis",
@@ -95,7 +92,6 @@ async function setupScale(element){
 
     let sliderY = await Globals.components.new({
         name: "internal-slider",
-        elementType: element,
         parent: scaleBox,
         data: {
             text: "Scale y-axis",
@@ -130,7 +126,6 @@ async function setupRotate(element){
 
     let rotateX = await Globals.components.new({
         name: "internal-slider",
-        elementType: element,
         parent: rotateBox,
         data: {
             text: "Rotate x-axis",
@@ -146,7 +141,6 @@ async function setupRotate(element){
 
     let rotateY = await Globals.components.new({
         name: "internal-slider",
-        elementType: element,
         parent: rotateBox,
         data: {
             text: "Rotate x-axis",

@@ -16,7 +16,6 @@ export default class Components{
             let component_id = Globals.randomizer.id(100);
             await instance._init({
                 // Data not related to component should be passed here
-                elementType: options.elementType,
                 parent: options.parent,
                 before: options.before,
                 prepend: options.prepend,

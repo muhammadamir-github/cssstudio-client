@@ -1,4 +1,4 @@
-async function saveToStorage(elementtype){
+async function saveToStorage(){
     var token = localStorage.getItem('auth');
     var animationCSS = document.getElementById('textareaA').value;
     var elementCSS = document.getElementById('textareaE').value;
@@ -54,7 +54,7 @@ async function saveToStorage(elementtype){
         elementCSS = '.'+ elementName + ' { \n' + elementCSS;
         document.getElementById('textareaE').value = elementCSS;
 
-        const response = await Globals.api.request({ route: `me/element/add`, method: "post", data:{'name':elementName,'css':elementCSS,'type':elementtype} });
+        const response = await Globals.api.request({ route: `me/element/add`, method: "post", data:{'name':elementName,'css':elementCSS,'type':document.getElementsByClassName("selected-element")[0].tagName} });
         if(response.success === true){
             if(response.data.message == 'element saved to your account.'){
                 Globals.notificationHandler.new(response.data.message);

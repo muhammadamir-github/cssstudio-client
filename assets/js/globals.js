@@ -27,6 +27,10 @@ export default {
         body: null,
         head: null
     },
+    mouse: {
+        x: 0,
+        y: 0,
+    },
     sideBar: null,
     bootLoader: null,
     pageHandler: null,
@@ -36,6 +40,8 @@ export default {
     components: null,
     randomizer: null,
     colorPicker: null,
+    draggableFactory: null,
+    resizeableFactory: null,
     api: {
         hostname: "http://localhost",
         port: "8000"
@@ -83,7 +89,7 @@ export default {
                 { type: "css", src: "pages/Style.css", isURL: false, isRaw: false, },
                 { type: "css", src: "pages/Studio.css", isURL: false, isRaw: false, },
                 //{ type: "css", src: "misc/Billy.css", isURL: false, isRaw: false, },
-                //{ type: "css", src: "pages/PreviewSite.css", isURL: false, isRaw: false, },
+                { type: "css", src: "pages/PreviewSite.css", isURL: false, isRaw: false, },
                 { type: "css", src: "misc/Fonts.css", isURL: false, isRaw: false, },
                 //{ type: "js", src: "https://www.youtube.com/iframe_api", isURL: true, isRaw: false, },
                 ...global_requiredFiles.js,

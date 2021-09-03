@@ -1,4 +1,4 @@
-async function setupAnimator(elementType, fromSratch = false){
+async function setupAnimator(fromSratch = false){
     let panel = document.getElementById('panel');
     let backButton = await Globals.elements.new({
         type: "button",
@@ -60,7 +60,6 @@ async function setupAnimator(elementType, fromSratch = false){
         let comboboxes = [
             {
                 id: "duration",
-                elementType: elementType,
                 text: "Duration",
                 style: {
                     left: "50%",
@@ -75,7 +74,6 @@ async function setupAnimator(elementType, fromSratch = false){
             },
             {
                 id: "delay",
-                elementType: elementType,
                 text: "Delay",
                 style: {
                     left: "50%",
@@ -90,7 +88,6 @@ async function setupAnimator(elementType, fromSratch = false){
             },
             {
                 id: "iteration",
-                elementType: elementType,
                 text: "Iteration",
                 style: {
                     left: "50%",
@@ -107,7 +104,6 @@ async function setupAnimator(elementType, fromSratch = false){
             {
                 id: "timing",
                 text: "Timing",
-                elementType: elementType,
                 style: {
                     left: "50%",
                     marginTop: "250px",
@@ -121,7 +117,6 @@ async function setupAnimator(elementType, fromSratch = false){
             await Globals.components.new({
                 name: "internal-combobox",
                 parent: settings_div,
-                elementType: x.elementType,
                 data: {
                     id:x.id,
                     width: "200px",
@@ -152,12 +147,11 @@ async function setupAnimator(elementType, fromSratch = false){
         panel.style.pointerEvents = 'unset';
 
         if(fromSratch === true){
-            loadReadyMadeAnimations(elementType);
+            loadReadyMadeAnimations();
 
             let animatorTimeline = await Globals.components.new({
                 name: "internal-animator-timeline",
                 parent: document.getElementById("animate"),
-                elementType,
             });
         }
     }, 1);

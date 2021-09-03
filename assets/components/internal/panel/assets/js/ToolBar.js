@@ -1,4 +1,4 @@
-class InternalPanelNavbar{
+class InternalPanelToolBar{
     constructor(config){
         this.config = config;
         this.hidden = false;
@@ -12,16 +12,26 @@ class InternalPanelNavbar{
         self._element = Globals.elements.new({
             type: "div",
             parent: document.getElementById("panel"),
-            id: "navbar",
+            id: "toolbar",
             children: [
                 ...(() => {
                     return self.config.options.map((option, i) => {
                         return {
-                            type: "button",
-                            text: option.name,
+                            type: "div",
+                            attributes: {
+                                "data-name": option.name,
+                            },
                             listeners: {
                                 click: option.callback,
-                            }
+                            },
+                            children: [
+                                ...(() => {
+                                    return option.icon ? [{
+                                        type: "i",
+                                        classes: option.icon.split(" "),
+                                    }] : [];
+                                })(),
+                            ]
                         };
                     });
                 })(),
@@ -29,10 +39,14 @@ class InternalPanelNavbar{
         });
 
         Globals.window.body.addEventListener("mousemove", function(e){
-            let navbarHeight = 50;
+            let toolbarHeight = 50;
             let mouseY = e.clientY;
 
-            mouseY <= navbarHeight ? self.show() : self.hide();
+            if((mouseY <= toolbarHeight) && self.config.canShow() === true){
+                self.show()
+            }else{
+                self.hide();
+            }
         });
     }
 
@@ -57,12 +71,22 @@ class InternalPanelNavbar{
 
         for (let option of this.config.options){
             Globals.elements.new({
-                type: "button",
+                type: "div",
                 parent: this._element,
-                text: option.name,
+                attributes: {
+                    "data-name": option.name,
+                },
                 listeners: {
                     click: option.callback,
-                }
+                },
+                children: [
+                    ...(() => {
+                        return option.icon ? [{
+                            type: "i",
+                            classes: option.icon.split(" "),
+                        }] : [];
+                    })(),
+                ]
             });
         }
     }

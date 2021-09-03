@@ -12,7 +12,7 @@ class InternalColorPickerView{
 
     create(options = {}){
         const self = this;
-        const { data, parent, prepend, before, elementType, component_id } = options;
+        const { data, parent, prepend, before, component_id } = options;
 
         self._element = Globals.elements.new({
             type: "div",
@@ -84,7 +84,7 @@ class InternalColorPickerView{
 
         setTimeout(() => {
             // This timeout is required due to element being created dynamically.
-            self.setupColorPicker(elementType == "selected" ? elementType : `preview${elementType}`);
+            self.setupColorPicker();
 
             if(data.color){
                 let inputElement = data.color.startsWith("#") ? document.getElementById(`cphex`) : document.getElementById(`cprgba`);
@@ -135,12 +135,7 @@ class InternalColorPickerView{
 
     setupColorPicker(forid){
         const self = this;
-
-        if(forid == "selected"){
-            self.applyTo = document.getElementsByClassName('selected')[0] || document.getElementById(forid);
-        }else{
-            self.applyTo = document.getElementById(forid);
-        }
+        self.applyTo = document.getElementsByClassName("selected-element")[0];
 
         self.updateStrip(null, self);
         self.updateBox();
@@ -175,7 +170,7 @@ class InternalColorPickerView{
         // update color from mouse
         const self = this;
 
-        self.applyTo = document.getElementById(`preview${Globals.elementType.toString().toLowerCase()}`) || document.getElementsByClassName("selected")[0];
+        self.applyTo = document.getElementsByClassName("selected-element")[0];
 
         let boxid = `cpb`;
         let stripid = `cps`;
@@ -314,6 +309,8 @@ class InternalColorPickerView{
 
         this._element.style.display = "flex";
         this.hidden = false;
+
+        Globals.draggableFactory.positionElementRelatively(this._element, colorDisplay);
     }
 
     hide(){

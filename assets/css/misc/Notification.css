@@ -1,30 +1,28 @@
 @keyframes notification{
+    1%{
+        opacity: 1;
+    }
 
-1%{
-    opacity: 1;
-}
+    25%{
+        opacity: 0.5;
+    }
 
-25%{
-    opacity: 0.5;
-}
+    50%{
+        opacity: 1;
+    }
 
-50%{
-    opacity: 1;
-}
+    75%{
+        opacity: 0.5;
+    }
 
-75%{
-    opacity: 0.5;
-}
-
-100%{
-    opacity: 1;
-}
-
+    100%{
+        opacity: 1;
+    }
 }
 
 
 notification{
-	position: absolute;
+    position: absolute;
     width: 350px;
     height: 100px;
     z-index: 5;
@@ -43,8 +41,8 @@ notification{
 }
 
 notification:hover{
-    opacity: 0.8;
-    transform: scale(0.8);
+    opacity: 0.9;
+    transform: scale(0.9);
 }
 
 notification .heading{
@@ -53,6 +51,7 @@ notification .heading{
     display: block;
     position: relative;
     font-style: italic;
+    font-weight: bold;
     height: fit-content;
     margin: 0;
     left: 0;

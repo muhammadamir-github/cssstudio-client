@@ -5,7 +5,7 @@ class InternalPanelView{
         self.controller = controller;
         self._element = null;
         self._elementSelectionSidebar = null;
-        self._navbar = null;
+        self._toolbar = null;
         self._styler = null;
 
         self.elementOptions = [
@@ -18,14 +18,14 @@ class InternalPanelView{
             { name: "Image", tag: "img", },
             { name: "Video", tag: "video", },
         ];
-        self.navbarOptions = [
-            { name: "New Element", callback: function(){ self._elementSelectionSidebar.toggle(); } },
+        self.toolbarOptions = [
+            { name: "New Element", icon: "fas fa-plus", callback: function(){ self._elementSelectionSidebar.toggle(); } },
         ];
     }
 
     async create(options = {}){
         const self = this;
-        const { data, parent, prepend, before, elementType, component_id } = options;
+        const { data, parent, prepend, before, component_id } = options;
 
         self._element = Globals.elements.new({
             type: "div",
@@ -49,13 +49,14 @@ class InternalPanelView{
             prepend: prepend
         });
 
-        self._navbar = new InternalPanelNavbar({
-            options: self.navbarOptions
-        });
-
         self._elementSelectionSidebar = new InternalPanelElementSelectionSidebar({
             options: self.elementOptions,
             callback: self.newPreviewElement.bind(self),
+        });
+
+        self._toolbar = new InternalPanelToolBar({
+            options: self.toolbarOptions,
+            canShow: () => { return self._elementSelectionSidebar.hidden; },
         });
 
         self._elementPreviewer = new InternalPanelElementPreviewer({
@@ -76,7 +77,7 @@ class InternalPanelView{
     newPreviewElement(elementType){
         const self = this;
         self._elementPreviewer.reset(elementType);
-        self._navbar.reset();
+        self._toolbar.reset();
     }
 
     setEnvironment(element){

@@ -1,8 +1,8 @@
-async function setupBasicStyler(elementType){
+async function setupBasicStyler(){
     var previewbox = document.getElementById('previewbox');
     previewbox.style.display = 'block';
 
-    if(elementType == 'video' || elementType == 'image'){
+    if(document.getElementsByClassName("selected-element")[0].tagName == 'video' || document.getElementsByClassName("selected-element")[0].tagName == 'image'){
         let changesourcediv = Globals.elements.new({
             type: "div",
             parent: previewbox,
@@ -12,11 +12,11 @@ async function setupBasicStyler(elementType){
                     type: "input",
                     classes: [ "input" ],
                     attributes: {
-                        placeholder: "Enter "+elementType+" source here"
+                        placeholder: "Enter "+document.getElementsByClassName("selected-element")[0].tagName+" source here"
                     },
                     listeners: {
                         keyup: function(){
-                            var ele = document.getElementById('preview'+elementType);
+                            var ele = document.getElementById('preview'+document.getElementsByClassName("selected-element")[0].tagName);
                             ele.setAttribute('src',this.value);
                         }
                     }
@@ -50,15 +50,15 @@ async function setupBasicStyler(elementType){
                     },
                     listeners: {
                         keyup: function(){
-                            var ele = document.getElementById('preview'+elementType);
+                            var ele = document.getElementById('preview'+document.getElementsByClassName("selected-element")[0].tagName);
                             if(this.value == ''){
-                                if(elementType == 'input'){
-                                    ele.value = 'Preview '+elementType;
+                                if(document.getElementsByClassName("selected-element")[0].tagName == 'input'){
+                                    ele.value = 'Preview '+document.getElementsByClassName("selected-element")[0].tagName;
                                 }else{
-                                    ele.innerText = 'Preview '+elementType;
+                                    ele.innerText = 'Preview '+document.getElementsByClassName("selected-element")[0].tagName;
                                 }
                             }else{
-                                if(elementType == 'input'){
+                                if(document.getElementsByClassName("selected-element")[0].tagName == 'input'){
                                     ele.value = this.value;
                                 }else{
                                     ele.innerText = this.value;
@@ -100,7 +100,7 @@ async function setupBasicStyler(elementType){
                             { name: "Oval", key: "oval" },
                             { name: "Parallelogram", key: "parallelogram" },
                             ...(() => {
-                                return elementType == 'button' ? [{ name: "Triangle", key: "Triangle" }] : elementType == 'div' ? [{ name: "Triangle", key: "Triangle" }, { name: "Trapezoid", key: "trapezoid" }] : [];
+                                return document.getElementsByClassName("selected-element")[0].tagName == 'button' ? [{ name: "Triangle", key: "Triangle" }] : document.getElementsByClassName("selected-element")[0].tagName == 'div' ? [{ name: "Triangle", key: "Triangle" }, { name: "Trapezoid", key: "trapezoid" }] : [];
                             })(),
                         ].map((x, i) => {
                             return {
@@ -108,7 +108,7 @@ async function setupBasicStyler(elementType){
                                 text: x.name,
                                 listeners: {
                                     click: function(){
-                                        changeElementShape(elementType, x.key);
+                                        changeElementShape(x.key);
                                     },
                                 }
                             }
@@ -156,7 +156,6 @@ async function setupBasicStyler(elementType){
     let fontsize = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "fontsize",
             style: {
@@ -173,7 +172,6 @@ async function setupBasicStyler(elementType){
     let fontfamily = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "fontfamily",
             style: {
@@ -187,7 +185,6 @@ async function setupBasicStyler(elementType){
     let fontweight = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "fontweight",
             style: {
@@ -201,7 +198,6 @@ async function setupBasicStyler(elementType){
     let fontstyle = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "fontstyle",
             style: {
@@ -215,7 +211,6 @@ async function setupBasicStyler(elementType){
     let fontvariant = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "fontvariant",
             style: {
@@ -229,7 +224,6 @@ async function setupBasicStyler(elementType){
     let fontstretch = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "fontstretch",
             style: {
@@ -245,7 +239,6 @@ async function setupBasicStyler(elementType){
     let fontcolor = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "fontcolor",
             style: {
@@ -263,7 +256,6 @@ async function setupBasicStyler(elementType){
     let backgroundcolor = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "backgroundcolor",
             style: {
@@ -281,7 +273,6 @@ async function setupBasicStyler(elementType){
     let bordercolor = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "bordercolor",
             style: {
@@ -299,7 +290,6 @@ async function setupBasicStyler(elementType){
     let textalign = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "textalign",
             style: {
@@ -315,7 +305,6 @@ async function setupBasicStyler(elementType){
     let textdecoration = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "textdecoration",
             style: {
@@ -334,7 +323,6 @@ async function setupBasicStyler(elementType){
     let textdecorationstyle = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "textdecorationstyle",
             style: {
@@ -350,7 +338,6 @@ async function setupBasicStyler(elementType){
     let borderradius = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "borderradius",
             style: {
@@ -369,7 +356,6 @@ async function setupBasicStyler(elementType){
     let bordersize = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "bordersize",
             style: {
@@ -388,7 +374,6 @@ async function setupBasicStyler(elementType){
     let borderstyle = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "borderstyle",
             style: {
@@ -404,7 +389,6 @@ async function setupBasicStyler(elementType){
     let boxshadow = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "boxshadow",
             width: "250px",
@@ -428,7 +412,6 @@ async function setupBasicStyler(elementType){
     let display = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "display",
             style: {
@@ -444,7 +427,6 @@ async function setupBasicStyler(elementType){
     let opacity = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "opacity",
             style: {
@@ -462,7 +444,6 @@ async function setupBasicStyler(elementType){
     let whitespace = await Globals.components.new({
         name: "internal-combobox",
         parent: basicdiv,
-        elementType,
         data: {
             id: "whitespace",
             width: "240px",
@@ -476,7 +457,7 @@ async function setupBasicStyler(elementType){
         }
     });
 
-    await setupBasicSliders(elementType);
+    await setupBasicSliders();
 
     let editbuttons = Globals.elements.new({
         type: "div",
@@ -484,7 +465,7 @@ async function setupBasicStyler(elementType){
         classes: [ "eb" ],
         children: [
             ...(() => {
-                return elementType == 'video' || elementType == 'image' ? [
+                return document.getElementsByClassName("selected-element")[0].tagName == 'video' || document.getElementsByClassName("selected-element")[0].tagName == 'image' ? [
                     {
                         type: "label",
                         text: "Src",
@@ -525,8 +506,8 @@ async function setupBasicStyler(elementType){
     });
 }
 
-function changeElementShape(elementType, shapeName){
-    var element = document.getElementById('preview'+elementType);
+function changeElementShape(shapeName){
+    var element = document.getElementsByClassName("selected-element")[0];
 
     if(shapeName == 'square'){
         element.style.width = '125px';

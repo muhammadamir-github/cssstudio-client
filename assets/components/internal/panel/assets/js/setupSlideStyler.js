@@ -1,4 +1,4 @@
-async function setupSlideStyler(element){
+async function setupSlideStyler(){
     const self = this;
 
     let animationSliders = Globals.elements.new({
@@ -17,7 +17,6 @@ async function setupSlideStyler(element){
         parent: document.getElementById("aT"),
         data: {
             id: "slidePercentage",
-            elementType: element,
             width: "200px",
             style: {
                 left: "30px",
@@ -80,7 +79,6 @@ async function setupSlideStyler(element){
 
         await Globals.components.new({
             name: "internal-slider",
-            elementType: element,
             parent: box,
             data: {
                 id: slider.id,
@@ -103,7 +101,6 @@ async function setupSlideStyler(element){
         await Globals.components.new({
             name: "internal-combobox",
             parent: animationSliders,
-            elementType: element,
             data: {
                 id: x.id,
                 width: "200px",

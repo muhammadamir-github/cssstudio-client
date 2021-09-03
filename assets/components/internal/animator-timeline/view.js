@@ -6,7 +6,7 @@ class InternalAnimatorTimelineView{
 
     create(options = {}){
         const self = this;
-        const { data, parent, prepend, before, elementType, component_id } = options;
+        const { data, parent, prepend, before, component_id } = options;
 
         let children = [];
 
@@ -28,7 +28,7 @@ class InternalAnimatorTimelineView{
             },
             {
                 name: "Play",
-                callback: function(){ self.animationActions("play", '', elementType); },
+                callback: function(){ self.animationActions("play", ''); },
                 style: { backgroundColor: "#88cc00", left: "55px" },
                 icon: "fas fa-play",
             }
@@ -63,7 +63,7 @@ class InternalAnimatorTimelineView{
             },
             listeners: {
                 click: function(){
-                    self.animationActions('switch-readymade', '', elementType);
+                    self.animationActions('switch-readymade', '');
                     document.getElementsByClassName('newanimationbtn')[0].style.display = 'block';
                 }
             },
@@ -94,8 +94,8 @@ class InternalAnimatorTimelineView{
                     click: function(){
                         $('.slideSelected').removeClass('slideSelected');
                         this.classList.add('slideSelected');
-                        self.animationActions('options-enable','', elementType);
-                        self.updateSlideOptions(elementType);
+                        self.animationActions('options-enable','');
+                        self.updateSlideOptions();
                     }
                 },
                 children: [
@@ -160,7 +160,7 @@ class InternalAnimatorTimelineView{
             text: "Create New Animation",
             listeners: {
                 click: function(){
-                    self.animationActions('switch-custom', '', elementType);
+                    self.animationActions('switch-custom', '');
                     this.style.display = 'none';
                 }
             }
@@ -364,7 +364,7 @@ class InternalAnimatorTimelineView{
             var pos = myReuseableStylesheet.length;
             //myReuseableStylesheet.innerText = myReuseableStylesheet.innerText + "@-webkit-keyframes " + str;
             myReuseableStylesheet.innerText = myReuseableStylesheet.innerText + "@keyframes " + str;
-            document.getElementById('preview'+element).style.animation = 'preview 1s ease-in-out infinite';
+            document.getElementsByClassName("selected-element")[0].style.animation = 'preview 1s ease-in-out infinite';
         }
 
         if(action == 'options-enable'){
@@ -508,7 +508,7 @@ class InternalAnimatorTimelineView{
         }
 
         if(action == 'switch-custom'){
-            var el = document.getElementById('preview'+element);
+            var el = document.getElementsByClassName("selected-element")[0];
             var rmadiv = document.getElementById('rmadiv');
 
             $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'1','pointerEvents':'unset'});
@@ -527,7 +527,7 @@ class InternalAnimatorTimelineView{
         }
 
         if(action == 'switch-readymade'){
-            var el = document.getElementById('preview'+element);
+            var el = document.getElementsByClassName("selected-element")[0];
             var rmadiv = document.getElementById('rmadiv');
 
             $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'0.5','pointerEvents':'none'});
@@ -549,7 +549,7 @@ class InternalAnimatorTimelineView{
 
     updateSlideOptions(el){
         var sSlide = document.getElementsByClassName('slideSelected')[0];
-        var element = document.getElementById('preview'+el);
+        var element = document.getElementsByClassName("selected-element")[0];
 
         var percentage = $(sSlide).attr('data-percentage');
 
