@@ -23,6 +23,12 @@ class InternalPanelToolBar{
                             },
                             listeners: {
                                 click: option.callback,
+                                mouseover: function(){
+                                    Globals.tooltip.show(this, option.name);
+                                },
+                                mouseout: function(){
+                                    Globals.tooltip.hide();
+                                }
                             },
                             children: [
                                 ...(() => {
@@ -78,6 +84,12 @@ class InternalPanelToolBar{
                 },
                 listeners: {
                     click: option.callback,
+                    mouseover: function(){
+                        Globals.tooltip.show(this, option.name);
+                    },
+                    mouseout: function(){
+                        Globals.tooltip.hide();
+                    }
                 },
                 children: [
                     ...(() => {

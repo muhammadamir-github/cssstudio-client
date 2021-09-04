@@ -1,7 +1,7 @@
-class InternalSliderController{
+class InternalImageManagerController{
     constructor(data){
-        this.view = new InternalSliderView(this);
-        this.model = new InternalSliderModel(data, this);
+        this.view = new InternalImageManagerView(this);
+        this.model = new InternalImageManagerModel(data, this);
     }
 
     _init(options = {}){
@@ -26,5 +26,5 @@ class InternalSliderController{
     show(...args){ this.view.show(...args); }
     hide(...args){ this.view.hide(...args); }
     toggle(...args){ this.view.toggle(...args); }
-    syncValue(){ this.view.syncValue(); }
+    select(...args){ return this.view.select(args); }
 }

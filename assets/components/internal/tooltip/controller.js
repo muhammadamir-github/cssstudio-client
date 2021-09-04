@@ -1,7 +1,7 @@
-class InternalSliderController{
+class InternalTooltipController{
     constructor(data){
-        this.view = new InternalSliderView(this);
-        this.model = new InternalSliderModel(data, this);
+        this.view = new InternalTooltipView(this);
+        this.model = new InternalTooltipModel(data, this);
     }
 
     _init(options = {}){
@@ -17,14 +17,16 @@ class InternalSliderController{
 
     _updateModelState(updates = {}){
         this.model.state = {...this.model.state, ...updates};
+        this.refresh();
     }
 
     _setModelState(state = {}){
         this.model.state = {...state};
+        this.refresh();
     }
 
     show(...args){ this.view.show(...args); }
-    hide(...args){ this.view.hide(...args); }
+    hide(){ this.view.hide(); }
     toggle(...args){ this.view.toggle(...args); }
-    syncValue(){ this.view.syncValue(); }
+    refresh(){ this.view.refresh(); }
 }

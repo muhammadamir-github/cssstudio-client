@@ -31,19 +31,28 @@ class InternalPanelElementPreviewer{
         this.hidden ? this.show() : this.hide();
     }
 
-    reset(elementType){
-        while (this._element.firstChild) {
-            this._element.removeChild(this._element.firstChild);
-        }
+    reset(){
+        this._previewElements.forEach((element, i) => {
+            element.element.remove();
+        });
 
+        this._previewElements = [];
+    }
+
+    add(elementType){
         let element = Globals.elements.new({
             type: this.config.options.find(x => (x.name === elementType)).tag,
-            parent: this._element,
+            parent: Array.isArray(this._previewElements) && this._previewElements.length > 0 ? this._previewElements[0].element : this._element,
             text: `Preview ${elementType}`,
+            classes: [ "selected-element" ],
             listeners: {
                 click: function(e){
+                    e.stopPropagation();
                     e.preventDefault();
                     this.classList.toggle("selected-element");
+
+                    let elementResizer = this.getElementsByClassName("eResizer");
+                    if(elementResizer[0]){ this.classList.contains("selected-element") ? elementResizer[0].classList.add("eResizer-visible") : elementResizer[0].classList.remove("eResizer-visible"); }
                 }
             }
         });

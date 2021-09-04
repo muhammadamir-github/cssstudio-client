@@ -29,7 +29,7 @@ class InternalSliderView{
         const { data, parent, prepend, before, elementType, component_id } = options;
 
         self._element = Globals.elements.new({
-            type: "div",
+            type: "slider",
             parent,
             id: data.id ? data.id : null,
             style: data.style ? data.style : null,
@@ -43,7 +43,6 @@ class InternalSliderView{
                 },
                 {
                     type: "input",
-                    classes: [ "slider" ],
                     attributes: {
                         type: "range",
                         min: data.min !== undefined && data.min !== null ? data.min : 1,
@@ -57,7 +56,7 @@ class InternalSliderView{
 
                             dataAttributeBalancer(self.idKeyMap[data.id].key, value);
                         } : function(){
-                            updateElement(elementType, self.textKeyMap[data.text].key, this.value);
+                            updateElement(self.textKeyMap[data.text].key, this.value);
                         }
                     }
                 }

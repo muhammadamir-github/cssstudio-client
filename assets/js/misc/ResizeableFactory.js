@@ -23,6 +23,10 @@ export default class ResizeableFactory{
             window.addEventListener("resize", function(e){
                 self.repositionResizer(options, self, elementResizer);
             });
+
+            setInterval(() => {
+                self.repositionResizer(options, self, elementResizer);
+            }, 1000);
         }
     }
 
@@ -53,36 +57,32 @@ export default class ResizeableFactory{
 
             let oldHeight = elementDimensions.height;
             let oldWidth = elementDimensions.width;
-            let height = (newY > oldY ? (newY - oldY) : (oldY - newY));
-            let width = (newX > oldX ? (newX - oldX) : (oldX - newX));
-
-            let isHeightIncreased = (height > oldHeight || height === oldHeight ? true : false);
-            let isWidthIncreased = (width > oldWidth || width === oldWidth ? true : false);
-
-            //console.log(`width ${isWidthIncreased ? "increased" : "decreased"} by ${width}px`);
-            //console.log(`height ${isHeightIncreased ? "increased" : "decreased"} by ${height}px`);
+            let heightDifference = (newY > oldY ? (newY - oldY) : (oldY - newY));
+            let widthDifference = (newX > oldX ? (newX - oldX) : (oldX - newX));
+            let isHeightIncreased = (newY >= oldY ? true : false);
+            let isWidthIncreased = (newX >= oldX ? true : false);
 
             if(isHeightIncreased){
-                element.style.height = (oldHeight+height)+'px';
-                options.detailsHolder.height = oldHeight+height;
-                options.detailsHolder.mouse.y = oldY+newY;
+                element.style.height = (oldHeight+heightDifference)+'px';
+                options.detailsHolder.height = oldHeight+heightDifference;
+                options.detailsHolder.mouse.y = newY;
             }else{
                 if(!isHeightIncreased){
-                    element.style.height = (oldHeight-height)+'px';
-                    options.detailsHolder.height = oldHeight-height;
-                    options.detailsHolder.mouse.y = oldY-newY;
+                    element.style.height = (oldHeight-heightDifference)+'px';
+                    options.detailsHolder.height = oldHeight-heightDifference;
+                    options.detailsHolder.mouse.y = newY;
                 }
             }
 
             if(isWidthIncreased){
-                element.style.width = (oldHeight+height)+'px';
-                options.detailsHolder.width = oldHeight+height;
-                options.detailsHolder.mouse.x = oldX+newX;
+                element.style.width = (oldWidth+widthDifference)+'px';
+                options.detailsHolder.width = oldWidth+widthDifference;
+                options.detailsHolder.mouse.x = newX;
             }else{
                 if(!isWidthIncreased){
-                    element.style.width = (oldWidth-width)+'px';
-                    options.detailsHolder.width = oldWidth-width;
-                    options.detailsHolder.mouse.x = oldX-newX;
+                    element.style.width = (oldWidth-widthDifference)+'px';
+                    options.detailsHolder.width = oldWidth-widthDifference;
+                    options.detailsHolder.mouse.x = newX;
                 }
             }
 
@@ -92,13 +92,37 @@ export default class ResizeableFactory{
 
     repositionResizer(options, self, resizer){
         let element = options.element;
-        if(element.style.width === '100%' || element.getBoundingClientRect().width >= window.innerWidth){
-            resizer.style.left = (element.offsetLeft + element.getBoundingClientRect().width - 25) + 'px';
+        let elementDimensions = element.getBoundingClientRect();
+
+        let position = window.getComputedStyle(element).position;
+        let absolute = position === "absolute";
+
+        if(element.style.width === '100%' || elementDimensions.width >= window.innerWidth){
+            if(!absolute){
+                resizer.style.left = (elementDimensions.left + elementDimensions.width - 25)+'px';
+                resizer.style.right = "unset";
+            }else{
+                resizer.style.right = '25px';
+                resizer.style.left = "unset";
+            }
         }else{
-            resizer.style.left = (element.offsetLeft + element.getBoundingClientRect().width) + 'px';
+            if(!absolute){
+                resizer.style.left = (elementDimensions.left + elementDimensions.width)+'px';
+                resizer.style.right = "unset";
+            }else{
+                resizer.style.right = '-5px';
+                resizer.style.left = "unset";
+            }
         }
 
-        resizer.style.top = (element.offsetTop + element.getBoundingClientRect().height) + 'px';
+        if(!absolute){
+            resizer.style.top = (elementDimensions.top + elementDimensions.height)+'px';
+            resizer.style.bottom = 'unset';
+        }else{
+            resizer.style.bottom = '-5px';
+            resizer.style.top = 'unset';
+        }
+
         resizer.style.margin = '0';
     }
 

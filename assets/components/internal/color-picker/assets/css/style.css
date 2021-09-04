@@ -2,7 +2,7 @@
     position: absolute;
     left: 160px;
     top: 60px;
-    background-color: #1a1a1a;
+    background-color: white;
     height: 250px;
     width: 250px;
     border: none;
@@ -14,6 +14,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    box-shadow: 0 0 2px grey;
     z-index: 99999;
 }
 
@@ -27,7 +28,7 @@
     color: grey;
     height: 25px;
     margin-top: 10px;
-    color: white;
+    color: black;
 }
 
 .colorpickerstrip{

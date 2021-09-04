@@ -60,13 +60,31 @@ class StudioHandler{
     async setup(){
         const self = this;
 
+        Globals.WebFonts = await getGoogleFonts();
+
+        Globals.imageManager = await Globals.components.new({ // Returns imageManager's HTML element
+            name: "internal-image-manager",
+            parent: Globals.window.body,
+            data: {},
+        });
+
+        Globals.imageManager = await Globals.components.controller(Globals.imageManager); // Get imageManager's controller
+
         Globals.colorPicker = await Globals.components.new({ // Returns colorPicker's HTML element
             name: "internal-color-picker",
             parent: Globals.window.body,
             data: {},
-        })
+        });
 
         Globals.colorPicker = await Globals.components.controller(Globals.colorPicker); // Get colorPicker's controller
+
+        Globals.tooltip = await Globals.components.new({ // Returns tooltip's HTML element
+            name: "internal-tooltip",
+            parent: Globals.window.body,
+            data: {},
+        });
+
+        Globals.tooltip = await Globals.components.controller(Globals.tooltip); // Get tooltip's controller
 
         let questionDiv = Globals.elements.new({
             type: "div",

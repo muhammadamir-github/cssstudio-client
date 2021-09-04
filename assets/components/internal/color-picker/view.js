@@ -307,10 +307,12 @@ class InternalColorPickerView{
         this.applyTo = applyTo;
         this.key = key;
 
+        this.controller._updateModelState({ color: colorDisplay.style.backgroundColor, });
+
         this._element.style.display = "flex";
         this.hidden = false;
 
-        Globals.draggableFactory.positionElementRelatively(this._element, colorDisplay);
+        Globals.draggableFactory.positionElementRelatively(this._element, colorDisplay, "centerBottom");
     }
 
     hide(){
@@ -320,5 +322,9 @@ class InternalColorPickerView{
 
     toggle(...args){
         this.hidden ? this.show(...args) : this.hide();
+    }
+
+    refresh(){
+        const data = this.controller._getModelState();//
     }
 }

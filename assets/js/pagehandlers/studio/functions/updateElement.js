@@ -151,7 +151,7 @@ function updateElement(attr, value){
 
         }
 
-        element.style.transform = 'translate(-50%,-50%) ' + 'rotateX('+value+'deg)' + rotateY + skewX + skewY  + scaleX + scaleY;
+        element.style.transform = 'rotateX('+value+'deg)' + rotateY + skewX + skewY  + scaleX + scaleY;
 
         updated = true;
     }
@@ -213,7 +213,7 @@ function updateElement(attr, value){
             };
         }
 
-        element.style.transform = 'translate(-50%,-50%) ' + rotateX + 'rotateY('+value+'deg)' + skewX + skewY  + scaleX + scaleY;
+        element.style.transform = rotateX + 'rotateY('+value+'deg)' + skewX + skewY  + scaleX + scaleY;
 
         updated = true;
     }
@@ -275,7 +275,7 @@ function updateElement(attr, value){
             };
         }
 
-        element.style.transform = 'translate(-50%,-50%) ' + rotateX + rotateY + 'skewX('+value+'deg)' + skewY  + scaleX + scaleY;
+        element.style.transform = rotateX + rotateY + 'skewX('+value+'deg)' + skewY  + scaleX + scaleY;
 
         updated = true;
     }
@@ -337,7 +337,7 @@ function updateElement(attr, value){
             };
         }
 
-        element.style.transform = 'translate(-50%,-50%) ' + rotateX + rotateY + skewX + 'skewY('+value+'deg)' + scaleX + scaleY;
+        element.style.transform = rotateX + rotateY + skewX + 'skewY('+value+'deg)' + scaleX + scaleY;
 
         updated = true;
     }
@@ -399,7 +399,7 @@ function updateElement(attr, value){
             };
         }
 
-        element.style.transform = 'translate(-50%,-50%) ' + rotateX + rotateY + skewX + skewY + 'scaleX('+value+')' + scaleY;
+        element.style.transform = rotateX + rotateY + skewX + skewY + 'scaleX('+value+')' + scaleY;
 
         updated = true;
     }
@@ -461,7 +461,7 @@ function updateElement(attr, value){
             };
         }
 
-        element.style.transform = 'translate(-50%,-50%) ' + rotateX + rotateY + skewX + skewY + scaleX+ 'scaleY('+value+')';
+        element.style.transform = rotateX + rotateY + skewX + skewY + scaleX+ 'scaleY('+value+')';
 
         updated = true;
     }

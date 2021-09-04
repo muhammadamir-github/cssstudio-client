@@ -9,10 +9,6 @@ export default class Loader{
             parent: this.parent,
             children: [
                 { type: "view" },
-                {
-                    type: "p",
-                    text: "Getting things ready..."
-                }
             ]
         });
 

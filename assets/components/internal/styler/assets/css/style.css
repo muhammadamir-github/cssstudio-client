@@ -24,10 +24,12 @@
     position: absolute;
     border-radius: 5px;
     padding: 0;
-    overflow: hidden;
+    overflow: unset;
     box-shadow: 0 0 10px grey;
     z-index: 4;
     flex-direction: column;
+	min-width: 300px;
+	min-height: 400px;
 }
 
 #styler .banner,
@@ -57,8 +59,8 @@
     border-bottom-right-radius: unset;
 }
 
-#styler #styler-settings p,
-#styler .banner p{
+#styler #styler-settings p.banner-heading,
+#styler .banner p.banner-heading{
 	margin: 0;
     font-family: ProximaNovaBold;
     font-size: 23px;
@@ -88,7 +90,7 @@
     width: 150px;
     height: 25px;
     outline: none;
-    border: 0.5px solid black;
+    border: 0.5px solid #d7d7d7;
     border-radius: 5px;
     position: relative;
     padding-left: 5px;
@@ -96,33 +98,6 @@
     font-size: 14px;
     justify-content: center;
     align-items: center;
-}
-
-#styler .spinner{
-    border-left: 2px solid #1a1a1a;
-    border-right: 2px solid transparent;
-    border-bottom: 2px solid #1a1a1a;
-    border-top: 2px solid transparent;
-    animation: spin 0.5s linear infinite;
-    top: 13px;
-    right: 15px;
-    z-index: 7;
-}
-
-.combobox-container{
-	display: flex;
-    margin: 0px;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 0px;
-    flex-wrap: wrap;
-    flex: 1;
-    padding-bottom: 30px;
-    padding-top: 30px;
-	align-content: flex-start;
 }
 
 #styler #styler-container{

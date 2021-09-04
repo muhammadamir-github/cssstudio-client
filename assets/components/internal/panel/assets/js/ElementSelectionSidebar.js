@@ -31,8 +31,15 @@ class InternalPanelElementSelectionSidebar{
     }
 
     show(){
-        this._element.style.right = "0px";
-        this.hidden = false;
+        const self = this;
+        self._element.style.right = "0px";
+        self.hidden = false;
+
+        setTimeout(() => {
+            if(!self.hidden){
+                self.hide();
+            }
+        }, 10000);
     }
 
     hide(){

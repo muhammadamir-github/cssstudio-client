@@ -20,6 +20,8 @@ class InternalPanelView{
         ];
         self.toolbarOptions = [
             { name: "New Element", icon: "fas fa-plus", callback: function(){ self._elementSelectionSidebar.toggle(); } },
+            { name: "Reset", icon: "fas fa-undo", callback: function(){ self._elementPreviewer.reset(); } },
+            { name: "Style Element", icon: "fas fa-paint-brush", callback: function(){ self._styler.toggle(); } },
         ];
     }
 
@@ -76,14 +78,12 @@ class InternalPanelView{
 
     newPreviewElement(elementType){
         const self = this;
-        self._elementPreviewer.reset(elementType);
-        self._toolbar.reset();
+        self._elementPreviewer.add(elementType);
+        //self._toolbar.reset();
     }
 
     setEnvironment(element){
         const self = this;
-        self._elementPreviewer.reset();
-        self.navbar.reset();
 
         //$('#basicdiv').remove();
         //$('#rotatebox').remove();

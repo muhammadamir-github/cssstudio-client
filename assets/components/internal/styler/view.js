@@ -2,6 +2,7 @@ class InternalStylerView{
     constructor(controller){
         this.controller = controller;
         this._element = null;
+        this.hidden = true;
 
         this._dragDetails = {
             x: 0,
@@ -11,6 +12,16 @@ class InternalStylerView{
                 y: 0,
                 isDown: false,
             },
+        };
+
+        this._resizeDetails = {
+            mouse: {
+                isDown: false,
+                x: 0,
+                y: 0,
+            },
+            height: 0,
+            width: 0,
         };
     }
 
@@ -33,7 +44,8 @@ class InternalStylerView{
                     children: [
                         {
                             type: "p",
-                            text: "Styler"
+                            text: "Styler",
+                            classes: [ "banner-heading" ],
                         },
                         {
                             type: "i",
@@ -48,7 +60,7 @@ class InternalStylerView{
                 },
                 {
                     type: "div",
-                    classes: [ "combobox-container" ],
+                    classes: [ "flex-container" ],
                     id: "styler-container"
                 },
                 {
@@ -58,6 +70,7 @@ class InternalStylerView{
                         {
                             type: "p",
                             text: "Unit: ",
+                            classes: [ "banner-heading" ],
                         },
                         {
                             type: "input",
@@ -90,18 +103,27 @@ class InternalStylerView{
         await Globals.draggableFactory.new({
             element: self._element,
             triggers: [
-                self._element.getElementsByClassName("banner")[0]
+                self._element.getElementsByClassName("banner-heading")[0],
+                self._element.getElementsByClassName("banner-heading")[1],
             ],
             detailsHolder: self._dragDetails,
         });
 
-        await this.loadComboboxes();
+        await Globals.resizeableFactory.new({
+            element: self._element,
+            detailsHolder: self._resizeDetails,
+        });
 
-        this.show();
+        self._element.getElementsByClassName("eResizer")[0].classList.add("eResizer-visible");
+
+        await this.load();
+        setInterval(async () => {
+            await self.syncValues();
+        }, 1000);
     }
 
     async show(){
-        await this.syncComboboxes();
+        await this.syncValues();
         this._element.style.display = "flex";
         this._element.style.left = ((window.innerWidth/2) - (this._element.getBoundingClientRect().width/2))+"px";
         this._element.style.top = ((window.innerHeight/2) - (this._element.getBoundingClientRect().height/2))+"px";
@@ -117,23 +139,43 @@ class InternalStylerView{
         this.hidden ? this.show() : this.hide();
     }
 
-    async syncComboboxes(){
-        let comboboxs = this._element.getElementsByClassName("combobox-container")[0].getElementsByTagName("combobox");
+    async syncValues(){
+        let comboboxs = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("combobox");
         await [...comboboxs].forEach(async (x) => {
+            let controller = await Globals.components.controller(x);
+            await controller.syncValue();
+        });
+
+        /*let sliders = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("slider");
+        await [...sliders].forEach(async (x) => {
+            let controller = await Globals.components.controller(x);
+            await controller.syncValue();
+        });*/
+
+        let imagepickers = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("imagepicker");
+        await [...imagepickers].forEach(async (x) => {
             let controller = await Globals.components.controller(x);
             await controller.syncValue();
         });
     }
 
     async reset(){
-        let comboboxs = this._element.getElementsByClassName("combobox-container")[0].getElementsByTagName("combobox");
+        let comboboxs = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("combobox");
         await [...comboboxs].forEach(async (x) => { x.remove(); });
-        await this.loadComboboxes();
+
+        let sliders = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("slider");
+        await [...sliders].forEach(async (x) => { x.remove(); });
+
+        let imagepickers = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("imagepicker");
+        await [...imagepickers].forEach(async (x) => { x.remove(); });
+        await this.load();
     }
 
-    async loadComboboxes(){
+    async load(){
         const self = this;
         let unit = this.controller._getModelState()["unit"];
+
+        let googleFonts = Array.isArray(Globals.pageHandler.WebFonts) && Globals.pageHandler.WebFonts.length > 0 ? Globals.pageHandler.WebFonts : await getGoogleFonts();
 
         let comboboxs = [
             { text: "Width", colorPicker: false, customValue: true, options: [] },
@@ -147,6 +189,7 @@ class InternalStylerView{
             { text: "Text Decoration Style", colorPicker: false, customValue: false, options: ["Solid", "Double", "Dotted", "Dashed", "Wavy"] },
             { text: "Text Decoration Color", colorPicker: true, customValue: false, options: [] },
             { text: "Font Style", colorPicker: false, customValue: false, options: ["Normal", "Italic"] },
+            { text: "Font Family", colorPicker: false, customValue: false, options: ["Sans", "Sans-Serif", "Helvectia", "Monospace", "Cursive", "Fantasy"] },
             { text: "Font Weight", colorPicker: false, customValue: false, options: ["Normal", "Bold"] },
             { text: "Font Variant", colorPicker: false, customValue: false, options: ["Normal", "Small-Caps"] },
             { text: "Font Stretch", colorPicker: false, customValue: false, options: ["Normal", "Condensed", "Expanded"] },
@@ -170,6 +213,9 @@ class InternalStylerView{
             { text: "Outline Style", colorPicker: false, customValue: false, options: ["Solid", "Dotted", "Double", "Dashed", "Groove", "Ridge", "Hidden", "Outset", "Inset", "None"] },
             { text: "Outline Color", colorPicker: true, customValue: false, options: [] },
             { text: "Text Shadow", colorPicker: true, customValue: true, options: [] },
+            { text: "Box Shadow", colorPicker: true, customValue: true, options: [] },
+            { text: "Opacity", colorPicker: false, customValue: true, options: [] },
+            { text: "Google Fonts", colorPicker: false, customValue: false, options: googleFonts },
         ];
 
         for (let combobox of comboboxs){
@@ -186,6 +232,43 @@ class InternalStylerView{
                         call: "updateElement"
                     } : null,
                     colorPicker: combobox.colorPicker === true ? {} : null,
+                }
+            });
+        }
+
+        let sliders = [
+            { text: "Skew x-axis", min: 0, max: 180, step: 1, value: 0 },
+            { text: "Skew y-axis", min: 0, max: 180, step: 1, value: 0 },
+            { text: "Scale x-axis", min: 1, max: 10, step: 0.1, value: 0 },
+            { text: "Scale y-axis", min: 1, max: 10, step: 0.1, value: 0 },
+            { text: "Rotate x-axis", min: 0, max: 180, step: 1, value: 0 },
+            { text: "Rotate y-axis", min: 0, max: 180, step: 1, value: 0 },
+        ];
+
+        for (let slider of sliders){
+            await Globals.components.new({
+                name: "internal-slider",
+                parent: document.getElementById('styler-container'),
+                data: {
+                    text: slider.text,
+                    min: 0,
+                    max: 180,
+                    step: 1,
+                    value: 0
+                }
+            });
+        }
+
+        let imagepickers = [
+            { text: "Image" },
+        ];
+
+        for (let imagepicker of imagepickers){
+            await Globals.components.new({
+                name: "internal-image-picker",
+                parent: document.getElementById('styler-container'),
+                data: {
+                    text: imagepicker.text,
                 }
             });
         }

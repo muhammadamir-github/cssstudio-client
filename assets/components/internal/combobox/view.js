@@ -160,6 +160,7 @@ class InternalComboboxView{
                                                                 if(self.textKeyMap[data.text]){
                                                                     let key = self.textKeyMap[data.text].key;
 
+                                                                    this.classList.add("combobox-selected-preview"); // This stops syncing since this value is just being set for preview.
                                                                     applyTo.setAttribute(`data-style-temp-${key}`, applyTo.style[key]);
                                                                     applyTo.style[key] = option;
                                                                 }
@@ -170,6 +171,7 @@ class InternalComboboxView{
                                                                 if(self.textKeyMap[data.text]){
                                                                     let key = self.textKeyMap[data.text].key;
 
+                                                                    this.classList.remove("combobox-selected-preview"); // This stops syncing since this value is just being set for preview.
                                                                     applyTo.style[key]  = applyTo.getAttribute(`data-style-temp-${key}`);
                                                                     applyTo.setAttribute(`data-style-temp-${key}`, "");
                                                                 }
@@ -212,7 +214,7 @@ class InternalComboboxView{
         }
     }
 
-    customValueChange(value, inputElement, self){
+    customValueChange(value, inputElement, self, toggle = true){
         if(value){
             const data = self.controller._getModelState();
 
@@ -247,29 +249,29 @@ class InternalComboboxView{
         }
     }
 
-    changeValue(optionElement, value){
+    changeValue(optionElement, value, toggle = true){
         const data = this.controller._getModelState();
         this.controller._updateModelState({ selected: value });
 
-        this._element.getElementsByTagName('selected')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = `${this.data.text}: ${value}`;
+        this._element.getElementsByTagName('selected')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = `${data.text}: ${value}`;
         $(this._element).find(".combobox-selected").removeClass("combobox-selected");
         optionElement.classList.add("combobox-selected");
 
-        this.toggle(this, "hide");
+        toggle === true ? this.toggle(this, "hide") : false;
 
         let applyTo = document.getElementsByClassName("selected-element")[0];
-        let key = this.textKeyMap[this.data.text].key;
+        let key = this.textKeyMap[data.text].key;
 
-        if(this.data.id == "timing"){
+        if(data.id == "timing"){
             updateElement('atiming', value);
         }else{
-            if(this.textKeyMap[this.data.text]){
+            if(this.textKeyMap[data.text]){
                 if(key && applyTo.hasAttribute(`data-style-temp-${key}`)){
                     applyTo.setAttribute(`data-style-temp-${key}`, value);
                 }
 
                 if(applyTo && applyTo.classList.contains("selected-element")){
-                    if(this.data.id === "googlefonts"){
+                    if(data.id === "googlefonts"){
                         applyTo.style.fontFamily = value;
                     }
                 }
@@ -291,17 +293,22 @@ class InternalComboboxView{
             let optionElements = self._element.getElementsByTagName("ul")[0].getElementsByTagName("a");
             if(optionElements){
                 let optionElement = [...optionElements].find(x => (x.getAttribute("data-combobox-option-value").toString().toLowerCase() === currentStyleValue));
-                if(optionElement){
-                    await self.changeValue(optionElement, optionElement.getAttribute("data-combobox-option-value"));
+                if(optionElement && !optionElement.classList.contains("combobox-selected-preview")){
+                    await self.changeValue(optionElement, optionElement.getAttribute("data-combobox-option-value"), false);
                 }
             }
         }
 
         if(currentStyleValue !== undefined && currentStyleValue !== null && currentStyleValue !== data.unit && typeof data.customValue === "object" && data.customValue !== null){
-            await self.customValueChange(currentStyleValue, self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0], self);
+            await self.customValueChange(currentStyleValue, self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0], self, false);
         }
 
-        // color
+        if(currentStyleValue !== undefined && currentStyleValue !== null && currentStyleValue !== data.unit && typeof data.colorPicker === "object" && data.colorPicker !== null){
+            let colorDisplay = self._element.getElementsByTagName("colordisplay");
+            if(colorDisplay[0]){
+                colorDisplay[0].style.backgroundColor = currentStyleValue;
+            }
+        }
     }
 
     toggle(self, specficAction = null){

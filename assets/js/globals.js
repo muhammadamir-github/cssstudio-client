@@ -40,6 +40,8 @@ export default {
     components: null,
     randomizer: null,
     colorPicker: null,
+    tooltip: null,
+    imageManager: null,
     draggableFactory: null,
     resizeableFactory: null,
     api: {

@@ -129,6 +129,6 @@ giphybutton{
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    background-image: url(../images/giphylogo.png);
+    background-image: url(../../../../../images/giphylogo.png);
     cursor: pointer;
 }
