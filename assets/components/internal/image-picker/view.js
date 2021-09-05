@@ -55,10 +55,10 @@ class InternalImagePickerView{
         if(applyTo[0]){
             let tag = applyTo[0].tagName.toString().toLowerCase();
             if(tag === "video"){
-                applyTo[0].setAttribute('poster', img);
+                applyTo[0].setAttribute('poster', img.toString().replace(/"/g, ''));
             }else{
                 if(tag === "img"){
-                    applyTo[0].setAttribute('src', img);
+                    applyTo[0].setAttribute('src', img.toString().replace(/"/g, ''));
                 }else{
                     applyTo[0].style.backgroundImage = `url(${img})`;
                 }
@@ -85,7 +85,9 @@ class InternalImagePickerView{
                 }
             }
 
-            await self.changeImage(currentStyleValue);
+            if((data.src && !currentStyleValue) || (currentStyleValue)){
+                await self.changeImage(currentStyleValue);
+            }
         }
     }
 
@@ -107,6 +109,6 @@ class InternalImagePickerView{
 
     refresh(){
         const data = this.controller._getModelState();
-        this._element.getElementsByTagName("img")[0].src = data.src;
+        this._element.getElementsByTagName("img")[0].setAttribute('src', data.src.toString().replace(/"/g, ''));
     }
 }

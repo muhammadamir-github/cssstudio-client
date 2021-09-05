@@ -3,6 +3,7 @@ class InternalStylerView{
         this.controller = controller;
         this._element = null;
         this.hidden = true;
+        this._hasLoadedBefore = false;
 
         this._dragDetails = {
             x: 0,
@@ -140,17 +141,17 @@ class InternalStylerView{
     }
 
     async syncValues(){
-        let comboboxs = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("combobox");
-        await [...comboboxs].forEach(async (x) => {
+        let comboboxes = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("combobox");
+        await [...comboboxes].forEach(async (x) => {
             let controller = await Globals.components.controller(x);
             await controller.syncValue();
         });
 
-        /*let sliders = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("slider");
+        let sliders = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("slider");
         await [...sliders].forEach(async (x) => {
             let controller = await Globals.components.controller(x);
             await controller.syncValue();
-        });*/
+        });
 
         let imagepickers = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("imagepicker");
         await [...imagepickers].forEach(async (x) => {
@@ -160,8 +161,8 @@ class InternalStylerView{
     }
 
     async reset(){
-        let comboboxs = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("combobox");
-        await [...comboboxs].forEach(async (x) => { x.remove(); });
+        let comboboxes = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("combobox");
+        await [...comboboxes].forEach(async (x) => { x.getAttribute("data-combobox-title") === "Google Fonts" ? false : x.remove(); });
 
         let sliders = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("slider");
         await [...sliders].forEach(async (x) => { x.remove(); });
@@ -175,9 +176,7 @@ class InternalStylerView{
         const self = this;
         let unit = this.controller._getModelState()["unit"];
 
-        let googleFonts = Array.isArray(Globals.pageHandler.WebFonts) && Globals.pageHandler.WebFonts.length > 0 ? Globals.pageHandler.WebFonts : await getGoogleFonts();
-
-        let comboboxs = [
+        let comboboxes = [
             { text: "Width", colorPicker: false, customValue: true, options: [] },
             { text: "Height", colorPicker: false, customValue: true, options: [] },
             { text: "Display", colorPicker: false, customValue: false, options: ["Block", "Inline",  "Contents",  "Flex",  "Grid",  "Inline-Block",  "Inline-Flex",  "Inline-Grid",  "Inline-Table",  "List-Item",  "Run-In",  "Table-Caption",  "Table-Column-Group",  "Table-Header-Group",  "Table-Footer-Group",  "Table-Row-Group",   "Table-Cell",  "Table-Column",  "Table-Row",  "None"] },
@@ -215,10 +214,18 @@ class InternalStylerView{
             { text: "Text Shadow", colorPicker: true, customValue: true, options: [] },
             { text: "Box Shadow", colorPicker: true, customValue: true, options: [] },
             { text: "Opacity", colorPicker: false, customValue: true, options: [] },
-            { text: "Google Fonts", colorPicker: false, customValue: false, options: googleFonts },
         ];
 
-        for (let combobox of comboboxs){
+        if(self._hasLoadedBefore === false){
+            let googleFonts = Array.isArray(Globals.pageHandler.WebFonts) && Globals.pageHandler.WebFonts.length > 0 ? Globals.pageHandler.WebFonts : await getGoogleFonts();
+            comboboxes = [{ text: "Google Fonts", colorPicker: false, customValue: false, options: googleFonts.map(font => {
+                return font.variants.map(variant => {
+                    return (font.family + ' ' + variant).replace(/ /g,"_")
+                })
+            }).flat() }, ...comboboxes];
+        }
+
+        for (let combobox of comboboxes){
             await Globals.components.new({
                 name: "internal-combobox",
                 parent: document.getElementById('styler-container'),
@@ -239,8 +246,8 @@ class InternalStylerView{
         let sliders = [
             { text: "Skew x-axis", min: 0, max: 180, step: 1, value: 0 },
             { text: "Skew y-axis", min: 0, max: 180, step: 1, value: 0 },
-            { text: "Scale x-axis", min: 1, max: 10, step: 0.1, value: 0 },
-            { text: "Scale y-axis", min: 1, max: 10, step: 0.1, value: 0 },
+            { text: "Scale x-axis", min: 0, max: 1, step: 0.1, value: 0 },
+            { text: "Scale y-axis", min: 0, max: 1, step: 0.1, value: 0 },
             { text: "Rotate x-axis", min: 0, max: 180, step: 1, value: 0 },
             { text: "Rotate y-axis", min: 0, max: 180, step: 1, value: 0 },
         ];
@@ -251,10 +258,10 @@ class InternalStylerView{
                 parent: document.getElementById('styler-container'),
                 data: {
                     text: slider.text,
-                    min: 0,
-                    max: 180,
-                    step: 1,
-                    value: 0
+                    min: slider.min,
+                    max: slider.max,
+                    step: slider.step,
+                    value: slider.value
                 }
             });
         }
@@ -272,5 +279,7 @@ class InternalStylerView{
                 }
             });
         }
+
+        if(self._hasLoadedBefore === false){ self._hasLoadedBefore = true; }
     }
 }

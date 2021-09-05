@@ -60,7 +60,7 @@ class StudioHandler{
     async setup(){
         const self = this;
 
-        Globals.WebFonts = await getGoogleFonts();
+        await getGoogleFonts();
 
         Globals.imageManager = await Globals.components.new({ // Returns imageManager's HTML element
             name: "internal-image-manager",

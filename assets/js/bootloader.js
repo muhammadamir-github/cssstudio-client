@@ -8,6 +8,7 @@ import Elements from './misc/Elements.js';
 import Components from './misc/Components.js';
 import DraggableFactory from './misc/DraggableFactory.js';
 import ResizeableFactory from './misc/ResizeableFactory.js';
+import WindowHandler from './misc/WindowHandler.js';
 
 window.onload = () => {
     window.globals = Globals;
@@ -16,13 +17,12 @@ window.onload = () => {
     Globals.window.body = document.getElementsByTagName("body")[0];
     Globals.window.head = document.getElementsByTagName("head")[0];
 
-    Globals.window.body.addEventListener("contextmenu", function(){ return false; });
-
     Globals.api = new Api(Globals.api.hostname, Globals.api.port);
     Globals.randomizer = new Randomizer;
     Globals.notificationHandler = new NotificationHandler;
     Globals.draggableFactory = new DraggableFactory;
     Globals.resizeableFactory = new ResizeableFactory;
+    Globals.windowHandler = new WindowHandler;
     Globals.elements = new Elements;
     Globals.components = new Components;
     Globals.bootLoader = new BootLoader("../assets");

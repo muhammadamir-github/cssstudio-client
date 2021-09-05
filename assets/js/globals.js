@@ -35,6 +35,7 @@ export default {
     bootLoader: null,
     pageHandler: null,
     paypalHandler: null,
+    windowHandler: null,
     notificationHandler: null,
     elements: null,
     components: null,

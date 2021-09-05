@@ -40,9 +40,11 @@ class InternalPanelElementPreviewer{
     }
 
     add(elementType){
+        let selected = document.getElementsByClassName("selected-element");
+        let parent = selected[0] ? selected[0] : Array.isArray(this._previewElements) && this._previewElements.length > 0 ? this._previewElements[0].element : this._element;
         let element = Globals.elements.new({
             type: this.config.options.find(x => (x.name === elementType)).tag,
-            parent: Array.isArray(this._previewElements) && this._previewElements.length > 0 ? this._previewElements[0].element : this._element,
+            parent: parent,
             text: `Preview ${elementType}`,
             classes: [ "selected-element" ],
             listeners: {

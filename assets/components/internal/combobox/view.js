@@ -67,6 +67,7 @@ class InternalComboboxView{
             prepend: prepend,
             attributes: {
                 "data-component-id": component_id,
+                "data-combobox-title": data.text,
             },
             children: [
                 {
@@ -205,8 +206,8 @@ class InternalComboboxView{
                 let valueSuffix = self.textKeyMap[self.initialData.text].valueSuffix;
                 let keyValueSuffix = self.textKeyMap[self.initialData.text].keyValueSuffix;
 
-                valueSuffix = self.initialData.unit ? valueSuffix.replaceAll("px", self.initialData.unit) : valueSuffix;
-                keyValueSuffix = self.initialData.unit ? keyValueSuffix.replaceAll("px", self.initialData.unit) : keyValueSuffix;
+                valueSuffix = self.initialData.unit ? valueSuffix.replaceAll("px", self.initialData.unit).replaceAll("%", data.unit) : valueSuffix;
+                keyValueSuffix = self.initialData.unit ? keyValueSuffix.replaceAll("px", self.initialData.unit).replaceAll("%", data.unit) : keyValueSuffix;
 
                 let inputElement = self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0];
                 if(inputElement){ self.customValueChange(data.value.replaceAll(keyValueSuffix, "").replaceAll(valueSuffix, ""), inputElement, self); }
@@ -225,10 +226,9 @@ class InternalComboboxView{
             let valueSuffix = self.textKeyMap[data.text].valueSuffix;
             let keyValueSuffix = self.textKeyMap[data.text].keyValueSuffix;
 
-            valueSuffix = data.unit ? valueSuffix.replaceAll("px", data.unit) : valueSuffix;
-            keyValueSuffix = data.unit ? keyValueSuffix.replaceAll("px", data.unit) : keyValueSuffix;
-
-            value = value.replaceAll(data.unit, "").replaceAll(valueSuffix, "");
+            valueSuffix = self.initialData.unit ? valueSuffix.replaceAll("px", self.initialData.unit).replaceAll("%", data.unit) : valueSuffix;
+            keyValueSuffix = self.initialData.unit ? keyValueSuffix.replaceAll("px", self.initialData.unit).replaceAll("%", data.unit) : keyValueSuffix;
+            value = data.unit ? value.replaceAll("px", "").replaceAll("%", "").replaceAll(data.unit, "") : value;
 
             if(data.customValue.call === "updateElement"){
                 selected_a_span.innerText = `${data.text}: ${value}${valueSuffix}`;

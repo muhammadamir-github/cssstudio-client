@@ -94,6 +94,8 @@ export default class ResizeableFactory{
         let element = options.element;
         let elementDimensions = element.getBoundingClientRect();
 
+        // Needs an addition for handling position when element is transformed (css). elementDimensions is different.
+
         let position = window.getComputedStyle(element).position;
         let absolute = position === "absolute";
 

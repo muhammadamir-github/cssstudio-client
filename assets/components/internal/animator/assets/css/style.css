@@ -1,0 +1,53 @@
+#animator{
+    position: absolute;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    min-width: calc(100% - 40px);
+    min-height: calc(100% - 40px);
+    margin: 0;
+    z-index: 999999;
+    left: 0;
+    top: 0;
+    flex-direction: column;
+    background: white;
+}
+
+#animator #animator-container{
+
+}
+
+#animator #animator-container #animator-preview{
+    position: relative;
+    display: inline-flex;
+    width: 50%;
+    height: 100%;
+    min-width: 50%;
+    border: 1px solid #d7d7d7;
+    min-height: 70%;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+    flex-grow: 1;
+}
+
+#animator #animator-container #animator-ready-made-animations{
+    position: relative;
+    display: flex;
+    width: 50%;
+    height: 50%;
+    min-width: 50%;
+    border: 1px solid #d7d7d7;
+    min-height: 50%;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    max-height: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    flex-grow: 1;
+}

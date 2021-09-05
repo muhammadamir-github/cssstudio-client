@@ -17,6 +17,7 @@
     padding-left: 20px;
     padding-right: 20px;
     top: 0;
+    box-shadow: 0 0 3px grey;
 }
 
 #toolbar div{
