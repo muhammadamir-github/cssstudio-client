@@ -178,7 +178,7 @@ class InternalAnimatorTimelineView{
             },
         });
 
-        setupSlideStyler();
+        //setupSlideStyler();
 
         $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'0.5', 'pointerEvents':'none'});
         $('.aTbutton').css({'pointer-events':'none'});

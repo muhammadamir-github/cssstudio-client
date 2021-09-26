@@ -4,8 +4,8 @@ class InternalPanelController{
         this.model = new InternalPanelModel(data, this);
     }
 
-    _init(options = {}){
-        this.view.create({
+    async _init(options = {}){
+        await this.view.create({
             ...options,
             data: this.model.state
         });

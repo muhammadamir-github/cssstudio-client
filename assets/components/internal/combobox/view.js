@@ -286,27 +286,29 @@ class InternalComboboxView{
         const data = await self.controller._getModelState();
 
         let applyTo = document.getElementsByClassName("selected-element")[0];
-        let key = self.textKeyMap[data.text].key;
-        let currentStyleValue = applyTo && key ? applyTo.style[key] : null;
+        if(applyTo){
+            let key = self.textKeyMap[data.text].key;
+            let currentStyleValue = applyTo && key ? applyTo.style[key] : null;
 
-        if(currentStyleValue !== undefined && currentStyleValue !== null && Array.isArray(data.options) && data.options.length > 0 && data.options.map(x => (x.toLowerCase())).includes(currentStyleValue)){
-            let optionElements = self._element.getElementsByTagName("ul")[0].getElementsByTagName("a");
-            if(optionElements){
-                let optionElement = [...optionElements].find(x => (x.getAttribute("data-combobox-option-value").toString().toLowerCase() === currentStyleValue));
-                if(optionElement && !optionElement.classList.contains("combobox-selected-preview")){
-                    await self.changeValue(optionElement, optionElement.getAttribute("data-combobox-option-value"), false);
+            if(currentStyleValue !== undefined && currentStyleValue !== null && Array.isArray(data.options) && data.options.length > 0 && data.options.map(x => (x.toLowerCase())).includes(currentStyleValue)){
+                let optionElements = self._element.getElementsByTagName("ul")[0].getElementsByTagName("a");
+                if(optionElements){
+                    let optionElement = [...optionElements].find(x => (x.getAttribute("data-combobox-option-value").toString().toLowerCase() === currentStyleValue));
+                    if(optionElement && !optionElement.classList.contains("combobox-selected-preview")){
+                        await self.changeValue(optionElement, optionElement.getAttribute("data-combobox-option-value"), false);
+                    }
                 }
             }
-        }
 
-        if(currentStyleValue !== undefined && currentStyleValue !== null && currentStyleValue !== data.unit && typeof data.customValue === "object" && data.customValue !== null){
-            await self.customValueChange(currentStyleValue, self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0], self, false);
-        }
+            if(currentStyleValue !== undefined && currentStyleValue !== null && currentStyleValue !== data.unit && typeof data.customValue === "object" && data.customValue !== null){
+                await self.customValueChange(currentStyleValue, self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0], self, false);
+            }
 
-        if(currentStyleValue !== undefined && currentStyleValue !== null && currentStyleValue !== data.unit && typeof data.colorPicker === "object" && data.colorPicker !== null){
-            let colorDisplay = self._element.getElementsByTagName("colordisplay");
-            if(colorDisplay[0]){
-                colorDisplay[0].style.backgroundColor = currentStyleValue;
+            if(currentStyleValue !== undefined && currentStyleValue !== null && currentStyleValue !== data.unit && typeof data.colorPicker === "object" && data.colorPicker !== null){
+                let colorDisplay = self._element.getElementsByTagName("colordisplay");
+                if(colorDisplay[0]){
+                    colorDisplay[0].style.backgroundColor = currentStyleValue;
+                }
             }
         }
     }

@@ -110,7 +110,6 @@ class InternalPanelView{
         });
 
         self._animator = await Globals.components.controller(self._animator); // Get animtor's controller
-        self._animator.show();
     }
 
     newPreviewElement(elementType){

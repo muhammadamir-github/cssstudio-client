@@ -88,14 +88,16 @@ class InternalSliderView{
         const data = await self.controller._getModelState();
 
         let applyTo = document.getElementsByClassName("selected-element")[0];
-        let key = self.textKeyMap[data.text].key;
-        let currentStyleValue = applyTo && key ? (self.transforms.includes(key) ? applyTo.style.transform : applyTo.style[key]) : null;
+        if(applyTo){
+            let key = self.textKeyMap[data.text].key;
+            let currentStyleValue = applyTo && key ? (self.transforms.includes(key) ? applyTo.style.transform : applyTo.style[key]) : null;
 
-        if(self.transforms.includes(key) && currentStyleValue && currentStyleValue.includes(key)){
-            let match = await currentStyleValue.match(new RegExp(`${key}\(([^)]+)\)`));
-            currentStyleValue = Array.isArray(match) && match[1] ? match[1].replaceAll("(", "").replaceAll(")", "").replaceAll("deg", "") : null;
+            if(self.transforms.includes(key) && currentStyleValue && currentStyleValue.includes(key)){
+                let match = await currentStyleValue.match(new RegExp(`${key}\(([^)]+)\)`));
+                currentStyleValue = Array.isArray(match) && match[1] ? match[1].replaceAll("(", "").replaceAll(")", "").replaceAll("deg", "") : null;
+            }
+
+            await self.changeValue(self, currentStyleValue);
         }
-
-        await self.changeValue(self, currentStyleValue);
     }
 }

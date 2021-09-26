@@ -181,8 +181,6 @@ class StudioHandler{
             parent: Globals.window.body,
             html: '<tongue>Hey , how can i help you today?</tongue><orders><type data-panel-trigger="suggestion"><p>I would like to have a suggestion.</p><div class="billyspinner"></div></type><order class="suggestion"><p>Background Color</p></order><order class="suggestion"><p>Font Color</p></order></orders>'
         });*/
-
-        self.getAnimations();
     }
 
     planExpired(){
@@ -196,14 +194,5 @@ class StudioHandler{
         },7500);
 
         document.getElementsByTagName('head')[0].innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/notice.css">';
-    }
-
-    async getAnimations(){
-        const response = await Globals.api.request({ route: "readyMadeAnimations", method: "get" });
-        if(response.success === true){
-            this.animations = response.data.success;
-        }else{
-            Globals.notificationHandler.new('Error, could not load animations. Please retry after some time.');
-        }
     }
 }
