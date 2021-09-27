@@ -33,12 +33,12 @@ class InternalTooltipView{
         this._element.getElementsByTagName("p")[0].innerText = data.text;
     }
 
-    show(element, text){
+    show(element, text, position){
         this.controller._updateModelState({ text });
         this._element.style.display = "flex";
         this.hidden = false;
 
-        Globals.draggableFactory.positionElementRelatively(this._element, element, "centerBottom");
+        Globals.draggableFactory.positionElementRelatively(this._element, element, position ? position : "centerBottom");
     }
 
     hide(){

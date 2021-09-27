@@ -1,14 +1,14 @@
-#aT::-webkit-scrollbar{
+#animationTimeline::-webkit-scrollbar{
     width: 2px;
     background-color: #F5F5F5;
 }
 
-#aT::-webkit-scrollbar-track{
+#animationTimeline::-webkit-scrollbar-track{
     -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
     background-color: #F5F5F5;
 }
 
-#aT::-webkit-scrollbar-thumb{
+#animationTimeline::-webkit-scrollbar-thumb{
     background-color: #000000;
 }
 
@@ -16,7 +16,7 @@
     opacity: 0;
 }
 
-#aT{
+#animationTimeline{
     position: relative;
     width: 100%;
     background: white;
@@ -32,28 +32,56 @@
     border: 1px solid #d7d7d7;
 }
 
-#aT:hover .aTbutton{
+#animationTimeline:hover .aTbutton{
     opacity: 1;
+    display: flex;
 }
 
-.aTbutton{
+#atButtons{
     position: absolute;
-    left: 5px;
-    top: 0px;
-    width: 20px;
-    height: 20px;
+    left: 50%;
+    bottom: 0px;
+    transform: translateX(-50%);
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    z-index: 9999;
+}
+
+#atButtons .aTbutton{
+    position: relative;
     color: white;
     font-size: 12px;
     font-family: sans-serif;
     cursor: pointer;
-    padding-top: 5px;
-    z-index: 3;
     opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
 }
 
-.aTbutton:hover .tooltip{
-    visibility: visible;
-    opacity: 1;
+.animationSlideButton{
+    position: absolute;
+    left: 5px;
+    top: 0px;
+    color: white;
+    font-size: 12px;
+    font-family: sans-serif;
+    cursor: pointer;
+    z-index: 3;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    z-index: 999999;
+}
+
+.animationSlideButton{
+    display: none;
 }
 
 .slideSelected{
@@ -64,7 +92,7 @@
     border: 1px solid green;
 }
 
-.newanimationbtn{
+#newAnimationButton{
     position: absolute;
     cursor: pointer;
     width: 200px;
@@ -72,13 +100,19 @@
     transform: translate(-50%,-50%);
     left: 50%;
     top: 50%;
-    border: 1px solid black;
+    box-shadow: 0 0 3px grey;
+    border: none;
     outline: none;
     background: white;
     color: black;
-    font-family: monospace;
-    font-size: 15px;
-    display: block;
+    font-family: 'Roboto', sans-serif;
+    border-radius: 5px;
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+}
+
+#newAnimationButton:hover{
+    opacity: 0.5;
 }
 
 .alabel_new{
@@ -98,34 +132,32 @@
     transition: opacity 0.5s ease-in-out;
 }
 
-animationSlide span:nth-child(2):hover .tooltip{
-    visibility: visible;
-    opacity: 1;
+animationSlide .animationSlideButton:nth-child(2){
+    background-color: darkred;
+    left: 25px;
 }
 
-animationSlide span:nth-child(3):hover .tooltip{
-    visibility: visible;
-    opacity: 1;
+animationSlide .animationSlideButton:nth-child(3){
+    background-color: #a8d65e;
+    left: 45px;
 }
 
-animationSlide span:nth-child(3) span{
+animationSlide .animationSlideButton:nth-child(2) span{
     left: -30px;
 }
 
-animationSlide .tooltip{
-    font-size: 11px;
-}
-
-animationSlide span{
+animationSlide .animationSlideNumber{
     font-family: cursive;
     left: 5px;
     position: absolute;
     font-size: 10px;
-    width: 11px;
-    height: 15px;
     color: white;
-    text-align: left;
     padding-left: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    height: 20px;
 }
 
 animationSlide{
@@ -142,6 +174,11 @@ animationSlide{
 
 animationSlide:hover{
     border: 1px solid orange;
+}
+
+animationSlide:hover .animationSlideButton{
+    opacity: 1;
+    display: flex;
 }
 
 animationSlide:last-child{

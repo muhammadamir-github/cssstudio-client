@@ -129,22 +129,23 @@ class InternalAnimatorView{
             prepend: prepend
         });
 
-        if(!data.readyMadeAnimations || (Array.isArray(data.readyMadeAnimations) && data.readyMadeAnimations.length <= 0)){
-            await self.getReadyMadeAnimations();
-        }else{
-            let animationPreviews = self._element.getElementsByClassName("apelement");
-            let i = 0;
-            for await (let preview of animationPreviews){
-                if(i === 0){ continue; }
-                await self.applyAnimation(preview.style.animationName, preview.parentElement);
-                i++;
-            }
+        let animationPreviews = self._element.getElementsByClassName("apelement");
+        let i = 0;
+        for await (let preview of animationPreviews){
+            if(i === 0){ continue; }
+            await self.applyAnimation(preview.style.animationName, preview.parentElement);
+            i++;
         }
 
         self._timeline = await Globals.components.new({
             name: "internal-animator-timeline",
             parent: self._element,
+            data: {
+
+            }
         });
+
+        self._timeline = await Globals.components.controller(self._timeline);
     }
 
     async show(){
@@ -204,7 +205,9 @@ class InternalAnimatorView{
                 }
             });
 
+            console.log("refreshing 2", data.readyMadeAnimations, parent);
             for await (let x of data.readyMadeAnimations){
+                console.log("refreshing 3", x.name);
                 let text = "Button";
 
                 let duration = Math.floor((Math.random() * 3) + 1);

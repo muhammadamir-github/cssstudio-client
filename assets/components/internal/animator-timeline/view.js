@@ -8,14 +8,21 @@ class InternalAnimatorTimelineView{
         const self = this;
         const { data, parent, prepend, before, component_id } = options;
 
-        let children = [];
+        let children = [
+            {
+                type: "div",
+                id: "atButtons",
+                children: [
+
+                ]
+            }
+        ];
 
         [
             {
                 name: "Add Slide",
                 callback: function(){
-                    var n = $("animationSlide").length + 1;
-                    self.animationActions('addslide', n, '');
+                    self.addSlides(1);
                 },
                 style: { backgroundColor: "darkred" },
                 icon: "fas fa-plus",
@@ -23,48 +30,52 @@ class InternalAnimatorTimelineView{
             {
                 name: "Reset",
                 callback: function(){ self.animationActions("reset", '', ''); },
-                style: { backgroundColor: "#3399ff", left: "30px" },
+                style: { backgroundColor: "#3399ff" },
                 icon: "fas fa-sync-alt",
             },
             {
                 name: "Play",
                 callback: function(){ self.animationActions("play", ''); },
-                style: { backgroundColor: "#88cc00", left: "55px" },
+                style: { backgroundColor: "#88cc00" },
                 icon: "fas fa-play",
             }
         ].forEach(x => {
-            children.push({
+            children[0].children.push({
                 type: "span",
                 classes: [ "aTbutton" ],
                 style: x.style,
                 listeners: {
-                    click: x.callback
+                    click: x.callback,
+                    mouseover: function(){
+                        Globals.tooltip.show(this, x.name, "centerTop");
+                    },
+                    mouseout: function(){
+                        Globals.tooltip.hide();
+                    }
                 },
                 children: [
                     {
                         type: "i",
                         classes: x.icon.split(" ")
                     },
-                    {
-                        type: "span",
-                        classes: [ "tooltip" ],
-                        text: x.name,
-                    },
                 ]
             });
         });
 
-        children.push({
+        children[0].children.push({
             type: "span",
             classes: [ "aTbutton" ],
-            style: {
-                backgroundColor: "#463496",
-                left: "80px"
-            },
+            style: { backgroundColor: "#463496" },
             listeners: {
                 click: function(){
                     self.animationActions('switch-readymade', '');
-                    document.getElementsByClassName('newanimationbtn')[0].style.display = 'block';
+                    document.getElementById('newAnimationButton').style.display = 'block';
+                },
+                mouseover: function(){
+                    Globals.tooltip.show(this, "Switch to ready made animations", "centerTop");
+                },
+                mouseout: function(){
+                    Globals.tooltip.hide();
                 }
             },
             children: [
@@ -72,91 +83,12 @@ class InternalAnimatorTimelineView{
                     type: "i",
                     classes: [ "fas", "fa-toggle-on" ]
                 },
-                {
-                    type: "span",
-                    classes: [ "tooltip" ],
-                    style: {
-                        width: "200px"
-                    },
-                    text: "Switch to ready made animations.",
-                },
             ]
         });
 
-        for(var i=1; i<4; i++){
-            children.push({
-                type: "animationSlide",
-                attributes: {
-                    "data-percentage": "%",
-                    "data-attr-avail": "4",
-                },
-                listeners: {
-                    click: function(){
-                        $('.slideSelected').removeClass('slideSelected');
-                        this.classList.add('slideSelected');
-                        self.animationActions('options-enable','');
-                        self.updateSlideOptions();
-                    }
-                },
-                children: [
-                    {
-                        type: "span",
-                        style: { backgroundColor: "black" },
-                        text: i,
-                    },
-                    {
-                        type: "span",
-                        classes: [ "aTbutton" ],
-                        style: {
-                            backgroundColor: "darkred",
-                            left: "25px",
-                            width: "13px"
-                        },
-                        listeners: {
-                            click: function(){
-                                this.parentNode.remove();
-                                self.animationActions('renumber', '', '');
-                            }
-                        },
-                        children: [
-                            {
-                                type: "i",
-                                classes: [ "far", "fa-trash-alt" ]
-                            },
-                            {
-                                type: "span",
-                                classes: [ "tooltip" ],
-                                text: "Delete Slide",
-                            },
-                        ]
-                    },
-                    {
-                        type: "span",
-                        classes: [ "aTbutton" ],
-                        style: {
-                            backgroundColor: "#a8d65e",
-                            left: "47px",
-                            width: "13px"
-                        },
-                        children: [
-                            {
-                                type: "i",
-                                classes: [ "fas", "fa-sync-alt" ]
-                            },
-                            {
-                                type: "span",
-                                classes: [ "tooltip" ],
-                                text: "Reset Slide",
-                            },
-                        ]
-                    },
-                ]
-            });
-        }
-
         children.push({
             type: "button",
-            classes: [ "newanimationbtn" ],
+            id: "newAnimationButton",
             text: "Create New Animation",
             listeners: {
                 click: function(){
@@ -169,7 +101,7 @@ class InternalAnimatorTimelineView{
         self._element = Globals.elements.new({
             type: "div",
             parent,
-            id: "aT",
+            id: "animationTimeline",
             children,
             before: before,
             prepend: prepend,
@@ -178,10 +110,93 @@ class InternalAnimatorTimelineView{
             },
         });
 
+        self.addSlides(4);
+
         //setupSlideStyler();
 
-        $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'0.5', 'pointerEvents':'none'});
+        $('#animationTimeline').find('*').not('#newAnimationButton').not('.aTbutton').css({'opacity':'0.5', 'pointerEvents':'none'});
         $('.aTbutton').css({'pointer-events':'none'});
+    }
+
+    addSlides(count = 1){
+        const self = this;
+        const data = self.controller._getModelState();
+        let newSlides = [];
+
+        if(self._element){
+            for(let i=0; i<count; i++){
+                ((self, data, i) => {
+                    let slide = Globals.elements.new({
+                        type: "animationSlide",
+                        parent: self._element,
+                        attributes: {
+                            "data-percentage": "%",
+                            "data-attr-avail": "100",
+                        },
+                        listeners: {
+                            click: function(){
+                                $('.slideSelected').removeClass('slideSelected');
+                                this.classList.add('slideSelected');
+                                self.animationActions('options-enable','');
+                                self.updateSlideOptions();
+                            }
+                        },
+                        children: [
+                            {
+                                type: "span",
+                                style: { backgroundColor: "black" },
+                                classes: [ "animationSlideNumber" ],
+                                text: data.slides.length+(i+1),
+                            },
+                            {
+                                type: "span",
+                                classes: [ "animationSlideButton" ],
+                                listeners: {
+                                    click: function(){
+                                        this.parentNode.remove();
+                                        self.animationActions('renumber', '', '');
+                                    },
+                                    mouseover: function(){
+                                        Globals.tooltip.show(this, "Delete Slide", "centerTop");
+                                    },
+                                    mouseout: function(){
+                                        Globals.tooltip.hide();
+                                    }
+                                },
+                                children: [
+                                    {
+                                        type: "i",
+                                        classes: [ "far", "fa-trash-alt" ]
+                                    },
+                                ]
+                            },
+                            {
+                                type: "span",
+                                classes: [ "animationSlideButton" ],
+                                listeners: {
+                                    mouseover: function(){
+                                        Globals.tooltip.show(this, "Reset Slide", "centerTop");
+                                    },
+                                    mouseout: function(){
+                                        Globals.tooltip.hide();
+                                    }
+                                },
+                                children: [
+                                    {
+                                        type: "i",
+                                        classes: [ "fas", "fa-sync-alt" ]
+                                    },
+                                ]
+                            },
+                        ]
+                    });
+
+                    newSlides.push(slide);
+                })(self, data, i);
+            }
+
+            self.controller._updateModelState({ slides: [...data.slides, ...newSlides] });
+        }
     }
 
     animationActions(action, n, element){
@@ -389,61 +404,6 @@ class InternalAnimatorTimelineView{
             document.getElementById('animationSliderBox').style.pointerEvents = 'none';
         }
 
-        if(action == 'addslide'){
-            var Slide = document.createElement('animationSlide');
-            Slide.setAttribute('data-percentage','%');
-            Slide.setAttribute('data-attr-avail','4');
-            Slide.addEventListener('click',function(){
-                $('.slideSelected').removeClass('slideSelected');
-                this.classList.add('slideSelected');
-                self.animationActions('options-enable','',element);
-                self.updateSlideOptions(element);
-            });
-
-            var slidenumber = document.createElement('span');
-            slidenumber.style.backgroundColor = 'black';
-            slidenumber.innerText = n;
-
-            var deleteslide = document.createElement('span');
-            var deleteslide_i = document.createElement('i');
-            var deleteslide_tooltip = document.createElement('span');
-            deleteslide_tooltip.setAttribute('class','tooltip');
-            deleteslide_tooltip.innerText = 'Delete Slide';
-            deleteslide_i.setAttribute('class','far fa-trash-alt');
-            deleteslide.style.backgroundColor = 'darkred';
-            deleteslide.style.left = '25px';
-            deleteslide.style.width = '13px';
-            deleteslide.appendChild(deleteslide_tooltip);
-            deleteslide.appendChild(deleteslide_i);
-            deleteslide.addEventListener('click',function(){
-                this.parentNode.remove();
-                self.animationActions('renumber','');
-            });
-
-            var resetslide = document.createElement('span');
-            var resetslide_i = document.createElement('i');
-            var resetslide_tooltip = document.createElement('span');
-            resetslide_tooltip.setAttribute('class','tooltip');
-            resetslide_tooltip.innerText = 'Reset Slide';
-            resetslide_i.setAttribute('class','fas fa-sync-alt');
-            resetslide.style.backgroundColor = '#a8d65e';
-            resetslide.style.left = '47px';
-            resetslide.style.width = '13px';
-            resetslide.appendChild(resetslide_tooltip);
-            resetslide.appendChild(resetslide_i);
-
-            Slide.appendChild(slidenumber);
-            Slide.appendChild(deleteslide);
-            Slide.appendChild(resetslide);
-
-            if(n > 9){
-                slidenumber.style.width = '15px';
-                deleteslide.style.left = '29px';
-            }
-
-            animatorTimeline.appendChild(Slide);
-        }
-
         if(action == 'reset'){
             $('animationSlide').remove();
 
@@ -451,7 +411,7 @@ class InternalAnimatorTimelineView{
 
                 var Slide = document.createElement('animationSlide');
                 Slide.setAttribute('data-percentage','%');
-                Slide.setAttribute('data-attr-avail','4');
+                Slide.setAttribute('data-attr-avail','100');
                 Slide.addEventListener('click',function(){
                     $('.slideSelected').removeClass('slideSelected');
                     this.classList.add('slideSelected');
@@ -465,14 +425,10 @@ class InternalAnimatorTimelineView{
 
                 var deleteslide = document.createElement('span');
                 var deleteslide_i = document.createElement('i');
-                var deleteslide_tooltip = document.createElement('span');
-                deleteslide_tooltip.setAttribute('class','tooltip');
-                deleteslide_tooltip.innerText = 'Delete Slide';
                 deleteslide_i.setAttribute('class','far fa-trash-alt');
                 deleteslide.style.backgroundColor = 'darkred';
                 deleteslide.style.left = '25px';
                 deleteslide.style.width = '13px';
-                deleteslide.appendChild(deleteslide_tooltip);
                 deleteslide.appendChild(deleteslide_i);
                 deleteslide.addEventListener('click',function(){
                     this.parentNode.remove();
@@ -481,14 +437,10 @@ class InternalAnimatorTimelineView{
 
                 var resetslide = document.createElement('span');
                 var resetslide_i = document.createElement('i');
-                var resetslide_tooltip = document.createElement('span');
-                resetslide_tooltip.setAttribute('class','tooltip');
-                resetslide_tooltip.innerText = 'Reset Slide';
                 resetslide_i.setAttribute('class','fas fa-sync-alt');
                 resetslide.style.backgroundColor = '#a8d65e';
                 resetslide.style.left = '47px';
                 resetslide.style.width = '13px';
-                resetslide.appendChild(resetslide_tooltip);
                 resetslide.appendChild(resetslide_i);
 
                 Slide.appendChild(slidenumber);
@@ -511,7 +463,7 @@ class InternalAnimatorTimelineView{
             var el = document.getElementsByClassName("selected-element")[0];
             var rmadiv = document.getElementById('rmadiv');
 
-            $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'1','pointerEvents':'unset'});
+            $('#animationTimeline').find('*').not('#newAnimationButton').not('.aTbutton').css({'opacity':'1','pointerEvents':'unset'});
             $('.aTbutton').css({'pointer-events':''});
             rmadiv.style.opacity = '0.3';
             rmadiv.style.pointerEvents = 'none';
@@ -530,7 +482,7 @@ class InternalAnimatorTimelineView{
             var el = document.getElementsByClassName("selected-element")[0];
             var rmadiv = document.getElementById('rmadiv');
 
-            $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'0.5','pointerEvents':'none'});
+            $('#animationTimeline').find('*').not('#newAnimationButton').not('.aTbutton').css({'opacity':'0.5','pointerEvents':'none'});
             $('.aTbutton').css({'pointer-events':'none'});
             rmadiv.style.opacity = '1';
             rmadiv.style.pointerEvents = 'unset';

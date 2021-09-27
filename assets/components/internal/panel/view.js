@@ -44,7 +44,7 @@ class InternalPanelView{
             { name: "New Element", icon: "fas fa-plus", callback: function(){ self._elementSelectionSidebar.toggle(); } },
             { name: "Reset", icon: "fas fa-undo", callback: function(){ self._elementPreviewer.reset(); } },
             { name: "Style Element", icon: "fas fa-paint-brush", callback: function(){ self._styler.toggle(); } },
-            { name: "Animate Element", icon: "fas fa-play", callback: function(){ self._animator.toggle(); } },
+            { name: "Animate Element", icon: "fas fa-play", callback: function(){ document.getElementsByClassName("selected-element")[0] ? self._animator.toggle() : false; } },
             { name: "Finish", icon: "fas fa-check", callback: function(){ self._finisher.toggle(); } },
         ];
     }
