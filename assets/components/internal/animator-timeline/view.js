@@ -118,6 +118,16 @@ class InternalAnimatorTimelineView{
         $('.aTbutton').css({'pointer-events':'none'});
     }
 
+    deleteSlide(number){
+        const self = this;
+        const data = self.controller._getModelState();
+        const slide = data.slides.find(x => (x.number === number));
+        if(slide){
+            slide.element.remove();
+            self.controller._updateModelState({ slides: (() => { return data.slides.filter(x => (x.number !== number)); })(), });
+        }
+    }
+
     addSlides(count = 1){
         const self = this;
         const data = self.controller._getModelState();
@@ -126,6 +136,7 @@ class InternalAnimatorTimelineView{
         if(self._element){
             for(let i=0; i<count; i++){
                 ((self, data, i) => {
+                    let slideNumber = data.slides.length+(i+1);
                     let slide = Globals.elements.new({
                         type: "animationSlide",
                         parent: self._element,
@@ -146,15 +157,15 @@ class InternalAnimatorTimelineView{
                                 type: "span",
                                 style: { backgroundColor: "black" },
                                 classes: [ "animationSlideNumber" ],
-                                text: data.slides.length+(i+1),
+                                text: slideNumber,
                             },
                             {
                                 type: "span",
                                 classes: [ "animationSlideButton" ],
                                 listeners: {
-                                    click: function(){
-                                        this.parentNode.remove();
-                                        self.animationActions('renumber', '', '');
+                                    click: function(e){
+                                        e.stopPropagation();
+                                        self.deleteSlide(slideNumber);
                                     },
                                     mouseover: function(){
                                         Globals.tooltip.show(this, "Delete Slide", "centerTop");
@@ -191,7 +202,7 @@ class InternalAnimatorTimelineView{
                         ]
                     });
 
-                    newSlides.push(slide);
+                    newSlides.push({ number: slideNumber, element: slide });
                 })(self, data, i);
             }
 
