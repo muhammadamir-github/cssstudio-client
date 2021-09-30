@@ -61,8 +61,7 @@ class InternalStylerView{
                 },
                 {
                     type: "div",
-                    classes: [ "flex-container" ],
-                    id: "styler-container"
+                    classes: [ "flex-container", "styler-container" ],
                 },
                 {
                     type: "div",
@@ -174,7 +173,8 @@ class InternalStylerView{
 
     async load(){
         const self = this;
-        let unit = this.controller._getModelState()["unit"];
+        const data = await self.controller._getModelState();
+        const unit = data["unit"];
 
         let comboboxes = [
             { text: "Width", colorPicker: false, customValue: true, options: [] },
@@ -228,7 +228,7 @@ class InternalStylerView{
         for (let combobox of comboboxes){
             await Globals.components.new({
                 name: "internal-combobox",
-                parent: document.getElementById('styler-container'),
+                parent: self._element.getElementsByClassName('styler-container')[0],
                 data: {
                     unit,
                     text: combobox.text,
@@ -239,6 +239,7 @@ class InternalStylerView{
                         call: "updateElement"
                     } : null,
                     colorPicker: combobox.colorPicker === true ? {} : null,
+                    forAnimator: data.forAnimator,
                 }
             });
         }
@@ -255,13 +256,14 @@ class InternalStylerView{
         for (let slider of sliders){
             await Globals.components.new({
                 name: "internal-slider",
-                parent: document.getElementById('styler-container'),
+                parent: self._element.getElementsByClassName('styler-container')[0],
                 data: {
                     text: slider.text,
                     min: slider.min,
                     max: slider.max,
                     step: slider.step,
-                    value: slider.value
+                    value: slider.value,
+                    forAnimator: data.forAnimator,
                 }
             });
         }
@@ -273,9 +275,10 @@ class InternalStylerView{
         for (let imagepicker of imagepickers){
             await Globals.components.new({
                 name: "internal-image-picker",
-                parent: document.getElementById('styler-container'),
+                parent: self._element.getElementsByClassName('styler-container')[0],
                 data: {
                     text: imagepicker.text,
+                    forAnimator: data.forAnimator,
                 }
             });
         }

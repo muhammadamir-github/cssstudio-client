@@ -1,14 +1,14 @@
-#styler #styler-container::-webkit-scrollbar{
+#styler .styler-container::-webkit-scrollbar{
 	width: 0px;
     background-color: #F5F5F5;
 }
 
-#styler #styler-container::-webkit-scrollbar-track{
+#styler .styler-container::-webkit-scrollbar-track{
 	-webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.3);
     background-color: #F5F5F5;
 }
 
-#styler #styler-container::-webkit-scrollbar-thumb{
+#styler .styler-container::-webkit-scrollbar-thumb{
 	background-color: #000000;
 }
 
@@ -26,10 +26,10 @@
     padding: 0;
     overflow: unset;
     box-shadow: 0 0 10px grey;
-    z-index: 4;
     flex-direction: column;
 	min-width: 300px;
 	min-height: 400px;
+	z-index: 99999999;
 }
 
 #styler .banner,
@@ -100,7 +100,7 @@
     align-items: center;
 }
 
-#styler #styler-container{
+#styler .styler-container{
 	width: 100%;
     height: 100%;
     position: relative;

@@ -1,10 +1,10 @@
 #animationTimeline::-webkit-scrollbar{
-    width: 2px;
+    height: 2px;
     background-color: #F5F5F5;
 }
 
 #animationTimeline::-webkit-scrollbar-track{
-    -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 2px rgba(0,0,0,0.3);
     background-color: #F5F5F5;
 }
 
@@ -38,9 +38,9 @@
 }
 
 #atButtons{
-    position: absolute;
+    position: fixed;
     left: 50%;
-    bottom: 0px;
+    bottom: 20px;
     transform: translateX(-50%);
     width: fit-content;
     display: flex;
@@ -65,7 +65,7 @@
 
 .animationSlideButton{
     position: absolute;
-    left: 5px;
+    left: unset;
     top: 0px;
     color: white;
     font-size: 12px;
@@ -73,15 +73,11 @@
     cursor: pointer;
     z-index: 3;
     opacity: 0;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     padding: 5px;
     z-index: 999999;
-}
-
-.animationSlideButton{
-    display: none;
 }
 
 .slideSelected{
@@ -134,16 +130,12 @@
 
 animationSlide .animationSlideButton:nth-child(2){
     background-color: darkred;
-    left: 25px;
+    right: 5px;
 }
 
 animationSlide .animationSlideButton:nth-child(3){
     background-color: #a8d65e;
-    left: 45px;
-}
-
-animationSlide .animationSlideButton:nth-child(2) span{
-    left: -30px;
+    right: 25px;
 }
 
 animationSlide .animationSlideNumber{
@@ -158,12 +150,15 @@ animationSlide .animationSlideNumber{
     align-items: center;
     padding: 5px;
     height: 20px;
+    z-index: 9999999;
 }
 
 animationSlide{
     display: flex;
     width: 100px;
     height: 100px;
+    min-width: 100px;
+    min-height: 100px;
     border: 1px solid #d7d7d7;
     position: relative;
     cursor: pointer;

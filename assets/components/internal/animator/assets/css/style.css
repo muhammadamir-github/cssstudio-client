@@ -19,6 +19,7 @@
     padding: 20px;
     min-width: calc(100% - 40px);
     min-height: calc(100% - 40px);
+    max-width: calc(100% - 40px);
     margin: 0;
     z-index: 999999;
     left: 0;
@@ -28,21 +29,28 @@
     display: none;
 }
 
-#animator .fa-times{
+#animator .fa-times,
+#animator .fa-check{
     position: absolute;
-    right: 5px;
-    top: 5px;
+    right: 25px;
+    top: 25px;
     opacity: 0.3;
     cursor: pointer;
     padding: 0px;
-    font-size: 25px;
+    font-size: 15px;
     color: black;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
     z-index: 99999;
 }
 
-#animator .fa-times:hover{
+#animator .fa-times:hover,
+#animator .fa-check:hover{
     opacity: 1;
+}
+
+#animator .fa-check{
+    right: 40px;
+    top: 25px;
 }
 
 #animator #animator-container{
@@ -113,4 +121,28 @@ animationPreview{
 
 animationPreview:hover{
 	border: 1px solid orange;
+}
+
+.animation-preview-button{
+	padding-right: 10px;
+    padding-left: 10px;
+	width: 50px;
+	height: 20px;
+	border: 0.5px solid black;
+	outline: none;
+	background-color: white;
+	display: block;
+	position: relative;
+	left: 25px;
+	top: 40px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin-top: 0;
+    font-size: 8px;
+    animation-name: "unset";
+    animation-duration: 3s;
+    animation-delay: 0s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
 }

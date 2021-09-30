@@ -135,7 +135,8 @@ class InternalColorPickerView{
 
     setupColorPicker(forid){
         const self = this;
-        self.applyTo = document.getElementsByClassName("selected-element")[0];
+        const data = self.controller._getModelState();
+        self.applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
 
         self.updateStrip(null, self);
         self.updateBox();
@@ -169,8 +170,9 @@ class InternalColorPickerView{
     color(e, key = this.key){
         // update color from mouse
         const self = this;
+        const data = self.controller._getModelState();
 
-        self.applyTo = document.getElementsByClassName("selected-element")[0];
+        self.applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
 
         let boxid = `cpb`;
         let stripid = `cps`;

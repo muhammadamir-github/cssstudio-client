@@ -4,7 +4,8 @@ class InternalAnimatorView{
 
         self.controller = controller;
         self._element = null;
-        self._readyMadeAnimations = [];
+        self._timeline = null;
+        self._styler = null;
         self.hidden = true;
     }
 
@@ -27,6 +28,27 @@ class InternalAnimatorView{
                     listeners: {
                         click: function(event){
                             self.hide();
+                        },
+                        mouseover: function(){
+                            Globals.tooltip.show(this, "Cancel", "centerBottom");
+                        },
+                        mouseout: function(){
+                            Globals.tooltip.hide();
+                        }
+                    }
+                },
+                {
+                    type: "i",
+                    classes: [ "fas", "fa-check" ],
+                    listeners: {
+                        click: function(event){
+                            self.hide();
+                        },
+                        mouseover: function(){
+                            Globals.tooltip.show(this, "Confirm", "centerBottom");
+                        },
+                        mouseout: function(){
+                            Globals.tooltip.hide();
                         }
                     }
                 },
@@ -44,76 +66,39 @@ class InternalAnimatorView{
                             children: [
                                 {
                                     type: "animationPreview",
-                                    id: "noa",
+                                    id: "noAnimationPreview",
                                     style: {
                                         backgroundSize: "contain",
                                         backgroundImage: "url(none.png)",
                                         backgroundRepeat: "no-repeat",
                                     },
                                     listeners: {
-                                        click: function(){
-                                            var previewelement = document.getElementsByClassName("selected-element")[0];
-
-                                            previewelement.style.animationDelay = '';
-                                            previewelement.style.animationTimingFunction = '';
-                                            previewelement.style.animationIterationCount = '';
-                                            previewelement.style.animationName = '';
-                                            previewelement.style.animationDuration = '';
-
-                                            $('animationPreview').css('border','');
-                                            this.style.border = '1px solid green';
+                                        click: function(e){
+                                            self.selectReadyMadeAnimation(null);
+                                            self.resetElement();
                                         }
                                     }
                                 },
                                 ...await (async () => {
                                     return await data.readyMadeAnimations.map(async (x, i) => {
-                                        let text = "Button";
-
-                                        let duration = Math.floor((Math.random() * 3) + 1);
-                                        if(x.name.includes('FADE')){ duration = '3s'; }
-                                        if(x.name.includes('BOUNCE')){ duration = '1s'; }
-                                        if(x.name.includes('FLIP')){ duration = '2s'; }
-                                        if(x.name.includes('ROTATE')){ duration = '3s'; }
-                                        if(x.name.includes('SLIDE')){ duration = '3s'; }
-                                        if(x.name.includes('ZOOM')){ duration = '2s'; }
-                                        if(x.name.includes('ROLL')){ duration = '2s'; }
-
-                                        if(document.getElementsByClassName("selected-element")[0].tagName == 'input'){
-                                            text = document.getElementsByClassName("selected-element")[0].value;
-                                        }else{
-                                            if(document.getElementsByClassName("selected-element")[0].tagName == 'paragraph'){
-                                                text = document.getElementById('previewbox').getElementsByTagName('p')[0].innerText;
-                                            }
-
-                                            if(document.getElementsByClassName("selected-element")[0].tagName == 'image' || document.getElementsByClassName("selected-element")[0].tagName == 'video'){ text = document.getElementsByClassName("selected-element")[0].tagName; }
-                                            if(document.getElementsByClassName("selected-element")[0].tagName == 'heading'){
-                                                text = document.getElementById('previewbox').getElementsByTagName('h3')[0].innerText;
-                                            }
-                                        }
-
                                         return {
                                             type: "animationPreview",
                                             id: `a${x.name}`,
+                                            attributes: {
+                                                "data-name": x.name,
+                                            },
+                                            listeners: {
+                                                click: function(){
+                                                    self.selectReadyMadeAnimation(this);
+                                                }
+                                            },
                                             children: [
                                                 {
                                                     type: "button",
-                                                    id: "previewbutton",
-                                                    classes: [ "apelement" ],
-                                                    text: text,
+                                                    classes: [ "apelement", "animation-preview-button" ],
+                                                    text: "Preview",
                                                     style: {
-                                                        fontSize: "8px",
-                                                        width: "50px",
-                                                        height: "20px",
-                                                        position: "relative",
-                                                        transform: "translate(0)",
-                                                        left: "25px",
-                                                        top: "40px",
-                                                        marginTop: "0px",
                                                         animationName: x.name,
-                                                        animationDuration: duration,
-                                                        animationDelay: Math.floor((Math.random() * 8) + 3) + 's',
-                                                        animationTimingFunction: "linear",
-                                                        animationIterationCount: "Infinite",
                                                     }
                                                 }
                                             ]
@@ -129,19 +114,31 @@ class InternalAnimatorView{
             prepend: prepend
         });
 
-        let animationPreviews = self._element.getElementsByClassName("apelement");
-        let i = 0;
-        for await (let preview of animationPreviews){
-            if(i === 0){ continue; }
-            await self.applyAnimation(preview.style.animationName, preview.parentElement);
-            i++;
-        }
+        self._styler = await Globals.components.new({
+            name: "internal-styler",
+            parent: Globals.window.body,
+            data: {
+                unit: "px",
+                forAnimator: true,
+            },
+        });
+
+        self._styler = await Globals.components.controller(self._styler);
 
         self._timeline = await Globals.components.new({
             name: "internal-animator-timeline",
             parent: self._element,
             data: {
-
+                callbacks: {
+                    onEnable: function(){
+                        self._styler.show();
+                        self.resetElement();
+                    },
+                    onDisable: function(){
+                        self._styler.hide();
+                        self.resetElement();
+                    },
+                }
             }
         });
 
@@ -152,11 +149,22 @@ class InternalAnimatorView{
         const data = await this.controller._getModelState();
         !data.readyMadeAnimations || (Array.isArray(data.readyMadeAnimations) && data.readyMadeAnimations.length <= 0) ? await this.getReadyMadeAnimations() : false;
 
+        document.getElementById("animator-preview-element") ? document.getElementById("animator-preview-element").remove() : false;
+
+        let selectedElement = document.getElementsByClassName("selected-element");
+        if(selectedElement[0]){
+            let cloneOfSelectedElement = selectedElement[0].cloneNode(true);
+            cloneOfSelectedElement.className = "";
+            cloneOfSelectedElement.id = "animator-preview-element";
+            document.getElementById("animator-preview").appendChild(cloneOfSelectedElement);
+        }
+
         this._element.style.display = "flex";
         this.hidden = false;
     }
 
     hide(){
+        document.getElementById("animator-preview-element") ? document.getElementById("animator-preview-element").remove() : false;
         this._element.style.display = "none";
         this.hidden = true;
     }
@@ -165,24 +173,18 @@ class InternalAnimatorView{
         this.hidden ? this.show() : this.hide();
     }
 
-    reset(){
-
-    }
-
     async refresh(){
         const self = this;
         const data = await self.controller._getModelState();
         const parent = document.getElementById("animator-ready-made-animations");
-        console.log("refreshing", data.readyMadeAnimations, parent);
 
         if(Array.isArray(data.readyMadeAnimations) && (parent !== undefined && parent !== null)){
-            console.log("refreshing 1");
             let children = await [...parent.children];
             for await (let child of children){ child.remove(); }
 
             await Globals.elements.new({
                 type: "animationPreview",
-                id: "noa",
+                id: "noAnimationPreview",
                 parent,
                 style: {
                     backgroundSize: "contain",
@@ -190,78 +192,37 @@ class InternalAnimatorView{
                     backgroundRepeat: "no-repeat",
                 },
                 listeners: {
-                    click: function(){
-                        var previewelement = document.getElementsByClassName("selected-element")[0];
-
-                        previewelement.style.animationDelay = '';
-                        previewelement.style.animationTimingFunction = '';
-                        previewelement.style.animationIterationCount = '';
-                        previewelement.style.animationName = '';
-                        previewelement.style.animationDuration = '';
-
-                        $('animationPreview').css('border','');
-                        this.style.border = '1px solid green';
+                    click: function(e){
+                        self.selectReadyMadeAnimation(null);
+                        self.resetElement();
                     }
                 }
             });
 
-            console.log("refreshing 2", data.readyMadeAnimations, parent);
             for await (let x of data.readyMadeAnimations){
-                console.log("refreshing 3", x.name);
-                let text = "Button";
-
-                let duration = Math.floor((Math.random() * 3) + 1);
-                if(x.name.includes('FADE')){ duration = '3s'; }
-                if(x.name.includes('BOUNCE')){ duration = '1s'; }
-                if(x.name.includes('FLIP')){ duration = '2s'; }
-                if(x.name.includes('ROTATE')){ duration = '3s'; }
-                if(x.name.includes('SLIDE')){ duration = '3s'; }
-                if(x.name.includes('ZOOM')){ duration = '2s'; }
-                if(x.name.includes('ROLL')){ duration = '2s'; }
-
-                if(document.getElementsByClassName("selected-element")[0].tagName == 'input'){
-                    text = document.getElementsByClassName("selected-element")[0].value;
-                }else{
-                    if(document.getElementsByClassName("selected-element")[0].tagName == 'paragraph'){
-                        text = document.getElementById('previewbox').getElementsByTagName('p')[0].innerText;
-                    }
-
-                    if(document.getElementsByClassName("selected-element")[0].tagName == 'image' || document.getElementsByClassName("selected-element")[0].tagName == 'video'){ text = document.getElementsByClassName("selected-element")[0].tagName; }
-                    if(document.getElementsByClassName("selected-element")[0].tagName == 'heading'){
-                        text = document.getElementById('previewbox').getElementsByTagName('h3')[0].innerText;
-                    }
-                }
-
                 let animationPreview = await Globals.elements.new({
                     type: "animationPreview",
-                    id: `a${x.name}`,
                     parent,
+                    id: `a${x.name}`,
+                    attributes: {
+                        "data-name": x.name,
+                    },
+                    listeners: {
+                        click: function(){
+                            self.selectReadyMadeAnimation(this);
+                        }
+                    },
                     children: [
                         {
                             type: "button",
-                            id: "previewbutton",
-                            classes: [ "apelement" ],
-                            text: text,
+                            classes: [ "apelement", "animation-preview-button" ],
+                            text: "Preview",
                             style: {
-                                fontSize: "8px",
-                                width: "50px",
-                                height: "20px",
-                                position: "relative",
-                                transform: "translate(0)",
-                                left: "25px",
-                                top: "40px",
-                                marginTop: "0px",
                                 animationName: x.name,
-                                animationDuration: duration,
-                                animationDelay: Math.floor((Math.random() * 8) + 3) + 's',
-                                animationTimingFunction: "linear",
-                                animationIterationCount: "Infinite",
                             }
                         }
                     ]
                 });
-
-                await self.applyAnimation(x.name, animationPreview.parentElement);
             }
         }
     }
@@ -269,18 +230,46 @@ class InternalAnimatorView{
     async getReadyMadeAnimations(){
         const response = await Globals.api.request({ route: "readyMadeAnimations", method: "get" });
         if(response.success === true && response.data.success && Array.isArray(response.data.success)){
+            await Globals.elements.new({
+                type: "style",
+                parent: Globals.window.head,
+                html: await (async () => {
+                    return await response.data.success.map(x => (x.css)).join('');
+                })(),
+            });
+
             await this.controller._updateModelState({ readyMadeAnimations: response.data.success, });
         }else{
             Globals.notificationHandler.new('Error, could not load ready made animations. Please retry after some time.');
         }
     }
 
-    async applyAnimation(animationName, animationPreview){
-        animationPreview.addEventListener('click', function(){
-            $(document.getElementsByClassName("selected-element")[0]).css('animation-name', animationName);
-            $('animationPreview').css('border','');
-            $('#noa').css('border', '');
-            this.style.border = '1px solid green';
-        });
+    selectReadyMadeAnimation(animationPreview){
+        let element = document.getElementById("animator-preview-element");
+        let animationPreviews = document.getElementsByTagName("animationPreview");
+        if(element){
+            for (let preview of animationPreviews){ preview.style.border = "1px solid #d7d7d7"; }
+
+            if(!animationPreview){
+                element.style.animationName = null;
+                document.getElementById("noAnimationPreview") ? document.getElementById("noAnimationPreview").style.border = "1px solid green" : false;
+            }else{
+                let animationName = animationPreview.getAttribute("data-name");
+
+                element.style.animationName = animationName;
+                animationPreview.style.border = "1px solid green";
+            }
+        }
+    }
+
+    resetElement(){
+        var element = document.getElementById("animator-preview-element");
+        if(element){
+            element.style.animationName = '';
+            element.style.animationDuration = "1s";
+            element.style.animationDelay = '0s';
+            element.style.animationTimingFunction = 'linear';
+            element.style.animationIterationCount = 'infinite';
+        }
     }
 }

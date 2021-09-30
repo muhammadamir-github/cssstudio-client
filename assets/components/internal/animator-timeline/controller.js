@@ -4,8 +4,8 @@ class InternalAnimatorTimelineController{
         this.model = new InternalAnimatorTimelineModel(data, this);
     }
 
-    async _init(options = {}){
-        await this.view.create({
+    _init(options = {}){
+        this.view.create({
             ...options,
             data: this.model.state
         });

@@ -87,7 +87,7 @@ class InternalSliderView{
         const self = this;
         const data = await self.controller._getModelState();
 
-        let applyTo = document.getElementsByClassName("selected-element")[0];
+        let applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
         if(applyTo){
             let key = self.textKeyMap[data.text].key;
             let currentStyleValue = applyTo && key ? (self.transforms.includes(key) ? applyTo.style.transform : applyTo.style[key]) : null;

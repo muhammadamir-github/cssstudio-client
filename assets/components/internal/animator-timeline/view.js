@@ -12,9 +12,7 @@ class InternalAnimatorTimelineView{
             {
                 type: "div",
                 id: "atButtons",
-                children: [
-
-                ]
+                children: []
             }
         ];
 
@@ -29,7 +27,7 @@ class InternalAnimatorTimelineView{
             },
             {
                 name: "Reset",
-                callback: function(){ self.animationActions("reset", '', ''); },
+                callback: function(){ self.resetSlides(); },
                 style: { backgroundColor: "#3399ff" },
                 icon: "fas fa-sync-alt",
             },
@@ -68,8 +66,7 @@ class InternalAnimatorTimelineView{
             style: { backgroundColor: "#463496" },
             listeners: {
                 click: function(){
-                    self.animationActions('switch-readymade', '');
-                    document.getElementById('newAnimationButton').style.display = 'block';
+                    self.disable(self);
                 },
                 mouseover: function(){
                     Globals.tooltip.show(this, "Switch to ready made animations", "centerTop");
@@ -92,8 +89,7 @@ class InternalAnimatorTimelineView{
             text: "Create New Animation",
             listeners: {
                 click: function(){
-                    self.animationActions('switch-custom', '');
-                    this.style.display = 'none';
+                    self.enable(self);
                 }
             }
         });
@@ -110,12 +106,20 @@ class InternalAnimatorTimelineView{
             },
         });
 
-        self.addSlides(4);
-
+        self.disable(self);
         //setupSlideStyler();
+    }
 
-        $('#animationTimeline').find('*').not('#newAnimationButton').not('.aTbutton').css({'opacity':'0.5', 'pointerEvents':'none'});
-        $('.aTbutton').css({'pointer-events':'none'});
+    async resetSlides(){
+        const self = this;
+        const data = await self.controller._getModelState();
+        if(Array.isArray(data.slides)){
+            for await (let slide of data.slides){
+                slide.element.remove();
+            }
+        }
+
+        await self.controller._updateModelState({ slides: [], });
     }
 
     deleteSlide(number){
@@ -125,6 +129,20 @@ class InternalAnimatorTimelineView{
         if(slide){
             slide.element.remove();
             self.controller._updateModelState({ slides: (() => { return data.slides.filter(x => (x.number !== number)); })(), });
+            self.reNumberSlides();
+        }
+    }
+
+    async reNumberSlides(){
+        const self = this;
+        const data = await self.controller._getModelState();
+        if(Array.isArray(data.slides)){
+            let i = 1;
+            for await (let slide of data.slides){
+                slide.number = i;
+                slide.element.getElementsByClassName("animationSlideNumber")[0] ? slide.element.getElementsByClassName("animationSlideNumber")[0].innerText = i : false;
+                i++;
+            }
         }
     }
 
@@ -390,129 +408,40 @@ class InternalAnimatorTimelineView{
             var pos = myReuseableStylesheet.length;
             //myReuseableStylesheet.innerText = myReuseableStylesheet.innerText + "@-webkit-keyframes " + str;
             myReuseableStylesheet.innerText = myReuseableStylesheet.innerText + "@keyframes " + str;
-            document.getElementsByClassName("selected-element")[0].style.animation = 'preview 1s ease-in-out infinite';
-        }
-
-        if(action == 'options-enable'){
-            document.getElementById('slidePercentage').style.opacity = '1';
-            document.getElementById('slidePercentage').style.pointerEvents = 'unset';
-
-            document.getElementById('slideOpacity').style.opacity = '1';
-            document.getElementById('slideOpacity').style.pointerEvents = 'unset';
-
-            document.getElementById('animationSliderBox').style.opacity = '1';
-            document.getElementById('animationSliderBox').style.pointerEvents = 'unset';
-        }
-
-        if(action == 'options-disable'){
-            document.getElementById('slidePercentage').style.opacity = '0.5';
-            document.getElementById('slidePercentage').style.pointerEvents = 'none';
-
-            document.getElementById('slideOpacity').style.opacity = '0.5';
-            document.getElementById('slideOpacity').style.pointerEvents = 'none';
-
-            document.getElementById('animationSliderBox').style.opacity = '0.5';
-            document.getElementById('animationSliderBox').style.pointerEvents = 'none';
-        }
-
-        if(action == 'reset'){
-            $('animationSlide').remove();
-
-            for(var i = 1; i < 4; i++){
-
-                var Slide = document.createElement('animationSlide');
-                Slide.setAttribute('data-percentage','%');
-                Slide.setAttribute('data-attr-avail','100');
-                Slide.addEventListener('click',function(){
-                    $('.slideSelected').removeClass('slideSelected');
-                    this.classList.add('slideSelected');
-                    self.animationActions('options-enable','',element);
-                    self.updateSlideOptions(element);
-                });
-
-                var slidenumber = document.createElement('span');
-                slidenumber.style.backgroundColor = 'black';
-                slidenumber.innerText = i;
-
-                var deleteslide = document.createElement('span');
-                var deleteslide_i = document.createElement('i');
-                deleteslide_i.setAttribute('class','far fa-trash-alt');
-                deleteslide.style.backgroundColor = 'darkred';
-                deleteslide.style.left = '25px';
-                deleteslide.style.width = '13px';
-                deleteslide.appendChild(deleteslide_i);
-                deleteslide.addEventListener('click',function(){
-                    this.parentNode.remove();
-                    self.animationActions('renumber','');
-                });
-
-                var resetslide = document.createElement('span');
-                var resetslide_i = document.createElement('i');
-                resetslide_i.setAttribute('class','fas fa-sync-alt');
-                resetslide.style.backgroundColor = '#a8d65e';
-                resetslide.style.left = '47px';
-                resetslide.style.width = '13px';
-                resetslide.appendChild(resetslide_i);
-
-                Slide.appendChild(slidenumber);
-                Slide.appendChild(deleteslide);
-                Slide.appendChild(resetslide);
-                animatorTimeline.appendChild(Slide);
-
-            }
-        }
-
-        if(action == 'renumber'){
-            var slides = animatorTimeline.getElementsByTagName('animationslide');
-
-            $.each(slides,function(key,value){
-                value.getElementsByTagName('span')[0].innerText = key+1;
-            });
-        }
-
-        if(action == 'switch-custom'){
-            var el = document.getElementsByClassName("selected-element")[0];
-            var rmadiv = document.getElementById('rmadiv');
-
-            $('#animationTimeline').find('*').not('#newAnimationButton').not('.aTbutton').css({'opacity':'1','pointerEvents':'unset'});
-            $('.aTbutton').css({'pointer-events':''});
-            rmadiv.style.opacity = '0.3';
-            rmadiv.style.pointerEvents = 'none';
-
-            el.style.animationName = '';
-            el.style.animationDuration = Math.floor((Math.random() * 3) + 1);
-            el.style.animationDelay = '0s';
-            el.style.animationTimingFunction = 'linear';
-            el.style.animationIterationCount = 'Infinite';
-
-            $('animationPreview').css('border','');
-            document.getElementById('noa').style.border = '1px solid green';
-        }
-
-        if(action == 'switch-readymade'){
-            var el = document.getElementsByClassName("selected-element")[0];
-            var rmadiv = document.getElementById('rmadiv');
-
-            $('#animationTimeline').find('*').not('#newAnimationButton').not('.aTbutton').css({'opacity':'0.5','pointerEvents':'none'});
-            $('.aTbutton').css({'pointer-events':'none'});
-            rmadiv.style.opacity = '1';
-            rmadiv.style.pointerEvents = 'unset';
-
-            el.style.animationName = '';
-            el.style.animationDuration = Math.floor((Math.random() * 3) + 1);
-            el.style.animationDelay = Math.floor((Math.random() * 8) + 3) + 's';
-            el.style.animationTimingFunction = 'linear';
-            el.style.animationIterationCount = 'Infinite';
-
-            $('animationPreview').css('border','');
-            document.getElementById('noa').style.border = '1px solid green';
-            self.animationActions('options-disable','',element);
+            document.getElementById("animator-preview-element").style.animation = 'preview 1s ease-in-out infinite';
         }
     }
 
-    updateSlideOptions(el){
+    disable(self){
+        const data = self.controller._getModelState();
+        const readyMadeAnimationsContainer = document.getElementById('animator-ready-made-animations');
+        readyMadeAnimationsContainer.style.opacity = '1';
+        readyMadeAnimationsContainer.style.pointerEvents = 'unset';
+
+        $('#animationTimeline').find('*').not('#newAnimationButton').css({'opacity':'0.5','pointerEvents':'none'});
+        document.getElementById('newAnimationButton').style.display = 'block';
+
+        let animationPreviews = document.getElementsByTagName("animationPreview");
+        for (let preview of animationPreviews){ preview.style.border = preview.id === "noAnimationPreview" ? "1px solid green" : "1px solid #d7d7d7"; }
+
+        data.callbacks.onDisable ? data.callbacks.onDisable() : false;
+    }
+
+    enable(self){
+        const data = self.controller._getModelState();
+        const readyMadeAnimationsContainer = document.getElementById('animator-ready-made-animations');
+        readyMadeAnimationsContainer.style.opacity = '0.3';
+        readyMadeAnimationsContainer.style.pointerEvents = 'none';
+
+        $('#animationTimeline').find('*').not('#newAnimationButton').css({'opacity':'1','pointerEvents':'unset'});
+        document.getElementById('newAnimationButton').style.display = 'none';
+
+        data.callbacks.onEnable ? data.callbacks.onEnable() : false;
+    }
+
+    /*updateSlideOptions(el){
         var sSlide = document.getElementsByClassName('slideSelected')[0];
-        var element = document.getElementsByClassName("selected-element")[0];
+        var element = document.getElementById("animator-preview-element");
 
         var percentage = $(sSlide).attr('data-percentage');
 
@@ -673,6 +602,17 @@ class InternalAnimatorTimelineView{
             if(displays[dataFour].displayElement == 'colordisplay'){
                 var colordisplay = document.getElementById(dataFour).style.backgroundColor = dataFourValue;
             }
+        }
+    }*/
+
+    resetElement(){
+        var element = document.getElementById("animator-preview-element");
+        if(element){
+            element.style.animationName = '';
+            element.style.animationDuration = "1s";
+            element.style.animationDelay = '0s';
+            element.style.animationTimingFunction = 'linear';
+            element.style.animationIterationCount = 'infinite';
         }
     }
 }

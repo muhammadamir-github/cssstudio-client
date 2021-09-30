@@ -51,8 +51,9 @@ class InternalImagePickerView{
         const self = this;
         self.controller._updateModelState({ src: img });
 
-        let applyTo = document.getElementsByClassName("selected-element");
-        if(applyTo[0]){
+        let applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element");
+        if(applyTo || applyTo[0]){
+            applyTo = applyTo[0] ? applyTo[0] : applyTo;
             let tag = applyTo[0].tagName.toString().toLowerCase();
             if(tag === "video"){
                 applyTo[0].setAttribute('poster', img.toString().replace(/"/g, ''));
@@ -70,7 +71,7 @@ class InternalImagePickerView{
         const self = this;
         const data = await self.controller._getModelState();
 
-        let applyTo = document.getElementsByClassName("selected-element")[0];
+        let applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
         let currentStyleValue = null;
 
         if(applyTo){

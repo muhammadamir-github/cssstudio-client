@@ -108,7 +108,7 @@ class InternalComboboxView{
                                             style: { display: "none" },
                                             listeners: {
                                                 click: function(e){
-                                                    let applyTo = document.getElementsByClassName("selected-element")[0];
+                                                    let applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
 
                                                     if(self.textKeyMap[data.text]){
                                                         let key = self.textKeyMap[data.text].key;
@@ -156,7 +156,7 @@ class InternalComboboxView{
                                                                 self.changeValue(this, option);
                                                             },
                                                             mouseover: function(){
-                                                                let applyTo = document.getElementsByClassName("selected-element")[0];
+                                                                let applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
 
                                                                 if(self.textKeyMap[data.text]){
                                                                     let key = self.textKeyMap[data.text].key;
@@ -167,7 +167,7 @@ class InternalComboboxView{
                                                                 }
                                                             },
                                                             mouseout: function(){
-                                                                let applyTo = document.getElementsByClassName("selected-element")[0];
+                                                                let applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
 
                                                                 if(self.textKeyMap[data.text]){
                                                                     let key = self.textKeyMap[data.text].key;
@@ -240,7 +240,7 @@ class InternalComboboxView{
                 }else{
                     if(data.customValue.call === "updatePageElement"){
                         selected_a_span.innerText = `${data.text}: ${value}${valueSuffix}`;
-                        document.getElementsByClassName("selected-element")[0].style[key] = `${value}${keyValueSuffix}`;
+                        data.forAnimator === true ? document.getElementById("animator-preview-element").style[key] = `${value}${keyValueSuffix}` : document.getElementsByClassName("selected-element")[0].style[key] = `${value}${keyValueSuffix}`;
                     }
                 }
             }
@@ -259,7 +259,7 @@ class InternalComboboxView{
 
         toggle === true ? this.toggle(this, "hide") : false;
 
-        let applyTo = document.getElementsByClassName("selected-element")[0];
+        let applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
         let key = this.textKeyMap[data.text].key;
 
         if(data.id == "timing"){
@@ -285,7 +285,7 @@ class InternalComboboxView{
         const self = this;
         const data = await self.controller._getModelState();
 
-        let applyTo = document.getElementsByClassName("selected-element")[0];
+        let applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
         if(applyTo){
             let key = self.textKeyMap[data.text].key;
             let currentStyleValue = applyTo && key ? applyTo.style[key] : null;
