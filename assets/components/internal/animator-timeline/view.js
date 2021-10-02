@@ -160,14 +160,11 @@ class InternalAnimatorTimelineView{
                         parent: self._element,
                         attributes: {
                             "data-percentage": "%",
-                            "data-attr-avail": "100",
                         },
                         listeners: {
                             click: function(){
-                                $('.slideSelected').removeClass('slideSelected');
-                                this.classList.add('slideSelected');
-                                self.animationActions('options-enable','');
-                                self.updateSlideOptions();
+                                $('.selected-slide').removeClass('selected-slide');
+                                this.classList.add('selected-slide');
                             }
                         },
                         children: [
@@ -440,7 +437,7 @@ class InternalAnimatorTimelineView{
     }
 
     /*updateSlideOptions(el){
-        var sSlide = document.getElementsByClassName('slideSelected')[0];
+        var sSlide = document.getElementsByClassName('selected-slide')[0];
         var element = document.getElementById("animator-preview-element");
 
         var percentage = $(sSlide).attr('data-percentage');

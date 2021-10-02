@@ -120,6 +120,11 @@ class InternalAnimatorView{
             data: {
                 unit: "px",
                 forAnimator: true,
+                callbacks: {
+                    onApplyForAnimator: function(key,value){
+                        self.updateSlideStyle(key, value);
+                    },
+                },
             },
         });
 
@@ -156,7 +161,9 @@ class InternalAnimatorView{
             let cloneOfSelectedElement = selectedElement[0].cloneNode(true);
             cloneOfSelectedElement.className = "";
             cloneOfSelectedElement.id = "animator-preview-element";
+            cloneOfSelectedElement.getElementsByClassName("eResizer")[0] ? cloneOfSelectedElement.getElementsByClassName("eResizer")[0].remove() : false;
             document.getElementById("animator-preview").appendChild(cloneOfSelectedElement);
+            selectedElement[0].click(); // Deselect
         }
 
         this._element.style.display = "flex";
@@ -270,6 +277,26 @@ class InternalAnimatorView{
             element.style.animationDelay = '0s';
             element.style.animationTimingFunction = 'linear';
             element.style.animationIterationCount = 'infinite';
+        }
+    }
+
+    updateSlideStyle(key, value){
+        const self = this;
+        const data = self.controller._getModelState();
+        const slide = self._element.getElementsByClassName('selected-slide')[0] || null;
+
+        if(value && key && slide){
+            let style = slide.getAttribute("data-style");
+            style = !style ? "" : style;
+
+            if(style.includes(key)){
+                let props = style.split("|").map(x => (x.includes(`${key}:`) ? x = `${key}:${value}` : x)).join("|");
+                style = props;
+            }else{
+                style = `${style}${style ? "|" : ""}${key}:${value}`;
+            }
+
+            slide.setAttribute("data-style", style);
         }
     }
 }

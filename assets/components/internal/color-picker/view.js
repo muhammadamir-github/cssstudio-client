@@ -136,7 +136,7 @@ class InternalColorPickerView{
     setupColorPicker(forid){
         const self = this;
         const data = self.controller._getModelState();
-        self.applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
+        self.applyTo = document.getElementById("animator-preview-element") || document.getElementsByClassName("selected-element")[0];
 
         self.updateStrip(null, self);
         self.updateBox();
@@ -172,7 +172,7 @@ class InternalColorPickerView{
         const self = this;
         const data = self.controller._getModelState();
 
-        self.applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
+        self.applyTo = document.getElementById("animator-preview-element") || document.getElementsByClassName("selected-element")[0];
 
         let boxid = `cpb`;
         let stripid = `cps`;
@@ -188,7 +188,7 @@ class InternalColorPickerView{
         let yaxis = e.offsetY;
 
         var imagedata = box2d.getImageData(xaxis, yaxis, 1, 1).data;
-        let rgba = 'rgba(' + imagedata[0] + ',' + imagedata[1] + ',' + imagedata[2] + ',1)';
+        let rgba = 'rgba(' + imagedata[0] + ',' + imagedata[1] + ',' + imagedata[2] + ', 1)';
         var hexfromrgba = self.rgb2hex(rgba);
 
         if(boxid.includes('animate') || stripid.includes('animate')){
@@ -196,10 +196,12 @@ class InternalColorPickerView{
         }else{
             if(key == 'backgroundColor'){
                 self.applyTo.style.backgroundColor = rgba;
+                self.callback ? self.callback(key, rgba) : false;
             }
 
             if(key == 'color'){
                 self.applyTo.style.color = rgba;
+                self.callback ? self.callback(key, rgba) : false;
             }
 
             if(key == 'borderColor'){
@@ -214,21 +216,30 @@ class InternalColorPickerView{
                         self.applyTo.style.borderColor = rgba;
                     }
                 }
+
+                self.callback ? self.callback(key, rgba) : false;
             }
 
             if(key == 'textDecorationColor'){
                 self.applyTo.style.textDecorationColor = rgba;
+                self.callback ? self.callback(key, rgba) : false;
             }
 
             if(key == 'boxShadow'){
                 var currentboxshadow = self.applyTo.style.boxShadow;
 
                 if(currentboxshadow.includes('rgb')){
-                    var newboxshadow = self.applyTo.style.boxShadow.split(')')[1];
-                    self.applyTo.style.boxShadow = rgba + newboxshadow;
+                    var newBoxShadow = self.applyTo.style.boxShadow.split(')')[1];
+                    newBoxShadow = newBoxShadow ? newBoxShadow : "0px 0px 0px";
+
+                    self.applyTo.style.boxShadow = rgba + newBoxShadow;
+                    self.callback ? self.callback(key, rgba + newBoxShadow) : false;
                 }else{
-                    var newboxshadow = self.applyTo.style.boxShadow;
-                    self.applyTo.style.boxShadow = rgba + newboxshadow;
+                    var newBoxShadow = self.applyTo.style.boxShadow;
+                    newBoxShadow = newBoxShadow ? newBoxShadow : "0px 0px 0px";
+
+                    self.applyTo.style.boxShadow = rgba + newBoxShadow;
+                    self.callback ? self.callback(key, rgba + newBoxShadow) : false;
                 }
             }
 
@@ -236,16 +247,23 @@ class InternalColorPickerView{
                 var currenttextshadow = self.applyTo.style.textShadow;
 
                 if(currenttextshadow.includes('rgb')){
-                    var newtextshadow = self.applyTo.style.textShadow.split(')')[1];
-                    self.applyTo.style.textShadow = rgba + newtextshadow;
+                    var newTextShadow = self.applyTo.style.textShadow.split(')')[1];
+                    newTextShadow = newTextShadow ? newTextShadow : "0px 0px 0px";
+
+                    self.applyTo.style.textShadow = rgba + newTextShadow;
+                    self.callback ? self.callback(key, rgba + newTextShadow) : false;
                 }else{
-                    var newtextshadow = self.applyTo.style.textShadow;
-                    self.applyTo.style.textShadow = rgba + newtextshadow;
+                    var newTextShadow = self.applyTo.style.textShadow;
+                    newTextShadow = newTextShadow ? newTextShadow : "0px 0px 0px";
+
+                    self.applyTo.style.textShadow = rgba + newTextShadow;
+                    self.callback ? self.callback(key, rgba + newTextShadow) : false;
                 }
             }
 
             if(key == 'outlineColor'){
                 self.applyTo.style.outlineColor = rgba;
+                self.callback ? self.callback(key, rgba) : false;
             }
         }
 
@@ -291,6 +309,7 @@ class InternalColorPickerView{
 
         }else{
             self.applyTo.style[key] = color;
+            self.callback ? self.callback(key, color) : false;
         }
 
         self.controller._updateModelState({ color });
@@ -304,10 +323,11 @@ class InternalColorPickerView{
         ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
     }
 
-    show(applyTo, colorDisplay, key){
+    show(applyTo, colorDisplay, key, callback = null){
         this.colorDisplay = colorDisplay;
         this.applyTo = applyTo;
         this.key = key;
+        this.callback = callback ? callback : null;
 
         this.controller._updateModelState({ color: colorDisplay.style.backgroundColor, });
 

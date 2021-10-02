@@ -80,11 +80,11 @@
     z-index: 999999;
 }
 
-.slideSelected{
+.selected-slide{
     border: 1px solid green;
 }
 
-.slideSelected:hover{
+.selected-slide:hover{
     border: 1px solid green;
 }
 

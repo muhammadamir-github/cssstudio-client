@@ -77,7 +77,9 @@ class InternalSliderView{
             if(data.id === "slideFontWeight"){ value = value == 0 ? "normal" : "bold"; }
             dataAttributeBalancer(self.idKeyMap[data.id].key, value);
         }else{
-            updateElement(self.textKeyMap[data.text].key, value);
+            updateElement(self.textKeyMap[data.text].key, value, function(key, value){
+                data.forAnimator === true ? (data.callbacks.onApplyForAnimator ? data.callbacks.onApplyForAnimator(key, value) : false) : false;
+            });
         }
 
         inputElement[0] ? inputElement[0].value = value : false; // Making sure the value is same if changeValue(this function) was called not from an input event.
@@ -92,9 +94,13 @@ class InternalSliderView{
             let key = self.textKeyMap[data.text].key;
             let currentStyleValue = applyTo && key ? (self.transforms.includes(key) ? applyTo.style.transform : applyTo.style[key]) : null;
 
-            if(self.transforms.includes(key) && currentStyleValue && currentStyleValue.includes(key)){
-                let match = await currentStyleValue.match(new RegExp(`${key}\(([^)]+)\)`));
-                currentStyleValue = Array.isArray(match) && match[1] ? match[1].replaceAll("(", "").replaceAll(")", "").replaceAll("deg", "") : null;
+            if(self.transforms.includes(key)){
+                if(currentStyleValue && currentStyleValue.includes(key)){
+                    let match = await currentStyleValue.match(new RegExp(`${key}\(([^)]+)\)`));
+                    currentStyleValue = Array.isArray(match) && match[1] ? match[1].replaceAll("(", "").replaceAll(")", "").replaceAll("deg", "") : null;
+                }else{
+                    currentStyleValue = 0;
+                }
             }
 
             await self.changeValue(self, currentStyleValue);

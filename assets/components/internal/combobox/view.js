@@ -6,7 +6,7 @@ class InternalComboboxView{
             "Font Size": { key: "fontSize", valueSuffix: "px", keyValueSuffix: "px" },
             "Height": { key: "height", valueSuffix: "px", keyValueSuffix: "px" },
             "Width": { key: "width", valueSuffix: "px", keyValueSuffix: "px" },
-            "Border Size": { key: "borderSize", valueSuffix: "px", keyValueSuffix: "px solid black" },
+            "Border Size": { key: "borderWidth", valueSuffix: "px", keyValueSuffix: "px solid black" },
             "Border Radius": { key: "borderRadius", valueSuffix: "px", keyValueSuffix: "px" },
             "Border Style": { key: "borderStyle", valueSuffix: "", keyValueSuffix: "" },
             "Text Align": { key: "textAlign", valueSuffix: "", keyValueSuffix: "" },
@@ -21,8 +21,8 @@ class InternalComboboxView{
             "Letter Space": { key: "letterSpacing", valueSuffix: "px", keyValueSuffix: "px" },
             "Word Space": { key: "wordSpacing", valueSuffix: "px", keyValueSuffix: "px" },
             "Outline Width": { key: "outlineWidth", valueSuffix: "px", keyValueSuffix: "px" },
-            "Box Shadow": { key: "boxShadow", valueSuffix: "", keyValueSuffix: "" },
-            "Text Shadow": { key: "textShadow", valueSuffix: "", keyValueSuffix: "" },
+            "Box Shadow": { key: "boxShadow", valueSuffix: "", keyValueSuffix: "", minCustomValueLength: 11, },
+            "Text Shadow": { key: "textShadow", valueSuffix: "", keyValueSuffix: "", minCustomValueLength: 11, },
             "Text Decoration": { key: "textDecoration", valueSuffix: "", keyValueSuffix: "" },
             "Text Decoration Style": { key: "textDecorationStyle", valueSuffix: "", keyValueSuffix: "" },
             "Font Style": { key: "fontStyle", valueSuffix: "", keyValueSuffix: "" },
@@ -42,9 +42,9 @@ class InternalComboboxView{
             "Delay": { key: "animated", valueSuffix: "s", keyValueSuffix: "s" },
             "Iteration": { key: "animatei", valueSuffix: "", keyValueSuffix: "" },
             "Percentage": { key: "slidePercentage", valueSuffix: "%", keyValueSuffix: "%" },
-            "Opacity": { key: "slideOpacity", valueSuffix: "", keyValueSuffix: "" },
-            "Color 1": { key: "backgroundGradient1", valueSuffix: "", keyValueSuffix: "" },
-            "Color 2": { key: "backgroundGradient2", valueSuffix: "", keyValueSuffix: "" },
+            "Opacity": { key: "opacity", valueSuffix: "", keyValueSuffix: "" },
+            //"Color 1": { key: "backgroundGradient1", valueSuffix: "", keyValueSuffix: "" },
+            //"Color 2": { key: "backgroundGradient2", valueSuffix: "", keyValueSuffix: "" },
             "Font Family": { key: "fontFamily", valueSuffix: "", keyValueSuffix: "" },
             "Google Fonts": { key: "fontFamily", valueSuffix: "", keyValueSuffix: "" }
         };
@@ -97,7 +97,7 @@ class InternalComboboxView{
                                         classes: data.customValue.classes ? data.customValue.classes : [ "custom" ],
                                         style: data.customValue.style ? data.customValue.style : null,
                                         listeners: {
-                                            keyup: function(e){ self.customValueChange(this.value, this, self); },
+                                            keyup: function(e){ self.customValueChange(this.value, this, self, false); },
                                         }
                                     }] : [];
                                 })(),
@@ -112,7 +112,10 @@ class InternalComboboxView{
 
                                                     if(self.textKeyMap[data.text]){
                                                         let key = self.textKeyMap[data.text].key;
-                                                        Globals.colorPicker.toggle(applyTo, this, key);
+                                                        Globals.colorPicker.toggle(applyTo, this, key, function(key, value){
+                                                            const data = self.controller._getModelState();
+                                                            data.forAnimator === true ? (data.callbacks.onApplyForAnimator ? data.callbacks.onApplyForAnimator(key, value) : false) : false;
+                                                        });
                                                     }
                                                 }
                                             }
@@ -210,47 +213,66 @@ class InternalComboboxView{
                 keyValueSuffix = self.initialData.unit ? keyValueSuffix.replaceAll("px", self.initialData.unit).replaceAll("%", data.unit) : keyValueSuffix;
 
                 let inputElement = self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0];
-                if(inputElement){ self.customValueChange(data.value.replaceAll(keyValueSuffix, "").replaceAll(valueSuffix, ""), inputElement, self); }
+                if(inputElement){ self.customValueChange(data.value.replaceAll(keyValueSuffix, "").replaceAll(valueSuffix, ""), inputElement, self, false); }
             }
         }
     }
 
-    customValueChange(value, inputElement, self, toggle = true){
-        if(value){
+    customValueChange(value, inputElement, self, isSyncCall = false){
+        if(value && inputElement && (inputElement === document.activeElement && isSyncCall === false) || (isSyncCall === true && inputElement !== document.activeElement)){
+            // If user is not typing
             const data = self.controller._getModelState();
+            let minCustomValueLength = self.textKeyMap[data.text].minCustomValueLength;
 
-            self.controller._updateModelState({ value });
-            let selected_a_span = inputElement.parentElement.getElementsByTagName("span")[0];
+            if(((value.length >= minCustomValueLength) || !minCustomValueLength) && (value.length > 0)){
+                self.controller._updateModelState({ value });
+                let selected_a_span = inputElement.parentElement.getElementsByTagName("span")[0];
 
-            let key = self.textKeyMap[data.text].key;
-            let valueSuffix = self.textKeyMap[data.text].valueSuffix;
-            let keyValueSuffix = self.textKeyMap[data.text].keyValueSuffix;
+                let key = self.textKeyMap[data.text].key;
+                let valueSuffix = self.textKeyMap[data.text].valueSuffix;
+                let keyValueSuffix = self.textKeyMap[data.text].keyValueSuffix;
+                let applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
 
-            valueSuffix = self.initialData.unit ? valueSuffix.replaceAll("px", self.initialData.unit).replaceAll("%", data.unit) : valueSuffix;
-            keyValueSuffix = self.initialData.unit ? keyValueSuffix.replaceAll("px", self.initialData.unit).replaceAll("%", data.unit) : keyValueSuffix;
-            value = data.unit ? value.replaceAll("px", "").replaceAll("%", "").replaceAll(data.unit, "") : value;
+                valueSuffix = self.initialData.unit ? valueSuffix.replaceAll("px", self.initialData.unit).replaceAll("%", data.unit) : valueSuffix;
+                keyValueSuffix = self.initialData.unit ? keyValueSuffix.replaceAll("px", self.initialData.unit).replaceAll("%", data.unit) : keyValueSuffix;
+                value = data.unit ? (data.unit === "px" ? value.replaceAll("%", "px") : value.replaceAll("px", "%")) : value;
 
-            if(data.customValue.call === "updateElement"){
-                selected_a_span.innerText = `${data.text}: ${value}${valueSuffix}`;
-                updateElement(key, value+valueSuffix);
-            }else{
-                if(data.customValue.call === "dataAttributeBalancer"){
-                    selected_a_span.innerText = `${data.text}: ${value}`;
-                    dataAttributeBalancer(key, value);
+                if(data.customValue.call === "updateElement"){
+                    selected_a_span.innerText = (`${data.text}: ${key === "textShadow" || key === "boxShadow" ? (value.includes("rgb") ? `${value.split(")")[1]}` : "0px 0px 0px") : value}${value.includes(valueSuffix) ? "" : valueSuffix}`).trim();
+
+                    if(key === "textShadow" || key === "boxShadow"){
+                        // For updateElement, value should include the color of text and box shadow
+                        if(!value.includes("rgb")){
+                            if(applyTo.style[key].includes("rgb")){
+                                value = `${applyTo.style[key].split(")")[0]}) ${value}`;
+                            }else{
+                                value = `rgba(0, 0, 0, 1) ${value}`;
+                            }
+                        }
+                    }
+
+                    updateElement(key, value+(value.includes(valueSuffix) ? "" : valueSuffix));
+                    data.forAnimator === true ? (data.callbacks.onApplyForAnimator ? data.callbacks.onApplyForAnimator(key, value+(value.includes(valueSuffix) ? "" : valueSuffix)) : false) : false;
                 }else{
-                    if(data.customValue.call === "updatePageElement"){
-                        selected_a_span.innerText = `${data.text}: ${value}${valueSuffix}`;
-                        data.forAnimator === true ? document.getElementById("animator-preview-element").style[key] = `${value}${keyValueSuffix}` : document.getElementsByClassName("selected-element")[0].style[key] = `${value}${keyValueSuffix}`;
+                    if(data.customValue.call === "dataAttributeBalancer"){
+                        selected_a_span.innerText = `${data.text}: ${value}`;
+                        dataAttributeBalancer(key, value);
+                    }else{
+                        if(data.customValue.call === "updatePageElement"){
+                            selected_a_span.innerText = `${data.text}: ${value}${(value.includes(valueSuffix) ? "" : valueSuffix)}`;
+                            document.getElementsByClassName("selected-element")[0].style[key] = `${value}${keyValueSuffix}`;
+                        }
                     }
                 }
-            }
 
-            inputElement.value = value; // Making sure the value is same if customValueChange(this function) was called not from an input keyup event.
+                inputElement.value = (key === "textShadow" || key === "boxShadow" ? (value.includes("rgb") ? `${value.split(")")[1]}` : "0px 0px 0px") : value).trim(); // Making sure the value is same if customValueChange(this function) was called not from an input keyup event.
+            }
         }
     }
 
     changeValue(optionElement, value, toggle = true){
         const data = this.controller._getModelState();
+
         this.controller._updateModelState({ selected: value });
 
         this._element.getElementsByTagName('selected')[0].getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = `${data.text}: ${value}`;
@@ -277,6 +299,7 @@ class InternalComboboxView{
                 }
             }else{
                 updateElement(key, value);
+                data.forAnimator === true ? (data.callbacks.onApplyForAnimator ? data.callbacks.onApplyForAnimator(key, value) : false) : false;
             }
         }
     }
@@ -301,13 +324,13 @@ class InternalComboboxView{
             }
 
             if(currentStyleValue !== undefined && currentStyleValue !== null && currentStyleValue !== data.unit && typeof data.customValue === "object" && data.customValue !== null){
-                await self.customValueChange(currentStyleValue, self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0], self, false);
+                await self.customValueChange(currentStyleValue, self._element.getElementsByClassName("custom")[0] || self._element.getElementsByClassName("customlarge")[0], self, true);
             }
 
             if(currentStyleValue !== undefined && currentStyleValue !== null && currentStyleValue !== data.unit && typeof data.colorPicker === "object" && data.colorPicker !== null){
                 let colorDisplay = self._element.getElementsByTagName("colordisplay");
                 if(colorDisplay[0]){
-                    colorDisplay[0].style.backgroundColor = currentStyleValue;
+                    colorDisplay[0].style.backgroundColor = key === "textShadow" || key === "boxShadow" ? (currentStyleValue.includes("rgb") ? `${currentStyleValue.split(")")[0]})` : "rgba(0, 0, 0, 1)") : currentStyleValue;
                 }
             }
         }
