@@ -38,10 +38,9 @@ class InternalComboboxView{
             "Background Color": { key: "backgroundColor", valueSuffix: "", keyValueSuffix: "" },
             "Border Color": { key: "borderColor", valueSuffix: "", keyValueSuffix: "" },
             "Text Decoration Color": { key: "textDecorationColor", valueSuffix: "", keyValueSuffix: "" },
-            "Duration": { key: "animatedr", valueSuffix: "s", keyValueSuffix: "s" },
-            "Delay": { key: "animated", valueSuffix: "s", keyValueSuffix: "s" },
-            "Iteration": { key: "animatei", valueSuffix: "", keyValueSuffix: "" },
-            "Percentage": { key: "slidePercentage", valueSuffix: "%", keyValueSuffix: "%" },
+            "Animation Duration": { key: "animationDuration", valueSuffix: "s", keyValueSuffix: "s" },
+            "Animation Delay": { key: "animationDelay", valueSuffix: "s", keyValueSuffix: "s" },
+            "Animation Timing": { key: "animationTimingFunction", valueSuffix: "", keyValueSuffix: "" },
             "Opacity": { key: "opacity", valueSuffix: "", keyValueSuffix: "" },
             //"Color 1": { key: "backgroundGradient1", valueSuffix: "", keyValueSuffix: "" },
             //"Color 2": { key: "backgroundGradient2", valueSuffix: "", keyValueSuffix: "" },
@@ -265,7 +264,7 @@ class InternalComboboxView{
                     }
                 }
 
-                inputElement.value = (key === "textShadow" || key === "boxShadow" ? (value.includes("rgb") ? `${value.split(")")[1]}` : "0px 0px 0px") : value).trim(); // Making sure the value is same if customValueChange(this function) was called not from an input keyup event.
+                inputElement.value = (key === "textShadow" || key === "boxShadow" ? (value.includes("rgb") ? `${value.split(")")[1]}` : "0px 0px 0px") : value.replaceAll("%", "").replaceAll("px", "")).trim(); // Making sure the value is same if customValueChange(this function) was called not from an input keyup event.
             }
         }
     }

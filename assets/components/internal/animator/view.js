@@ -42,7 +42,16 @@ class InternalAnimatorView{
                     classes: [ "fas", "fa-check" ],
                     listeners: {
                         click: function(event){
-                            self.hide();
+                            let selectedElement = document.getElementsByClassName("selected-element");
+                            let element = document.getElementById("animator-preview-element");
+                            if(selectedElement[0] && element){
+                                selectedElement[0].style.animationName = element.style.animationName || "unset";
+                                selectedElement[0].style.animationDuration = element.style.animationDuration || "1s";
+                                selectedElement[0].style.animationDelay = element.style.animationDelay || '0s';
+                                selectedElement[0].style.animationTimingFunction = element.style.animationTimingFunction || 'linear';
+                                selectedElement[0].style.animationIterationCount = element.style.animationIterationCount || 'infinite';
+                                self.hide();
+                            }
                         },
                         mouseover: function(){
                             Globals.tooltip.show(this, "Confirm", "centerBottom");
@@ -143,6 +152,9 @@ class InternalAnimatorView{
                         self._styler.hide();
                         self.resetElement();
                     },
+                    onStylerToggle: function(){
+                        self._styler.toggle();
+                    },
                 }
             }
         });
@@ -163,7 +175,6 @@ class InternalAnimatorView{
             cloneOfSelectedElement.id = "animator-preview-element";
             cloneOfSelectedElement.getElementsByClassName("eResizer")[0] ? cloneOfSelectedElement.getElementsByClassName("eResizer")[0].remove() : false;
             document.getElementById("animator-preview").appendChild(cloneOfSelectedElement);
-            selectedElement[0].click(); // Deselect
         }
 
         this._element.style.display = "flex";

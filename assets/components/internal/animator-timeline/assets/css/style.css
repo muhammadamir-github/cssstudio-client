@@ -47,7 +47,7 @@
     justify-content: center;
     align-items: center;
     padding: 0;
-    z-index: 9999;
+    z-index: 999999999;
 }
 
 #atButtons .aTbutton{
@@ -128,14 +128,19 @@
     transition: opacity 0.5s ease-in-out;
 }
 
-animationSlide .animationSlideButton:nth-child(2){
+animationSlide .animationSlideButton:nth-child(3){
     background-color: darkred;
     right: 5px;
 }
 
-animationSlide .animationSlideButton:nth-child(3){
+animationSlide .animationSlideButton:nth-child(4){
     background-color: #a8d65e;
     right: 25px;
+}
+
+animationSlide .animationSlideButton:nth-child(5){
+    background-color: #1a1a1a;
+    right: 45px;
 }
 
 animationSlide .animationSlideNumber{
@@ -151,6 +156,22 @@ animationSlide .animationSlideNumber{
     padding: 5px;
     height: 20px;
     z-index: 9999999;
+}
+
+animationSlide .animationSlidePercentage{
+    font-family: cursive;
+    left: 5px;
+    position: absolute;
+    font-size: 10px;
+    color: white;
+    padding-left: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    height: 10px;
+    z-index: 9999999;
+    bottom: 0px;
 }
 
 animationSlide{

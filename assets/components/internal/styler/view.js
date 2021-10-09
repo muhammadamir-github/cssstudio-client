@@ -214,6 +214,14 @@ class InternalStylerView{
             { text: "Text Shadow", colorPicker: true, customValue: true, forAnimator: true, options: [] },
             { text: "Box Shadow", colorPicker: true, customValue: true, forAnimator: true, options: [] },
             { text: "Opacity", colorPicker: false, customValue: true, forAnimator: true, options: [] },
+            ...await (() => {
+                return data.forAnimator === true ? [
+                    // Those which should be shown only for animator styler.
+                    { text: "Animation Duration", colorPicker: false, customValue: true, forAnimator: true, options: [] },
+                    { text: "Animation Delay", colorPicker: false, customValue: true, forAnimator: true, options: [] },
+                    { text: "Animation Timing", colorPicker: false, customValue: false, forAnimator: true, options: ["Ease", "Ease-In", "Ease-Out", "Ease-In-Out", "Linear", "Step-Start", "Step-End"] },
+                ] : [];
+            })(),
         ];
 
         if(self._hasLoadedBefore === false){

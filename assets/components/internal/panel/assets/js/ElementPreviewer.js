@@ -47,6 +47,12 @@ class InternalPanelElementPreviewer{
             parent: parent,
             text: `Preview ${elementType}`,
             classes: [ "selected-element" ],
+            style: {
+                "animation-duration": "1s",
+                "animation-delay": "0s",
+                "animation-timing-function": "linear",
+                "animation-iteration-count": "infinite",
+            },
             listeners: {
                 click: function(e){
                     e.stopPropagation();
