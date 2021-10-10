@@ -85,4 +85,23 @@ class InternalPanelElementPreviewer{
 
         this._previewElements.push(elementInfo);
     }
+
+    deleteElementByElementId(elementId = ""){
+        let element = this._previewElements.find(element => (element.element.getAttribute("data-element-id") === elementId));
+        if(element){
+            this._previewElements = this._previewElements.filter(element => (element.element.getAttribute("data-element-id") !== elementId));
+            element.element.remove();
+        }
+    }
+
+    deleteSelectedElement(){
+        let selectedElement = document.getElementsByClassName("selected-element");
+        if(selectedElement){
+            let elementCheck = this._previewElements.find(element => (element.element.getAttribute("data-element-id") === selectedElement.element.getAttribute("data-element-id")));
+            if(elementCheck){
+                this._previewElements = this._previewElements.filter(element => (element.element.getAttribute("data-element-id") !== selectedElement.element.getAttribute("data-element-id")));
+                selectedElement.element.remove();
+            }
+        }
+    }
 }

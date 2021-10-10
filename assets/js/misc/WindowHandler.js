@@ -3,12 +3,16 @@ let Globals = null;
 export default class WindowHandler{
     constructor(){
         Globals = window.globals;
-        Globals.window.body.addEventListener("contextmenu", function(){ return false; });
-        window.addEventListener("keypress", this.keyPress);
+        Globals.window.body.addEventListener("contextmenu", function(){ console.log("contextmenu"); event.preventDefault(); return false; });
+        window.addEventListener("keydown", this.keyDown);
     }
 
-    keyPress(event){
-        let keyCode = (event.which) ? event.which : event.keyCode;
-        console.log(keyCode);
+    async keyDown(event){
+        if(event.key === "Delete"){
+            let panelController = await Globals.components.controller(document.getElementById("panel"));
+            if(panelController){
+                panelController.deleteSelectedElement();
+            }
+        }
     }
 }

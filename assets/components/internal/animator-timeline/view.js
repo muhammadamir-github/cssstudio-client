@@ -335,17 +335,17 @@ class InternalAnimatorTimelineView{
                 css = css_beautify(css);
 
                 document.getElementById("previewAnimation") ? document.getElementById("previewAnimation").remove() : false;
-                let styleEl = Globals.elements.new({
+                let styleElement = Globals.elements.new({
                     type: "style",
                     parent: Globals.window.head,
                     attributes: {
                         id: "previewAnimation",
                     },
-                    html: css,
+                    text: css,
                 });
 
                 document.getElementById("animator-preview-element").style.animationName = "previewAnimation";
-                console.log(css, styleEl);
+                console.log(css, styleElement);
 
                 button.classList.remove("fa-play");
                 button.classList.add("fa-pause");

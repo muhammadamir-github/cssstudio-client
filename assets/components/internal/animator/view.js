@@ -45,7 +45,27 @@ class InternalAnimatorView{
                             let selectedElement = document.getElementsByClassName("selected-element");
                             let element = document.getElementById("animator-preview-element");
                             if(selectedElement[0] && element){
-                                selectedElement[0].style.animationName = element.style.animationName || "unset";
+                                let animationName = element.style.animationName || "unset";
+
+                                if(animationName === "previewAnimation"){
+                                    let animationStyle = document.getElementById("previewAnimation");
+                                    if(animationStyle){
+                                        document.getElementById("customAnimation") ? document.getElementById("customAnimation").remove() : false;
+                                        let styleElement = Globals.elements.new({
+                                            type: "style",
+                                            parent: Globals.window.head,
+                                            attributes: {
+                                                id: "customAnimation",
+                                            },
+                                            html: animationStyle.innerText.replace("@keyframes previewAnimation", "@keyframes customAnimation"),
+                                        });
+
+                                        animationStyle.remove();
+                                        animationName = "customAnimation";
+                                    }
+                                }
+
+                                selectedElement[0].style.animationName = animationName;
                                 selectedElement[0].style.animationDuration = element.style.animationDuration || "1s";
                                 selectedElement[0].style.animationDelay = element.style.animationDelay || '0s';
                                 selectedElement[0].style.animationTimingFunction = element.style.animationTimingFunction || 'linear';

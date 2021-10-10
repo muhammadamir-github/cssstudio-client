@@ -256,7 +256,7 @@ class InternalPanelFinisher{
         let animationCSS = '';
 
         if(styleCss.includes('animation-name')){
-            const response = await Globals.api.request({ route: `animation/${e.style.animationName}`, method: "get" });
+            const response = await Globals.api.request({ route: `animation/${element.style.animationName}`, method: "get" });
             if(response.success === true){
                 document.getElementById('textareaA').value = response.data.css;
             }
