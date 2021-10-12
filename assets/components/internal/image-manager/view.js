@@ -98,19 +98,15 @@ class InternalImageManagerView{
                             listeners: {
                                 keydown: async function(e){
                                     if(e.keyCode == 13){
-                                        /*let checkboxOption = this.parentElement.getElementsByClassName("checkbox-one")[0];
-                                        if(stateOf.checkbox(checkboxOption) == 1){
-                                            Globals.pageHandler.mediaManager.searchUserMedia("images",this.value);
-                                        }else{*/
-                                            this.setAttribute("disabled", true);
-                                            setTimeout(() => {
-                                                this.setAttribute("disabled", false);
-                                            }, 60000)
-
-                                            await self.reset();
-                                            await self.search(this.value);
+                                        this.setAttribute("disabled", true);
+                                        setTimeout(() => {
                                             this.setAttribute("disabled", false);
-                                        //}
+                                            console.log(this);
+                                        }, 60000)
+
+                                        await self.reset();
+                                        await self.search(this.value);
+                                        this.setAttribute("disabled", false);
                                     }
                                 }
                             }

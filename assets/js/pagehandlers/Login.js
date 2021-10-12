@@ -103,7 +103,7 @@ class LoginHandler{
         if(res.success === true){
             self.sr(res.data);
         }else{
-            Globals.notificationHandler.new('An Error Occured, please try again later.');
+            //Globals.notificationHandler.new('An Error Occured, please try again later.');
             document.getElementById('signupform').style.opacity = '1';
             document.getElementById('signupform').style.pointerEvents = 'unset';
 		}
@@ -114,16 +114,16 @@ class LoginHandler{
         document.getElementById('signupform').style.pointerEvents = 'unset';
 
         if(response.message == 'an error occured'){
-            Globals.notificationHandler.new('An Error Occured, please make sure you have filled all fields correctly.');
+            //Globals.notificationHandler.new('An Error Occured, please make sure you have filled all fields correctly.');
         }else{
             if(response.message == 'We have sent you a mail with instructions, please verify your account to get started.'){
-                Globals.notificationHandler.new('Verification mail has been sent to your email address successfully , please verify your email to get started.');
+                //Globals.notificationHandler.new('Verification mail has been sent to your email address successfully , please verify your email to get started.');
             }else{
                 if(response.message == 'Email address already registered with us.'){
-                    Globals.notificationHandler.new('Error Occured, An account has been already registered with this email address.');
+                    //Globals.notificationHandler.new('Error Occured, An account has been already registered with this email address.');
                 }else{
                     if(response.message == 'Signups are put on hold for sometime.'){
-                        Globals.notificationHandler.new('Error, Maintenance Undergoing.');
+                        //Globals.notificationHandler.new('Error, Maintenance Undergoing.');
                     }
                 }
             }
@@ -181,7 +181,7 @@ class LoginHandler{
         if(res.success === true){
             self.lr(res.data);
         }else{
-            Globals.notificationHandler.new('Error , Invalid Credentials');
+            //Globals.notificationHandler.new('Error , Invalid Credentials');
             document.getElementById('loginform').style.opacity = '1';
             document.getElementById('loginform').style.pointerEvents = 'unset';
 		}
@@ -189,24 +189,24 @@ class LoginHandler{
 
     lr(response){
         if(response.message == 'an error occured.'){
-            Globals.notificationHandler.new('An Error Occured, please make sure you have filled all fields correctly.');
+            //Globals.notificationHandler.new('An Error Occured, please make sure you have filled all fields correctly.');
         }
 
         if(response.message == 'Please verify your account to continue.'){
-            Globals.notificationHandler.new('Error , Your email is not verified. We have just sent you a mail with instructions, Please verify your email.')
+            //Globals.notificationHandler.new('Error , Your email is not verified. We have just sent you a mail with instructions, Please verify your email.')
         }
 
         if(response.message == 'Unauthorized'){
-            Globals.notificationHandler.new('Error , Incorrect Credentials Entered.');
+            //Globals.notificationHandler.new('Error , Incorrect Credentials Entered.');
         }
 
         if(response.message == 'Deactivated'){
-            Globals.notificationHandler.new('Error , You can not login to a deactivated account.');
+            //Globals.notificationHandler.new('Error , You can not login to a deactivated account.');
         }
 
         if(response.message == 'Logged in successfully!'){
 
-            Globals.notificationHandler.new('Logged in successfully, redirecting you to profile page....');
+            //Globals.notificationHandler.new('Logged in successfully, redirecting you to profile page....');
             localStorage.setItem("auth",response.accessToken);
             setTimeout(function(){
                 window.location.href = '../profile/';
@@ -215,7 +215,7 @@ class LoginHandler{
         }
 
         if(response.message == "User doesn't exist"){
-            Globals.notificationHandler.new('Error , Incorrect Credentials Entered.');
+            //Globals.notificationHandler.new('Error , Incorrect Credentials Entered.');
         }
 
         document.getElementById('loginform').style.opacity = '1';

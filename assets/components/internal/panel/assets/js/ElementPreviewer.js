@@ -84,6 +84,24 @@ class InternalPanelElementPreviewer{
         });
 
         this._previewElements.push(elementInfo);
+        console.log(this._previewElements);
+    }
+
+    deleteChildElements(parentElement, recursrive = false){
+        let parentElementId = parentElement.getAttribute("data-element-id") || "";
+        let doesParentExists = this._previewElements.find(element => (element.element.getAttribute("data-element-id") === parentElementId));
+
+        if(doesParentExists){
+            let childElements = this._previewElements.filter(element => (element.element.parentElement.getAttribute("data-element-id") === parentElementId));
+            for (let child of childElements){
+                if(recursrive === true){
+                    this.deleteChildElements(child.element, true);
+                }
+
+                this._previewElements = this._previewElements.filter(element => (element.element.getAttribute("data-element-id") !== child.element.getAttribute("data-element-id")));
+                child.element.remove();
+            }
+        }
     }
 
     deleteElementByElementId(elementId = ""){
@@ -95,12 +113,13 @@ class InternalPanelElementPreviewer{
     }
 
     deleteSelectedElement(){
-        let selectedElement = document.getElementsByClassName("selected-element");
+        let selectedElement = document.getElementsByClassName("selected-element")[0] || null;
         if(selectedElement){
-            let elementCheck = this._previewElements.find(element => (element.element.getAttribute("data-element-id") === selectedElement.element.getAttribute("data-element-id")));
+            let elementCheck = this._previewElements.find(element => (element.element.getAttribute("data-element-id") === selectedElement.getAttribute("data-element-id")));
             if(elementCheck){
-                this._previewElements = this._previewElements.filter(element => (element.element.getAttribute("data-element-id") !== selectedElement.element.getAttribute("data-element-id")));
-                selectedElement.element.remove();
+                this.deleteChildElements(selectedElement, true);
+                this._previewElements = this._previewElements.filter(element => (element.element.getAttribute("data-element-id") !== selectedElement.getAttribute("data-element-id")));
+                selectedElement.remove();
             }
         }
     }

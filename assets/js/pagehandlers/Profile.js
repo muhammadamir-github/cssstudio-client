@@ -463,10 +463,10 @@ class ProfileHandler{
         const response = await Globals.api.request({ route: "me/profile/update", method: "post", data: { 'email': email, 'password': password, 'phone': phone, 'username': username }, });
         if(response.success === true){
             if(response.message == 'Sent confirmation mail.'){
-                Globals.notificationHandler.new('Confirmation mail sent successfully , Please check your email.');
+                //Globals.notificationHandler.new('Confirmation mail sent successfully , Please check your email.');
             }
         }else{
-            Globals.notificationHandler.new('An error occured, please try again later.');
+            //Globals.notificationHandler.new('An error occured, please try again later.');
         }
     }
 
@@ -498,9 +498,9 @@ class ProfileHandler{
     async deactivateacc(){
         const response = await Globals.api.request({ route: "me/profile/deactivate", method: "get" });
         if(response.success === true){
-            Globals.notificationHandler.new('We have successfully sent you a deactivation confirm mail.Please check your email.');
+            //Globals.notificationHandler.new('We have successfully sent you a deactivation confirm mail.Please check your email.');
         }else{
-            Globals.notificationHandler.new('Error , please try again.');
+            //Globals.notificationHandler.new('Error , please try again.');
         }
     }
 

@@ -225,7 +225,7 @@ class InternalStylerView{
         ];
 
         if(self._hasLoadedBefore === false){
-            let googleFonts = Array.isArray(Globals.pageHandler.WebFonts) && Globals.pageHandler.WebFonts.length > 0 ? Globals.pageHandler.WebFonts : await getGoogleFonts();
+            let googleFonts = (Array.isArray(Globals.pageHandler.WebFonts) && Globals.pageHandler.WebFonts.length > 0 ? Globals.pageHandler.WebFonts : await getGoogleFonts()) || [];
             comboboxes = [{ text: "Google Fonts", colorPicker: false, customValue: false, options: googleFonts.map(font => {
                 return font.variants.map(variant => {
                     return (font.family + ' ' + variant).replace(/ /g,"_")

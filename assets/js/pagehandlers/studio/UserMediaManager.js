@@ -124,11 +124,11 @@ class UserMediaManager{
             self.refreshMedia();
 
             if(response.data.Message == 'Media deleted successfully'){
-                Globals.notificationHandler.new('Success, '+response.data.Message);
+                //Globals.notificationHandler.new('Success, '+response.data.Message);
             }
 
             if(response.data.Message == "You don't have permissions to delete this media." || response.data.Message == "Invalid Input"){
-                Globals.notificationHandler.new('Error, '+response.data.Message);
+                //Globals.notificationHandler.new('Error, '+response.data.Message);
             }
 
             if(type == 'Image'){
@@ -215,11 +215,11 @@ class UserMediaManager{
             console.log(message);
 
             if(message == 'Media updated successfully'){
-                Globals.notificationHandler.new('Success, '+message);
+                //Globals.notificationHandler.new('Success, '+message);
             }
 
             if(message == "You don't have permissions to delete this media." || message == "Invalid Input"){
-                Globals.notificationHandler.new('Error, '+message);
+                //Globals.notificationHandler.new('Error, '+message);
             }
 
             if(type == 'image'){
@@ -309,7 +309,7 @@ class UserMediaManager{
 
         if(type == 'Image'){
             if(file_extension !== 'png' && file_extension !== 'jpeg' && file_extension !== 'jpg'){
-                Globals.notificationHandler.new('Error, you can only upload png/jpeg/jpg type image.');
+                //Globals.notificationHandler.new('Error, you can only upload png/jpeg/jpg type image.');
                 upload = 0;
                 return false;
             }else{
@@ -318,7 +318,7 @@ class UserMediaManager{
         }else{
             if(type == 'Video'){
                 if(file_extension !== 'mp4'){
-                    Globals.notificationHandler.new('Error, you can only upload mp4 type video.');
+                    //Globals.notificationHandler.new('Error, you can only upload mp4 type video.');
                     upload = 0;
                     return false;
                 }else{
@@ -367,14 +367,14 @@ class UserMediaManager{
                 }
 
                 if(message.includes('Not Enough Space')){
-                    Globals.notificationHandler.new('Error, '+message);
+                    //Globals.notificationHandler.new('Error, '+message);
                 }else{
                     if(type == 'Image'){
                         setTimeout(function(){self.showUserImages(null)},1000);
                         if(message.includes('Invalid')){
 
                         }else{
-                            Globals.notificationHandler.new('Success, '+message);
+                            //Globals.notificationHandler.new('Success, '+message);
                         }
                     }else{
                         if(type == 'Video'){
@@ -382,7 +382,7 @@ class UserMediaManager{
                             if(message.includes('Invalid')){
 
                             }else{
-                                Globals.notificationHandler.new('Success, '+message);
+                                //Globals.notificationHandler.new('Success, '+message);
                             }
                         }
                     }

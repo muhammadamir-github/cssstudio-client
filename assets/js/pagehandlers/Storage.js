@@ -234,7 +234,7 @@ class StorageHandler{
 
         const response = await Globals.api.request({ route: `me/${type}/delete`, method: "post", data });
         if(response.success === true){
-            Globals.notificationHandler.new(type+' deleted successfully.');
+            //Globals.notificationHandler.new(type+' deleted successfully.');
             element.parentNode.remove();
         }
     }

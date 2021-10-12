@@ -278,7 +278,7 @@ class InternalAnimatorView{
 
             await this.controller._updateModelState({ readyMadeAnimations: response.data.success, });
         }else{
-            Globals.notificationHandler.new('Error, could not load ready made animations. Please retry after some time.');
+            //Globals.notificationHandler.new('Error, could not load ready made animations. Please retry after some time.');
         }
     }
 

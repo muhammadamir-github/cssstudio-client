@@ -25,47 +25,7 @@ class InternalPanelFinisher{
                                         text: "Save to storage",
                                         id: "savebutton",
                                         click: function(){
-                                            let finishdiv_textarea_element = document.getElementById("textareaE");
-                                            let finishdiv_textarea_animation = document.getElementById("textareaA");
-                                            let eName = document.getElementById("elementName");
-                                            let aName = document.getElementById("animationName");
-
-                                            if(finishdiv_textarea_element.value !== '' && finishdiv_textarea_animation.value !== ''){
-                                                if(aName.value == '' && eName.value == null){
-                                                    Globals.notificationHandler.new('Error, please enter animation and element names.');
-                                                    return;
-                                                }
-
-                                                if(eName.value == '' || eName.value == null){
-                                                    Globals.notificationHandler.new('Error, please enter element name.');
-                                                    return;
-                                                }
-
-                                                if(aName.value == '' || aName.value == null){
-                                                    Globals.notificationHandler.new('Error, please enter animation name.');
-                                                    return;
-                                                }
-
-                                                if(aName.value !== '' || eName.value == ''){
-                                                    saveToStorage();
-                                                }
-                                            }
-
-                                            if(finishdiv_textarea_element.value !== '' && finishdiv_textarea_animation.value == ''){
-                                                if(eName.value !== ''){
-                                                    saveToStorage();
-                                                }else{
-                                                    Globals.notificationHandler.new('Error, please enter element name.');
-                                                }
-                                            }
-
-                                            if(finishdiv_textarea_animation.value !== '' && finishdiv_textarea_element.value == ''){
-                                                if(aName.value !== ''){
-                                                    saveToStorage();
-                                                }else{
-                                                    Globals.notificationHandler.new('Error, please enter animation name.');
-                                                }
-                                            }
+                                            saveToStorage();
                                         }
                                     },*/
                                     {
@@ -221,7 +181,12 @@ class InternalPanelFinisher{
             "top",
             "left",
             "overflow",
-            "textOverflow"
+            "textOverflow",
+            "animationName",
+            "animationDuration",
+            "animationDelay",
+            "animationIterationCount",
+            "animationTimingFunction",
         ];
 
         for(var i=0; i<propertiesToInclude.length; i++){
@@ -233,19 +198,11 @@ class InternalPanelFinisher{
             }
         }
 
-        if(computedStyle.getPropertyValue("animation-name") && computedStyle.getPropertyValue("animation-name") !== "none" && computedStyle.getPropertyValue("animation-name") !== "preview"){
-            style += "\n animation-name" + ':' + computedStyle.getPropertyValue("animation-name")+';';
-            style += "\n animation-duration" + ':' + computedStyle.getPropertyValue("animation-duration")+';';
-            style += "\n animation-delay" + ':' + computedStyle.getPropertyValue("animation-delay")+';';
-            style += "\n animation-iteration-count" + ':' + computedStyle.getPropertyValue("animation-iteration-count")+';';
-            style += "\n animation-timing-function" + ':' + computedStyle.getPropertyValue("animation-timing-function")+';';
-        }else{
-            if(computedStyle.getPropertyValue("animation")){
-                style += "\n animation" + ':' + computedStyle.getPropertyValue("animation")+';';
-            }else{
-                style += "\n";
-            }
-        }
+        /*style += "\n animation-name" + ':' + computedStyle.getPropertyValue("animation-name")+';';
+        style += "\n animation-duration" + ':' + computedStyle.getPropertyValue("animation-duration")+';';
+        style += "\n animation-delay" + ':' + computedStyle.getPropertyValue("animation-delay")+';';
+        style += "\n animation-iteration-count" + ':' + computedStyle.getPropertyValue("animation-iteration-count")+';';
+        style += "\n animation-timing-function" + ':' + computedStyle.getPropertyValue("animation-timing-function")+';';*/
 
         return css_beautify(`{\n ${style} \n}`);
     }
@@ -253,25 +210,15 @@ class InternalPanelFinisher{
     async refresh(){
         let element = document.getElementsByClassName("selected-element")[0];
         let styleCss = this.getStyle(element);
-        let animationCSS = '';
+        let animationCss = "";
 
-        if(styleCss.includes('animation-name')){
-            const response = await Globals.api.request({ route: `animation/${element.style.animationName}`, method: "get" });
-            if(response.success === true){
-                document.getElementById('textareaA').value = response.data.css;
-            }
+        if(element.style.animationName === "customAnimation"){
+            let animation = document.getElementById("customAnimation").innerText;
+            animationCss = css_beautify(animation);
         }else{
-            if(styleCss.includes('animation:')){
-                let animationProperty = element.style.animation;
-
-                if(animationProperty.includes('preview')){
-                    let animation = document.getElementsByTagName('style')[0].innerText;
-                    animationCSS =  animation;
-                    animationCSS = animationCSS.split('{').join('{\n');
-                    animationCSS = animationCSS.split('}').join('}\n');
-                    animationCSS = animationCSS.split(';').join(';\n');
-                    animationCSS = animationCSS.split('@keyframes preview{').join('\n \n@keyframes preview{\n \n');
-                }
+            if(element.style.animationName && element.style.animationName !== "none" && element.style.animationName !== "unset"){
+                const response = await Globals.api.request({ route: `animation/${element.style.animationName}`, method: "get" });
+                animationCss = response.data.css || "";
             }
         }
 
@@ -290,12 +237,8 @@ class InternalPanelFinisher{
             }
         }
 
-        if(animationCSS){
-            document.getElementById('textareaE').value = css_beautify('.element' + styleCss + "\n \nGoogle Fonts: \n \n"+googleFontInfo);
-            document.getElementById('textareaA').value = css_beautify(animationCSS);
-        }else{
-            document.getElementById('textareaE').value = css_beautify('.element' + styleCss + "\n \nGoogle Fonts: \n \n"+googleFontInfo);
-        }
+        document.getElementById('textareaE').value = css_beautify('.element' + styleCss + "\n \nGoogle Fonts: \n \n"+googleFontInfo);
+        document.getElementById('textareaA').value = animationCss;
     }
 
     saveAsFile(){
