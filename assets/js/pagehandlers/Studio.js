@@ -170,29 +170,5 @@ class StudioHandler{
 
     setupForElement(){
         const self = this;
-
-        /*var callbilly = Globals.elements.new({
-            type: "callbilly",
-            parent: Globals.window.body
-        });
-
-        var billyDiv = Globals.elements.new({
-            type: "billy",
-            parent: Globals.window.body,
-            html: '<tongue>Hey , how can i help you today?</tongue><orders><type data-panel-trigger="suggestion"><p>I would like to have a suggestion.</p><div class="billyspinner"></div></type><order class="suggestion"><p>Background Color</p></order><order class="suggestion"><p>Font Color</p></order></orders>'
-        });*/
-    }
-
-    planExpired(){
-        const self = this;
-        document.getElementsByTagName('loader')[0].remove();
-        var exatExpiry = moment(self.data.expires_at.substring(0,10)).format("dddd, MMMM Do YYYY");
-        Globals.membershipHandler.notice('plan-expired',exatExpiry);
-
-        setTimeout(function(){
-            window.location.href = '../profile/';
-        },7500);
-
-        document.getElementsByTagName('head')[0].innerHTML += '<link rel="stylesheet" type="text/css" href="../assets/css/notice.css">';
     }
 }
