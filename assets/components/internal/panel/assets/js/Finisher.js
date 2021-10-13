@@ -206,11 +206,11 @@ class InternalPanelFinisher{
         let styleCss = this.getStyle(element);
         let animationCss = "";
 
-        if(element.style.animationName === "customAnimation"){
+        if(element.style.animationName === "customAnimation" && document.getElementById("customAnimation")){
             let animation = document.getElementById("customAnimation").innerText;
             animationCss = css_beautify(animation);
         }else{
-            if(element.style.animationName && element.style.animationName !== "none" && element.style.animationName !== "unset"){
+            if(element.style.animationName && element.style.animationName !== "none" && element.style.animationName !== "unset" && element.style.animationName !== "customAnimation"){
                 const response = await Globals.api.request({ route: `animation/${element.style.animationName}`, method: "get" });
                 animationCss = response.data.css || "";
             }
@@ -220,12 +220,12 @@ class InternalPanelFinisher{
         let generalFontFamilies = ["sans", "sans-serif", "helvectia", "monospace", "cursive", "fantasy", "arial"];
         let googleFontInfo = "none";
 
-        if(!generalFontFamilies.includes(fontFamily)){
+        if(!generalFontFamilies.includes(fontFamily.toString().toLowerCase())){
             for(let i=0; i<Globals.pageHandler.WebFonts.length; i++){
-                let newFontFamily = Globals.pageHandler.WebFonts[i].family.replace(/ /g,"_");
-                let isCorrectFontFamily = (fontFamily.length < newFontFamily.length && newFontFamily.includes(fontFamily)) || (fontFamily.length > newFontFamily.length && fontFamily.includes(newFontFamily));
+                let currentFontFamily = Globals.pageHandler.WebFonts[i].family;
+                let isCorrectFontFamily = Globals.pageHandler.WebFonts[i].variants.find(variant => ((`${currentFontFamily} ${variant}`).replace(/ /g,"_") === fontFamily)) || null;
                 if(isCorrectFontFamily){
-                    googleFontInfo = Globals.pageHandler.WebFonts[i].family + ' : ' + JSON.stringify(Globals.pageHandler.WebFonts[i].files);
+                    googleFontInfo = (`${currentFontFamily}: ${JSON.stringify(Globals.pageHandler.WebFonts[i].files)}`);
                     break;
                 }
             }

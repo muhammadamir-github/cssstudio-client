@@ -117,9 +117,11 @@ class InternalStylerView{
         self._element.getElementsByClassName("eResizer")[0].classList.add("eResizer-visible");
 
         await this.load();
-        setInterval(async () => {
-            await self.syncValues();
-        }, 1000);
+        if(data.forAnimator === false){
+            setInterval(async () => {
+                await self.syncValues();
+            }, 1000);
+        }
     }
 
     async show(){
@@ -140,23 +142,26 @@ class InternalStylerView{
     }
 
     async syncValues(){
-        let comboboxes = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("combobox");
-        await [...comboboxes].forEach(async (x) => {
-            let controller = await Globals.components.controller(x);
-            await controller.syncValue();
-        });
+        let data = await this.controller._getModelState();
+        if(data.forAnimator === false){
+            let comboboxes = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("combobox");
+            await [...comboboxes].forEach(async (x) => {
+                let controller = await Globals.components.controller(x);
+                await controller.syncValue();
+            });
 
-        let sliders = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("slider");
-        await [...sliders].forEach(async (x) => {
-            let controller = await Globals.components.controller(x);
-            await controller.syncValue();
-        });
+            let sliders = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("slider");
+            await [...sliders].forEach(async (x) => {
+                let controller = await Globals.components.controller(x);
+                await controller.syncValue();
+            });
 
-        let imagepickers = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("imagepicker");
-        await [...imagepickers].forEach(async (x) => {
-            let controller = await Globals.components.controller(x);
-            await controller.syncValue();
-        });
+            let imagepickers = this._element.getElementsByClassName("flex-container")[0].getElementsByTagName("imagepicker");
+            await [...imagepickers].forEach(async (x) => {
+                let controller = await Globals.components.controller(x);
+                await controller.syncValue();
+            });
+        }
     }
 
     async reset(){

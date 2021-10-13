@@ -293,20 +293,14 @@ class InternalAnimatorTimelineView{
         }
     }
 
-    playAnimation(button){
-        const self = this;
-        const data = self.controller._getModelState();
-        let transforms = ["rotateX", "rotateY", "skewX", "skewY", "scaleX", "scaleY"];
+    createPreviewAnimation(){
+        try{
+            const self = this;
+            const data = self.controller._getModelState();
+            let transforms = ["rotateX", "rotateY", "skewX", "skewY", "scaleX", "scaleY"];
+            let css = "@keyframes previewAnimation{";
 
-        if(button && data.slides && Array.isArray(data.slides) && document.getElementById("animator-preview-element")){
-            if(button.classList.contains("fa-pause")){
-                document.getElementById("previewAnimation") ? document.getElementById("previewAnimation").remove() : false;
-                document.getElementById("animator-preview-element").style.animationName = "unset";
-
-                button.classList.remove("fa-pause");
-                button.classList.add("fa-play");
-            }else{
-                let css = "@keyframes previewAnimation{";
+            if(data.slides && Array.isArray(data.slides)){
                 for (let slide of data.slides){
                     let percentage = parseInt(slide.element.getAttribute("data-percentage")) || 0;
                     let slideStyle = slide.element.getAttribute("data-style") || "";
@@ -332,6 +326,24 @@ class InternalAnimatorTimelineView{
                 }
 
                 css += "\n}";
+            }else{ css += "}"; }
+
+            return css;
+        }catch(error){}
+
+        return "";
+    }
+
+    playAnimation(button){
+        const self = this;
+        const data = self.controller._getModelState();
+
+        if(button && data.slides && Array.isArray(data.slides) && document.getElementById("animator-preview-element")){
+            if(button.classList.contains("fa-pause")){
+                button.classList.remove("fa-pause");
+                button.classList.add("fa-play");
+            }else{
+                let css = self.createPreviewAnimation() || "";
                 css = css_beautify(css);
 
                 document.getElementById("previewAnimation") ? document.getElementById("previewAnimation").remove() : false;
@@ -345,7 +357,6 @@ class InternalAnimatorTimelineView{
                 });
 
                 document.getElementById("animator-preview-element").style.animationName = "previewAnimation";
-                console.log(css, styleElement);
 
                 button.classList.remove("fa-play");
                 button.classList.add("fa-pause");

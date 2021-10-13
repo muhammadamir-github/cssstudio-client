@@ -7,7 +7,6 @@ const global_requiredFiles = {
         { type: "icon", src: "icon2.png", isURL: false, isRaw: false, }
     ],
     css: [
-        { type: "css", src: "MediaQueries.css", isURL: false, isRaw: false, },
         { type: "css", src: "misc/Body.css", isURL: false, isRaw: false, },
         { type: "css", src: "misc/Loader.css", isURL: false, isRaw: false, },
         { type: "css", src: "misc/Notification.css", isURL: false, isRaw: false, },

@@ -100,13 +100,12 @@ class InternalImageManagerView{
                                     if(e.keyCode == 13){
                                         this.setAttribute("disabled", true);
                                         setTimeout(() => {
-                                            this.setAttribute("disabled", false);
-                                            console.log(this);
-                                        }, 60000)
+                                            this.removeAttribute("disabled");
+                                        }, 60000);
 
                                         await self.reset();
                                         await self.search(this.value);
-                                        this.setAttribute("disabled", false);
+                                        this.removeAttribute("disabled");
                                     }
                                 }
                             }

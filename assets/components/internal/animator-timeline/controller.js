@@ -26,4 +26,5 @@ class InternalAnimatorTimelineController{
     show(...args){ this.view.show(...args); }
     hide(...args){ this.view.hide(...args); }
     toggle(...args){ this.view.toggle(...args); }
+    createPreviewAnimation(){ return this.view.createPreviewAnimation(); }
 }

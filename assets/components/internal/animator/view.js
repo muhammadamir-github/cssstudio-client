@@ -44,25 +44,34 @@ class InternalAnimatorView{
                         click: function(event){
                             let selectedElement = document.getElementsByClassName("selected-element");
                             let element = document.getElementById("animator-preview-element");
+
                             if(selectedElement[0] && element){
                                 let animationName = element.style.animationName || "unset";
 
                                 if(animationName === "previewAnimation"){
+                                    let css = "";
                                     let animationStyle = document.getElementById("previewAnimation");
                                     if(animationStyle){
-                                        document.getElementById("customAnimation") ? document.getElementById("customAnimation").remove() : false;
-                                        let styleElement = Globals.elements.new({
-                                            type: "style",
-                                            parent: Globals.window.head,
-                                            attributes: {
-                                                id: "customAnimation",
-                                            },
-                                            html: animationStyle.innerText.replace("@keyframes previewAnimation", "@keyframes customAnimation"),
-                                        });
+                                        css = animationStyle.innerText.replace("@keyframes previewAnimation", "@keyframes customAnimation");
 
                                         animationStyle.remove();
-                                        animationName = "customAnimation";
+                                    }else{
+                                        css = self._timeline.createPreviewAnimation() || "";
+                                        css = css.replace("@keyframes previewAnimation", "@keyframes customAnimation");
+                                        css = css_beautify(css);
                                     }
+
+                                    document.getElementById("customAnimation") ? document.getElementById("customAnimation").remove() : false;
+                                    let styleElement = Globals.elements.new({
+                                        type: "style",
+                                        parent: Globals.window.head,
+                                        attributes: {
+                                            id: "customAnimation",
+                                        },
+                                        html: css,
+                                    });
+
+                                    animationName = "customAnimation";
                                 }
 
                                 selectedElement[0].style.animationName = animationName;
@@ -167,6 +176,7 @@ class InternalAnimatorView{
                     onEnable: function(){
                         self._styler.show();
                         self.resetElement();
+                        document.getElementById("animator-preview-element") ? document.getElementById("animator-preview-element").style.animationName = "previewAnimation" : false;
                     },
                     onDisable: function(){
                         self._styler.hide();
