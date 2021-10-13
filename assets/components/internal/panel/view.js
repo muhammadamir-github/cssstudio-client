@@ -63,12 +63,7 @@ class InternalPanelView{
             },
             listeners: {
                 click: function(event){
-                    /*if(event.target.id == this.id || event.target.id == 'advance' || event.target.id == 'animate'){
-                        document.getElementsByClassName('shapechangediv')[0].style.opacity = '0';
-                        setTimeout(function(){
-                            document.getElementsByClassName('shapechangediv')[0].style.display = 'none';
-                        }, 1000);
-                    }*/
+
                 }
             },
             before: before,
@@ -115,14 +110,5 @@ class InternalPanelView{
     newPreviewElement(elementType){
         const self = this;
         self._elementPreviewer.add(elementType);
-    }
-
-    setEnvironment(element){
-        const self = this;
-
-        //$('#stepsdiv').remove();
-        //$('#advance').remove();
-        //$('#animate').remove();
-        //$('giphy').remove();
     }
 }

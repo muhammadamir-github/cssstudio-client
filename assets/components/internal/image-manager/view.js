@@ -270,9 +270,6 @@ class InternalImageManagerView{
 
     async loadImage(imageData){
         const self = this;
-        //let path = image.largeImageURL ? image.largeImageURL : image.urls && image.urls.full ? image.urls.full : image.images && image.images.original && image.images.original.url ? image.images.original.url : null;
-        //let title = image.tags || image.description || image.title || null;
-
         Globals.elements.new({
             type: "div",
             parent: document.getElementById("image-manager-container"),
@@ -283,22 +280,6 @@ class InternalImageManagerView{
                         self.hide();
                     }
                 }
-                /*click: document.getElementsByClassName('selElForImgPik')[0] ? function(){
-                    let image = this.getElementsByTagName("img")[0];
-
-                    if(document.getElementsByClassName('selElForImgPik')[0]){
-                        document.getElementsByClassName('selElForImgPik')[0].setAttribute('src', 'http://localhost:8000/api/assets/'+image.src);
-                        if(document.getElementsByClassName('selElForImgPik_invoker')[0]){
-                            document.getElementsByClassName('selElForImgPik_invoker')[0].setAttribute('src', 'http://localhost:8000/api/assets/'+image.src);
-                        }
-                    }
-                } : $(document.getElementsByClassName("selected")[0]).attr("data-e-type") == 'video' ? function(e){
-                    let image = this.getElementsByTagName("img")[0];
-                    document.getElementsByClassName('selected')[0].setAttribute('poster', 'http://localhost:8000/api/assets/'+image.src);
-                } : function(){
-                    let image = this.getElementsByTagName("img")[0];
-                    document.getElementsByClassName('selected')[0].src = 'http://localhost:8000/api/assets/'+image.src;
-                }*/
             },
             children: [
                 {
@@ -306,50 +287,8 @@ class InternalImageManagerView{
                     id: Globals.randomizer.id(100),
                     attributes: {
                         src: imageData,
-                        /*"data-title": image.name,
-                        "data-size": image.size,
-                        "data-image-title": image.title,
-                        "data-description": image.description,
-                        "data-m-id": image.id,*/
                     },
-                    /*listeners: {
-                        error: reject,
-                        load: resolve,
-                    }*/
                 },
-                /*{
-                    type: "span",
-                    //text: user_images[i].title ? (user_images[i].title.length > 15 ? user_images[i].title.substring(0,15)+"..." : user_images[i].title) : user_images[i].name ? (user_images[i].name.length > 15 ? user_images[i].name.substring(0,15)+"..." : user_images[i].name) : "",
-                    /*listeners: {
-                        mouseover: function(e){
-                            let image = this.parentElement.getElementsByTagName("img")[0];
-                            self.showImageInfo(e, image);
-                        },
-                        mouseout: function(){
-                            let image = this.parentElement.getElementsByTagName("img")[0];
-                            self.hideImageInfo(image);
-                        }
-                    }
-                },
-                {
-                    type: "i",
-                    classes: [ "fas", "fa-trash" ],
-                    listeners: {
-                        click: function(){
-                            self.deleteMedia(user_images[i].id, 'Image');
-                        }
-                    }
-                },
-                {
-                    type: "i",
-                    classes: [ "fas", "fa-pen" ],
-                    listeners: {
-                        click: function(){
-                            let image = this.parentElement.getElementsByTagName("img")[0];
-                            mediaEditor.open("image", image);
-                        }
-                    }
-                },*/
             ]
         });
     }

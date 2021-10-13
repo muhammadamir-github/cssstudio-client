@@ -252,16 +252,6 @@ class InternalComboboxView{
 
                     updateElement(key, value+(value.includes(valueSuffix) ? "" : valueSuffix));
                     data.forAnimator === true ? (data.callbacks.onApplyForAnimator ? data.callbacks.onApplyForAnimator(key, value+(value.includes(valueSuffix) ? "" : valueSuffix)) : false) : false;
-                }else{
-                    if(data.customValue.call === "dataAttributeBalancer"){
-                        selected_a_span.innerText = `${data.text}: ${value}`;
-                        dataAttributeBalancer(key, value);
-                    }else{
-                        if(data.customValue.call === "updatePageElement"){
-                            selected_a_span.innerText = `${data.text}: ${value}${(value.includes(valueSuffix) ? "" : valueSuffix)}`;
-                            document.getElementsByClassName("selected-element")[0].style[key] = `${value}${keyValueSuffix}`;
-                        }
-                    }
                 }
 
                 inputElement.value = (key === "textShadow" || key === "boxShadow" ? (value.includes("rgb") ? `${value.split(")")[1]}` : "0px 0px 0px") : value.replaceAll("%", "").replaceAll("px", "")).trim(); // Making sure the value is same if customValueChange(this function) was called not from an input keyup event.
@@ -283,23 +273,19 @@ class InternalComboboxView{
         let applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
         let key = this.textKeyMap[data.text].key;
 
-        if(data.id == "timing"){
-            updateElement('atiming', value);
-        }else{
-            if(this.textKeyMap[data.text]){
-                if(key && applyTo.hasAttribute(`data-style-temp-${key}`)){
-                    applyTo.setAttribute(`data-style-temp-${key}`, value);
-                }
-
-                if(applyTo && applyTo.classList.contains("selected-element")){
-                    if(data.id === "googlefonts"){
-                        applyTo.style.fontFamily = value;
-                    }
-                }
-            }else{
-                updateElement(key, value);
-                data.forAnimator === true ? (data.callbacks.onApplyForAnimator ? data.callbacks.onApplyForAnimator(key, value) : false) : false;
+        if(this.textKeyMap[data.text]){
+            if(key && applyTo.hasAttribute(`data-style-temp-${key}`)){
+                applyTo.setAttribute(`data-style-temp-${key}`, value);
             }
+
+            if(applyTo && applyTo.classList.contains("selected-element")){
+                if(data.id === "googlefonts"){
+                    applyTo.style.fontFamily = value;
+                }
+            }
+        }else{
+            updateElement(key, value);
+            data.forAnimator === true ? (data.callbacks.onApplyForAnimator ? data.callbacks.onApplyForAnimator(key, value) : false) : false;
         }
     }
 

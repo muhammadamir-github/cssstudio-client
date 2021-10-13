@@ -198,12 +198,6 @@ class InternalPanelFinisher{
             }
         }
 
-        /*style += "\n animation-name" + ':' + computedStyle.getPropertyValue("animation-name")+';';
-        style += "\n animation-duration" + ':' + computedStyle.getPropertyValue("animation-duration")+';';
-        style += "\n animation-delay" + ':' + computedStyle.getPropertyValue("animation-delay")+';';
-        style += "\n animation-iteration-count" + ':' + computedStyle.getPropertyValue("animation-iteration-count")+';';
-        style += "\n animation-timing-function" + ':' + computedStyle.getPropertyValue("animation-timing-function")+';';*/
-
         return css_beautify(`{\n ${style} \n}`);
     }
 
