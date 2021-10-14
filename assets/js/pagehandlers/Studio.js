@@ -32,7 +32,7 @@ class StudioHandler{
         this.animations = [];
         this.draggingelementofid = null;
         this.ea = [];
-        this.shuffledanimations = shuffleArray(this.animations);
+        this.shuffledanimations = this.animations;
         this.WebFonts = [];
         this.userInterface = null;
         this.progressLoader = null;
