@@ -1,7 +1,6 @@
 import Globals from './globals.js';
 import Loader from './misc/Loader.js';
 import Api from './misc/Api.js';
-import SideBar from './misc/SideBar.js';
 import NotificationHandler from './misc/Notification.js';
 import Randomizer from './misc/Randomizer.js';
 import Elements from './misc/Elements.js';

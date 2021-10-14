@@ -15,8 +15,8 @@ const global_requiredFiles = {
     js: [
         { type: "js", src: "thirdparty/jquery.min.js", isURL: false, isRaw: false, },
         { type: "js", src: "thirdparty/moment.min.js", isURL: false, isRaw: false, },
-        { type: "js", src: "https://www.googletagmanager.com/gtag/js?id="+global_configuration.gtag_id, isURL: true, isRaw: false, },
-        { type: "js", src: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '"+global_configuration.gtag_id+"');", isURL: false, isRaw: true, }
+        //{ type: "js", src: "https://www.googletagmanager.com/gtag/js?id="+global_configuration.gtag_id, isURL: true, isRaw: false, },
+        //{ type: "js", src: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '"+global_configuration.gtag_id+"');", isURL: false, isRaw: true, }
     ]
 };
 
@@ -29,10 +29,8 @@ export default {
         x: 0,
         y: 0,
     },
-    sideBar: null,
     bootLoader: null,
     pageHandler: null,
-    paypalHandler: null,
     windowHandler: null,
     notificationHandler: null,
     elements: null,
