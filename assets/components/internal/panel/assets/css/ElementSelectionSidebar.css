@@ -1,0 +1,59 @@
+#element-selection-sidebar::-webkit-scrollbar{
+	width: 0px;
+    background-color: #F5F5F5;
+}
+
+#element-selection-sidebar::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+#element-selection-sidebar::-webkit-scrollbar-thumb{
+	background-color: #000000;
+}
+
+#element-selection-sidebar{
+	position: absolute;
+    width: 150px;
+    height: 100%;
+    display: flex;
+    transition: right 1s ease-in-out;
+    background-color: white;
+    justify-content: flex-start;
+    overflow: hidden;
+    align-items: center;
+    flex-direction: column;
+    right: -100%;
+    z-index: 3;
+    overflow-y: scroll;
+    overflow-x: hidden;
+	box-shadow: 0 0 3px grey;
+}
+
+#element-selection-sidebar button{
+    width: 130px;
+    height: 35px;
+    min-height: 35px;
+    border: none;
+    outline: none;
+    position: relative;
+    display: flex;
+    background-color: white;
+    color: black;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin-top: 10px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease-in-out;
+	border: 1px solid #d7d7d7;
+}
+
+#element-selection-sidebar button:last-child{
+	margin-bottom: 50px;
+}
+
+#element-selection-sidebar button:hover{
+    opacity: 1;
+}

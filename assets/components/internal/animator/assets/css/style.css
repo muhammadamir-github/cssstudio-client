@@ -1,0 +1,148 @@
+#animator #animator-container #animator-ready-made-animations::-webkit-scrollbar{
+    width: 2px;
+    background-color: #F5F5F5;
+}
+
+#animator #animator-container #animator-ready-made-animations::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 4px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+#animator #animator-container #animator-ready-made-animations::-webkit-scrollbar-thumb{
+    background-color: #000000;
+}
+
+#animator{
+    position: absolute;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    min-width: calc(100% - 40px);
+    min-height: calc(100% - 40px);
+    max-width: calc(100% - 40px);
+    margin: 0;
+    z-index: 999999;
+    left: 0;
+    top: 0;
+    flex-direction: column;
+    background: white;
+    display: none;
+}
+
+#animator .fa-times,
+#animator .fa-check{
+    position: absolute;
+    right: 25px;
+    top: 25px;
+    opacity: 0.3;
+    cursor: pointer;
+    padding: 0px;
+    font-size: 15px;
+    color: black;
+    transition: opacity 0.1s ease-in-out;
+    z-index: 99999;
+}
+
+#animator .fa-times:hover,
+#animator .fa-check:hover{
+    opacity: 1;
+}
+
+#animator .fa-check{
+    right: 40px;
+    top: 25px;
+}
+
+#animator #animator-container{
+    position: relative;
+    width: 100%;
+    background: white;
+    display: flex;
+    white-space: nowrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: -webkit-fill-available;
+    max-height: -webkit-fill-available;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+#animator #animator-container #animator-preview{
+    position: relative;
+    display: inline-flex;
+    width: 100%;
+    height: -webkit-fill-available;
+    min-width: 100%;
+    border: 1px solid #d7d7d7;
+    min-height: calc(100% - 300px);
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+    flex-grow: 1;
+}
+
+#animator #animator-container #animator-ready-made-animations{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 140px;
+    min-width: 100%;
+    border: 1px solid #d7d7d7;
+    max-height: 140px;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-wrap: wrap;
+}
+
+animationPreview{
+    display: flex;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #d7d7d7;
+    position: relative;
+    color: black;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: border 0.3s ease-in-out;
+    cursor: pointer;
+    overflow: hidden;
+    margin: 20px;
+}
+
+animationPreview:hover{
+	border: 1px solid orange;
+}
+
+.animation-preview-button{
+	padding-right: 10px;
+    padding-left: 10px;
+	width: 50px;
+	height: 20px;
+	border: 0.5px solid black;
+	outline: none;
+	background-color: white;
+	display: block;
+	position: relative;
+	left: 25px;
+	top: 40px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin-top: 0;
+    font-size: 8px;
+    animation-name: "unset";
+    animation-duration: 3s;
+    animation-delay: 0s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}

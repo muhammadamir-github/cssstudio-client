@@ -22,4 +22,9 @@ class InternalSliderController{
     _setModelState(state = {}){
         this.model.state = {...state};
     }
+
+    show(...args){ this.view.show(...args); }
+    hide(...args){ this.view.hide(...args); }
+    toggle(...args){ this.view.toggle(...args); }
+    syncValue(){ this.view.syncValue(); }
 }

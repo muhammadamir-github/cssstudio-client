@@ -1,0 +1,107 @@
+#styler .styler-container::-webkit-scrollbar{
+	width: 0px;
+    background-color: #F5F5F5;
+}
+
+#styler .styler-container::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+#styler .styler-container::-webkit-scrollbar-thumb{
+	background-color: #000000;
+}
+
+#styler{
+	max-width: 700px;
+    max-height: 700px;
+	width: 75%;
+    height: 75%;
+    background: white;
+    display: none;
+    left: 0%;
+    top: 0%;
+    position: absolute;
+    border-radius: 5px;
+    padding: 0;
+    overflow: unset;
+    box-shadow: 0 0 10px grey;
+    flex-direction: column;
+	min-width: 300px;
+	min-height: 400px;
+	z-index: 99999999;
+}
+
+#styler .banner,
+#styler #styler-settings{
+	position: relative;
+    display: flex;
+    background: white;
+    width: calc(100% - 40px);
+    height: 20px;
+    margin: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: none;
+    outline: none;
+    z-index: 4;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 20px;
+    padding: 20px;
+}
+
+#styler .banner{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+	border-bottom-left-radius: unset;
+    border-bottom-right-radius: unset;
+}
+
+#styler #styler-settings p.banner-heading,
+#styler .banner p.banner-heading{
+	margin: 0;
+    font-family: ProximaNovaBold;
+    font-size: 23px;
+    display: flex;
+    position: relative;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+#styler .banner i.fa-times{
+	cursor: pointer;
+    margin-left: auto;
+    font-size: 15px;
+    position: relative;
+    display: flex;
+	opacity: 0.1;
+	transition: opacity 0.2s ease-in-out;
+}
+
+#styler .banner i.fa-times:hover{
+	opacity: 1;
+}
+
+#styler #styler-settings input{
+	display: flex;
+    width: 150px;
+    height: 25px;
+    outline: none;
+    border: 0.5px solid #d7d7d7;
+    border-radius: 5px;
+    position: relative;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 14px;
+    justify-content: center;
+    align-items: center;
+}
+
+#styler .styler-container{
+	width: 100%;
+    height: 100%;
+    position: relative;
+}

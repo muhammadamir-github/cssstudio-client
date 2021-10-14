@@ -13,54 +13,115 @@ combobox ul::-webkit-scrollbar-thumb{
 }
 
 combobox{
-    margin-top: 60px;
-    position:absolute;
-    z-index: 5;
-    padding: 10px;
+    position: relative;
+    padding: 0;
     border-radius: 5px;
+    display: flex;
+    width: 150px;
+    max-width: 150px;
+    height: 40px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
 }
 
 combobox options{
     max-width: 100%;
-    position: relative;
+    position: absolute;
+    display: none;
+    z-index: 9999;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    top: 50px;
+    left: 0;
+    background: transparent;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid #d7d7d7;
+    max-height: 200px;
 }
+
+combobox selected{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    width: 150px;
+    max-width: 150px;
+    height: 100%;
+}
+
 combobox selected a{
     background: white;
-    display: block;
+    display: flex;
     padding-right: 20px;
     border: 1px solid #d7d7d7;
-    width: 150px;
+    width: calc(100% - 20px);
+    min-width: 150px;
     border-radius: 2px;
     text-decoration: none;
     color: black;
     font-family: sans-serif;
     font-size: 13px;
-    padding: 10px;
+    padding: 0;
+    position: relative;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    height: 100%;
 }
 
 combobox selected a span{
-    cursor:pointer;
-    display:block;
-    padding:5px;
+    cursor: pointer;
+    padding: 0;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    flex-direction: row;
+    padding: 10px;
+    height: 100%;
 }
 
 combobox options ul{
-    background: #fff none repeat scroll 0 0;
-    display: none;
+    background: transparent;
+    display: flex;
     list-style: none;
     padding: 0px 0px;
-    position: absolute;
+    position: relative;
     width: 100%;
-    border: 1px solid #d7d7d7;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
-    z-index: 3;
     max-height: 200px;
     overflow-x: hidden;
     overflow-y: auto;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+combobox options ul li{
+    position: relative;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    flex-direction: row;
 }
 
 combobox selected span.value, combobox options span.value{
@@ -68,7 +129,7 @@ combobox selected span.value, combobox options span.value{
 }
 
 combobox options ul li a{
-    display: block;
+    display: flex;
     text-decoration: none;
     color: black;
     font-family: sans-serif;
@@ -76,6 +137,13 @@ combobox options ul li a{
     padding: 10px;
     transition: background 0.3s , color 0.1s ease-in-out;
     background: white;
+    position: relative;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    word-break: break-all;
+    text-align: center;
 }
 
 combobox options ul li a.combobox-selected{
@@ -92,101 +160,64 @@ combobox options ul li a:hover{
     color:white;
 }
 
-.colorpicker {
-    position: absolute;
-    left: 160px;
-    top: 60px;
-    background-color: #1a1a1a;
-    height: 245px;
-    width: 300px;
-    border: solid 2px #1a1a1a;
-    opacity: 1;
-    padding: 5px;
-    cursor: crosshair;
-    display: none;
-    border-radius: 5px;
-    z-index: 5;
-}
-
-.colorpicker input{
-    display: block;
-    position: relative;
-    width: 100%;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: grey;
-    transform: translate(-50%);
-    left: 50%;
-    height: 22px;
-    margin-bottom: 6px;
-}
-
-.colorpickerstrip{
-    height: 30px;
-    width: 300px;
-}
-
-.colorpickerbox{
-    height: 150px;
-    width: 300px;
-}
-
-colordisplay{
+combobox selected a colordisplay{
     background: white;
-    display: block;
-    padding-right: 20px;
-    border: 1px solid black;
+    display: none;
+    border: 1px solid #d7d7d7;
     width: 20px;
-    border-radius: 2px;
-    padding: 10px;
+    border-radius: 50%;
+    padding: 5px;
     height: 10px;
-    right: 20px;
-    top: 17.5px;
-    position: absolute;
+    position: relative;
     outline: none;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 10px;
     cursor: pointer;
 }
 
-.lastoption{
+combobox selected a.lastoption{
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
 }
 
-.custom{
-    background: white;
+combobox selected a .custom{
     display: none;
-    padding-right: 20px;
-    border: 1px solid black;
+    background: white;
+    border: 1px solid #d7d7d7;
     width: 20px;
     border-radius: 2px;
     text-decoration: none;
     color: black;
     font-family: sans-serif;
     font-size: 13px;
-    padding: 10px;
+    padding: 5px;
     height: 10px;
-    right: 20px;
-    top: 17.5px;
-    position: absolute;
+    position: relative;
     outline: none;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 10px;
 }
 
-.customlarge{
-	background: white;
+combobox selected a .customlarge{
     display: none;
-    padding-right: 20px;
-    border: 1px solid black;
-    width: 50%;
+    background: white;
+    border: 1px solid #d7d7d7;
+    width: 85px;
     border-radius: 2px;
     text-decoration: none;
     color: black;
     font-family: sans-serif;
     font-size: 13px;
-    padding: 10px;
+    padding: 5px;
     height: 10px;
-    left: 20px;
-    top: 17.5px;
     position: absolute;
     outline: none;
+    justify-content: center;
+    align-items: center;
+    margin-right: auto;
+    margin-left: 10px;
 }

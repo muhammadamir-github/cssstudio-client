@@ -1,11 +1,13 @@
 import Globals from './globals.js';
 import Loader from './misc/Loader.js';
 import Api from './misc/Api.js';
-import SideBar from './misc/SideBar.js';
 import NotificationHandler from './misc/Notification.js';
 import Randomizer from './misc/Randomizer.js';
 import Elements from './misc/Elements.js';
 import Components from './misc/Components.js';
+import DraggableFactory from './misc/DraggableFactory.js';
+import ResizeableFactory from './misc/ResizeableFactory.js';
+import WindowHandler from './misc/WindowHandler.js';
 
 window.onload = () => {
     window.globals = Globals;
@@ -17,6 +19,9 @@ window.onload = () => {
     Globals.api = new Api(Globals.api.hostname, Globals.api.port);
     Globals.randomizer = new Randomizer;
     Globals.notificationHandler = new NotificationHandler;
+    Globals.draggableFactory = new DraggableFactory;
+    Globals.resizeableFactory = new ResizeableFactory;
+    Globals.windowHandler = new WindowHandler;
     Globals.elements = new Elements;
     Globals.components = new Components;
     Globals.bootLoader = new BootLoader("../assets");
@@ -164,7 +169,7 @@ class BootLoader{
         }*/
 
         Globals.pageHandler = new StudioHandler({});
-        Globals.pageHandler.setup();
+        await Globals.pageHandler.setup();
         self.loader.hide();
     }
 }

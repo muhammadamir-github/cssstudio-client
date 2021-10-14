@@ -16,7 +16,6 @@ export default class Components{
             let component_id = Globals.randomizer.id(100);
             await instance._init({
                 // Data not related to component should be passed here
-                elementType: options.elementType,
                 parent: options.parent,
                 before: options.before,
                 prepend: options.prepend,
@@ -102,5 +101,23 @@ export default class Components{
                 });
             }
         }
+    }
+
+    async controller(elementOrComponentId){
+        let toReturn = null;
+        if(typeof elementOrComponentId === "string"){
+            toReturn = this.created.find(x => (x.component_id === elementOrComponentId));
+        }else{
+            if(typeof elementOrComponentId === 'object' && elementOrComponentId.nodeType !== undefined){
+                // Is an html element
+                let componentId = elementOrComponentId.hasAttribute("data-component-id") ? elementOrComponentId.getAttribute("data-component-id") : null;
+                if(componentId && typeof componentId === "string"){
+                    toReturn = this.created.find(x => (x.component_id === componentId));
+                }
+            }
+        }
+
+        toReturn = toReturn && toReturn.controller ? toReturn.controller : null;
+        return toReturn;
     }
 }

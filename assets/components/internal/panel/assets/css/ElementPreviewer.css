@@ -1,0 +1,23 @@
+#element-previewer{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    overflow: hidden;
+    background-color: transparent;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1;
+}
+
+#element-previewer:hover .eb label{
+	opacity: 1;
+	pointer-events: unset;
+}
+
+.preview-element{
+    display: block;
+	position: relative;
+}

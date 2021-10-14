@@ -7,17 +7,16 @@ const global_requiredFiles = {
         { type: "icon", src: "icon2.png", isURL: false, isRaw: false, }
     ],
     css: [
-        { type: "css", src: "MediaQueries.css", isURL: false, isRaw: false, },
+        { type: "css", src: "misc/Body.css", isURL: false, isRaw: false, },
         { type: "css", src: "misc/Loader.css", isURL: false, isRaw: false, },
-        //{ type: "css", src: "misc/Notice.css", isURL: false, isRaw: false, },
         { type: "css", src: "misc/Notification.css", isURL: false, isRaw: false, },
         { type: "css", src: "thirdparty/fontawesome.all.css", isURL: false, isRaw: false, }
     ],
     js: [
         { type: "js", src: "thirdparty/jquery.min.js", isURL: false, isRaw: false, },
         { type: "js", src: "thirdparty/moment.min.js", isURL: false, isRaw: false, },
-        { type: "js", src: "https://www.googletagmanager.com/gtag/js?id="+global_configuration.gtag_id, isURL: true, isRaw: false, },
-        { type: "js", src: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '"+global_configuration.gtag_id+"');", isURL: false, isRaw: true, }
+        //{ type: "js", src: "https://www.googletagmanager.com/gtag/js?id="+global_configuration.gtag_id, isURL: true, isRaw: false, },
+        //{ type: "js", src: "window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '"+global_configuration.gtag_id+"');", isURL: false, isRaw: true, }
     ]
 };
 
@@ -26,85 +25,39 @@ export default {
         body: null,
         head: null
     },
-    sideBar: null,
+    mouse: {
+        x: 0,
+        y: 0,
+    },
     bootLoader: null,
     pageHandler: null,
-    paypalHandler: null,
+    windowHandler: null,
     notificationHandler: null,
     elements: null,
     components: null,
     randomizer: null,
+    colorPicker: null,
+    tooltip: null,
+    imageManager: null,
+    draggableFactory: null,
+    resizeableFactory: null,
     api: {
         hostname: "http://localhost",
         port: "8000"
     },
     files: [
         {
-            pageName: "profile",
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "pages/Style.css", isURL: false, isRaw: false, },
-                { type: "css", src: ".dactbtn{ width: 200px; height: 50px; position: relative; left: 25px; top: 25px; border: none; outline: none; background: #1a1a1a; color: white; transition: opacity 0.4s ease-in-out; cursor: pointer; } .dactbtn:hover{ opacity: 0.5; }.dwar{ display: block; position: relative; margin-left: 25px; left: 0px; text-align: left; width: 90%; font-size: 15px; } .pay{ margin-top: 100px; width: 100%; left: 50%; transform: translate(-50%); position: relative; display: inline-block; height: 100px; text-align: center;", isURL: false, isRaw: true, },
-                ...global_requiredFiles.js,
-                { type: "js", src: "pagehandlers/Profile.js", isURL: false, isRaw: false, },
-                { type: "js", src: "misc/Paypal.js", isURL: false, isRaw: false, }
-            ],
-        },
-        {
-            pageName: "notifications",
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "pages/Style.css", isURL: false, isRaw: false, },
-                { type: "css", src: ".ntfs{ position: relative; left: 50%; transform: translate(-50%); border: 1px solid #f1f1f1; width: 70%; height: 750px; outline: none; margin-top: 50px; display: inline-block; overflow-x: hidden; overflow-y: scroll; padding-bottom: 30px; transition: opacity 0.3s ease-in-out; }", isURL: false, isRaw: true, },
-                ...global_requiredFiles.js,
-                { type: "js", src: "pagehandlers/Notifications.js", isURL: false, isRaw: false, }
-            ],
-        },
-        {
-            pageName: "storage",
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "pages/Style.css", isURL: false, isRaw: false, },
-                { type: "css", src: "misc/Fonts.css", isURL: false, isRaw: false, },
-                ...global_requiredFiles.js,
-                { type: "js", src: "pagehandlers/Storage.js", isURL: false, isRaw: false, }
-            ],
-        },
-        {
             pageName: "studio",
             paths: [
                 ...global_requiredFiles.icon,
                 ...global_requiredFiles.css,
                 { type: "css", src: "pages/Style.css", isURL: false, isRaw: false, },
-                //{ type: "css", src: "misc/Billy.css", isURL: false, isRaw: false, },
-                //{ type: "css", src: "pages/PreviewSite.css", isURL: false, isRaw: false, },
-                { type: "css", src: "misc/Fonts.css", isURL: false, isRaw: false, },
-                //{ type: "js", src: "https://www.youtube.com/iframe_api", isURL: true, isRaw: false, },
+                { type: "css", src: "pages/Studio.css", isURL: false, isRaw: false, },
+                { type: "css", src: "pages/PreviewSite.css", isURL: false, isRaw: false, },
                 ...global_requiredFiles.js,
                 { type: "js", src: "thirdparty/beautify-css.js", isURL: false, isRaw: false, },
-                //{ type: "js", src: "misc/Billy.js", isURL: false, isRaw: false, },
-                //{ type: "js", src: "misc/Draggable.js", isURL: false, isRaw: false, },
-                //{ type: "js", src: "misc/PublicEventHandler.js", isURL: false, isRaw: false, },
-                //{ type: "js", src: "thirdparty/resumable.js", isURL: false, isRaw: false, },
-                //{ type: "js", src: "pagehandlers/studio/*", isURL: false, isRaw: false, ignore: ["pagehandlers/studio/Animator.js"], },
                 { type: "js", src: "pagehandlers/studio/functions/*", isURL: false, isRaw: false, ignore: [], },
                 { type: "js", src: "pagehandlers/Studio.js", isURL: false, isRaw: false, },
-            ],
-        },
-        {
-            pageName: "login",
-            paths: [
-                ...global_requiredFiles.icon,
-                ...global_requiredFiles.css,
-                { type: "css", src: "pages/Login.css", isURL: false, isRaw: false, },
-                { type: "css", src: "misc/TopNavbar.css", isURL: false, isRaw: false, },
-                { type: "css", src: "misc/BottomNavbar.css", isURL: false, isRaw: false, },
-                ...global_requiredFiles.js,
-                { type: "js", src: "pagehandlers/Login.js", isURL: false, isRaw: false, },
-                { type: "js", src: "pagehandlers/Static.js", isURL: false, isRaw: false, }
             ],
         },
     ],

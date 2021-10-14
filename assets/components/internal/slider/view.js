@@ -22,6 +22,8 @@ class InternalSliderView{
             "slideBorderSize": { key: "slideBorderSize", valueSuffix: "", keyValueSuffix: "" },
             "slideBorderRadius": { key: "slideBorderRadius", valueSuffix: "", keyValueSuffix: "" },
         };
+
+        this.transforms = ["rotateX", "rotateY", "skewX", "skewY", "scaleX", "scaleY"];
     }
 
     create(options = {}){
@@ -29,7 +31,7 @@ class InternalSliderView{
         const { data, parent, prepend, before, elementType, component_id } = options;
 
         self._element = Globals.elements.new({
-            type: "div",
+            type: "slider",
             parent,
             id: data.id ? data.id : null,
             style: data.style ? data.style : null,
@@ -43,7 +45,6 @@ class InternalSliderView{
                 },
                 {
                     type: "input",
-                    classes: [ "slider" ],
                     attributes: {
                         type: "range",
                         min: data.min !== undefined && data.min !== null ? data.min : 1,
@@ -51,14 +52,9 @@ class InternalSliderView{
                         step: data.step !== undefined && data.step !== null ? data.step : 1,
                     },
                     listeners: {
-                        input: data.id && data.id.startsWith("slide") ? function(){
-                            let value = this.value;
-                            if(data.id === "slideFontWeight"){ value = value == 0 ? "normal" : "bold"; }
-
-                            dataAttributeBalancer(self.idKeyMap[data.id].key, value);
-                        } : function(){
-                            updateElement(elementType, self.textKeyMap[data.text].key, this.value);
-                        }
+                        input: function(){
+                            self.changeValue(self, this.value);
+                        },
                     }
                 }
             ],
@@ -68,6 +64,46 @@ class InternalSliderView{
 
         for (let input of self._element.getElementsByTagName("input")){
             input.value = data.value !== undefined && data.value !== null ? data.value : 0;
+        }
+    }
+
+    changeValue(self, value){
+        let data = self.controller._getModelState();
+        let inputElement = self._element.getElementsByTagName("input");
+
+        value = value ? value : inputElement[0] ? inputElement[0].getAttribute("min") : 0;
+
+        if(data.id && data.id.startsWith("slide")){
+            if(data.id === "slideFontWeight"){ value = value == 0 ? "normal" : "bold"; }
+            dataAttributeBalancer(self.idKeyMap[data.id].key, value);
+        }else{
+            updateElement(self.textKeyMap[data.text].key, value, function(key, value){
+                data.forAnimator === true ? (data.callbacks.onApplyForAnimator ? data.callbacks.onApplyForAnimator(key, value) : false) : false;
+            });
+        }
+
+        inputElement[0] ? inputElement[0].value = value : false; // Making sure the value is same if changeValue(this function) was called not from an input event.
+    }
+
+    async syncValue(){
+        const self = this;
+        const data = await self.controller._getModelState();
+
+        let applyTo = data.forAnimator === true ? document.getElementById("animator-preview-element") : document.getElementsByClassName("selected-element")[0];
+        if(applyTo){
+            let key = self.textKeyMap[data.text].key;
+            let currentStyleValue = applyTo && key ? (self.transforms.includes(key) ? applyTo.style.transform : applyTo.style[key]) : null;
+
+            if(self.transforms.includes(key)){
+                if(currentStyleValue && currentStyleValue.includes(key)){
+                    let match = await currentStyleValue.match(new RegExp(`${key}\(([^)]+)\)`));
+                    currentStyleValue = Array.isArray(match) && match[1] ? match[1].replaceAll("(", "").replaceAll(")", "").replaceAll("deg", "") : null;
+                }else{
+                    currentStyleValue = 0;
+                }
+            }
+
+            await self.changeValue(self, currentStyleValue);
         }
     }
 }

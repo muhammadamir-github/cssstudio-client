@@ -6,65 +6,79 @@ class InternalAnimatorTimelineView{
 
     create(options = {}){
         const self = this;
-        const { data, parent, prepend, before, elementType, component_id } = options;
+        const { data, parent, prepend, before, component_id } = options;
 
-        let children = [];
+        let children = [
+            {
+                type: "div",
+                id: "atButtons",
+                children: []
+            }
+        ];
 
         [
             {
                 name: "Add Slide",
                 callback: function(){
-                    var n = $("animationSlide").length + 1;
-                    self.animationActions('addslide', n, '');
+                    self.addSlides(1);
                 },
                 style: { backgroundColor: "darkred" },
                 icon: "fas fa-plus",
             },
             {
                 name: "Reset",
-                callback: function(){ self.animationActions("reset", '', ''); },
-                style: { backgroundColor: "#3399ff", left: "30px" },
+                callback: function(){ self.resetSlides(); },
+                style: { backgroundColor: "#3399ff" },
                 icon: "fas fa-sync-alt",
             },
             {
                 name: "Play",
-                callback: function(){ self.animationActions("play", '', elementType); },
-                style: { backgroundColor: "#88cc00", left: "55px" },
+                callback: function(){ self.playAnimation(this.getElementsByTagName("i")[0] || null); },
+                style: { backgroundColor: "#88cc00" },
                 icon: "fas fa-play",
+            },
+            {
+                name: "Toggle Styler",
+                callback: function(){ data.callbacks.onStylerToggle ? data.callbacks.onStylerToggle() : false; },
+                style: { backgroundColor: "#1a1a1a" },
+                icon: "fas fa-paint-brush",
             }
         ].forEach(x => {
-            children.push({
+            children[0].children.push({
                 type: "span",
                 classes: [ "aTbutton" ],
                 style: x.style,
                 listeners: {
-                    click: x.callback
+                    click: x.callback,
+                    mouseover: function(){
+                        Globals.tooltip.show(this, x.name, "centerTop");
+                    },
+                    mouseout: function(){
+                        Globals.tooltip.hide();
+                    }
                 },
                 children: [
                     {
                         type: "i",
                         classes: x.icon.split(" ")
                     },
-                    {
-                        type: "span",
-                        classes: [ "tooltip" ],
-                        text: x.name,
-                    },
                 ]
             });
         });
 
-        children.push({
+        children[0].children.push({
             type: "span",
             classes: [ "aTbutton" ],
-            style: {
-                backgroundColor: "#463496",
-                left: "80px"
-            },
+            style: { backgroundColor: "#463496" },
             listeners: {
                 click: function(){
-                    self.animationActions('switch-readymade', '', elementType);
-                    document.getElementsByClassName('newanimationbtn')[0].style.display = 'block';
+                    self.disable(self);
+                },
+                mouseover: function(){
+                    Globals.tooltip.show(this, "Switch to ready made animations", "centerTop");
+                },
+                mouseout: function(){
+                    Globals.tooltip.hide();
                 }
             },
             children: [
@@ -72,96 +86,16 @@ class InternalAnimatorTimelineView{
                     type: "i",
                     classes: [ "fas", "fa-toggle-on" ]
                 },
-                {
-                    type: "span",
-                    classes: [ "tooltip" ],
-                    style: {
-                        width: "200px"
-                    },
-                    text: "Switch to ready made animations.",
-                },
             ]
         });
 
-        for(var i=1; i<4; i++){
-            children.push({
-                type: "animationSlide",
-                attributes: {
-                    "data-percentage": "%",
-                    "data-attr-avail": "4",
-                },
-                listeners: {
-                    click: function(){
-                        $('.slideSelected').removeClass('slideSelected');
-                        this.classList.add('slideSelected');
-                        self.animationActions('options-enable','', elementType);
-                        self.updateSlideOptions(elementType);
-                    }
-                },
-                children: [
-                    {
-                        type: "span",
-                        style: { backgroundColor: "black" },
-                        text: i,
-                    },
-                    {
-                        type: "span",
-                        classes: [ "aTbutton" ],
-                        style: {
-                            backgroundColor: "darkred",
-                            left: "25px",
-                            width: "13px"
-                        },
-                        listeners: {
-                            click: function(){
-                                this.parentNode.remove();
-                                self.animationActions('renumber', '', '');
-                            }
-                        },
-                        children: [
-                            {
-                                type: "i",
-                                classes: [ "far", "fa-trash-alt" ]
-                            },
-                            {
-                                type: "span",
-                                classes: [ "tooltip" ],
-                                text: "Delete Slide",
-                            },
-                        ]
-                    },
-                    {
-                        type: "span",
-                        classes: [ "aTbutton" ],
-                        style: {
-                            backgroundColor: "#a8d65e",
-                            left: "47px",
-                            width: "13px"
-                        },
-                        children: [
-                            {
-                                type: "i",
-                                classes: [ "fas", "fa-sync-alt" ]
-                            },
-                            {
-                                type: "span",
-                                classes: [ "tooltip" ],
-                                text: "Reset Slide",
-                            },
-                        ]
-                    },
-                ]
-            });
-        }
-
         children.push({
             type: "button",
-            classes: [ "newanimationbtn" ],
+            id: "newAnimationButton",
             text: "Create New Animation",
             listeners: {
                 click: function(){
-                    self.animationActions('switch-custom', '', elementType);
-                    this.style.display = 'none';
+                    self.enable(self);
                 }
             }
         });
@@ -169,7 +103,7 @@ class InternalAnimatorTimelineView{
         self._element = Globals.elements.new({
             type: "div",
             parent,
-            id: "aT",
+            id: "animationTimeline",
             children,
             before: before,
             prepend: prepend,
@@ -178,538 +112,293 @@ class InternalAnimatorTimelineView{
             },
         });
 
-        setupSlideStyler();
-
-        $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'0.5', 'pointerEvents':'none'});
-        $('.aTbutton').css({'pointer-events':'none'});
+        self.disable(self);
     }
 
-    animationActions(action, n, element){
+    async resetSlides(){
         const self = this;
-        var animatorTimeline = self._element;
-
-        if(action == 'play'){
-            $('style').remove();
-            var myReuseableStylesheet = document.createElement('style');
-            myReuseableStylesheet.appendChild(document.createTextNode(""));
-            document.head.appendChild(myReuseableStylesheet);
-
-            var name = 'preview';
-            var frames = '';
-
-            var slides = animatorTimeline.getElementsByTagName('animationSlide');
-
-            for(var i=0; i<slides.length; i++){
-                var percentage = $(slides[i]).attr('data-percentage');
-                var tempframes = '';
-                var transform = 'transform: translate(-50%,-50%) ';
-
-                if($(slides[i]).attr('data-action-one')){
-                    var a = $(slides[i]).attr('data-action-one').toLowerCase();
-                    var b = $(slides[i]).attr('data-action-one-value');
-                    var c = a + ':' + b + ';';
-
-                    if(a.includes('scale') || a.includes('skew') || a.includes('rotate')){
-                        if(a.includes('rotate') || a.includes('skew')){
-                            transform = transform + a + '(' + b + 'deg)' + ';';
-                        }else{
-                            transform = transform + a + '(' + b + ')' + ';';
-                        }
-                        tempframes = tempframes + transform;
-                    }else{
-                        if(a == 'fontsize'){
-                            c = 'font-size' + ':' + b + 'px;';
-                        }
-                        if(a == 'fontweight'){
-                            c = 'font-weight' + ':' + b + ';';
-                        }
-                        if(a == 'borderradius'){
-                            c = 'border-radius' + ':' + b + 'px;';
-                        }
-                        if(a == 'bordersize'){
-                            c = 'border-width' + ':' + b + 'px;';
-                        }
-                        if(a == 'animatefcd'){
-                            c = 'color' + ':' + b + ';';
-                        }
-                        if(a == 'animatebcd'){
-                            c = 'border-color' + ':' + b + ';';
-                        }
-                        if(a == 'animatebgcd'){
-                            c = 'background-color' + ':' + b + ';';
-                        }
-                        tempframes = tempframes + c;
-                    }
-                }
-
-                if($(slides[i]).attr('data-action-two')){
-                    var a = $(slides[i]).attr('data-action-two').toLowerCase();
-                    var b = $(slides[i]).attr('data-action-two-value');
-                    var c = a + ':' + b + ';';
-
-                    if(a.includes('scale') || a.includes('skew') || a.includes('rotate')){
-                        if(a.includes('rotate') || a.includes('skew')){
-                            transform = transform + a + '(' + b + 'deg)' + ';';
-                        }else{
-                            transform = transform + a + '(' + b + ')' + ';';
-                        }
-                        tempframes = tempframes + transform;
-                    }else{
-                        if(a == 'fontsize'){
-                            c = 'font-size' + ':' + b + 'px;';
-                        }
-                        if(a == 'fontweight'){
-                            c = 'font-weight' + ':' + b + ';';
-                        }
-                        if(a == 'borderradius'){
-                            c = 'border-radius' + ':' + b + 'px;';
-                        }
-                        if(a == 'bordersize'){
-                            c = 'border-width' + ':' + b + 'px;';
-                        }
-                        if(a == 'animatefcd'){
-                            c = 'color' + ':' + b + ';';
-                        }
-                        if(a == 'animatebcd'){
-                            c = 'border-color' + ':' + b + ';';
-                        }
-                        if(a == 'animatebgcd'){
-                            c = 'background-color' + ':' + b + ';';
-                        }
-                        tempframes = tempframes + c;
-                    }
-                }
-
-                if($(slides[i]).attr('data-action-three')){
-                    var a = $(slides[i]).attr('data-action-three').toLowerCase();
-                    var b = $(slides[i]).attr('data-action-three-value');
-                    var c = a + ':' + b + ';';
-
-                    if(a.includes('scale') || a.includes('skew') || a.includes('rotate')){
-                        if(a.includes('rotate') || a.includes('skew')){
-                            transform = transform + a + '(' + b + 'deg)' + ';';
-                        }else{
-                            transform = transform + a + '(' + b + ')' + ';';
-                        }
-                        tempframes = tempframes + transform;
-                    }else{
-                        if(a == 'fontsize'){
-                            c = 'font-size' + ':' + b + 'px;';
-                        }
-                        if(a == 'fontweight'){
-                            c = 'font-weight' + ':' + b + ';';
-                        }
-                        if(a == 'borderradius'){
-                            c = 'border-radius' + ':' + b + 'px;';
-                        }
-                        if(a == 'bordersize'){
-                            c = 'border-width' + ':' + b + 'px;';
-                        }
-                        if(a == 'animatefcd'){
-                            c = 'color' + ':' + b + ';';
-                        }
-                        if(a == 'animatebcd'){
-                            c = 'border-color' + ':' + b + ';';
-                        }
-                        if(a == 'animatebgcd'){
-                            c = 'background-color' + ':' + b + ';';
-                        }
-                        tempframes = tempframes + c;
-                    }
-                }
-
-                if($(slides[i]).attr('data-action-four')){
-                    var a = $(slides[i]).attr('data-action-four').toLowerCase();
-                    var b = $(slides[i]).attr('data-action-four-value');
-                    var c = a + ':' + b + ';';
-
-                    if(a.includes('scale') || a.includes('skew') || a.includes('rotate')){
-                        if(a.includes('rotate') || a.includes('skew')){
-                            transform = transform + a + '(' + b + 'deg)' + ';';
-                        }else{
-                            transform = transform + a + '(' + b + ')' + ';';
-                        }
-                        tempframes = tempframes + transform;
-                    }else{
-                        if(a == 'fontsize'){
-                            c = 'font-size' + ':' + b + 'px;';
-                        }
-                        if(a == 'fontweight'){
-                            c = 'font-weight' + ':' + b + ';';
-                        }
-                        if(a == 'borderradius'){
-                            c = 'border-radius' + ':' + b + 'px;';
-                        }
-                        if(a == 'bordersize'){
-                            c = 'border-width' + ':' + b + 'px;';
-                        }
-                        if(a == 'animatefcd'){
-                            c = 'color' + ':' + b + ';';
-                        }
-                        if(a == 'animatebcd'){
-                            c = 'border-color' + ':' + b + ';';
-                        }
-                        if(a == 'animatebgcd'){
-                            c = 'background-color' + ':' + b + ';';
-                        }
-                        tempframes = tempframes + c;
-                    }
-
-                }
-
-                frames = frames + percentage + '{' + tempframes + '}';
-            }
-
-            var str = name + "{" + frames + "}";
-            var pos = myReuseableStylesheet.length;
-            //myReuseableStylesheet.innerText = myReuseableStylesheet.innerText + "@-webkit-keyframes " + str;
-            myReuseableStylesheet.innerText = myReuseableStylesheet.innerText + "@keyframes " + str;
-            document.getElementById('preview'+element).style.animation = 'preview 1s ease-in-out infinite';
-        }
-
-        if(action == 'options-enable'){
-            document.getElementById('slidePercentage').style.opacity = '1';
-            document.getElementById('slidePercentage').style.pointerEvents = 'unset';
-
-            document.getElementById('slideOpacity').style.opacity = '1';
-            document.getElementById('slideOpacity').style.pointerEvents = 'unset';
-
-            document.getElementById('animationSliderBox').style.opacity = '1';
-            document.getElementById('animationSliderBox').style.pointerEvents = 'unset';
-        }
-
-        if(action == 'options-disable'){
-            document.getElementById('slidePercentage').style.opacity = '0.5';
-            document.getElementById('slidePercentage').style.pointerEvents = 'none';
-
-            document.getElementById('slideOpacity').style.opacity = '0.5';
-            document.getElementById('slideOpacity').style.pointerEvents = 'none';
-
-            document.getElementById('animationSliderBox').style.opacity = '0.5';
-            document.getElementById('animationSliderBox').style.pointerEvents = 'none';
-        }
-
-        if(action == 'addslide'){
-            var Slide = document.createElement('animationSlide');
-            Slide.setAttribute('data-percentage','%');
-            Slide.setAttribute('data-attr-avail','4');
-            Slide.addEventListener('click',function(){
-                $('.slideSelected').removeClass('slideSelected');
-                this.classList.add('slideSelected');
-                self.animationActions('options-enable','',element);
-                self.updateSlideOptions(element);
-            });
-
-            var slidenumber = document.createElement('span');
-            slidenumber.style.backgroundColor = 'black';
-            slidenumber.innerText = n;
-
-            var deleteslide = document.createElement('span');
-            var deleteslide_i = document.createElement('i');
-            var deleteslide_tooltip = document.createElement('span');
-            deleteslide_tooltip.setAttribute('class','tooltip');
-            deleteslide_tooltip.innerText = 'Delete Slide';
-            deleteslide_i.setAttribute('class','far fa-trash-alt');
-            deleteslide.style.backgroundColor = 'darkred';
-            deleteslide.style.left = '25px';
-            deleteslide.style.width = '13px';
-            deleteslide.appendChild(deleteslide_tooltip);
-            deleteslide.appendChild(deleteslide_i);
-            deleteslide.addEventListener('click',function(){
-                this.parentNode.remove();
-                self.animationActions('renumber','');
-            });
-
-            var resetslide = document.createElement('span');
-            var resetslide_i = document.createElement('i');
-            var resetslide_tooltip = document.createElement('span');
-            resetslide_tooltip.setAttribute('class','tooltip');
-            resetslide_tooltip.innerText = 'Reset Slide';
-            resetslide_i.setAttribute('class','fas fa-sync-alt');
-            resetslide.style.backgroundColor = '#a8d65e';
-            resetslide.style.left = '47px';
-            resetslide.style.width = '13px';
-            resetslide.appendChild(resetslide_tooltip);
-            resetslide.appendChild(resetslide_i);
-
-            Slide.appendChild(slidenumber);
-            Slide.appendChild(deleteslide);
-            Slide.appendChild(resetslide);
-
-            if(n > 9){
-                slidenumber.style.width = '15px';
-                deleteslide.style.left = '29px';
-            }
-
-            animatorTimeline.appendChild(Slide);
-        }
-
-        if(action == 'reset'){
-            $('animationSlide').remove();
-
-            for(var i = 1; i < 4; i++){
-
-                var Slide = document.createElement('animationSlide');
-                Slide.setAttribute('data-percentage','%');
-                Slide.setAttribute('data-attr-avail','4');
-                Slide.addEventListener('click',function(){
-                    $('.slideSelected').removeClass('slideSelected');
-                    this.classList.add('slideSelected');
-                    self.animationActions('options-enable','',element);
-                    self.updateSlideOptions(element);
-                });
-
-                var slidenumber = document.createElement('span');
-                slidenumber.style.backgroundColor = 'black';
-                slidenumber.innerText = i;
-
-                var deleteslide = document.createElement('span');
-                var deleteslide_i = document.createElement('i');
-                var deleteslide_tooltip = document.createElement('span');
-                deleteslide_tooltip.setAttribute('class','tooltip');
-                deleteslide_tooltip.innerText = 'Delete Slide';
-                deleteslide_i.setAttribute('class','far fa-trash-alt');
-                deleteslide.style.backgroundColor = 'darkred';
-                deleteslide.style.left = '25px';
-                deleteslide.style.width = '13px';
-                deleteslide.appendChild(deleteslide_tooltip);
-                deleteslide.appendChild(deleteslide_i);
-                deleteslide.addEventListener('click',function(){
-                    this.parentNode.remove();
-                    self.animationActions('renumber','');
-                });
-
-                var resetslide = document.createElement('span');
-                var resetslide_i = document.createElement('i');
-                var resetslide_tooltip = document.createElement('span');
-                resetslide_tooltip.setAttribute('class','tooltip');
-                resetslide_tooltip.innerText = 'Reset Slide';
-                resetslide_i.setAttribute('class','fas fa-sync-alt');
-                resetslide.style.backgroundColor = '#a8d65e';
-                resetslide.style.left = '47px';
-                resetslide.style.width = '13px';
-                resetslide.appendChild(resetslide_tooltip);
-                resetslide.appendChild(resetslide_i);
-
-                Slide.appendChild(slidenumber);
-                Slide.appendChild(deleteslide);
-                Slide.appendChild(resetslide);
-                animatorTimeline.appendChild(Slide);
-
+        const data = await self.controller._getModelState();
+        if(Array.isArray(data.slides)){
+            for await (let slide of data.slides){
+                slide.element.remove();
             }
         }
 
-        if(action == 'renumber'){
-            var slides = animatorTimeline.getElementsByTagName('animationslide');
+        await self.controller._updateModelState({ slides: [], });
+    }
 
-            $.each(slides,function(key,value){
-                value.getElementsByTagName('span')[0].innerText = key+1;
-            });
-        }
-
-        if(action == 'switch-custom'){
-            var el = document.getElementById('preview'+element);
-            var rmadiv = document.getElementById('rmadiv');
-
-            $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'1','pointerEvents':'unset'});
-            $('.aTbutton').css({'pointer-events':''});
-            rmadiv.style.opacity = '0.3';
-            rmadiv.style.pointerEvents = 'none';
-
-            el.style.animationName = '';
-            el.style.animationDuration = Math.floor((Math.random() * 3) + 1);
-            el.style.animationDelay = '0s';
-            el.style.animationTimingFunction = 'linear';
-            el.style.animationIterationCount = 'Infinite';
-
-            $('animationPreview').css('border','');
-            document.getElementById('noa').style.border = '1px solid green';
-        }
-
-        if(action == 'switch-readymade'){
-            var el = document.getElementById('preview'+element);
-            var rmadiv = document.getElementById('rmadiv');
-
-            $('#aT').find('*').not('.newanimationbtn').not('.aTbutton').css({'opacity':'0.5','pointerEvents':'none'});
-            $('.aTbutton').css({'pointer-events':'none'});
-            rmadiv.style.opacity = '1';
-            rmadiv.style.pointerEvents = 'unset';
-
-            el.style.animationName = '';
-            el.style.animationDuration = Math.floor((Math.random() * 3) + 1);
-            el.style.animationDelay = Math.floor((Math.random() * 8) + 3) + 's';
-            el.style.animationTimingFunction = 'linear';
-            el.style.animationIterationCount = 'Infinite';
-
-            $('animationPreview').css('border','');
-            document.getElementById('noa').style.border = '1px solid green';
-            self.animationActions('options-disable','',element);
+    deleteSlide(number){
+        const self = this;
+        const data = self.controller._getModelState();
+        const slide = data.slides.find(x => (x.number === number));
+        if(slide){
+            slide.element.remove();
+            self.controller._updateModelState({ slides: (() => { return data.slides.filter(x => (x.number !== number)); })(), });
+            self.reNumberSlides();
         }
     }
 
-    updateSlideOptions(el){
-        var sSlide = document.getElementsByClassName('slideSelected')[0];
-        var element = document.getElementById('preview'+el);
-
-        var percentage = $(sSlide).attr('data-percentage');
-
-        var slidePercentage = document.getElementById('slidePercentage');
-        slidePercentage.getElementsByTagName('selected')[0].
-        getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = 'Percentage: '+percentage;
-
-        var slideOpacity = document.getElementById('slideOpacity');
-        slideOpacity.getElementsByTagName('selected')[0].
-        getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = 'Opacity: 0';
-
-        $('#slideScaleX').val('0');
-        $('#slideScaleY').val('0');
-        $('#slideRotate').val('0');
-        $('#slideSkewX').val('0');
-        $('#slideSkewY').val('0');
-        $('#slideFontSize').val('0');
-        $('#slideFontWeight').val('0');
-        $('#slideBorderSize').val('0');
-        $('#slideBorderRadius').val('0');
-
-        $('#animatefcd').css('background-color','white');
-        $('#animatebcd').css('background-color','white');
-        $('#animatebgcd').css('background-color','white');
-
-        var displays =
-        {
-            Opacity:{displayElement:"combobox"},
-            ScaleX:{displayElement:"slider"},
-            ScaleY:{displayElement:"slider"},
-            Rotate:{displayElement:"slider"},
-            SkewX:{displayElement:"slider"},
-            SkewY:{displayElement:"slider"},
-            FontSize:{displayElement:"slider"},
-            FontWeight:{displayElement:"slider"},
-            BorderSize:{displayElement:"slider"},
-            BorderRadius:{displayElement:"slider"},
-            animatefcd:{displayElement:"colordisplay"},
-            animatebcd:{displayElement:"colordisplay"},
-            animatebgcd:{displayElement:"colordisplay"},
-        };
-
-        if($(sSlide).attr('data-action-one')){
-            var dataOne = $(sSlide).attr('data-action-one');
-            var dataOneValue = $(sSlide).attr('data-action-one-value');
-
-            var dataOneDisplay = document.getElementById('slide'+dataOne);
-
-            if(displays[dataOne].displayElement == 'combobox'){
-                dataOneDisplay.getElementsByTagName('selected')[0].
-                getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = dataOne + ' ' +dataOneValue;
-            }
-
-            if(displays[dataOne].displayElement == 'slider'){
-                if(dataOne.includes('FontWeight')){
-                    if(dataOneValue == 'normal'){
-                        $(dataOneDisplay).val('0');
-                    }
-                    if(dataOneValue == 'bold'){
-                        $(dataOneDisplay).val('1');
-                    }
-                }else{
-                    $(dataOneDisplay).val(dataOneValue);
-                }
-            }
-
-            if(displays[dataOne].displayElement == 'colordisplay'){
-                var colordisplay = document.getElementById(dataOne).style.backgroundColor = dataOneValue;
-            }
-
+    resetSlide(number){
+        const self = this;
+        const data = self.controller._getModelState();
+        const slide = data.slides.find(x => (x.number === number));
+        if(slide){
+            slide.element.classList.remove("selected-slide");
+            slide.element.setAttribute("data-style", "");
         }
+    }
 
-        if($(sSlide).attr('data-action-two')){
-            var dataTwo = $(sSlide).attr('data-action-two');
-            var dataTwoValue = $(sSlide).attr('data-action-two-value');
-
-            var dataTwoDisplay = document.getElementById('slide'+dataTwo);
-
-            if(displays[dataTwo].displayElement == 'combobox'){
-                dataTwoDisplay.getElementsByTagName('selected')[0].
-                getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = dataTwo + ' ' +dataTwoValue;
-            }
-
-            if(displays[dataTwo].displayElement == 'slider'){
-                if(dataTwo.includes('FontWeight')){
-                    if(dataTwoValue == 'normal'){
-                        $(dataTwoDisplay).val('0');
-                    }
-                    if(dataTwoValue == 'bold'){
-                        $(dataTwoDisplay).val('1');
-                    }
-                }else{
-                    $(dataTwoDisplay).val(dataTwoValue);
-                }
-            }
-
-            if(displays[dataTwo].displayElement == 'colordisplay'){
-                var colordisplay = document.getElementById(dataTwo).style.backgroundColor = dataTwoValue;
-            }
-
+    setSlidePercentage(number){
+        const self = this;
+        const data = self.controller._getModelState();
+        const slide = data.slides.find(x => (x.number === number));
+        if(slide){
+            let currentPercentage = parseInt(slide.element.getAttribute("data-percentage")) || 0;
+            let newPercentage = currentPercentage>=100 ? 0 : currentPercentage+1;
+            slide.element.setAttribute("data-percentage", newPercentage);
+            slide.element.getElementsByClassName("animationSlidePercentage")[0] ? slide.element.getElementsByClassName("animationSlidePercentage")[0].innerText = newPercentage+"%" : false;
         }
+    }
 
-        if($(sSlide).attr('data-action-three')){
-            var dataThree = $(sSlide).attr('data-action-three');
-            var dataThreeValue = $(sSlide).attr('data-action-three-value');
-
-            var dataThreeDisplay = document.getElementById('slide'+dataThree);
-
-            if(displays[dataThree].displayElement == 'combobox'){
-                dataThreeDisplay.getElementsByTagName('selected')[0].
-                getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = dataThree + ' ' +dataThreeValue;
+    async reNumberSlides(){
+        const self = this;
+        const data = await self.controller._getModelState();
+        if(Array.isArray(data.slides)){
+            let i = 1;
+            for await (let slide of data.slides){
+                slide.number = i;
+                slide.element.getElementsByClassName("animationSlideNumber")[0] ? slide.element.getElementsByClassName("animationSlideNumber")[0].innerText = i : false;
+                i++;
             }
-
-            if(displays[dataThree].displayElement == 'slider'){
-                if(dataThree.includes('FontWeight')){
-                    if(dataThreeValue == 'normal'){
-                        $(dataThreeDisplay).val('0');
-                    }
-                    if(dataThreeValue == 'bold'){
-                        $(dataThreeDisplay).val('1');
-                    }
-                }else{
-                    $(dataThreeDisplay).val(dataThreeValue);
-                }
-            }
-
-            if(displays[dataThree].displayElement == 'colordisplay'){
-                var colordisplay = document.getElementById(dataThree).style.backgroundColor = dataThreeValue;
-            }
-
-
         }
+    }
 
-        if($(sSlide).attr('data-action-four')){
-            var dataFour = $(sSlide).attr('data-action-four');
-            var dataFourValue = $(sSlide).attr('data-action-four-value');
+    addSlides(count = 1){
+        const self = this;
+        const data = self.controller._getModelState();
+        let newSlides = [];
 
-            var dataFourDisplay = document.getElementById('slide'+dataFour);
+        if(self._element){
+            for(let i=0; i<count; i++){
+                ((self, data, i) => {
+                    let slideNumber = data.slides.length+(i+1);
+                    let slide = Globals.elements.new({
+                        type: "animationSlide",
+                        parent: self._element,
+                        attributes: {
+                            "data-percentage": "0",
+                        },
+                        listeners: {
+                            click: function(){
+                                if(document.getElementById("animator-preview-element")){
+                                    let slideStyle = this.getAttribute("data-style");
+                                    if(slideStyle && typeof slideStyle === "string"){
+                                        for (let style of slideStyle.split("|")){
+                                            updateElement(style.split(":")[0], style.split(":")[1]);
+                                        }
+                                    }
+                                }
 
-            if(displays[dataFour].displayElement == 'combobox'){
-                dataFourDisplay.getElementsByTagName('selected')[0].
-                getElementsByTagName('a')[0].getElementsByTagName('span')[0].innerText = dataFour + ' ' +dataFourValue;
+                                $('.selected-slide').removeClass('selected-slide');
+                                this.classList.add('selected-slide');
+                            }
+                        },
+                        children: [
+                            {
+                                type: "span",
+                                style: { backgroundColor: "black" },
+                                classes: [ "animationSlideNumber" ],
+                                text: slideNumber,
+                            },
+                            {
+                                type: "span",
+                                style: { backgroundColor: "black" },
+                                classes: [ "animationSlidePercentage" ],
+                                text: "0%",
+                            },
+                            {
+                                type: "span",
+                                classes: [ "animationSlideButton" ],
+                                listeners: {
+                                    click: function(e){
+                                        e.stopPropagation();
+                                        self.deleteSlide(slideNumber);
+                                    },
+                                    mouseover: function(){
+                                        Globals.tooltip.show(this, "Delete Slide", "centerTop");
+                                    },
+                                    mouseout: function(){
+                                        Globals.tooltip.hide();
+                                    }
+                                },
+                                children: [
+                                    {
+                                        type: "i",
+                                        classes: [ "far", "fa-trash-alt" ]
+                                    },
+                                ]
+                            },
+                            {
+                                type: "span",
+                                classes: [ "animationSlideButton" ],
+                                listeners: {
+                                    click: function(e){
+                                        e.stopPropagation();
+                                        self.resetSlide(slideNumber);
+                                    },
+                                    mouseover: function(){
+                                        Globals.tooltip.show(this, "Reset Slide", "centerTop");
+                                    },
+                                    mouseout: function(){
+                                        Globals.tooltip.hide();
+                                    }
+                                },
+                                children: [
+                                    {
+                                        type: "i",
+                                        classes: [ "fas", "fa-sync-alt" ]
+                                    },
+                                ]
+                            },
+                            {
+                                type: "span",
+                                classes: [ "animationSlideButton" ],
+                                listeners: {
+                                    click: function(e){
+                                        e.stopPropagation();
+                                        self.setSlidePercentage(slideNumber);
+                                    },
+                                    mouseover: function(){
+                                        Globals.tooltip.show(this, "Change Slide Percentage", "centerTop");
+                                    },
+                                    mouseout: function(){
+                                        Globals.tooltip.hide();
+                                    }
+                                },
+                                children: [
+                                    {
+                                        type: "i",
+                                        classes: [ "fas", "fa-percentage" ]
+                                    },
+                                ]
+                            },
+                        ]
+                    });
+
+                    newSlides.push({ number: slideNumber, element: slide });
+                })(self, data, i);
             }
 
-            if(displays[dataFour].displayElement == 'slider'){
-                if(dataFour.includes('FontWeight')){
-                    if(dataFourValue == 'normal'){
-                        $(dataFourDisplay).val('0');
+            self.controller._updateModelState({ slides: [...data.slides, ...newSlides] });
+        }
+    }
+
+    createPreviewAnimation(){
+        try{
+            const self = this;
+            const data = self.controller._getModelState();
+            let transforms = ["rotateX", "rotateY", "skewX", "skewY", "scaleX", "scaleY"];
+            let css = "@keyframes previewAnimation{";
+
+            if(data.slides && Array.isArray(data.slides)){
+                for (let slide of data.slides){
+                    let percentage = parseInt(slide.element.getAttribute("data-percentage")) || 0;
+                    let slideStyle = slide.element.getAttribute("data-style") || "";
+
+                    if(slideStyle && typeof slideStyle === "string"){
+                        css += `\n${percentage}%{`;
+
+                        for (let style of slideStyle.split("|")){
+                            let propertyName = style.split(":")[0];
+
+                            if(!propertyName.includes("animation")){
+                                if(!transforms.includes(propertyName)){
+                                    propertyName = propertyName.replace(/[A-Z][a-z]*/g, string => `-${string.toLowerCase()}`).replace('--', '-');
+
+                                    let value = style.split(":")[1];
+                                    css += `\n${propertyName}: ${value};`;
+                                }
+                            }
+                        }
+
+                        css += "\n}";
                     }
-                    if(dataFourValue == 'bold'){
-                        $(dataFourDisplay).val('1');
-                    }
-                }else{
-                    $(dataFourDisplay).val(dataFourValue);
                 }
-            }
 
-            if(displays[dataFour].displayElement == 'colordisplay'){
-                var colordisplay = document.getElementById(dataFour).style.backgroundColor = dataFourValue;
+                css += "\n}";
+            }else{ css += "}"; }
+
+            return css;
+        }catch(error){}
+
+        return "";
+    }
+
+    playAnimation(button){
+        const self = this;
+        const data = self.controller._getModelState();
+
+        if(button && data.slides && Array.isArray(data.slides) && document.getElementById("animator-preview-element")){
+            if(button.classList.contains("fa-pause")){
+                button.classList.remove("fa-pause");
+                button.classList.add("fa-play");
+            }else{
+                let css = self.createPreviewAnimation() || "";
+                css = css_beautify(css);
+
+                document.getElementById("previewAnimation") ? document.getElementById("previewAnimation").remove() : false;
+                let styleElement = Globals.elements.new({
+                    type: "style",
+                    parent: Globals.window.head,
+                    attributes: {
+                        id: "previewAnimation",
+                    },
+                    text: css,
+                });
+
+                document.getElementById("animator-preview-element").style.animationName = "previewAnimation";
+
+                button.classList.remove("fa-play");
+                button.classList.add("fa-pause");
             }
+        }
+    }
+
+    disable(self){
+        const data = self.controller._getModelState();
+        const readyMadeAnimationsContainer = document.getElementById('animator-ready-made-animations');
+        readyMadeAnimationsContainer.style.opacity = '1';
+        readyMadeAnimationsContainer.style.pointerEvents = 'unset';
+
+        $('#animationTimeline').find('*').not('#newAnimationButton').css({'opacity':'0.5','pointerEvents':'none'});
+        document.getElementById('newAnimationButton').style.display = 'block';
+
+        let animationPreviews = document.getElementsByTagName("animationPreview");
+        for (let preview of animationPreviews){ preview.style.border = preview.id === "noAnimationPreview" ? "1px solid green" : "1px solid #d7d7d7"; }
+
+        data.callbacks.onDisable ? data.callbacks.onDisable() : false;
+    }
+
+    enable(self){
+        const data = self.controller._getModelState();
+        const readyMadeAnimationsContainer = document.getElementById('animator-ready-made-animations');
+        readyMadeAnimationsContainer.style.opacity = '0.3';
+        readyMadeAnimationsContainer.style.pointerEvents = 'none';
+
+        $('#animationTimeline').find('*').not('#newAnimationButton').css({'opacity':'1','pointerEvents':'unset'});
+        document.getElementById('newAnimationButton').style.display = 'none';
+
+        data.callbacks.onEnable ? data.callbacks.onEnable() : false;
+    }
+
+    resetElement(){
+        var element = document.getElementById("animator-preview-element");
+        if(element){
+            element.style.animationName = '';
+            element.style.animationDuration = "1s";
+            element.style.animationDelay = '0s';
+            element.style.animationTimingFunction = 'linear';
+            element.style.animationIterationCount = 'infinite';
         }
     }
 }

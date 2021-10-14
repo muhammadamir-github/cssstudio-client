@@ -74,9 +74,6 @@ textarea[readonly="readonly"], textarea[readonly] { background-color:white; }
 	background-color: grey;
 }
 
-
-body::-webkit-scrollbar,
-.miniStyler_box::-webkit-scrollbar,
 .mediaManager_box::-webkit-scrollbar,
 .mediaManager_box textarea::-webkit-scrollbar,
 .mediaManager-txtboxes::-webkit-scrollbar,
@@ -86,8 +83,6 @@ body::-webkit-scrollbar,
     background-color: #F5F5F5;
 }
 
-body::-webkit-scrollbar-track,
-.miniStyler_box::-webkit-scrollbar-track,
 .mediaManager_box::-webkit-scrollbar-track,
 .mediaManager_box textarea::-webkit-scrollbar-track,
 .mediaManager-txtboxes::-webkit-scrollbar-track,
@@ -97,8 +92,6 @@ body::-webkit-scrollbar-track,
     background-color: #F5F5F5;
 }
 
-body::-webkit-scrollbar-thumb,
-.miniStyler_box::-webkit-scrollbar-thumb,
 .mediaManager_box::-webkit-scrollbar-thumb,
 .mediaManager_box textarea::-webkit-scrollbar-thumb,
 .mediaManager-txtboxes::-webkit-scrollbar-thumb,
@@ -163,17 +156,6 @@ replyticket::-webkit-scrollbar-thumb,
 styles previews::-webkit-scrollbar-thumb
 {
    background-color: #000000;
-}
-
-body{
-	margin: 0;
-	padding: 0;
-    height: 1500px;
-    position: relative;
-}
-
-html{
-    height:100%;
 }
 
 .pageheading{
@@ -1473,33 +1455,6 @@ contextmenu ul li:hover{
 
 }
 
-.slider{
-	-webkit-appearance: none;
-    appearance: none;
-    width: 200px;
-    height: 5px;
-    background: white;
-    border: 0.1em solid black;
-    border-radius: 50px;
-    outline: none;
-    margin-top: 10px;
-}
-
-.slider::-webkit-slider-thumb{
-	-webkit-appearance: none;
-	appearance: none;
-	border-radius: 50px;
-	width: 20px;
-	height: 20px;
-	background: black;
-	outline: none;
-}
-
-.miniStyler .customlarge{
-	width: 40%;
-}
-
-.miniStyler combobox,
 .fontManager combobox{
 	margin-top: 0px;
 	position: relative;
@@ -1507,15 +1462,8 @@ contextmenu ul li:hover{
     z-index: 0;
 }
 
-.miniStyler .selectedCombobox,
 .fontManager .selectedCombobox{
 	z-index: 5;
-}
-.miniStyler .colorpicker{
-	left: unset;
-	right: 0px;
-    top: 70px;
-    z-index: 7;
 }
 
 styles{
@@ -1647,47 +1595,6 @@ styles previews .selected:hover{
 }
 
 /*---------------------Web page builder--------------------*/
-
-.cneelementbtn, .cnpagebtn{
-	position: relative;
-    left: 50%;
-    top: 25%;
-    transform: translate(-50%,-25%);
-    display: block;
-    width: 35%;
-    height: 80px;
-    background: white;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-top: 1px solid black;
-    border-bottom: 4px solid black;
-    outline: none;
-    font-family: ProximaNovaBold;
-    font-size: 25px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    max-width: 500px;
-    transition: border 0.2s, box-shadow 0.2s ease-in-out;
-}
-
-.cneelementbtn:hover, .cnpagebtn:hover{
-	border-bottom: 10px solid black;
-	box-shadow: 0px 0px 2px grey;
-}
-
-.wtcquestion{
-	position: absolute;
-    display: inline-block;
-    left: 50%;
-    top: 10%;
-    transform: translate(-50%,-10%);
-    margin-bottom: 0px;
-    font-size: 55px;
-    font-family: ProximaNovaBold;
-    width: 90%;
-    text-align: center;
-    height: 55px;
-}
 
 .loader{
 	border-radius: 50%;
@@ -1897,19 +1804,6 @@ styles previews .selected:hover{
   border: none;
 }
 
-.previewsite .eResizer{
-  height: 10px;
-  width: 10px;
-  bottom: unset;
-  border-radius: 0%;
-  background: #e67300;
-  position: absolute;
-  opacity: 1;
-  outline: none;
-  border: none;
-  cursor: e-resize;
-}
-
 .previewsite .elementResizers .bottom-elementResizer{
   cursor: n-resize;
 }
@@ -1962,14 +1856,6 @@ styles previews .selected:hover{
    border: none;
    outline: none;
    opacity: 1;
-}
-
-.previewsite .eResizer:hover{
-   background: #e67300;
-   border: none;
-   outline: none;
-   opacity: 1;
-   cursor: e-resize;
 }
 
 #element-manager,

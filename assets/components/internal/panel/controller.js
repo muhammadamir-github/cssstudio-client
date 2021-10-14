@@ -4,8 +4,8 @@ class InternalPanelController{
         this.model = new InternalPanelModel(data, this);
     }
 
-    _init(options = {}){
-        this.view.create({
+    async _init(options = {}){
+        await this.view.create({
             ...options,
             data: this.model.state
         });
@@ -21,5 +21,21 @@ class InternalPanelController{
 
     _setModelState(state = {}){
         this.model.state = {...state};
+    }
+
+    show(...args){ this.view.show(...args); }
+    hide(...args){ this.view.hide(...args); }
+    toggle(...args){ this.view.toggle(...args); }
+
+    deleteElementByElementId(elementId){
+        try{
+            this.view._elementPreviewer.deleteElementByElementId(elementId);
+        }catch(error){ console.error(error); }
+    }
+
+    deleteSelectedElement(){
+        try{
+            this.view._elementPreviewer.deleteSelectedElement();
+        }catch(error){ console.error(error); }
     }
 }

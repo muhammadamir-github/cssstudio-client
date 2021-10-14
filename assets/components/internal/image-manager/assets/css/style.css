@@ -1,0 +1,265 @@
+#image-manager #image-manager-container::-webkit-scrollbar{
+	width: 0px;
+    background-color: #F5F5F5;
+}
+
+#image-manager #image-manager-container::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 0px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+}
+
+#image-manager #image-manager-container::-webkit-scrollbar-thumb{
+	background-color: #000000;
+}
+
+#image-manager{
+	max-width: 700px;
+    max-height: 700px;
+	width: 75%;
+    height: 75%;
+    background: white;
+    display: none;
+    left: 0%;
+    top: 0%;
+    position: absolute;
+    border-radius: 5px;
+    padding: 0;
+    overflow: unset;
+    box-shadow: 0 0 10px grey;
+    z-index: 999999999;
+    flex-direction: column;
+	min-width: 650px;
+	min-height: 400px;
+}
+
+#image-manager #image-manager-container{
+	width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#image-manager .banner,
+#image-manager #image-manager-footer{
+	position: relative;
+    display: flex;
+    background: white;
+    width: calc(100% - 40px);
+    height: 20px;
+    margin: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: none;
+    outline: none;
+    z-index: 4;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    min-height: 20px;
+    padding: 20px;
+}
+
+#image-manager .banner{
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+	border-bottom-left-radius: unset;
+    border-bottom-right-radius: unset;
+}
+
+#image-manager .banner p.banner-heading{
+	margin: 0;
+    font-family: ProximaNovaBold;
+    font-size: 23px;
+    display: flex;
+    position: relative;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+#image-manager .banner i.fa-times{
+	cursor: pointer;
+    margin-left: auto;
+    font-size: 15px;
+    position: relative;
+    display: flex;
+	opacity: 0.1;
+	transition: opacity 0.2s ease-in-out;
+}
+
+#image-manager .banner i.fa-times:hover{
+	opacity: 1;
+}
+
+#image-manager #image-manager-footer img{
+	position: relative;
+    border-radius: 5px;
+    object-fit: scale-down;
+    width: 70px;
+    height: 40px;
+    display: flex;
+    transition: opacity 0.2s ease-in-out;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+#image-manager #image-manager-footer img:hover{
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+#image-manager #image-manager-container .fa-trash,
+#image-manager #image-manager-container .fa-pen{
+    position: absolute;
+    display: inline-block;
+    color: indianred;
+    top: 10px;
+    left: 10px;
+    background: black;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 13px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+#image-manager #image-manager-container .fa-pen{
+    left: 40px !important;
+    color: rgb(181, 181, 181);
+}
+
+#image-manager #image-manager-container .fa-trash:hover,
+#image-manager #image-manager-container .fa-pen:hover{
+    opacity: 0.6;
+}
+
+#image-manager #image-manager-container div{
+	position: relative;
+    width: 100PX;
+    height: 100PX;
+    display: flex;
+    border: 1px solid #f1f1f1;
+    background: white;
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+    opacity: 1;
+    overflow: hidden;
+    margin: 5px;
+}
+
+#image-manager #image-manager-container div img{
+	position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    object-fit: scale-down;
+    background: transparent;
+    opacity: 1;
+}
+
+#image-manager #image-manager-container div:hover{
+    opacity: 0.6;
+}
+
+#image-manager #image-manager-container div span{
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    bottom: 0px;
+    background: #1a1a1a;
+    display: inline-block;
+    color: white;
+    font-family: ProximaNovaBold;
+    font-size: 14px;
+    text-align: center;
+    padding-top: 13px;
+    padding-bottom: 13px;
+    white-space: pre-line;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#image-manager .banner input[type="text"]{
+	display: flex;
+    width: 150px;
+    height: 25px;
+    outline: none;
+    border: 0.5px solid #d7d7d7;
+    border-radius: 5px;
+    position: relative;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 14px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 20px;
+}
+
+#image-manager .banner .save-edit-button,
+#image-manager .banner .cancel-edit-button{
+    position: relative;
+    float: right;
+    right: 25px;
+    width: 15%;
+    top: 50%;
+    transform: translate(0,-50%);
+    height: 75%;
+    border-radius: 5px;
+    outline: none;
+    border: none !important;
+    padding: 5px;
+    color: white;
+    font-family: ProximaNovaBold;
+    background: black;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: inline-block !important;
+    margin-left: 10px;
+}
+
+#image-manager .banner .cancel-edit-button{
+    background: rgb(222, 75, 64);
+}
+
+#image-manager .banner .save-edit-button:hover,
+#image-manager .banner .cancel-edit-button:hover{
+    opacity: 0.7;
+}
+
+#image-manager #mediaManager-edit-box .mediaManager-txtboxes{
+    position: relative;
+    display: inline-block;
+    width: 95%;
+    padding: 0;
+    margin: 0;
+    left: 50% !important;
+    top: 0px;
+    height: 100%;
+    overflow-x: hidden !important;
+    overflow-y: scroll !important;
+    transform: translate(-50%) !important;
+}
+
+#image-manager #image-manager-footer button{
+	position: relative;
+    display: flex;
+    width: 150px;
+    font-size: 14px;
+    font-family: ProximaNovaBold;
+    border-radius: 3px;
+    border: 1px solid #d7d7d7;
+    outline: none;
+    cursor: pointer;
+    background: black;
+    color: white;
+    transition: background 0.2s, color 0.2s ease-in-out;
+    margin-left: auto;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+}
+
+#image-manager #image-manager-footer button:hover{
+    background: transparent;
+    color: black;
+}
